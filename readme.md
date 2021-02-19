@@ -15,6 +15,25 @@ _Internationalization for Kotlin_
 
 GitHub: https://github.com/comahe-de/i18n4k
 
+**Table of contents**
+
+[//]: <> (enerated with https://ecotrust-canada.github.io/markdown-toc/)
+
+* [About](#about)
+* [Gradle dependencies](#gradle-dependencies)
+* [Gradle plugin](#gradle-plugin)
+* [Code generation](#code-generation)
+    + [Adding message bundles](#adding-message-bundles)
+    + [Inline storing of translations](#inline-storing-of-translations)
+    + [Optimized message files](#optimized-message-files)
+* [Runtime configuration](#runtime-configuration)
+* [Example](#example)
+* [Example projects](#example-projects)
+* [Contribute](#contribute)
+* [Status](#status)
+
+## About
+
 **_i18n4k_** is a multiplatform (JVM, JS, native) library and code generator for Kotlin to handle
 internationalisation (i18n) in your programm.
 
