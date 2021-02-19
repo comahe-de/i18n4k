@@ -13,7 +13,7 @@
 
 _Internationalization for Kotlin_
 
-GitHub: https://github.com/comahe-de/i18n4k
+Home: [github.com/comahe-de/i18n4k](https://github.com/comahe-de/i18n4k)
 
 **Table of contents**
 
