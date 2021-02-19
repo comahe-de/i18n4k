@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <!-- <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5p [%c{1}:%M:%L] - %m%n</Pattern>-->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5p %logger{35} \(%file:%line\) - %m%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>WARN</level>
+            <onMatch>DENY</onMatch>
+            <onMismatch>NEUTRAL</onMismatch>
+        </filter>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>DENY</onMatch>
+            <onMismatch>ACCEPT</onMismatch>
+        </filter>
+    </appender>
+    <appender name="stderr" class="ch.qos.logback.core.ConsoleAppender">
+        <Target>System.err</Target>
+        <encoder>
+            <!-- <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5p [%c{1}:%M:%L] - %m%n</Pattern>-->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5p %logger{35} \(%file:%line\) - %m%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>WARN</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>NEUTRAL</onMismatch>
+        </filter>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+    <appender name="file-trace"
+        class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>log/trace.log</File>
+        <encoder>
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5p [%c{1}:%M:%L] - %m%n</Pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <fileNamePattern>log/trace.%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+            <!-- each file should be at most 10MB, keep 60 days worth of history, but at most 20GB -->
+            <maxFileSize>10MB</maxFileSize>
+            <maxHistory>60</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>TRACE</level>
+        </filter>
+    </appender>
+    <appender name="file-debug"
+        class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>log/debug.log</File>
+        <encoder>
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5p [%c{1}:%M:%L] - %m%n</Pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <fileNamePattern>log/debug.%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+            <!-- each file should be at most 10MB, keep 60 days worth of history, but at most 20GB -->
+            <maxFileSize>10MB</maxFileSize>
+            <maxHistory>60</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>DEBUG</level>
+        </filter>
+    </appender>
+    <appender name="file-info"
+        class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>log/info.log</File>
+        <encoder>
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5p [%c{1}:%M:%L] - %m%n</Pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <fileNamePattern>log/info.%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+            <!-- each file should be at most 10MB, keep 60 days worth of history, but at most 1GB-->
+            <maxFileSize>10MB</maxFileSize>
+            <maxHistory>60</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+    </appender>
+    <appender name="file-warn"
+        class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>log/warn.log</File>
+        <encoder>
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5p [%c{1}:%M:%L] - %m%n</Pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <fileNamePattern>log/warn.%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+            <!-- each file should be at most 10MB, keep 60 days worth of history, but at most 1GB-->
+            <maxFileSize>10MB</maxFileSize>
+            <maxHistory>60</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>WARN</level>
+        </filter>
+    </appender>
+    <appender name="file-error"
+        class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>log/error.log</File>
+        <encoder>
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5p [%c{1}:%M:%L] - %m%n</Pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <fileNamePattern>log/error.%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+            <!-- each file should be at most 10MB, keep 60 days worth of history, but at most 1GB-->
+            <maxFileSize>10MB</maxFileSize>
+            <maxHistory>60</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+    </appender>
+    
+    
+    <root level="DEBUG">
+        <appender-ref ref="stdout" />
+        <appender-ref ref="stderr" />
+        <appender-ref ref="file-trace" />
+        <appender-ref ref="file-debug" />
+        <appender-ref ref="file-info" />
+        <appender-ref ref="file-warn" />
+        <appender-ref ref="file-error" />
+    </root>
+
+
+</configuration>

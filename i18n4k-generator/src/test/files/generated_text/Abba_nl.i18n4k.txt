@@ -1,0 +1,29 @@
+nl
+^
+Nummer
+^
+Hallo, wereld!
+^
+IIk^
+^^ heb er
+twee in
+de tekst 
+^
+3e waarde: {2}
+^
+Niet alle hebben vertalingen
+^
+Parameter 1: {0}
+^
+Parameter 2: {0},{1}
+^
+Parameter 3: {0},{1},{2}
+^
+Parameter 4: {0},{1},{2},{3}
+^
+Parameter 5: {0},{1},{2},{3},{4}
+^
+Vreemdeling 👽
+^
+Speciale sleutel
+^

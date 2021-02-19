@@ -1,0 +1,28 @@
+fr
+^
+Numéro
+^
+Salut monde!
+^
+J'ai^
+^^deux circonflexes
+dans
+le texte 
+^
+3ème valeur : {2}
+^
+^
+Paramètre 1 : {0}
+^
+Paramètre 2: {0},{1}
+^
+Paramètre 3: {0},{1},{2}
+^
+Paramètre 4: {0},{1},{2},{3}
+^
+Paramètre 5: {0},{1},{2},{3},{4}
+^
+Extraterrestre 👽
+^
+Clé spéciale
+^
