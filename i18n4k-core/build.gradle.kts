@@ -1,5 +1,4 @@
 plugins {
-    `maven-publish`
     kotlin("multiplatform") // version from main build.gradle.kts
 }
 
@@ -68,18 +67,40 @@ kotlin {
                 implementation(kotlin("test-js"))
             }
         }
-        val nativeMain by getting{
+        val nativeMain by getting {
             dependencies {
             }
         }
         val nativeTest by getting
     }
-}
 
-publishing {
-    repositories {
-        maven {
-            //...
+    // Publishing....
+    /*
+     * When used with maven-publish, the Kotlin plugin automatically creates publications for each
+     * target that can be built on the current host, except for the Android target, which needs an
+     *  additional step to configure publishing.
+     *
+     * https://kotlinlang.org/docs/mpp-publish-lib.html#structure-of-publications
+     */
+
+    /*
+     * To avoid duplicate publications of modules that can be built on several platforms
+     * (like JVM and JS), configure the publishing tasks for these modules to run conditionally.
+     *
+     * https://kotlinlang.org/docs/mpp-publish-lib.html#avoid-duplicate-publications
+     */
+    /*
+    val publicationsFromMainHost = listOf(jvm(), js()).map { it.name } + "kotlinMultiplatform"
+    publishing {
+        publications {
+            matching { it.name in publicationsFromMainHost }.all {
+                val targetPublication = this@all
+                tasks.withType<AbstractPublishToMaven>()
+                    .matching { it.publication == targetPublication }
+                    .configureEach { onlyIf { findProperty("isMainHost") == "true" } }
+            }
         }
     }
+    */
+
 }

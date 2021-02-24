@@ -1,6 +1,5 @@
 plugins {
     kotlin("jvm") // version from main build.gradle.kts
-    `maven-publish`
     `java-gradle-plugin`
 }
 

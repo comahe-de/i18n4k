@@ -1,3 +1,5 @@
+import org.gradle.kotlin.dsl.version
+
 object Versions {
     const val kotlin = "1.4.30"
     const val kotlinxAtomicfu = "0.15.1"
@@ -6,6 +8,9 @@ object Versions {
     const val slf4j = "1.7.25"
     const val logback = "1.2.3"
     const val junit = "4.13"
+
+    // Plugins
+    const val gradlePluginPublish = "0.12.0"
 }
 
 object Dependencies {
@@ -24,3 +29,8 @@ object Dependencies {
     const val junit =
         "junit:junit:${Versions.junit}"
 }
+
+// Plugins...
+@Suppress("ObjectPropertyName")
+inline val org.gradle.plugin.use.PluginDependenciesSpec.`gradle-plugin-publish`: org.gradle.plugin.use.PluginDependencySpec
+    get() = id("com.gradle.plugin-publish") version  Versions.gradlePluginPublish

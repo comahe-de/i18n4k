@@ -2,4 +2,6 @@
 .gradle/
 out/
 build/
-/log/
+log/
+/buildSrc/src/main/resources/secret.properties
+/buildSrc/src/main/resources/comahe-de.gpg
