@@ -1,0 +1,35 @@
+name: Publish artifacts
+
+on:
+  push:
+    branches:
+    - main
+    tags:
+    - 'v*'
+
+jobs:
+  publish-artifacts:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
+
+    env:
+        CI_SECRET_KEY_RING_FILE: ${{ secrets.CI_SECRET_KEY_RING_FILE }}
+        CI_SECRET_PROPERTIES_FILE: ${{ secrets.CI_SECRET_PROPERTIES_FILE }}
+
+    steps:
+    - uses: actions/checkout@v2
+
+    # don't use cache for releases...
+
+    - name: Run test
+      run: ./gradlew allTest --stacktrace
+
+    - name: Publish to Gradle Plugin Portal
+      if: matrix.os == 'ubuntu-latest'
+      run: ./gradlew publishPlugins --stacktrace
+
+    - name: Publish to Maven Central
+      run: ./gradlew publish -PavoidDuplicatePublications=true --stacktrace
+

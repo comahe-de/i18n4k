@@ -1,6 +1,7 @@
 plugins {
     kotlin("jvm") // version from main build.gradle.kts
     `java-gradle-plugin`
+    `gradle-plugin-publish`
 }
 
 
@@ -42,14 +43,35 @@ gradlePlugin {
         create("i18n4k") {
             id = "de.comahe.i18n4k"
             implementationClass = "de.comahe.i18n4k.gradle.plugin.I18n4kPlugin"
+            displayName = "i18n4k"
+            description = "i18n4k - Internationalization for Kotlin - Code Generator"
+
         }
     }
 }
 
-publishing {
-    publications {
-        create<MavenPublication>("mavenJava") {
-            from(components["java"])
+pluginBundle {
+    website = "https://comahe-de.github.com/i18n4k"
+    vcsUrl = "https://github.com/comahe-de/i18n4k"
+    tags = listOf(
+        "kotlin", "kotlin/multiplatform", "kotlin/js", "kotlin/jvm", "kotlin/native",
+        "i18n", "internationalization", "code generator"
+    )
+}
+
+java {
+    withSourcesJar()
+    withJavadocJar()
+}
+
+
+// Maven publications are added automatically during evaluation (pluginBundle)
+// So call avoidDuplicatePublications() after evaluation
+afterEvaluate {
+    publishing {
+        publications {
+            // avoid duplicate publication for multi platform builds
+            BuildTools.avoidDuplicatePublications(project, this)
         }
     }
 }

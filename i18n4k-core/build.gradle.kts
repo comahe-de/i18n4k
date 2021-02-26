@@ -1,11 +1,18 @@
 plugins {
     kotlin("multiplatform") // version from main build.gradle.kts
+
+    // https://stackoverflow.com/a/66352905/2611134
+    // "I use older version of dokka library (1.4.0-rc), as newer version could not generate
+    // javadocs for all platforms"
+    id("org.jetbrains.dokka") version "1.4.0-rc"
 }
 
 repositories {
     mavenCentral()
     jcenter()
 }
+
+
 
 kotlin {
     jvm {
@@ -27,26 +34,26 @@ kotlin {
         }
     }
     // #####  native targets...
-    // out commented targets are not supported by a used library
-    //androidNativeArm32() // not supported by "atomicfu"
-    //androidNativeArm64() // not supported by "atomicfu"
+    // # out commented targets are not supported by a used library
     iosArm32()
     iosArm64()
     iosX64()
     macosX64()
     mingwX64()
-    //mingwX86()// not supported by "atomicfu"
-    tvosArm64()
-    tvosX64()
-    //wasm32() // not supported by "atomicfu"
-    //linuxArm32Hfp() // not supported by "atomicfu"
-    //linuxArm64() // not supported by "atomicfu"
-    //linuxMips32() // not supported by "atomicfu"
-    //linuxMipsel32() // not supported by "atomicfu"
     linuxX64()
-    watchosArm32()
-    watchosArm64()
-    watchosX86()
+    //androidNativeArm32() // not supported by "atomicfu", "kotlinx-collections-immutable"
+    //androidNativeArm64() // not supported by "atomicfu", "kotlinx-collections-immutable"
+    //mingwX86()// not supported by "atomicfu", "kotlinx-collections-immutable"
+    //tvosArm64() // not supported by "kotlinx-collections-immutable"
+    //tvosX64() // not supported by "kotlinx-collections-immutable"
+    //wasm32() // not supported by "atomicfu"
+    //linuxArm32Hfp() // not supported by "atomicfu", "kotlinx-collections-immutable"
+    //linuxArm64() // not supported by "atomicfu", "kotlinx-collections-immutable"
+    //linuxMips32() // not supported by "atomicfu", "kotlinx-collections-immutable"
+    //linuxMipsel32() // not supported by "atomicfu", "kotlinx-collections-immutable"
+    //watchosArm32() // not supported by "kotlinx-collections-immutable"
+    //watchosArm64() // not supported by "kotlinx-collections-immutable"
+    //watchosX86() // not supported by  "kotlinx-collections-immutable"
 
     // the sources of all the targets
     sourceSets {
@@ -83,13 +90,11 @@ kotlin {
         }
 
         // ##### configure all the native targets...
+        // # out commented targets are not supported by a used library
 
         // default native sources
         val nativeCommonMain = create("nativeMain")
         val nativeCommonTest = create("nativeTest")
-
-        //val androidNativeArm32Main // not supported by "atomicfu"
-        //val androidNativeArm64Main // not supported by "atomicfu"
 
         val iosArm32Main by getting {
             dependsOn(nativeCommonMain)
@@ -97,31 +102,63 @@ kotlin {
         val iosArm32Test by getting {
             dependsOn(nativeCommonTest)
         }
+
         val iosArm64Main by getting {
             dependsOn(nativeCommonMain)
         }
         val iosArm64Test by getting {
             dependsOn(nativeCommonTest)
         }
+
         val iosX64Main by getting {
             dependsOn(nativeCommonMain)
         }
         val iosX64Test by getting {
             dependsOn(nativeCommonTest)
         }
+
         val macosX64Main by getting {
             dependsOn(nativeCommonMain)
         }
         val macosX64Test by getting {
             dependsOn(nativeCommonTest)
         }
+
         val mingwX64Main by getting {
             dependsOn(nativeCommonMain)
         }
         val mingwX64Test by getting {
             dependsOn(nativeCommonTest)
         }
-        //val mingwX86Main // not supported by "atomicfu"
+
+        val linuxX64Main by getting {
+            dependsOn(nativeCommonMain)
+        }
+        val linuxX64Test by getting {
+            dependsOn(nativeCommonTest)
+        }
+
+        /*
+        val androidNativeArm32Main by getting {
+            dependsOn(nativeCommonMain)
+        }
+        val androidNativeArm32Test by getting {
+            dependsOn(nativeCommonTest)
+        }
+
+        val androidNativeArm64Main by getting {
+            dependsOn(nativeCommonMain)
+        }
+        val androidNativeArm64Test by getting {
+            dependsOn(nativeCommonTest)
+        }
+
+        val mingwX86Main by getting {
+            dependsOn(nativeCommonMain)
+        }
+        val mingwX86Test by getting {
+            dependsOn(nativeCommonTest)
+        }
 
         val tvosArm64Main by getting {
             dependsOn(nativeCommonMain)
@@ -136,16 +173,35 @@ kotlin {
             dependsOn(nativeCommonTest)
         }
 
-        //val wasm32Main // not supported by "atomicfu"
-        //val linuxArm32HfpMain // not supported by "atomicfu"
-        //val linuxArm64Main // not supported by "atomicfu"
-        //val linuxMips32Main // not supported by "atomicfu"
-        //val linuxMipsel32Main // not supported by "atomicfu"
-
-        val linuxX64Main by getting {
+        val wasm32Main by getting {
             dependsOn(nativeCommonMain)
         }
-        val linuxX64Test by getting {
+        val wasm32Test by getting {
+            dependsOn(nativeCommonTest)
+        }
+
+        val linuxArm32Main by getting {
+            dependsOn(nativeCommonMain)
+        }
+        val linuxArm32Test by getting {
+            dependsOn(nativeCommonTest)
+        }
+        val linuxArm64Main by getting {
+            dependsOn(nativeCommonMain)
+        }
+        val linuxArm64Test by getting {
+            dependsOn(nativeCommonTest)
+        }
+        val linuxMips32Main by getting {
+            dependsOn(nativeCommonMain)
+        }
+        val linuxMips32Test by getting {
+            dependsOn(nativeCommonTest)
+        }
+        val linuxMipsel32Main by getting {
+            dependsOn(nativeCommonMain)
+        }
+        val linuxMipsel32Test by getting {
             dependsOn(nativeCommonTest)
         }
 
@@ -168,84 +224,63 @@ kotlin {
             dependsOn(nativeCommonTest)
         }
 
+        */
     }
 
-    // Publishing....
-    /**
-     * When used with maven-publish, the Kotlin plugin automatically creates publications for each
-     * target that can be built on the current host, except for the Android target, which needs an
-     *  additional step to configure publishing.
-     *
-     * https://kotlinlang.org/docs/mpp-publish-lib.html#structure-of-publications
-     */
 
-    /**
-     * To avoid duplicate publications of modules that can be built on several platforms:
-     *
-     * What can be build on with platform:
-     * https://patrickjackson.dev/publishing-multiplatform-kotlin-libraries/
-     *
-     *
-     *  |                 | Linux  | Windows | Macos |
-     *  |-----------------|--------|--------|--------|
-     *  | androidNative32 |   ✅   |    ✅   |   ✅   |
-     *  | androidNative64 |   ✅   |    ✅   |   ✅   |
-     *  | jvm             |   ✅   |    ✅   |   ✅   |
-     *  | js              |   ✅   |    ✅   |   ✅   |
-     *  | iosArm32        |   ❌   |    ❌   |   ✅   |
-     *  | iosArm64        |   ❌   |    ❌   |   ✅   |
-     *  | iosX64          |   ❌   |    ❌   |   ✅   |
-     *  | macosX64        |   ❌   |    ❌   |   ✅   |
-     *  | mingwx64        |   ❌   |    ✅   |   ❌   |
-     *  | mingwx86        |   ❌   |    ✅   |   ❌   |
-     *  | wasm32          |   ✅   |    ❌   |   ✅   |
-     *  | linuxArm32Hfp   |   ✅   |    ✅   |   ✅   |
-     *  | linuxArm64      |   ✅   |    ✅   |   ✅   |
-     *  | linuxMips32     |   ✅   |    ❌   |   ❌   |
-     *  | linuxMipsel32   |   ✅   |    ❌   |   ❌   |
-     *  | linuxX64        |   ✅   |    ✅   |   ✅   |
-     */
+}
 
-    val hostOs = System.getProperty("os.name")
-    val publicationsToSkip = when {
-        hostOs.startsWith("Windows") -> listOf(
-            "linuxArm32Hfp",
-            "linuxArm64",
-            "linuxX64"
-        )
-        hostOs.startsWith("Linux") -> listOf(
-            "metadata",
-            "jvm",
-            "js",
-            "androidNativeArm32",
-            "androidNativeArm64"
-        )
-        hostOs.startsWith("Mac OS") -> listOf(
-            "metadata",
-            "androidNativeArm32",
-            "androidNativeArm64",
-            "jvm",
-            "js",
-            "wasm32",
-            "linuxArm32Hfp",
-            "linuxArm64",
-            "linuxX64"
-        )
-        else -> emptyList()
+// from https://stackoverflow.com/a/66352905/2611134
+tasks {
+    create<Jar>("javadocJar") {
+        dependsOn(dokkaJavadoc)
+        archiveClassifier.set("javadoc")
+        from(dokkaJavadoc.get().outputDirectory)
     }
 
+    dokkaJavadoc {
+        dokkaSourceSets {
+            create("commonMain") {
+                displayName = "common"
+                platform = "common"
+            }
+        }
+    }
+}
+
+
+tasks {
+    dokkaJavadoc {
+        dokkaSourceSets.forEach {
+            println("#### dokkaa")
+            println(it.name)
+            println(it.sourceRoots)
+            println(it.platform)
+        }
+    }
+
+}
+
+// Publishing....
+afterEvaluate {
     publishing {
         publications {
-            println("########### Host OS is: $hostOs ##################")
-            println("### Having publications: ")
-            forEach { targetPublication ->
-                val isDeploy = !(targetPublication.name in publicationsToSkip)
-                println("### * \"${targetPublication.name}\" - publish: $isDeploy")
-                tasks.withType<AbstractPublishToMaven>()
-                    .matching { it.publication == targetPublication }
-                    .configureEach {
-                        onlyIf { isDeploy }
-                    }
+            /**
+             * When used with maven-publish, the Kotlin plugin automatically creates publications for each
+             * target that can be built on the current host, except for the Android target, which needs an
+             *  additional step to configure publishing.
+             *
+             *  Therefore no additional publication declaractions are needed here!
+             *
+             * https://kotlinlang.org/docs/mpp-publish-lib.html#structure-of-publications
+             */
+            // avoid duplicate publication for multi platform builds
+            BuildTools.avoidDuplicateMultiPlatformPublications(project, this)
+
+            // add JavaDoc
+            all {
+                val mavenPublication = this as? MavenPublication
+                mavenPublication?.artifact(tasks["javadocJar"])
             }
         }
     }

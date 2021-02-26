@@ -29,10 +29,18 @@ tasks {
     }
 }
 
+java {
+    withSourcesJar()
+    withJavadocJar()
+}
+
 publishing {
     publications {
         create<MavenPublication>("mavenJava") {
             from(components["java"])
         }
+
+        // avoid duplicate publication for multi platform builds
+        BuildTools.avoidDuplicatePublications(project,this)
     }
 }

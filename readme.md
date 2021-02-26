@@ -3,11 +3,12 @@
 
 ![Version][badge-version]
 ![Kotlin][badge-kotlin]
+[![License][badge-apache2.0]](./LICENSE)
+
 ![Kotlin/Multiplatform][badge-multiplatform]
 ![Kotlin/JVN][badge-jvm]
 ![Kotlin/JS][badge-js]
 ![Kotlin/Native][badge-native]
-[![License][badge-apache2.0]](./LICENSE)
 
 # i18n4k
 
@@ -54,9 +55,19 @@ It provides
   formats).
 * Gradle plugin to start the code generator
 
+## Artefact repository
+
+Ensure that you have Maven-Central (`mavenCentral()`) in your repository list
+
+```kotlin
+repositories {
+    mavenCentral()
+}
+```
+
 ## Gradle dependencies
 
-For multiplatform projects: add `de.comahe.i18n4k:i18n4k-core:<VERSION>` to `commonMain` source set.
+**For multiplatform projects:** add `de.comahe.i18n4k:i18n4k-core:<VERSION>` to `commonMain` source set.
 
 ```kotlin
 val commonMain by getting {
@@ -66,9 +77,21 @@ val commonMain by getting {
 }
 ```
 
-For Kotlin/JS: add `de.comahe.i18n4k:i18n4k-core-js:<VERSION>` to the dependencies
+**For Kotlin/JS:** add `de.comahe.i18n4k:i18n4k-core-js:<VERSION>` to the dependencies
 
-For Kotlin/Jvm: add `de.comahe.i18n4k:i18n4k-core-jvm:<VERSION>` to the dependencies
+```kotlin
+dependencies {
+    implementation("de.comahe.i18n4k:i18n4k-core-js:0.1.0-SNAPSHOT")
+}
+```
+
+**For Kotlin/Jvm:** add `de.comahe.i18n4k:i18n4k-core-jvm:<VERSION>` to the dependencies
+
+```kotlin
+dependencies {
+    implementation("de.comahe.i18n4k:i18n4k-core-jvm:0.1.0-SNAPSHOT")
+}
+```
 
 ## Gradle plugin
 
@@ -244,7 +267,7 @@ The German message file can be loaded at runtime, e.g. like this (for JVM plattf
 MyMessages.registerTranslation(MessagesProviderViaResource(pathToResource = "/x/y/MyMessages_de.i18n4k.txt"))
 ```
 
-Changing the local can that be done like this:
+Changing the locale can be done like this:
 
 ```kotlin
 val i18n4kConfig = I18n4kConfigDefault()
@@ -252,7 +275,7 @@ i18n4k = i18n4kConfig
 i18n4kConfig.locale = Locale("de")
 ```
 
-Then the expression from above prints
+Afterwards the expression from above prints
 
 ```
 Hallo, i18n4k!
