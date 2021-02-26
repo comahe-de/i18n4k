@@ -5,11 +5,13 @@ plugins {
     signing
 }
 
+
+// apply common configuration for this project and each sub project
 allprojects {
     group = "de.comahe.i18n4k"
     version = "0.1.0-SNAPSHOT"
 
-    repositories{
+    repositories {
         mavenLocal()
         mavenCentral()
         jcenter()
@@ -17,6 +19,7 @@ allprojects {
     }
 }
 
+// apply common configuration for each sub project
 subprojects {
     // add signing and Maven publish to each project
     loadSecretProperties(this)
