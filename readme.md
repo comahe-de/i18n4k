@@ -3,6 +3,7 @@
 
 ![Version][badge-version]
 ![Kotlin][badge-kotlin]
+[![Kotlin][badge-maven]](https://mvnrepository.com/artifact/de.comahe.i18n4k)
 [![License][badge-apache2.0]](./LICENSE)
 
 ![Kotlin/Multiplatform][badge-multiplatform]
@@ -14,13 +15,17 @@
 
 _Internationalization for Kotlin_
 
-Home: [github.com/comahe-de/i18n4k](https://github.com/comahe-de/i18n4k)
+**Home:** [github.com/comahe-de/i18n4k](https://github.com/comahe-de/i18n4k)
+
+**Lastest release version:** 0.1.0
 
 **Table of contents**
 
-[//]: <> (enerated with https://ecotrust-canada.github.io/markdown-toc/)
+[//]: <> (generated with https://ecotrust-canada.github.io/markdown-toc/)
 
 * [About](#about)
+* [Supported platforms](#supported-platforms)
+* [Artefact repository](#artefact-repository)
 * [Gradle dependencies](#gradle-dependencies)
 * [Gradle plugin](#gradle-plugin)
 * [Code generation](#code-generation)
@@ -55,6 +60,18 @@ It provides
   formats).
 * Gradle plugin to start the code generator
 
+## Supported platforms
+
+* Java (JVM)
+* JS (legacy and IR backend)
+* Native:
+  * iosArm32
+  * iosArm64
+  * iosX64
+  * macosX64
+  * mingwX64
+  * linuxX64
+    
 ## Artefact repository
 
 Ensure that you have Maven-Central (`mavenCentral()`) in your repository list
@@ -309,5 +326,6 @@ very welcome.
 
 [badge-apache2.0]:https://img.shields.io/badge/License-Apache/2.0-blue.svg?style=flat
 
-[badge-version]:https://img.shields.io/badge/version-0.1.0_SNAPSHOT-blueviolet?style=flat
+[badge-version]:https://img.shields.io/badge/version-0.1.0-blueviolet?style=flat
+[badge-maven]:https://img.shields.io/badge/Maven-Central-6262EC?style=flat
 [badge-kotlin]:https://img.shields.io/badge/Kotlin-1.4.30-orange?style=flat
