@@ -254,7 +254,7 @@ class I18n4kGenerator(
         return localisationObject.build()
     }
 
-    /** generate a I18nk4 language file to be loaded at runtime of the programm */
+    /** generate a I18nk4 language file to be loaded at runtime of the program */
     private fun generateLocalisationFile(messagesData: MessagesData) {
         val dir = File(languageFilesDir, bundle.name.packageName.replace(".", "/"))
         dir.mkdirs()

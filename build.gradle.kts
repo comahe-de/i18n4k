@@ -70,7 +70,7 @@ subprojects {
                                 return@forEach
                             publication.pom {
                                 name.set(project.name)
-                                description.set("i18n4k is a multiplatform (JVM, JS, native) library and code generator for Kotlin to handle internationalisation (i18n) in your programm.")
+                                description.set("i18n4k is a multiplatform (JVM, JS, native) library and code generator for Kotlin to handle internationalisation (i18n) in your program.")
                                 url.set("https://comahe-de.github.io/i18n4k/")
                                 licenses {
                                     license {
