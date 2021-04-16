@@ -34,49 +34,63 @@ public object Abba : MessageBundle() {
   public val Multi_Line_Value: LocalizedString = getLocalizedString0(2)
 
   /**
+   * Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Phasellus faucibus molestie nisl.
+   * Mauris suscipit, ligula sit amet pharetra semper, nibh ante cursus purus, vel sagittis velit
+   * mauris vel metus. Pellentesque ipsum. Integer malesuada. Fusce wisi. Nullam dapibus fermentum
+   * ipsum. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+   * commodo consequat. Integer rutrum, orci vestibulum ullamcorper ultricies, lacus quam ultricies
+   * odio, vitae placerat pede sem sit amet enim. Quisque tincidunt scelerisque libero. Etiam posuere
+   * lacus quis dolor. In laoreet, magna id viverra tincidunt, sem odio bibendum justo, vel imperdiet
+   * sapien wisi sed libero. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet,
+   * consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore
+   * magnam aliquam quaerat voluptatem. Pellentesque sapien.
+   */
+  public val longTextExample: LocalizedStringFactory1 = getLocalizedStringFactory1(3)
+
+  /**
    * 3rd value: {2}
    */
-  public val max_param_3: LocalizedStringFactory3 = getLocalizedStringFactory3(3)
+  public val max_param_3: LocalizedStringFactory3 = getLocalizedStringFactory3(4)
 
   /**
    * Not all have translations
    */
-  public val no_all_have_translations: LocalizedStringFactory1 = getLocalizedStringFactory1(4)
+  public val no_all_have_translations: LocalizedStringFactory1 = getLocalizedStringFactory1(5)
 
   /**
    * Parameter 1: {0}
    */
-  public val param_1: LocalizedStringFactory1 = getLocalizedStringFactory1(5)
+  public val param_1: LocalizedStringFactory1 = getLocalizedStringFactory1(6)
 
   /**
    * Parameter 2: {0},{1}
    */
-  public val param_2: LocalizedStringFactory2 = getLocalizedStringFactory2(6)
+  public val param_2: LocalizedStringFactory2 = getLocalizedStringFactory2(7)
 
   /**
    * Parameter 3: {0},{1},{2}
    */
-  public val param_3: LocalizedStringFactory3 = getLocalizedStringFactory3(7)
+  public val param_3: LocalizedStringFactory3 = getLocalizedStringFactory3(8)
 
   /**
    * Parameter 4: {0},{1},{2},{3}
    */
-  public val param_4: LocalizedStringFactory4 = getLocalizedStringFactory4(8)
+  public val param_4: LocalizedStringFactory4 = getLocalizedStringFactory4(9)
 
   /**
    * Parameter 5: {0},{1},{2},{3},{4}
    */
-  public val param_5: LocalizedStringFactory5 = getLocalizedStringFactory5(9)
+  public val param_5: LocalizedStringFactory5 = getLocalizedStringFactory5(10)
 
   /**
    * Extraterrestrial 👽
    */
-  public val utf_8_value: LocalizedString = getLocalizedString0(10)
+  public val utf_8_value: LocalizedString = getLocalizedString0(11)
 
   /**
    * Special key
    */
-  public val _Specail_Key_: LocalizedString = getLocalizedString0(11)
+  public val _Specail_Key_: LocalizedString = getLocalizedString0(12)
 
   init {
     registerTranslation(Abba_en)
@@ -91,7 +105,13 @@ private object Abba_en : MessagesProvider {
   private val _data: Array<String?> = arrayOf(
       "Number",
       "Hello, World",
-      "I ^\n^have two\ncircumflexes\nin the text",
+      """
+      |I ^
+      |^have two
+      |circumflexes
+      |in the text
+      """.trimMargin(),
+      "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Phasellus faucibus molestie nisl. Mauris suscipit, ligula sit amet pharetra semper, nibh ante cursus purus, vel sagittis velit mauris vel metus. Pellentesque ipsum. Integer malesuada. Fusce wisi. Nullam dapibus fermentum ipsum. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Integer rutrum, orci vestibulum ullamcorper ultricies, lacus quam ultricies odio, vitae placerat pede sem sit amet enim. Quisque tincidunt scelerisque libero. Etiam posuere lacus quis dolor. In laoreet, magna id viverra tincidunt, sem odio bibendum justo, vel imperdiet sapien wisi sed libero. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Pellentesque sapien.",
       "3rd value: {2}",
       "Not all have translations",
       "Parameter 1: {0}",
@@ -116,7 +136,13 @@ private object Abba_de : MessagesProvider {
   private val _data: Array<String?> = arrayOf(
       "Nummer",
       "Hallo, Welt!",
-      "Ich ^\n^ habe zwei\n Zirkumflex\nim Text",
+      """
+      |Ich ^
+      |^ habe zwei
+      | Zirkumflex
+      |im Text
+      """.trimMargin(),
+      null,
       "3. Wert: {2}",
       "",
       "Parameter 1: {0}",

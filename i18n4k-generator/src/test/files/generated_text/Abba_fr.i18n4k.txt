@@ -9,6 +9,7 @@ J'ai^
 dans
 le texte 
 ^
+^
 3ème valeur : {2}
 ^
 ^
