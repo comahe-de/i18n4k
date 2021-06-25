@@ -81,7 +81,7 @@ abstract class MessagesProviderViaLoadingText(
         }
         tempList.add(current.toString())
 
-        // fist line is the locale code, the rest are the strings.
+        // first line is the locale code, the rest are the strings.
         val locale = (if (tempList.isEmpty()) null else tempList[0])?.let { forLocaleTag(it) }
             ?: throw IllegalArgumentException("Locale tag of loaded data is null")
 
