@@ -3,9 +3,9 @@ name: Publish artifacts
 on:
   push:
     branches:
-    - main
+    - 'v*.*.*'
     tags:
-    - 'v*'
+    - 'v*.*.*'
 
 jobs:
   publish-artifacts:
