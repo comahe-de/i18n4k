@@ -5,7 +5,8 @@ package de.comahe.i18n4k.generator
 import de.comahe.i18n4k.Locale
 import de.comahe.i18n4k.messages.formatter.MessageFormatter
 import java.io.File
-import java.io.FileInputStream
+import java.io.FileReader
+import java.nio.charset.StandardCharsets
 import java.util.Properties
 import java.util.regex.Matcher
 import java.util.regex.Pattern
@@ -100,9 +101,9 @@ class MessagesDataBundles(
 
     /** loads a properties file and return the key-value map */
     private fun loadProperties(file: File): Map<String, String> {
-        FileInputStream(file).use { inputStream ->
+        FileReader(file, StandardCharsets.UTF_8).use { input ->
             val p = Properties()
-            p.load(inputStream)
+            p.load(input)
             val r = HashMap<String, String>(p.size)
             p.forEach {
                 r[it.key.toString()] = it.value.toString()
