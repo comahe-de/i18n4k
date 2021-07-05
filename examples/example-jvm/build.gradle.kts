@@ -3,7 +3,7 @@ version = "1.0.0-SNAPSHOT"
 
 plugins {
     kotlin("jvm") version "1.4.30"
-    id("de.comahe.i18n4k") version "0.1.1"
+    id("de.comahe.i18n4k") version "0.1.2"
 }
 
 // ####################################
@@ -36,7 +36,7 @@ repositories {
 }
 
 dependencies {
-    implementation("de.comahe.i18n4k:i18n4k-core-jvm:0.1.1")
+    implementation("de.comahe.i18n4k:i18n4k-core-jvm:0.1.2")
     implementation("com.miglayout:miglayout-swing:5.2")
     implementation(kotlin("stdlib-jdk8"))
     testImplementation("junit", "junit", "4.13")
