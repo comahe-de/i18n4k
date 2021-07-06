@@ -231,7 +231,9 @@ class I18n4kGenerator(
 
         localisationObject.addProperty(
             PropertySpec.builder("size", Int::class, KModifier.OVERRIDE)
-                .initializer("_data.size")
+                .getter(
+                    FunSpec.getterBuilder().addCode("return _data.size").build()
+                )
                 .build()
         )
 
