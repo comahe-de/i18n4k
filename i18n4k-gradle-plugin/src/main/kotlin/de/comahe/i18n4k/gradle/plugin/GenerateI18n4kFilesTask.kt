@@ -5,10 +5,7 @@ import de.comahe.i18n4k.generator.GenerationTargetPlatform
 import de.comahe.i18n4k.generator.I18n4kProcessor
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
-import org.gradle.api.tasks.Input
-import org.gradle.api.tasks.InputDirectory
-import org.gradle.api.tasks.OutputDirectory
-import org.gradle.api.tasks.TaskAction
+import org.gradle.api.tasks.*
 import java.io.File
 
 
@@ -16,6 +13,7 @@ import java.io.File
 open class GenerateI18n4kFilesTask : DefaultTask() {
 
 
+    @Nested
     lateinit var config: I18n4kExtension
 
     // Input parameter from [config] for "UP-TO-DATE" checks
@@ -43,7 +41,7 @@ open class GenerateI18n4kFilesTask : DefaultTask() {
 
     @InputDirectory
     open fun getInputDirectory(): File {
-        var path = config.inputDirectory;
+        var path = config.inputDirectory
         if (path == null)
             path = if (config.generationTargetPlatform == GenerationTargetPlatform.MULTI_PLATFORM)
                 "src/commonMain/i18n" else "src/main/i18n"

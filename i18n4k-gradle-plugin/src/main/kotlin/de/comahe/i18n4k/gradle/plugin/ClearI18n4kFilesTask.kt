@@ -1,12 +1,12 @@
 package de.comahe.i18n4k.gradle.plugin
 
 import org.gradle.api.DefaultTask
-import org.gradle.api.tasks.TaskAction
-
+import org.gradle.api.tasks.*
 
 @Suppress("unused")
 open class ClearI18n4kFilesTask : DefaultTask() {
 
+    @Nested
     lateinit var config: I18n4kExtension
 
     @TaskAction
