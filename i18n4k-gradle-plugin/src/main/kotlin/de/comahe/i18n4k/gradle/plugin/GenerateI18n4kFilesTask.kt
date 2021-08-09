@@ -13,7 +13,7 @@ import java.io.File
 open class GenerateI18n4kFilesTask : DefaultTask() {
 
 
-    @Nested
+    @Internal
     lateinit var config: I18n4kExtension
 
     // Input parameter from [config] for "UP-TO-DATE" checks

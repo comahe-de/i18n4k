@@ -6,7 +6,7 @@ import org.gradle.api.tasks.*
 @Suppress("unused")
 open class ClearI18n4kFilesTask : DefaultTask() {
 
-    @Nested
+    @Internal
     lateinit var config: I18n4kExtension
 
     @TaskAction
