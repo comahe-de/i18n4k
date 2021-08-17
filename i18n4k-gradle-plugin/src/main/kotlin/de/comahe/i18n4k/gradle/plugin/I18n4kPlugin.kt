@@ -6,10 +6,12 @@ import org.gradle.api.Project
 import org.gradle.api.file.SourceDirectorySet
 import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.SourceSetContainer
+import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.plugins.ide.idea.IdeaPlugin
 import org.gradle.plugins.ide.idea.model.IdeaModel
 import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.io.File
 
 open class I18n4kPlugin : Plugin<Project> {
@@ -103,6 +105,13 @@ open class I18n4kPlugin : Plugin<Project> {
             ?.dependsOn(GENERATE_I18N_SOURCES_TASK_NAME)
         project.tasks.findByName("compileKotlinMetadata")
             ?.dependsOn(GENERATE_I18N_SOURCES_TASK_NAME)
+
+        project.tasks.withType(KotlinCompile::class.java).forEach {
+            it.dependsOn(GENERATE_I18N_SOURCES_TASK_NAME)
+        }
+        project.tasks.withType(JavaCompile::class.java).forEach {
+            it.dependsOn(GENERATE_I18N_SOURCES_TASK_NAME)
+        }
     }
 
     /** Finds the [SourceDirectorySet] depending on the project type (jvm, multiplatform, ...) */
