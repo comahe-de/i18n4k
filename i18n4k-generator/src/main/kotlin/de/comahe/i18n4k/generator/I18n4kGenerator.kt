@@ -46,7 +46,8 @@ class I18n4kGenerator(
     /** Locale which message bundle content should be added as comment. Null for no comments. */
     private val commentLocale: Locale?,
     /** for this Locales source code will be generated to have the translations in the
-     * Kotlin code without the need to load external language file at runtime. */
+     * Kotlin code without the need to load external language file at runtime.
+     * null for all languages, empty for no language. */
     private var sourceCodeLocales: List<Locale>?,
     /** The target platform for generation */
     private val generationTarget: GenerationTargetPlatform

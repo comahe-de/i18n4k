@@ -50,7 +50,7 @@ public object Abba : MessageBundle() {
    * magnam aliquam quaerat voluptatem. Pellentesque sapien.
    */
   @JvmStatic
-  public val longTextExample: LocalizedStringFactory1 = getLocalizedStringFactory1(3)
+  public val longTextExample: LocalizedString = getLocalizedString0(3)
 
   /**
    * 3rd value: {2}
@@ -62,7 +62,7 @@ public object Abba : MessageBundle() {
    * Not all have translations
    */
   @JvmStatic
-  public val no_all_have_translations: LocalizedStringFactory1 = getLocalizedStringFactory1(5)
+  public val no_all_have_translations: LocalizedString = getLocalizedString0(5)
 
   /**
    * Parameter 1: {0}
