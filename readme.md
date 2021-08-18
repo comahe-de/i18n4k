@@ -3,6 +3,7 @@
 
 ![Version][badge-version]
 ![Kotlin][badge-kotlin]
+![Kotlin][badge-gradle]
 [![Kotlin][badge-maven]](https://mvnrepository.com/artifact/de.comahe.i18n4k)
 [![License][badge-apache2.0]](./LICENSE)
 
@@ -328,4 +329,5 @@ very welcome.
 
 [badge-version]:https://img.shields.io/badge/version-0.1.3-blueviolet?style=flat
 [badge-maven]:https://img.shields.io/badge/Maven-Central-6262EC?style=flat
-[badge-kotlin]:https://img.shields.io/badge/Kotlin-1.4.30-orange?style=flat
+[badge-kotlin]:https://img.shields.io/badge/Kotlin-1.5.31-orange?style=flat
+[badge-gradle]:https://img.shields.io/badge/Gradle-7.2-1DA2BD?style=flat

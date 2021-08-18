@@ -1,16 +1,16 @@
 import org.gradle.kotlin.dsl.version
 
 object Versions {
-    const val kotlin = "1.4.30"
-    const val kotlinxAtomicfu = "0.15.1"
-    const val kotlinxCollectionsImmutable = "0.3.3"
-    const val kotlinPoet = "1.7.2"
-    const val slf4j = "1.7.25"
-    const val logback = "1.2.3"
+    const val kotlin = "1.5.31"
+    const val kotlinxAtomicfu = "0.16.2"
+    const val kotlinxCollectionsImmutable = "0.3.4"
+    const val kotlinPoet = "1.10.1"
+    const val slf4j = "1.7.32"
+    const val logback = "1.2.6"
     const val junit = "4.13"
 
     // Plugins
-    const val gradlePluginPublish = "0.12.0"
+    const val gradlePluginPublish = "0.16.0"
 }
 
 object Dependencies {

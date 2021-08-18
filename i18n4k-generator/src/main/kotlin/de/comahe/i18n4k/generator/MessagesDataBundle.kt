@@ -38,7 +38,7 @@ class MessagesDataBundle(
                     .map { locale ->
                         messageFormatter.getMaxParameterIndex(message, locale)
                     }
-                    .max() ?: -1
+                    .maxOrNull() ?: -1
             }
-            .max() ?: -1
+            .maxOrNull() ?: -1
 }
