@@ -18,7 +18,7 @@ _Internationalization for Kotlin_
 
 **Home:** [github.com/comahe-de/i18n4k](https://github.com/comahe-de/i18n4k)
 
-**Lastest release version:** 0.1.3
+**Lastest release version:** 0.2.0
 
 **Table of contents**
 
@@ -99,7 +99,7 @@ val commonMain by getting {
 
 ```kotlin
 dependencies {
-    implementation("de.comahe.i18n4k:i18n4k-core-js:0.1.3")
+    implementation("de.comahe.i18n4k:i18n4k-core-js:0.2.0")
 }
 ```
 
@@ -107,7 +107,7 @@ dependencies {
 
 ```kotlin
 dependencies {
-    implementation("de.comahe.i18n4k:i18n4k-core-jvm:0.1.3")
+    implementation("de.comahe.i18n4k:i18n4k-core-jvm:0.2.0")
 }
 ```
 
@@ -327,7 +327,7 @@ very welcome.
 
 [badge-apache2.0]:https://img.shields.io/badge/License-Apache/2.0-blue.svg?style=flat
 
-[badge-version]:https://img.shields.io/badge/version-0.1.3-blueviolet?style=flat
+[badge-version]:https://img.shields.io/badge/version-0.2.0-blueviolet?style=flat
 [badge-maven]:https://img.shields.io/badge/Maven-Central-6262EC?style=flat
 [badge-kotlin]:https://img.shields.io/badge/Kotlin-1.5.31-orange?style=flat
 [badge-gradle]:https://img.shields.io/badge/Gradle-7.2-1DA2BD?style=flat
