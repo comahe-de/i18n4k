@@ -51,7 +51,7 @@ gradlePlugin {
 }
 
 pluginBundle {
-    website = "https://comahe-de.github.com/i18n4k"
+    website = "https://comahe-de.github.io/i18n4k"
     vcsUrl = "https://github.com/comahe-de/i18n4k"
     tags = listOf(
         "kotlin", "kotlin/multiplatform", "kotlin/js", "kotlin/jvm", "kotlin/native",
