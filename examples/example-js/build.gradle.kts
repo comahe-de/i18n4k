@@ -2,8 +2,8 @@ group = "examples"
 version = "1.0.0-SNAPSHOT"
 
 plugins {
-    kotlin("js") version "1.5.31"
-    id("de.comahe.i18n4k") version "0.2.0"
+    kotlin("js") version "1.6.10"
+    id("de.comahe.i18n4k") version "0.3.0"
 }
 
 // ####################################
@@ -44,5 +44,5 @@ dependencies {
     implementation("org.jetbrains:kotlin-react:16.13.1-pre.113-kotlin-1.4.0")
     implementation("org.jetbrains:kotlin-react-dom:16.13.1-pre.113-kotlin-1.4.0")
 
-    implementation("de.comahe.i18n4k:i18n4k-core-js:0.2.0")
+    implementation("de.comahe.i18n4k:i18n4k-core-js:0.3.0")
 }

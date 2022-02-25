@@ -1,7 +1,7 @@
 import org.gradle.kotlin.dsl.version
 
 object Versions {
-    const val kotlin = "1.5.31"
+    const val kotlin = "1.6.10"
     const val kotlinxAtomicfu = "0.16.2"
     const val kotlinxCollectionsImmutable = "0.3.4"
     const val kotlinPoet = "1.10.1"
