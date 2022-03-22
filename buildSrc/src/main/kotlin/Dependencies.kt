@@ -2,9 +2,9 @@ import org.gradle.kotlin.dsl.version
 
 object Versions {
     const val kotlin = "1.6.10"
-    const val kotlinxAtomicfu = "0.16.2"
-    const val kotlinxCollectionsImmutable = "0.3.4"
-    const val kotlinPoet = "1.10.1"
+    const val kotlinxAtomicfu = "0.17.1"
+    const val kotlinxCollectionsImmutable = "0.3.5"
+    const val kotlinPoet = "1.10.2"
     const val slf4j = "1.7.32"
     const val logback = "1.2.6"
     const val junit = "4.13"
