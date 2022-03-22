@@ -46,3 +46,8 @@ dependencies {
 
     implementation("de.comahe.i18n4k:i18n4k-core-js:0.3.0")
 }
+
+// Fix build error message "Entry index.html is a duplicate but no duplicate handling strategy has been set."
+tasks.named<Copy>("processResources") {
+    duplicatesStrategy = DuplicatesStrategy.WARN
+}
