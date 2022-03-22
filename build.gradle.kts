@@ -13,7 +13,6 @@ BuildProperties.printProperties()
 allprojects {
     group = "de.comahe.i18n4k"
     version = "0.3.0"
-
     repositories {
         mavenLocal()
         mavenCentral()
