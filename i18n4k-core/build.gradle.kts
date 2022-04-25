@@ -12,8 +12,6 @@ repositories {
     jcenter()
 }
 
-
-
 kotlin {
     jvm {
         compilations.all {
@@ -38,22 +36,27 @@ kotlin {
     iosArm32()
     iosArm64()
     iosX64()
+    iosSimulatorArm64()
     macosX64()
+    macosArm64()
     mingwX64()
     linuxX64()
+    tvosArm64()
+    tvosX64()
+    tvosSimulatorArm64()
+    watchosArm32()
+    watchosArm64()
+    watchosX86()
+    watchosX64()
+    watchosSimulatorArm64()
     //androidNativeArm32() // not supported by "atomicfu", "kotlinx-collections-immutable"
     //androidNativeArm64() // not supported by "atomicfu", "kotlinx-collections-immutable"
     //mingwX86()// not supported by "atomicfu", "kotlinx-collections-immutable"
-    //tvosArm64() // not supported by "kotlinx-collections-immutable"
-    //tvosX64() // not supported by "kotlinx-collections-immutable"
     //wasm32() // not supported by "atomicfu"
     //linuxArm32Hfp() // not supported by "atomicfu", "kotlinx-collections-immutable"
     //linuxArm64() // not supported by "atomicfu", "kotlinx-collections-immutable"
     //linuxMips32() // not supported by "atomicfu", "kotlinx-collections-immutable"
     //linuxMipsel32() // not supported by "atomicfu", "kotlinx-collections-immutable"
-    //watchosArm32() // not supported by "kotlinx-collections-immutable"
-    //watchosArm64() // not supported by "kotlinx-collections-immutable"
-    //watchosX86() // not supported by  "kotlinx-collections-immutable"
 
     // the sources of all the targets
     sourceSets {
@@ -117,6 +120,13 @@ kotlin {
             dependsOn(nativeCommonTest)
         }
 
+        val iosSimulatorArm64Main by getting {
+            dependsOn(nativeCommonMain)
+        }
+        val iosSimulatorArm64Test by getting {
+            dependsOn(nativeCommonTest)
+        }
+
         val macosX64Main by getting {
             dependsOn(nativeCommonMain)
         }
@@ -135,6 +145,50 @@ kotlin {
             dependsOn(nativeCommonMain)
         }
         val linuxX64Test by getting {
+            dependsOn(nativeCommonTest)
+        }
+
+        val watchosArm32Main by getting {
+            dependsOn(nativeCommonMain)
+        }
+        val watchosArm32Test by getting {
+            dependsOn(nativeCommonTest)
+        }
+        val watchosArm64Main by getting {
+            dependsOn(nativeCommonMain)
+        }
+        val watchosArm64Test by getting {
+            dependsOn(nativeCommonTest)
+        }
+        val watchosX86Main by getting {
+            dependsOn(nativeCommonMain)
+        }
+        val watchosX86Test by getting {
+            dependsOn(nativeCommonTest)
+        }
+        val watchosSimulatorArm64Main by getting {
+            dependsOn(nativeCommonMain)
+        }
+        val watchosSimulatorArm64Test by getting {
+            dependsOn(nativeCommonTest)
+        }
+
+        val tvosArm64Main by getting {
+            dependsOn(nativeCommonMain)
+        }
+        val tvosArm64Test by getting {
+            dependsOn(nativeCommonTest)
+        }
+        val tvosX64Main by getting {
+            dependsOn(nativeCommonMain)
+        }
+        val tvosX64Test by getting {
+            dependsOn(nativeCommonTest)
+        }
+        val tvosSimulatorArm64Main by getting {
+            dependsOn(nativeCommonMain)
+        }
+        val tvosSimulatorArm64Test by getting {
             dependsOn(nativeCommonTest)
         }
 
@@ -157,19 +211,6 @@ kotlin {
             dependsOn(nativeCommonMain)
         }
         val mingwX86Test by getting {
-            dependsOn(nativeCommonTest)
-        }
-
-        val tvosArm64Main by getting {
-            dependsOn(nativeCommonMain)
-        }
-        val tvosArm64Test by getting {
-            dependsOn(nativeCommonTest)
-        }
-        val tvosX64Main by getting {
-            dependsOn(nativeCommonMain)
-        }
-        val tvosX64Test by getting {
             dependsOn(nativeCommonTest)
         }
 
@@ -202,25 +243,6 @@ kotlin {
             dependsOn(nativeCommonMain)
         }
         val linuxMipsel32Test by getting {
-            dependsOn(nativeCommonTest)
-        }
-
-        val watchosArm32Main by getting {
-            dependsOn(nativeCommonMain)
-        }
-        val watchosArm32Test by getting {
-            dependsOn(nativeCommonTest)
-        }
-        val watchosArm64Main by getting {
-            dependsOn(nativeCommonMain)
-        }
-        val watchosArm64Test by getting {
-            dependsOn(nativeCommonTest)
-        }
-        val watchosX86Main by getting {
-            dependsOn(nativeCommonMain)
-        }
-        val watchosX86Test by getting {
             dependsOn(nativeCommonTest)
         }
 

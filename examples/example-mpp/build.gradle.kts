@@ -3,7 +3,7 @@ version = "1.0.0-SNAPSHOT"
 
 
 plugins {
-    kotlin("multiplatform") version "1.6.10"
+    kotlin("multiplatform") version "1.6.21"
     id("de.comahe.i18n4k") version "0.3.0"
 }
 
