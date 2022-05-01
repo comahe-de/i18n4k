@@ -99,6 +99,9 @@ kotlin {
         val nativeCommonMain = create("nativeMain")
         val nativeCommonTest = create("nativeTest")
 
+        nativeCommonMain.dependsOn(commonMain)
+        nativeCommonTest.dependsOn(commonTest)
+
         val iosArm32Main by getting {
             dependsOn(nativeCommonMain)
         }
@@ -133,6 +136,12 @@ kotlin {
         val macosX64Test by getting {
             dependsOn(nativeCommonTest)
         }
+         val macosArm64Main by getting {
+            dependsOn(nativeCommonMain)
+        }
+        val macosArm64Test by getting {
+            dependsOn(nativeCommonTest)
+        }
 
         val mingwX64Main by getting {
             dependsOn(nativeCommonMain)
@@ -164,6 +173,12 @@ kotlin {
             dependsOn(nativeCommonMain)
         }
         val watchosX86Test by getting {
+            dependsOn(nativeCommonTest)
+        }
+          val watchosX64Main by getting {
+            dependsOn(nativeCommonMain)
+        }
+        val watchosX64Test by getting {
             dependsOn(nativeCommonTest)
         }
         val watchosSimulatorArm64Main by getting {
