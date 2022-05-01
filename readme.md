@@ -18,7 +18,7 @@ _Internationalization for Kotlin_
 
 **Home:** [github.com/comahe-de/i18n4k](https://github.com/comahe-de/i18n4k)
 
-**Lastest release version:** 0.3.0
+**Lastest release version:** 0.4.0
 
 **Table of contents**
 
@@ -90,7 +90,7 @@ repositories {
 ```kotlin
 val commonMain by getting {
     dependencies {
-        implementation("de.comahe.i18n4k:i18n4k-core:<VERSION>")
+        implementation("de.comahe.i18n4k:i18n4k-core:0.4.0")
     }
 }
 ```
@@ -99,7 +99,7 @@ val commonMain by getting {
 
 ```kotlin
 dependencies {
-    implementation("de.comahe.i18n4k:i18n4k-core-js:0.3.0")
+    implementation("de.comahe.i18n4k:i18n4k-core-js:0.4.0")
 }
 ```
 
@@ -107,7 +107,7 @@ dependencies {
 
 ```kotlin
 dependencies {
-    implementation("de.comahe.i18n4k:i18n4k-core-jvm:0.3.0")
+    implementation("de.comahe.i18n4k:i18n4k-core-jvm:0.4.0")
 }
 ```
 
@@ -117,7 +117,7 @@ Apply the plugin "de.comahe.i18n4k", e.g:
 
 ```kotlin
 plugins {
-    id("de.comahe.i18n4k") version "<VERSION>"
+    id("de.comahe.i18n4k") version "0.4.0"
 }
 ```
 
@@ -327,7 +327,7 @@ very welcome.
 
 [badge-apache2.0]:https://img.shields.io/badge/License-Apache/2.0-blue.svg?style=flat
 
-[badge-version]:https://img.shields.io/badge/version-0.3.0-blueviolet?style=flat
+[badge-version]:https://img.shields.io/badge/version-0.4.0-blueviolet?style=flat
 [badge-maven]:https://img.shields.io/badge/Maven-Central-6262EC?style=flat
-[badge-kotlin]:https://img.shields.io/badge/Kotlin-1.6.10-orange?style=flat
-[badge-gradle]:https://img.shields.io/badge/Gradle-7.2-1DA2BD?style=flat
+[badge-kotlin]:https://img.shields.io/badge/Kotlin-1.6.21-orange?style=flat
+[badge-gradle]:https://img.shields.io/badge/Gradle-7.4.2-1DA2BD?style=flat
