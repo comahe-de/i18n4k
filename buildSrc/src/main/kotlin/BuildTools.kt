@@ -112,17 +112,22 @@ object BuildTools {
                 "androidNativeArm32",
                 "androidNativeArm64",
                 "wasm32",
-                "watchosArm32",
-                "watchosArm64",
-                "watchosX86",
-                "tvosArm64",
-                "tvosX64"
             )
             isMacOS -> listOf(
                 "macosX64",
+                "macosArm64",
                 "iosX64",
                 "iosArm32",
-                "iosArm64"
+                "iosArm64",
+                "iosSimulatorArm64",
+                "watchosArm32",
+                "watchosArm64",
+                "watchosX86",
+                "watchosX64",
+                "watchosSimulatorArm64",
+                "tvosArm64",
+                "tvosX64",
+                "tvosSimulatorArm64",
             )
             else -> emptyList()
         }
