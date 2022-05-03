@@ -5,3 +5,4 @@ build/
 log/
 /buildSrc/src/main/resources/secret.properties
 /buildSrc/src/main/resources/comahe-de.gpg
+yarn.lock

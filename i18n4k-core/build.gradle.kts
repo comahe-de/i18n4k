@@ -9,7 +9,6 @@ plugins {
 
 repositories {
     mavenCentral()
-    jcenter()
 }
 
 kotlin {
@@ -59,6 +58,7 @@ kotlin {
     //linuxMipsel32() // not supported by "atomicfu", "kotlinx-collections-immutable"
 
     // the sources of all the targets
+    @Suppress("UNUSED_VARIABLE", "UnusedPrivateMember")
     sourceSets {
 
         val commonMain by getting {
@@ -96,116 +96,147 @@ kotlin {
         // # out commented targets are not supported by a used library
 
         // default native sources
-        val nativeCommonMain = create("nativeMain")
-        val nativeCommonTest = create("nativeTest")
-
-        nativeCommonMain.dependsOn(commonMain)
-        nativeCommonTest.dependsOn(commonTest)
-
-        val iosArm32Main by getting {
-            dependsOn(nativeCommonMain)
+        val nativeCommonMain = create("nativeMain") {
+            dependsOn(commonMain)
         }
-        val iosArm32Test by getting {
-            dependsOn(nativeCommonTest)
+        val nativeCommonTest = create("nativeTest") {
+            dependsOn(commonTest)
         }
 
-        val iosArm64Main by getting {
-            dependsOn(nativeCommonMain)
-        }
-        val iosArm64Test by getting {
-            dependsOn(nativeCommonTest)
-        }
+        // windows native sources
 
-        val iosX64Main by getting {
-            dependsOn(nativeCommonMain)
-        }
-        val iosX64Test by getting {
-            dependsOn(nativeCommonTest)
-        }
 
-        val iosSimulatorArm64Main by getting {
+        val windowsCommonMain = create("windowsCommonMain") {
             dependsOn(nativeCommonMain)
         }
-        val iosSimulatorArm64Test by getting {
-            dependsOn(nativeCommonTest)
-        }
-
-        val macosX64Main by getting {
-            dependsOn(nativeCommonMain)
-        }
-        val macosX64Test by getting {
-            dependsOn(nativeCommonTest)
-        }
-         val macosArm64Main by getting {
-            dependsOn(nativeCommonMain)
-        }
-        val macosArm64Test by getting {
+        val windowsCommonTest = create("windowsCommonTest") {
             dependsOn(nativeCommonTest)
         }
 
         val mingwX64Main by getting {
-            dependsOn(nativeCommonMain)
+            dependsOn(windowsCommonMain)
         }
         val mingwX64Test by getting {
+            dependsOn(windowsCommonTest)
+        }
+
+        // linux native sources
+
+        val linuxCommonMain = create("linuxCommonMain") {
+            dependsOn(nativeCommonMain)
+        }
+        val linuxCommonTest = create("linuxCommonTest") {
             dependsOn(nativeCommonTest)
         }
 
         val linuxX64Main by getting {
-            dependsOn(nativeCommonMain)
+            dependsOn(linuxCommonMain)
         }
         val linuxX64Test by getting {
+            dependsOn(linuxCommonTest)
+        }
+
+        // Apple native sources
+
+        val appleCommonMain = create("appleCommonMain") {
+            dependsOn(nativeCommonMain)
+        }
+        val appleCommonTest = create("appleCommonTest") {
             dependsOn(nativeCommonTest)
         }
 
+        // Apple / iOS
+        val iosArm32Main by getting {
+            dependsOn(appleCommonMain)
+        }
+        val iosArm32Test by getting {
+            dependsOn(appleCommonTest)
+        }
+        val iosArm64Main by getting {
+            dependsOn(appleCommonMain)
+        }
+        val iosArm64Test by getting {
+            dependsOn(appleCommonTest)
+        }
+        val iosX64Main by getting {
+            dependsOn(appleCommonMain)
+        }
+        val iosX64Test by getting {
+            dependsOn(appleCommonTest)
+        }
+        val iosSimulatorArm64Main by getting {
+            dependsOn(appleCommonMain)
+        }
+        val iosSimulatorArm64Test by getting {
+            dependsOn(appleCommonTest)
+        }
+
+        // Apple /  Mac OS
+        val macosX64Main by getting {
+            dependsOn(appleCommonMain)
+        }
+        val macosX64Test by getting {
+            dependsOn(appleCommonTest)
+        }
+        val macosArm64Main by getting {
+            dependsOn(appleCommonMain)
+        }
+        val macosArm64Test by getting {
+            dependsOn(appleCommonTest)
+        }
+
+        // Apple /  Watch OS
         val watchosArm32Main by getting {
-            dependsOn(nativeCommonMain)
+            dependsOn(appleCommonMain)
         }
         val watchosArm32Test by getting {
-            dependsOn(nativeCommonTest)
+            dependsOn(appleCommonTest)
         }
         val watchosArm64Main by getting {
-            dependsOn(nativeCommonMain)
+            dependsOn(appleCommonMain)
         }
         val watchosArm64Test by getting {
-            dependsOn(nativeCommonTest)
+            dependsOn(appleCommonTest)
         }
         val watchosX86Main by getting {
-            dependsOn(nativeCommonMain)
+            dependsOn(appleCommonMain)
         }
         val watchosX86Test by getting {
-            dependsOn(nativeCommonTest)
+            dependsOn(appleCommonTest)
         }
-          val watchosX64Main by getting {
-            dependsOn(nativeCommonMain)
+        val watchosX64Main by getting {
+            dependsOn(appleCommonMain)
         }
         val watchosX64Test by getting {
-            dependsOn(nativeCommonTest)
+            dependsOn(appleCommonTest)
         }
         val watchosSimulatorArm64Main by getting {
-            dependsOn(nativeCommonMain)
+            dependsOn(appleCommonMain)
         }
         val watchosSimulatorArm64Test by getting {
-            dependsOn(nativeCommonTest)
+            dependsOn(appleCommonTest)
         }
 
+        /* tvos */
         val tvosArm64Main by getting {
-            dependsOn(nativeCommonMain)
+            dependsOn(appleCommonMain)
         }
         val tvosArm64Test by getting {
-            dependsOn(nativeCommonTest)
+            dependsOn(appleCommonTest)
         }
         val tvosX64Main by getting {
-            dependsOn(nativeCommonMain)
+            dependsOn(appleCommonMain)
         }
         val tvosX64Test by getting {
-            dependsOn(nativeCommonTest)
+            dependsOn(appleCommonTest)
         }
         val tvosSimulatorArm64Main by getting {
-            dependsOn(nativeCommonMain)
+            dependsOn(appleCommonMain)
         }
         val tvosSimulatorArm64Test by getting {
-            dependsOn(nativeCommonTest)
+            dependsOn(appleCommonTest)
         }
+
 
         /*
         val androidNativeArm32Main by getting {
