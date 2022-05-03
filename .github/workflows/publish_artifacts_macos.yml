@@ -1,0 +1,30 @@
+name: Publish artifacts (on MacOS)
+
+on:
+  push:
+    tags:
+    - 'v*.*.*'
+    - 'v*.*.*-*'
+
+jobs:
+  publish-artifacts:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest]
+
+    env:
+        CI_SECRET_KEY_RING_FILE: ${{ secrets.CI_SECRET_KEY_RING_FILE }}
+        CI_SECRET_PROPERTIES_FILE: ${{ secrets.CI_SECRET_PROPERTIES_FILE }}
+
+    steps:
+    - uses: actions/checkout@v2
+
+    # don't use cache for releases...
+
+    - name: Run test
+      run: ./gradlew allTest --stacktrace
+
+    - name: Publish to Maven Central
+      run: ./gradlew publish -PavoidDuplicatePublications=true --stacktrace
+
