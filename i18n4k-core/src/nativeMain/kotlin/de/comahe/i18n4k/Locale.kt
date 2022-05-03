@@ -21,9 +21,3 @@ actual data class Locale actual constructor(
 
     override fun toString(): String = toTag()
 }
-
-// TODO how to get the system locale in Kotlin-Native?
-actual val systemLocale: Locale
-    get() {
-        return Locale("en")
-    }
