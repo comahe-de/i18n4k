@@ -33,9 +33,8 @@ kotlin {
     }
     // #####  native targets...
     // # out commented targets are not supported by a used library
+    ios()
     iosArm32()
-    iosArm64()
-    iosX64()
     iosSimulatorArm64()
     macosX64()
     macosArm64()
@@ -73,19 +72,13 @@ kotlin {
                 implementation(kotlin("test-annotations-common"))
             }
         }
-        val jvmMain by getting {
-            dependencies {
-            }
-        }
+        val jvmMain by getting
         val jvmTest by getting {
             dependencies {
                 implementation(kotlin("test-junit"))
             }
         }
-        val jsMain by getting {
-            dependencies {
-            }
-        }
+        val jsMain by getting
         val jsTest by getting {
             dependencies {
                 implementation(kotlin("test-js"))
@@ -102,47 +95,6 @@ kotlin {
         nativeCommonMain.dependsOn(commonMain)
         nativeCommonTest.dependsOn(commonTest)
 
-        val iosArm32Main by getting {
-            dependsOn(nativeCommonMain)
-        }
-        val iosArm32Test by getting {
-            dependsOn(nativeCommonTest)
-        }
-
-        val iosArm64Main by getting {
-            dependsOn(nativeCommonMain)
-        }
-        val iosArm64Test by getting {
-            dependsOn(nativeCommonTest)
-        }
-
-        val iosX64Main by getting {
-            dependsOn(nativeCommonMain)
-        }
-        val iosX64Test by getting {
-            dependsOn(nativeCommonTest)
-        }
-
-        val iosSimulatorArm64Main by getting {
-            dependsOn(nativeCommonMain)
-        }
-        val iosSimulatorArm64Test by getting {
-            dependsOn(nativeCommonTest)
-        }
-
-        val macosX64Main by getting {
-            dependsOn(nativeCommonMain)
-        }
-        val macosX64Test by getting {
-            dependsOn(nativeCommonTest)
-        }
-         val macosArm64Main by getting {
-            dependsOn(nativeCommonMain)
-        }
-        val macosArm64Test by getting {
-            dependsOn(nativeCommonTest)
-        }
-
         val mingwX64Main by getting {
             dependsOn(nativeCommonMain)
         }
@@ -157,54 +109,77 @@ kotlin {
             dependsOn(nativeCommonTest)
         }
 
-        val watchosArm32Main by getting {
-            dependsOn(nativeCommonMain)
-        }
-        val watchosArm32Test by getting {
-            dependsOn(nativeCommonTest)
-        }
-        val watchosArm64Main by getting {
-            dependsOn(nativeCommonMain)
-        }
-        val watchosArm64Test by getting {
-            dependsOn(nativeCommonTest)
-        }
-        val watchosX86Main by getting {
-            dependsOn(nativeCommonMain)
-        }
-        val watchosX86Test by getting {
-            dependsOn(nativeCommonTest)
-        }
-          val watchosX64Main by getting {
-            dependsOn(nativeCommonMain)
-        }
-        val watchosX64Test by getting {
-            dependsOn(nativeCommonTest)
-        }
-        val watchosSimulatorArm64Main by getting {
-            dependsOn(nativeCommonMain)
-        }
-        val watchosSimulatorArm64Test by getting {
-            dependsOn(nativeCommonTest)
-        }
+        // Apple native sources
 
-        val tvosArm64Main by getting {
-            dependsOn(nativeCommonMain)
+        /* iOS */
+        val iosArm32Main by getting
+        val iosArm32Test by getting
+        val iosArm64Main by getting
+        val iosArm64Test by getting
+        val iosX64Main by getting
+        val iosX64Test by getting
+        val iosSimulatorArm64Main by getting
+        val iosSimulatorArm64Test by getting
+
+        /* Mac OS */
+        val macosX64Main by getting
+        val macosX64Test by getting
+        val macosArm64Main by getting
+        val macosArm64Test by getting
+
+        /* Watch OS */
+        val watchosArm32Main by getting
+        val watchosArm32Test by getting
+        val watchosArm64Main by getting
+        val watchosArm64Test by getting
+        val watchosX86Main by getting
+        val watchosX86Test by getting
+        val watchosX64Main by getting
+        val watchosX64Test by getting
+        val watchosSimulatorArm64Main by getting
+        val watchosSimulatorArm64Test by getting
+
+        /* TV OS */
+        val tvosArm64Main by getting
+        val tvosArm64Test by getting
+        val tvosX64Main by getting
+        val tvosX64Test by getting
+        val tvosSimulatorArm64Main by getting
+        val tvosSimulatorArm64Test by getting
+
+        val iosMain by getting {
+            dependsOn(commonMain)
+            iosArm32Main.dependsOn(this)
+            iosArm64Main.dependsOn(this)
+            iosX64Main.dependsOn(this)
+            iosSimulatorArm64Main.dependsOn(this)
+            macosX64Main.dependsOn(this)
+            macosArm64Main.dependsOn(this)
+            watchosArm32Main.dependsOn(this)
+            watchosArm64Main.dependsOn(this)
+            watchosX86Main.dependsOn(this)
+            watchosX64Main.dependsOn(this)
+            watchosSimulatorArm64Main.dependsOn(this)
+            tvosArm64Main.dependsOn(this)
+            tvosX64Main.dependsOn(this)
+            tvosSimulatorArm64Main.dependsOn(this)
         }
-        val tvosArm64Test by getting {
-            dependsOn(nativeCommonTest)
-        }
-        val tvosX64Main by getting {
-            dependsOn(nativeCommonMain)
-        }
-        val tvosX64Test by getting {
-            dependsOn(nativeCommonTest)
-        }
-        val tvosSimulatorArm64Main by getting {
-            dependsOn(nativeCommonMain)
-        }
-        val tvosSimulatorArm64Test by getting {
-            dependsOn(nativeCommonTest)
+        val iosTest by getting {
+            dependsOn(commonTest)
+            iosArm32Test.dependsOn(this)
+            iosArm64Test.dependsOn(this)
+            iosX64Test.dependsOn(this)
+            iosSimulatorArm64Test.dependsOn(this)
+            macosX64Test.dependsOn(this)
+            macosArm64Test.dependsOn(this)
+            watchosArm32Test.dependsOn(this)
+            watchosArm64Test.dependsOn(this)
+            watchosX86Test.dependsOn(this)
+            watchosX64Test.dependsOn(this)
+            watchosSimulatorArm64Test.dependsOn(this)
+            tvosArm64Test.dependsOn(this)
+            tvosX64Test.dependsOn(this)
+            tvosSimulatorArm64Test.dependsOn(this)
         }
 
         /*
