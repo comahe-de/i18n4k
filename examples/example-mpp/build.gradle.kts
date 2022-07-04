@@ -3,8 +3,8 @@ version = "1.0.0-SNAPSHOT"
 
 
 plugins {
-    kotlin("multiplatform") version "1.6.21"
-    id("de.comahe.i18n4k") version "0.4.0"
+    kotlin("multiplatform") version "1.7.0"
+    id("de.comahe.i18n4k") version "0.5.0"
 }
 
 // ####################################
@@ -62,7 +62,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation("de.comahe.i18n4k:i18n4k-core:0.4.0")
+                implementation("de.comahe.i18n4k:i18n4k-core:0.5.0")
             }
         }
         val commonTest by getting {
@@ -111,4 +111,10 @@ repositories {
     jcenter()
     maven { url = uri("https://dl.bintray.com/kotlin/kotlinx") }
     maven { url = uri("https://dl.bintray.com/kotlin/kotlin-js-wrappers") }
+}
+
+// Fixes webpack-cli incompatibility by pinning the newest version.
+// https://stackoverflow.com/a/72731728/2611134
+rootProject.extensions.configure<org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension> {
+    versions.webpackCli.version = "4.10.0"
 }

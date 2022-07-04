@@ -18,7 +18,7 @@ _Internationalization for Kotlin_
 
 **Home:** [github.com/comahe-de/i18n4k](https://github.com/comahe-de/i18n4k)
 
-**Lastest release version:** 0.4.0
+**Lastest release version:** 0.5.0
 
 **Table of contents**
 
@@ -63,7 +63,7 @@ It provides
 
 ## Supported platforms
 
-* Java (JVM)
+* Java (JVM) & Android
 * JS (legacy and IR backend)
 * Native:
   * iosArm32
@@ -90,7 +90,7 @@ repositories {
 ```kotlin
 val commonMain by getting {
     dependencies {
-        implementation("de.comahe.i18n4k:i18n4k-core:0.4.0")
+        implementation("de.comahe.i18n4k:i18n4k-core:0.5.0")
     }
 }
 ```
@@ -99,7 +99,7 @@ val commonMain by getting {
 
 ```kotlin
 dependencies {
-    implementation("de.comahe.i18n4k:i18n4k-core-js:0.4.0")
+    implementation("de.comahe.i18n4k:i18n4k-core-js:0.5.0")
 }
 ```
 
@@ -107,7 +107,7 @@ dependencies {
 
 ```kotlin
 dependencies {
-    implementation("de.comahe.i18n4k:i18n4k-core-jvm:0.4.0")
+    implementation("de.comahe.i18n4k:i18n4k-core-jvm:0.5.0")
 }
 ```
 
@@ -117,7 +117,7 @@ Apply the plugin "de.comahe.i18n4k", e.g:
 
 ```kotlin
 plugins {
-    id("de.comahe.i18n4k") version "0.4.0"
+    id("de.comahe.i18n4k") version "0.5.0"
 }
 ```
 
@@ -175,6 +175,29 @@ Predefined implementations of `I18n4kConfig` are:
 
 The configuration can be changed by assigning (and editing) one of these implementation to
 the `i184k` variable.
+
+## Hints for Android
+
+Since version 0.5.0 the generator plugin also supports Android projects.
+
+Generated resource files are not added to the "Java resource", but as "raw Android resources".
+As Android does not allow sub-folders or uppercase letters, the resource name it adapted: packages
+names are prefixed to the resource name and concatenate by "_". Also, camel case names are converted
+to sneak case. E.g. "/x/y/MyMessages_fr.i18n4k.txt" will be changed to "x_y_my_messages_fr_i18n4k".
+
+Generated raw resources can be loaded in the following way:
+
+```kotlin
+ MyMessages.registerTranslation(
+    MessagesProviderViaText(
+        text = String(
+            context.resources.openRawResource(
+                R.raw.x_y_my_messages_fr_i18n4k
+            ).readBytes()
+        )
+    )
+)
+```
 
 ## Example
 
@@ -317,17 +340,27 @@ very welcome.
 
 [badge-multiplatform]: http://img.shields.io/badge/platform-multiplatform-75E1FF.svg?style=flat
 [badge-android]: http://img.shields.io/badge/platform-android-brightgreen.svg?style=flat
+
 [badge-native]: http://img.shields.io/badge/platform-native-6D6DFF.svg?style=flat
+
 [badge-js]: http://img.shields.io/badge/platform-js-FFB100.svg?style=flat
+
 [badge-jvm]: http://img.shields.io/badge/platform-jvm-79BF2D.svg?style=flat
+
 [badge-linux]: http://img.shields.io/badge/platform-linux-important.svg?style=flat
+
 [badge-windows]: http://img.shields.io/badge/platform-windows-informational.svg?style=flat
+
 [badge-mac]: http://img.shields.io/badge/platform-macos-lightgrey.svg?style=flat
+
 [badge-wasm]: https://img.shields.io/badge/platform-wasm-darkblue.svg?style=flat
 
 [badge-apache2.0]:https://img.shields.io/badge/License-Apache/2.0-blue.svg?style=flat
 
-[badge-version]:https://img.shields.io/badge/version-0.4.0-blueviolet?style=flat
+[badge-version]:https://img.shields.io/badge/version-0.5.0-blueviolet?style=flat
+
 [badge-maven]:https://img.shields.io/badge/Maven-Central-6262EC?style=flat
-[badge-kotlin]:https://img.shields.io/badge/Kotlin-1.6.21-orange?style=flat
+
+[badge-kotlin]:https://img.shields.io/badge/Kotlin-1.7.0-orange?style=flat
+
 [badge-gradle]:https://img.shields.io/badge/Gradle-7.4.2-1DA2BD?style=flat

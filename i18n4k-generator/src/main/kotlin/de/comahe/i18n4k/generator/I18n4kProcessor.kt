@@ -11,6 +11,7 @@ class I18n4kProcessor(
     private val inputDirectory: File,
     private val generatedSourcesDirectory: File,
     private val generatedLanguageFilesDirectory: File,
+    private val generatedLanguageFilesDirAndroidRawResourceStyle: Boolean,
     private val packageName: String?,
     private val commentLocale: Locale?,
     private val sourceCodeLocales: List<Locale>?,
@@ -59,6 +60,7 @@ class I18n4kProcessor(
             I18n4kGenerator(
                 sourceDir = generatedSourcesDirectory,
                 languageFilesDir = generatedLanguageFilesDirectory,
+                languageFilesDirAndroidRawResourceStyle = generatedLanguageFilesDirAndroidRawResourceStyle,
                 bundle = data,
                 commentLocale = commentLocale,
                 sourceCodeLocales = sourceCodeLocales,

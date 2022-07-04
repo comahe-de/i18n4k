@@ -7,7 +7,7 @@ plugins {
 
 repositories {
     mavenCentral()
-    jcenter()
+    google()
     maven { setUrl("https://jitpack.io") }
 }
 
@@ -20,6 +20,7 @@ dependencies {
 
     compileOnly(gradleApi())
     compileOnly(Dependencies.kotlinGradlePlugin)
+    compileOnly(Dependencies.androidGradlePlugin)
 
     testImplementation(Dependencies.junit)
 }

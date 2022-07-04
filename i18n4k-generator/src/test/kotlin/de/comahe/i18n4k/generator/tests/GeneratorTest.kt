@@ -33,6 +33,7 @@ class GeneratorTest {
                 inputDirectory = inputDirectory,
                 generatedSourcesDirectory = File(actualGeneratedSourcesDirectory, target.name),
                 generatedLanguageFilesDirectory = actualGeneratedLanguageFilesDirectory,
+                generatedLanguageFilesDirAndroidRawResourceStyle = false,
                 packageName = null,
                 commentLocale = commentLocale,
                 sourceCodeLocales = sourceCodeLocales,

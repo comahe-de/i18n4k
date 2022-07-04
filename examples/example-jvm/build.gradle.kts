@@ -2,8 +2,8 @@ group = "examples"
 version = "1.0.0-SNAPSHOT"
 
 plugins {
-    kotlin("jvm") version "1.6.21"
-    id("de.comahe.i18n4k") version "0.4.0"
+    kotlin("jvm") version "1.7.0"
+    id("de.comahe.i18n4k") version "0.5.0"
 }
 
 // ####################################
@@ -36,7 +36,7 @@ repositories {
 }
 
 dependencies {
-    implementation("de.comahe.i18n4k:i18n4k-core-jvm:0.4.0")
+    implementation("de.comahe.i18n4k:i18n4k-core-jvm:0.5.0")
     implementation("com.miglayout:miglayout-swing:5.2")
     implementation(kotlin("stdlib-jdk8"))
     testImplementation("junit", "junit", "4.13")

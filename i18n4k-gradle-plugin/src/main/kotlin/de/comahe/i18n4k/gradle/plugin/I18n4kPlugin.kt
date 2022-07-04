@@ -20,6 +20,7 @@ open class I18n4kPlugin : Plugin<Project> {
 
 
     override fun apply(project: Project) {
+        logger.info("Applying i18n4k plugin...")
         config = project.extensions.create("i18n4k", I18n4kExtension::class.java)
 
         if (config.generationTargetPlatform == null) {
@@ -32,9 +33,12 @@ open class I18n4kPlugin : Plugin<Project> {
                     GenerationTargetPlatform.NATIVE
                 project.plugins.hasPlugin("org.jetbrains.kotlin.jvm") ->
                     GenerationTargetPlatform.JVM
+                project.plugins.hasPlugin("org.jetbrains.kotlin.android") ->
+                    GenerationTargetPlatform.ANDROID
                 else -> throw IllegalStateException(
-                    "No of the supported Kotlin-Plugins (multiplatform, js, native, jvm) " +
-                        "has be applied to the project"
+                    "No of the supported Kotlin-Plugins (multiplatform, js, native, jvm, android) " +
+                        "has be applied to the project.\nPlugins: "
+                        + project.plugins.toString()
                 )
             }
         }
@@ -112,9 +116,18 @@ open class I18n4kPlugin : Plugin<Project> {
         project.tasks.withType(JavaCompile::class.java).forEach {
             it.dependsOn(GENERATE_I18N_SOURCES_TASK_NAME)
         }
+
+        // fallback for Android...
+        project.tasks.forEach {
+            if (it.name.startsWith("compile"))
+                it.dependsOn(GENERATE_I18N_SOURCES_TASK_NAME)
+        }
     }
 
-    /** Finds the [SourceDirectorySet] depending on the project type (jvm, multiplatform, ...) */
+    /**
+     * Finds the [SourceDirectorySet] depending on the project type
+     * (jvm, multiplatform, ...)
+     */
     private fun findSourceDirectorySet(
         project: Project,
         type: SourceDirectoryType
@@ -175,24 +188,25 @@ open class I18n4kPlugin : Plugin<Project> {
         }
     }
 
-    /**  Adds the [getGeneratedLanguageFilesDirectory] to the  resources */
+    /**
+     * Adds the [getGeneratedLanguageFilesDirectory] to the resources
+     */
     private fun addGeneratedLanguageFilesDirectoryToResources(project: Project) {
+        val genResDir = getGeneratedLanguageFilesDirectory(project, config)
+        genResDir.mkdirs()
+
         if (config.generationTargetPlatform == GenerationTargetPlatform.JVM) {
             val sourceSets = project.properties["sourceSets"] as SourceSetContainer
 
             val sourceDirectorySet = sourceSets.getByName(SourceSet.MAIN_SOURCE_SET_NAME).resources
-            addDirectoryToSourceDirectorySet(
-                sourceDirectorySet,
-                getGeneratedLanguageFilesDirectory(project, config)
-            )
+            addDirectoryToSourceDirectorySet(sourceDirectorySet, genResDir)
 
+        } else if (config.generationTargetPlatform == GenerationTargetPlatform.ANDROID) {
+            AndroidSupport.addGeneratedLanguageFilesDirectoryToResources(project, genResDir)
         } else {
             val sourceDirectorySet = findSourceDirectorySet(project, SourceDirectoryType.RESOURCES)
             logger.info("Adding i18n4k generated resources directory to source set '${sourceDirectorySet.name}'")
-            addDirectoryToSourceDirectorySet(
-                sourceDirectorySet,
-                getGeneratedLanguageFilesDirectory(project, config)
-            )
+            addDirectoryToSourceDirectorySet(sourceDirectorySet, genResDir)
         }
     }
 

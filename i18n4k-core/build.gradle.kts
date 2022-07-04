@@ -1,6 +1,5 @@
 plugins {
     kotlin("multiplatform") // version from main build.gradle.kts
-
     // https://stackoverflow.com/a/66352905/2611134
     // "I use older version of dokka library (1.4.0-rc), as newer version could not generate
     // javadocs for all platforms"
