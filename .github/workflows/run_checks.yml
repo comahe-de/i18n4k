@@ -28,5 +28,37 @@ jobs:
         restore-keys: |
             ${{ runner.os }}-gradle-
 
+    - name: Setting Java Home
+      run: echo "JAVA_HOME=$JAVA_HOME_11_X64" >> $GITHUB_ENV
+    - name: Permission to run gradlew
+      run: chmod +x ./gradlew 
+        && chmod +x ./examples/example-js/gradlew
+        && chmod +x ./examples/example-jvm/gradlew
+        && chmod +x ./examples/example-mpp/gradlew
+        && chmod +x ./examples/example-android/gradlew
+    - name: Install to local maven
+      run: ./gradlew publishToMavenLocal --stacktrace
     - name: Run tests
       run: ./gradlew allTest --stacktrace
+    - name: Build JS example
+      run: |
+        cd ./examples/example-js
+        ./gradlew build --stacktrace
+    - name: Build JVM example
+      # Causes an Out-Of-Memory in Windows???
+      if: runner.os != 'Windows'
+      run: |
+        cd ./examples/example-jvm
+        ./gradlew build --stacktrace
+    - name: Build MPP example
+      # Causes an Out-Of-Memory in Windows???
+      if: runner.os != 'Windows'
+      run: |
+        cd ./examples/example-mpp
+        ./gradlew build --stacktrace
+    - name: Build Android example
+      # Causes an Out-Of-Memory in Windows???
+      if: runner.os != 'Windows'
+      run: | 
+        cd ./examples/example-android
+        ./gradlew build --stacktrace

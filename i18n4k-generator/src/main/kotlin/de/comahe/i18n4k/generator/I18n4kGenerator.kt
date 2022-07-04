@@ -37,17 +37,33 @@ import com.squareup.kotlinpoet.TypeSpec.Companion as TypeSpec1
  *  loaded from an external file (see [sourceCodeLocales])
  */
 class I18n4kGenerator(
-    /** Directory where the generated Kotlin source code file should be stored */
+    /**
+     * Directory where the generated Kotlin source code file should be
+     * stored
+     */
     private val sourceDir: File,
-    /** Directory where the language file with the list of string be stored */
+    /**
+     * Directory where the language file with the list of string be
+     * stored
+     */
     private val languageFilesDir: File,
+    /**
+     * don't use packages but file prefixes, lowercase file names, etc.
+     */
+    private val languageFilesDirAndroidRawResourceStyle: Boolean,
     /** the message bundle the process */
     private val bundle: MessagesDataBundle,
-    /** Locale which message bundle content should be added as comment. Null for no comments. */
+    /**
+     * Locale which message bundle content should be added as comment.
+     * Null for no comments.
+     */
     private val commentLocale: Locale?,
-    /** for this Locales source code will be generated to have the translations in the
-     * Kotlin code without the need to load external language file at runtime.
-     * null for all languages, empty for no language. */
+    /**
+     * for this Locales source code will be generated to have the
+     * translations in the Kotlin code without the need to load external
+     * language file at runtime. null for all languages, empty for no
+     * language.
+     */
     private var sourceCodeLocales: List<Locale>?,
     /** The target platform for generation */
     private val generationTarget: GenerationTargetPlatform
@@ -151,7 +167,7 @@ class I18n4kGenerator(
         fieldNames.forEach { (key, fieldName) ->
             val paramCount = bundle.getMaxParameterIndexForKey(key) + 1
             if (paramCount > 5)
-                throw  IllegalArgumentException("The field '$key' has more than 5 parameters!")
+                throw IllegalArgumentException("The field '$key' has more than 5 parameters!")
 
             val property = PropertySpec.builder(fieldName, paramCountToClass(paramCount))
                 .initializer(
@@ -160,7 +176,10 @@ class I18n4kGenerator(
                         else -> "getLocalizedStringFactory$paramCount($index)"
                     }
                 )
-            if (generationTarget == GenerationTargetPlatform.JVM || generationTarget == GenerationTargetPlatform.MULTI_PLATFORM)
+            if (generationTarget == GenerationTargetPlatform.JVM
+                || generationTarget == GenerationTargetPlatform.ANDROID
+                || generationTarget == GenerationTargetPlatform.MULTI_PLATFORM
+            )
                 property.addAnnotation(JvmStatic::class)
 
             if (commentLocale != null) {
@@ -218,8 +237,11 @@ class I18n4kGenerator(
                 modifiers = arrayOf(KModifier.PRIVATE)
             ).apply
             {
-                initializer(arrayText.toString(),  *arrayParameter.toTypedArray())
-                if (generationTarget == GenerationTargetPlatform.JVM || generationTarget == GenerationTargetPlatform.MULTI_PLATFORM)
+                initializer(arrayText.toString(), *arrayParameter.toTypedArray())
+                if (generationTarget == GenerationTargetPlatform.JVM
+                    || generationTarget == GenerationTargetPlatform.ANDROID
+                    || generationTarget == GenerationTargetPlatform.MULTI_PLATFORM
+                )
                     addAnnotation(JvmStatic::class)
             }.build()
         )
@@ -255,9 +277,21 @@ class I18n4kGenerator(
 
     /** generate a I18nk4 language file to be loaded at runtime of the program */
     private fun generateLocalisationFile(messagesData: MessagesData) {
-        val dir = File(languageFilesDir, bundle.name.packageName.replace(".", "/"))
-        dir.mkdirs()
-        val file = File(dir, bundle.name.name + "_" + messagesData.locale+".i18n4k.txt")
+        languageFilesDir.mkdirs()
+
+        val file = if (languageFilesDirAndroidRawResourceStyle) {
+            File(
+                languageFilesDir, convertCamelToSnakeCase(
+                    bundle.name.packageName.replace(".", "_") + "_" +
+                        bundle.name.name + "_" + messagesData.locale + "_i18n4k.txt"
+                )
+            )
+        } else {
+            val dir = File(languageFilesDir, bundle.name.packageName.replace(".", "/"))
+            dir.mkdirs()
+            File(dir, bundle.name.name + "_" + messagesData.locale + ".i18n4k.txt")
+        }
+
         FileOutputStream(file).use { out ->
             OutputStreamWriter(out, StandardCharsets.UTF_8).use { writer ->
                 generateLocalisationText(writer, messagesData)
@@ -265,7 +299,10 @@ class I18n4kGenerator(
         }
     }
 
-    /** generate a I18nk4 language file content (appended to the [Writer]) */
+    /**
+     * generate a I18nk4 language file content (appended to the
+     * [Writer])
+     */
     private fun generateLocalisationText(writer: Writer, messagesData: MessagesData) {
         writer.append(messagesData.locale.toTag()).append("\n^\n");
         fieldNames.keys.forEach { key ->
@@ -277,5 +314,21 @@ class I18n4kGenerator(
             }
             writer.append("^\n")
         }
+    }
+
+    private fun convertCamelToSnakeCase(camelCase: String): String {
+        val snakeCase = StringBuilder(camelCase.length * 2)
+        var prevCharacter: Char? = null
+        for (character in camelCase) {
+            if (character.isUpperCase()) {
+                if (prevCharacter != null && prevCharacter.isLowerCase())
+                    snakeCase.append("_")
+                snakeCase.append(character.lowercase())
+            } else {
+                snakeCase.append(character)
+            }
+            prevCharacter = character
+        }
+        return snakeCase.toString()
     }
 }

@@ -68,10 +68,20 @@ open class GenerateI18n4kFilesTask : DefaultTask() {
 
     @TaskAction
     fun doIt() {
+        var generatedSourcesDirectory = getGeneratedLanguageFilesDirectory()
+        val generatedLanguageFilesDirAndroidRawResourceStyle: Boolean
+        if (config.generationTargetPlatform == GenerationTargetPlatform.ANDROID) {
+            generatedLanguageFilesDirAndroidRawResourceStyle = true
+            generatedSourcesDirectory = File(generatedSourcesDirectory, "raw")
+        } else {
+            generatedLanguageFilesDirAndroidRawResourceStyle = false
+        }
+
         val processor = I18n4kProcessor(
             inputDirectory = getInputDirectory(),
             generatedSourcesDirectory = getGeneratedSourcesDirectory(),
-            generatedLanguageFilesDirectory = getGeneratedLanguageFilesDirectory(),
+            generatedLanguageFilesDirectory = generatedSourcesDirectory,
+            generatedLanguageFilesDirAndroidRawResourceStyle = generatedLanguageFilesDirAndroidRawResourceStyle,
             packageName = config.packageName,
             commentLocale = config.commentLocale?.let { forLocaleTag(it) },
             sourceCodeLocales = config.sourceCodeLocales?.map { forLocaleTag(it) },

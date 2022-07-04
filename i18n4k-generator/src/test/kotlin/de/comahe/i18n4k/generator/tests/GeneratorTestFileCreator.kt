@@ -14,6 +14,7 @@ fun main() {
             inputDirectory = inputDirectory,
             generatedSourcesDirectory = File(expectedGeneratedSourcesDirectory, target.name),
             generatedLanguageFilesDirectory = expectedGeneratedLanguageFilesDirectory,
+            generatedLanguageFilesDirAndroidRawResourceStyle = false,
             packageName = packageName,
             commentLocale = commentLocale,
             sourceCodeLocales = sourceCodeLocales,

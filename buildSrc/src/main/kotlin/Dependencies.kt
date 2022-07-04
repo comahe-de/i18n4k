@@ -1,21 +1,24 @@
 import org.gradle.kotlin.dsl.version
 
 object Versions {
-    const val kotlin = "1.6.21"
-    const val kotlinxAtomicfu = "0.17.2"
+    const val kotlin = "1.7.0"
+    const val kotlinxAtomicfu = "0.18.2"
     const val kotlinxCollectionsImmutable = "0.3.5"
-    const val kotlinPoet = "1.11.0"
+    const val kotlinPoet = "1.12.0"
     const val slf4j = "1.7.32"
     const val logback = "1.2.6"
     const val junit = "4.13"
 
     // Plugins
     const val gradlePluginPublish = "0.16.0"
+    const val androidPlugin = "7.2.1"
 }
 
 object Dependencies {
     const val kotlinGradlePlugin =
         "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
+    const val androidGradlePlugin =
+        "com.android.tools.build:gradle:${Versions.androidPlugin}"
     const val kotlinxAtomicfu =
         "org.jetbrains.kotlinx:atomicfu:${Versions.kotlinxAtomicfu}"
     const val kotlinxCollectionsImmutable =
