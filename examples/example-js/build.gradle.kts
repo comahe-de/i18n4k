@@ -39,8 +39,8 @@ repositories {
 
 dependencies {
     testImplementation(kotlin("test-js"))
-    implementation("org.jetbrains:kotlin-react:16.13.1-pre.113-kotlin-1.4.0")
-    implementation("org.jetbrains:kotlin-react-dom:16.13.1-pre.113-kotlin-1.4.0")
+    implementation("org.jetbrains.kotlin-wrappers:kotlin-react:18.2.0-pre.349")
+    implementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom:18.2.0-pre.349")
 
     implementation("de.comahe.i18n4k:i18n4k-core-js:0.5.0")
 }

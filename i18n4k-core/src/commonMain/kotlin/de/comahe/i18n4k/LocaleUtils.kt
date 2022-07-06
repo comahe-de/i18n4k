@@ -26,13 +26,16 @@ val Locale.country: String
 val Locale.variant: String
     get() = this.getVariant()
 
-/** Transforms a languageTag like "en_US_WIN" to a Locale("en","US","WIN") */
-fun forLocaleTag(languageTag: String): Locale {
-    val underscore1 = languageTag.indexOf("_")
+/**
+ * Transforms a languageTag like "en_US_WIN" to a
+ * Locale("en","US","WIN")
+ */
+fun forLocaleTag(languageTag: String, separator: String = "_"): Locale {
+    val underscore1 = languageTag.indexOf(separator)
     if (underscore1 < 0)
         return Locale(languageTag)
 
-    val underscore2 = languageTag.indexOf("_", underscore1 + 1)
+    val underscore2 = languageTag.indexOf(separator, underscore1 + 1)
     if (underscore2 < 0)
         return Locale(
             languageTag.substring(0, underscore1),
