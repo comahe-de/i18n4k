@@ -41,6 +41,8 @@ jobs:
     - name: Run tests
       run: ./gradlew allTest --stacktrace
     - name: Build JS example
+      # Causes an Out-Of-Memory in Windows???
+      if: runner.os != 'Windows'
       run: |
         cd ./examples/example-js
         ./gradlew build --stacktrace
