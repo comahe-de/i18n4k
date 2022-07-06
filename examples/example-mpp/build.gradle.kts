@@ -108,9 +108,6 @@ kotlin {
 repositories {
     mavenLocal()
     mavenCentral()
-    jcenter()
-    maven { url = uri("https://dl.bintray.com/kotlin/kotlinx") }
-    maven { url = uri("https://dl.bintray.com/kotlin/kotlin-js-wrappers") }
 }
 
 // Fixes webpack-cli incompatibility by pinning the newest version.

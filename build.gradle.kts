@@ -17,8 +17,8 @@ allprojects {
     repositories {
         mavenLocal()
         mavenCentral()
+        // still needed for org.jetbrains.dokka:1.4.0-rc
         jcenter()
-        maven { setUrl("https://jitpack.io") }
     }
 }
 
