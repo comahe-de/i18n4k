@@ -34,8 +34,6 @@ kotlin {
 repositories {
     mavenLocal()
     mavenCentral()
-    jcenter()
-    maven { url = uri("https://dl.bintray.com/kotlin/kotlin-js-wrappers") }
 }
 
 

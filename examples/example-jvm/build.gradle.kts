@@ -32,7 +32,6 @@ tasks {
 repositories {
     mavenLocal()
     mavenCentral()
-    jcenter()
 }
 
 dependencies {
