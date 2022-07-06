@@ -34,6 +34,7 @@ _Internationalization for Kotlin_
     + [Inline storing of translations](#inline-storing-of-translations)
     + [Optimized message files](#optimized-message-files)
 * [Runtime configuration](#runtime-configuration)
+* [Hints for Android](#hints-for-android)
 * [Example](#example)
 * [Example projects](#example-projects)
 * [Contribute](#contribute)
@@ -66,12 +67,22 @@ It provides
 * Java (JVM) & Android
 * JS (legacy and IR backend)
 * Native:
-  * iosArm32
-  * iosArm64
-  * iosX64
-  * macosX64
-  * mingwX64
-  * linuxX64
+   * iosArm32
+   * iosArm64
+   * iosX64
+   * iosSimulatorArm64
+   * macosX64
+   * macosArm64
+   * mingwX64
+   * linuxX64
+   * tvosArm64
+   * tvosX64
+   * tvosSimulatorArm64
+   * watchosArm32
+   * watchosArm64
+   * watchosX86
+   * watchosX64
+   * watchosSimulatorArm64
     
 ## Artefact repository
 
