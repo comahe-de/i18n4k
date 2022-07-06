@@ -24,4 +24,4 @@ actual data class Locale actual constructor(
 }
 
 actual val systemLocale: Locale =
-    Locale(window.navigator.language)
+    forLocaleTag(window.navigator.language,"-")
