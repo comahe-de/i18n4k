@@ -1,0 +1,13 @@
+package de.comahe.i18n4k.messages
+
+import de.comahe.i18n4k.strings.LocalizedStringFactory1
+import de.comahe.i18n4k.strings.LocalizedStringFactory2
+import de.comahe.i18n4k.strings.LocalizedStringFactory3
+import de.comahe.i18n4k.strings.LocalizedStringFactory4
+import de.comahe.i18n4k.strings.LocalizedStringFactory5
+
+interface MessageBundleLocalizedStringFactory1 : LocalizedStringFactory1, MessageBundleEntry
+interface MessageBundleLocalizedStringFactory2 : LocalizedStringFactory2, MessageBundleEntry
+interface MessageBundleLocalizedStringFactory3 : LocalizedStringFactory3, MessageBundleEntry
+interface MessageBundleLocalizedStringFactory4 : LocalizedStringFactory4, MessageBundleEntry
+interface MessageBundleLocalizedStringFactory5 : LocalizedStringFactory5, MessageBundleEntry

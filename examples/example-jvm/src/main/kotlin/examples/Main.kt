@@ -29,7 +29,6 @@ fun main(args: Array<String>) {
     MyMessages.registerTranslation(MessagesProviderViaResource(pathToResource = "/x/y/MyMessages_fr.i18n4k.txt"))
     MyMessages.registerTranslation(MessagesProviderViaResource(pathToResource = "/x/y/MyMessages_nl.i18n4k.txt"))
 
-
     val label1 = JLabel("")
     val label2 = JLabel("");
     val textField = JTextField()

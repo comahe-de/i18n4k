@@ -6,6 +6,8 @@ import de.comahe.i18n4k.config.I18n4kConfigDefault
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertSame
+import kotlin.test.fail
 
 class MessageBundleTest {
     private  var i18n4kConfig = I18n4kConfigDefault()
@@ -70,4 +72,58 @@ class MessageBundleTest {
         assertEquals("Hello b, b, e, e and a!", MessageTest1.HELLO_X5_3("a", "b", "c", "d", "e"))
     }
 
+    @Test
+    fun getEntryByIdTest() {
+        assertSame(
+            MessageTest1.YES,
+            MessageTest1.getEntryByKey(MessageTest1.YES.messageKey)
+        )
+        assertSame(
+            MessageTest1.NO,
+            MessageTest1.getEntryByKey(MessageTest1.NO.messageKey)
+        )
+        assertSame(
+            MessageTest1.HELLO_X1,
+            MessageTest1.getEntryByKey(MessageTest1.HELLO_X1.messageKey)
+        )
+        assertSame(
+            MessageTest1.HELLO_X1_2,
+            MessageTest1.getEntryByKey(MessageTest1.HELLO_X1_2.messageKey)
+        )
+        assertSame(
+            MessageTest1.HELLO_X2,
+            MessageTest1.getEntryByKey(MessageTest1.HELLO_X2.messageKey)
+        )
+        assertSame(
+            MessageTest1.HELLO_X3,
+            MessageTest1.getEntryByKey(MessageTest1.HELLO_X3.messageKey)
+        )
+        assertSame(
+            MessageTest1.HELLO_X4,
+            MessageTest1.getEntryByKey(MessageTest1.HELLO_X4.messageKey)
+        )
+        assertSame(
+            MessageTest1.HELLO_X5,
+            MessageTest1.getEntryByKey(MessageTest1.HELLO_X5.messageKey)
+        )
+        assertSame(
+            MessageTest1.HELLO_X5_2,
+            MessageTest1.getEntryByKey(MessageTest1.HELLO_X5_2.messageKey)
+        )
+        assertSame(
+            MessageTest1.HELLO_X5_3,
+            MessageTest1.getEntryByKey(MessageTest1.HELLO_X5_3.messageKey)
+        )
+
+    }
+
+    @Test
+    fun checkForDuplicateKey() {
+        try {
+            MessageTestDuplicateKey.getEntryByKey("YES")
+            fail("Should fail!")
+        } catch (e: Throwable) {
+            // OK
+        }
+    }
 }
