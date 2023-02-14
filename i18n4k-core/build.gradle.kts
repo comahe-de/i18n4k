@@ -24,7 +24,9 @@ kotlin {
             testTask {
                 useKarma {
                     useChromeHeadless()
-                    webpackConfig.cssSupport.enabled = true
+                    webpackConfig.cssSupport {
+                        enabled.set(true)
+                    }
                 }
             }
         }

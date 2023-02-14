@@ -3,7 +3,7 @@ version = "1.0.0-SNAPSHOT"
 
 
 plugins {
-    kotlin("multiplatform") version "1.7.0"
+    kotlin("multiplatform") version "1.8.22"
     id("de.comahe.i18n4k") version "0.6.0-SNAPSHOT"
 }
 
@@ -30,15 +30,21 @@ kotlin {
         browser {
             binaries.executable()
             webpackTask {
-                cssSupport.enabled = true
+                cssSupport {
+                    enabled.set(true)
+                }
             }
             runTask {
-                cssSupport.enabled = true
+                cssSupport {
+                    enabled.set(true)
+                }
             }
             testTask {
                 useKarma {
                     useChromeHeadless()
-                    webpackConfig.cssSupport.enabled = true
+                    webpackConfig.cssSupport {
+                        enabled.set(true)
+                    }
                 }
             }
         }

@@ -1,17 +1,26 @@
 import org.gradle.kotlin.dsl.version
 
 object Versions {
-    const val kotlin = "1.7.0"
-    const val kotlinxAtomicfu = "0.18.2"
+    // https://kotlinlang.org/docs/releases.html#release-details
+    const val kotlin = "1.8.22"
+    // https://github.com/Kotlin/kotlinx-atomicfu
+    const val kotlinxAtomicfu = "0.21.0"
+    // https://github.com/Kotlin/kotlinx.collections.immutable
     const val kotlinxCollectionsImmutable = "0.3.5"
-    const val kotlinPoet = "1.12.0"
-    const val slf4j = "1.7.32"
-    const val logback = "1.2.6"
-    const val junit = "4.13"
+    // https://github.com/square/kotlinpoet
+    const val kotlinPoet = "1.14.2"
+    // https://www.slf4j.org/news.html
+    const val slf4j = "1.7.36"
+    // https://logback.qos.ch/news.html
+    const val logback = "1.2.11"
+    // https://junit.org/junit4/
+    const val junit = "4.13.2"
 
-    // Plugins
+    ////////////// Plugins
+    // https://plugins.gradle.org/plugin/com.gradle.plugin-publish
     const val gradlePluginPublish = "0.16.0"
-    const val androidPlugin = "7.2.1"
+    // https://mvnrepository.com/artifact/com.android.tools.build/gradle?repo=google
+    const val androidPlugin = "7.4.2"
 }
 
 object Dependencies {
