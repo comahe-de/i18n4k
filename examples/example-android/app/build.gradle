@@ -2,7 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
 
-    id("de.comahe.i18n4k") version "0.6.0-SNAPSHOT"
+    id("de.comahe.i18n4k") version "0.6.0"
 }
 
 android {
@@ -43,7 +43,7 @@ i18n4k {
 
 dependencies {
 
-    implementation 'de.comahe.i18n4k:i18n4k-core-jvm:0.6.0-SNAPSHOT'
+    implementation 'de.comahe.i18n4k:i18n4k-core-jvm:0.6.0'
 
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.4.2'
