@@ -20,7 +20,7 @@ object Versions {
     // https://plugins.gradle.org/plugin/com.gradle.plugin-publish
     const val gradlePluginPublish = "0.16.0"
     // https://mvnrepository.com/artifact/com.android.tools.build/gradle?repo=google
-    const val androidPlugin = "7.4.2"
+    const val androidPlugin = "7.2.1"
 }
 
 object Dependencies {
