@@ -156,11 +156,8 @@ open class I18n4kPlugin : Plugin<Project> {
         sourceDirectorySet: SourceDirectorySet,
         directory: File
     ) {
-        val dirs = sourceDirectorySet.srcDirs
-        dirs += directory
-        // IMPORTANT: set the `srcDirs` field again!
-        // `dirs` seems only to be an copy...
-        sourceDirectorySet.srcDirs(dirs)
+        // Adds the given source directories to the set.
+        sourceDirectorySet.srcDirs(directory)
         if (logger.isDebugEnabled) {
             sourceDirectorySet.srcDirs.forEach {
                 logger.debug("{} - {}", sourceDirectorySet.name, it)
