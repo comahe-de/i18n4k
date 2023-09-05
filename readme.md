@@ -18,7 +18,7 @@ _Internationalization for Kotlin_
 
 **Home:** [github.com/comahe-de/i18n4k](https://github.com/comahe-de/i18n4k)
 
-**Lastest release version:** 0.6.0
+**Lastest release version:** 0.6.1
 
 **Table of contents**
 
@@ -101,7 +101,7 @@ repositories {
 ```kotlin
 val commonMain by getting {
     dependencies {
-        implementation("de.comahe.i18n4k:i18n4k-core:0.6.0")
+        implementation("de.comahe.i18n4k:i18n4k-core:0.6.1")
     }
 }
 ```
@@ -110,7 +110,7 @@ val commonMain by getting {
 
 ```kotlin
 dependencies {
-    implementation("de.comahe.i18n4k:i18n4k-core-js:0.6.0")
+    implementation("de.comahe.i18n4k:i18n4k-core-js:0.6.1")
 }
 ```
 
@@ -118,7 +118,7 @@ dependencies {
 
 ```kotlin
 dependencies {
-    implementation("de.comahe.i18n4k:i18n4k-core-jvm:0.6.0")
+    implementation("de.comahe.i18n4k:i18n4k-core-jvm:0.6.1")
 }
 ```
 
@@ -128,7 +128,7 @@ Apply the plugin "de.comahe.i18n4k", e.g:
 
 ```kotlin
 plugins {
-    id("de.comahe.i18n4k") version "0.6.0"
+    id("de.comahe.i18n4k") version "0.6.1"
 }
 ```
 
@@ -189,7 +189,7 @@ the `i184k` variable.
 
 ## Hints for Android
 
-Since version 0.6.0 the generator plugin also supports Android projects.
+Since version 0.5.0 the generator plugin also supports Android projects.
 
 Generated resource files are not added to the "Java resource", but as "raw Android resources".
 As Android does not allow sub-folders or uppercase letters, the resource name it adapted: packages
@@ -368,7 +368,7 @@ very welcome.
 
 [badge-apache2.0]:https://img.shields.io/badge/License-Apache/2.0-blue.svg?style=flat
 
-[badge-version]:https://img.shields.io/badge/version-0.6.0-blueviolet?style=flat
+[badge-version]:https://img.shields.io/badge/version-0.6.1-blueviolet?style=flat
 
 [badge-maven]:https://img.shields.io/badge/Maven-Central-6262EC?style=flat
 
