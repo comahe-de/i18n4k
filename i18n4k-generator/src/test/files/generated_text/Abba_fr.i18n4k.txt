@@ -23,7 +23,11 @@ Paramètre 4: {0},{1},{2},{3}
 ^
 Paramètre 5: {0},{1},{2},{3},{4}
 ^
+%S%P%T%M%N%L - '{0}' '' '{''}'
+^
 Extraterrestre 👽
 ^
 Clé spéciale
+^
+Clé spéciale 2
 ^

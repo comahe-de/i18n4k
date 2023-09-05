@@ -39,12 +39,12 @@ private object Coolo_en : MessagesProvider {
       "do that!",
       "do this!")
 
-  public override val locale: Locale = Locale("en")
+  override val locale: Locale = Locale("en")
 
-  public override val size: Int
+  override val size: Int
     get() = _data.size
 
-  public override fun `get`(index: Int): String? = _data[index]
+  override fun `get`(index: Int): String? = _data[index]
 }
 
 /**
@@ -55,10 +55,10 @@ private object Coolo_de : MessagesProvider {
       "mach jenes!",
       "mach das!!")
 
-  public override val locale: Locale = Locale("de")
+  override val locale: Locale = Locale("de")
 
-  public override val size: Int
+  override val size: Int
     get() = _data.size
 
-  public override fun `get`(index: Int): String? = _data[index]
+  override fun `get`(index: Int): String? = _data[index]
 }

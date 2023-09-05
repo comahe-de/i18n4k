@@ -92,14 +92,25 @@ public object Abba : MessageBundle("Abba", "") {
       10)
 
   /**
+   * %S%P%T%M%N%L - '{0}' '' '{''}'
+   */
+  public val special_value: MessageBundleLocalizedString = getLocalizedString0("special-value", 11)
+
+  /**
    * Extraterrestrial 👽
    */
-  public val utf_8_value: MessageBundleLocalizedString = getLocalizedString0("utf-8-value", 11)
+  public val utf_8_value: MessageBundleLocalizedString = getLocalizedString0("utf-8-value", 12)
 
   /**
    * Special key
    */
-  public val _Specail_Key_: MessageBundleLocalizedString = getLocalizedString0("~Specail#Key~", 12)
+  public val _Special_Key_: MessageBundleLocalizedString = getLocalizedString0("~Special#Key~", 13)
+
+  /**
+   * Special key 2
+   */
+  public val _Special__S_P_T_M_N_L_Key2_: MessageBundleLocalizedString =
+      getLocalizedString0("~Special-%S%P%T%M%N%L-Key2~", 14)
 
   init {
     registerTranslation(Abba_en)
@@ -108,7 +119,7 @@ public object Abba : MessageBundle("Abba", "") {
   init {
     registerMessageBundleEntries(_1_number_key, Hello_World_, Multi_Line_Value, longTextExample,
         max_param_3, no_all_have_translations, param_1, param_2, param_3, param_4, param_5,
-        utf_8_value, _Specail_Key_)
+        special_value, utf_8_value, _Special_Key_, _Special__S_P_T_M_N_L_Key2_)
   }
 }
 
@@ -133,15 +144,17 @@ private object Abba_en : MessagesProvider {
       "Parameter 3: {0},{1},{2}",
       "Parameter 4: {0},{1},{2},{3}",
       "Parameter 5: {0},{1},{2},{3},{4}",
+      "%S%P%T%M%N%L - '{0}' '' '{''}'",
       "Extraterrestrial 👽",
-      "Special key")
+      "Special key",
+      "Special key 2")
 
-  public override val locale: Locale = Locale("en")
+  override val locale: Locale = Locale("en")
 
-  public override val size: Int
+  override val size: Int
     get() = _data.size
 
-  public override fun `get`(index: Int): String? = _data[index]
+  override fun `get`(index: Int): String? = _data[index]
 }
 
 /**
@@ -165,13 +178,15 @@ private object Abba_de : MessagesProvider {
       "Parameter 3: {0},{1},{2}",
       "Parameter 4: {0},{1},{2},{3},",
       "Parameter 5: {0},{1},{2},{3},{4}",
+      "%S%P%T%M%N%L - '{0}' '' '{''}'",
       "Außerirdischer 👽",
-      "Besonderer Schlüssel")
+      "Besonderer Schlüssel",
+      "Besonderer Schlüssel 2")
 
-  public override val locale: Locale = Locale("de")
+  override val locale: Locale = Locale("de")
 
-  public override val size: Int
+  override val size: Int
     get() = _data.size
 
-  public override fun `get`(index: Int): String? = _data[index]
+  override fun `get`(index: Int): String? = _data[index]
 }

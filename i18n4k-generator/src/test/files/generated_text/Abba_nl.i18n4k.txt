@@ -24,7 +24,11 @@ Parameter 4: {0},{1},{2},{3}
 ^
 Parameter 5: {0},{1},{2},{3},{4}
 ^
+%S%P%T%M%N%L - '{0}' '' '{''}'
+^
 Vreemdeling 👽
 ^
 Speciale sleutel
+^
+Speciale sleutel 2
 ^

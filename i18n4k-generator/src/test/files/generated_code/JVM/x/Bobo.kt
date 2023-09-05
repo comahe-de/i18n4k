@@ -43,12 +43,12 @@ private object Bobo_en : MessagesProvider {
       "abc",
       "abd")
 
-  public override val locale: Locale = Locale("en")
+  override val locale: Locale = Locale("en")
 
-  public override val size: Int
+  override val size: Int
     get() = _data.size
 
-  public override fun `get`(index: Int): String? = _data[index]
+  override fun `get`(index: Int): String? = _data[index]
 }
 
 /**
@@ -60,10 +60,10 @@ private object Bobo_de : MessagesProvider {
       "ABC",
       "ABD")
 
-  public override val locale: Locale = Locale("de")
+  override val locale: Locale = Locale("de")
 
-  public override val size: Int
+  override val size: Int
     get() = _data.size
 
-  public override fun `get`(index: Int): String? = _data[index]
+  override fun `get`(index: Int): String? = _data[index]
 }

@@ -169,12 +169,12 @@ class I18n4kGenerator(
             val paramCount = bundle.getMaxParameterIndexForKey(key) + 1
             if (paramCount > 5)
                 throw IllegalArgumentException("The field '$key' has more than 5 parameters!")
-
+            val keyEscaped = key.replace("%", "%%");
             val property = PropertySpec.builder(fieldName, paramCountToClass(paramCount))
                 .initializer(
                     when (paramCount) {
-                        0 -> "getLocalizedString0(\"$key\", $index)"
-                        else -> "getLocalizedStringFactory$paramCount(\"$key\", $index)"
+                        0 -> "getLocalizedString0(\"$keyEscaped\", $index)"
+                        else -> "getLocalizedStringFactory$paramCount(\"$keyEscaped\", $index)"
                     }
                 )
             if (generationTarget == GenerationTargetPlatform.JVM
@@ -185,7 +185,7 @@ class I18n4kGenerator(
 
             if (commentLocale != null) {
                 bundle.messageDataMap[commentLocale]?.messages?.get(key)?.let { text ->
-                    property.addKdoc(text)
+                    property.addKdoc(text.replace("%", "%%"))
                 }
             }
 
