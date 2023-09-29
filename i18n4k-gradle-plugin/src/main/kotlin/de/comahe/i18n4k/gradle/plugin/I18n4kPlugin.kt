@@ -97,36 +97,23 @@ open class I18n4kPlugin : Plugin<Project> {
 
     /** Add `dependsOn()` to external task where the t184k tasks should run before */
     private fun addTaskDependencies(project: Project) {
-        project.tasks.findByName("compileKotlin")
-            ?.dependsOn(GENERATE_I18N_SOURCES_TASK_NAME)
-        project.tasks.findByName("compileJava")
-            ?.dependsOn(GENERATE_I18N_SOURCES_TASK_NAME)
-        project.tasks.findByName("compileKotlinJvm")
-            ?.dependsOn(GENERATE_I18N_SOURCES_TASK_NAME)
-        project.tasks.findByName("compileKotlinJs")
-            ?.dependsOn(GENERATE_I18N_SOURCES_TASK_NAME)
-        project.tasks.findByName("compileKotlinNative")
-            ?.dependsOn(GENERATE_I18N_SOURCES_TASK_NAME)
-        project.tasks.findByName("compileKotlinMetadata")
-            ?.dependsOn(GENERATE_I18N_SOURCES_TASK_NAME)
 
-        project.tasks.withType(KotlinCompile::class.java).forEach {
-            it.dependsOn(GENERATE_I18N_SOURCES_TASK_NAME)
-        }
-        project.tasks.withType(JavaCompile::class.java).forEach {
-            it.dependsOn(GENERATE_I18N_SOURCES_TASK_NAME)
-        }
+        // add it to all "compile*"-tasks, like "compileKotlin", "compileKotlinJvm"
+        // "compileJava", "compileKotlinJs", "compileKotlinNative",
+        // "compileKotlinMetadata", ...
+        project.tasks.matching { it.name.startsWith("compile") }
+            .configureEach { it.dependsOn(GENERATE_I18N_SOURCES_TASK_NAME) }
 
-        // fallback for Android...
-        project.tasks.forEach {
-            if (it.name.startsWith("compile"))
-                it.dependsOn(GENERATE_I18N_SOURCES_TASK_NAME)
-        }
+        project.tasks.withType(KotlinCompile::class.java)
+            .configureEach { it.dependsOn(GENERATE_I18N_SOURCES_TASK_NAME) }
+        project.tasks.withType(JavaCompile::class.java)
+            .configureEach { it.dependsOn(GENERATE_I18N_SOURCES_TASK_NAME) }
     }
 
+
     /**
-     * Finds the [SourceDirectorySet] depending on the project type
-     * (jvm, multiplatform, ...)
+     * Finds the [SourceDirectorySet] depending on the project type (jvm,
+     * multiplatform, ...)
      */
     private fun findSourceDirectorySet(
         project: Project,
