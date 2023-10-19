@@ -4,22 +4,24 @@ package de.comahe.i18n4k.messages
 
 import de.comahe.i18n4k.Locale
 import de.comahe.i18n4k.i18n4k
+import de.comahe.i18n4k.lessSpecificLocale
 import de.comahe.i18n4k.messages.formatter.MessageFormatter
 import de.comahe.i18n4k.messages.providers.MessagesProvider
 import de.comahe.i18n4k.messages.providers.MessagesProviderFactory
 import de.comahe.i18n4k.strings.AbstractLocalizedString
 import de.comahe.i18n4k.strings.LocalizedString
-import de.comahe.i18n4k.strings.LocalizedStringFactory1
-import de.comahe.i18n4k.strings.LocalizedStringFactory2
-import de.comahe.i18n4k.strings.LocalizedStringFactory3
-import de.comahe.i18n4k.strings.LocalizedStringFactory4
-import de.comahe.i18n4k.strings.LocalizedStringFactory5
+import kotlinx.atomicfu.AtomicArray
 import kotlinx.atomicfu.AtomicRef
 import kotlinx.atomicfu.atomic
+import kotlinx.atomicfu.atomicArrayOfNulls
 import kotlinx.atomicfu.update
+import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.PersistentMap
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.persistentMapOf
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.collections.immutable.toPersistentMap
+import kotlin.math.max
 
 /**
  * Base class for bundles of messages.
@@ -44,6 +46,10 @@ open class MessageBundle(
     private val keyObjectsByName: AtomicRef<PersistentMap<String, MessageBundleEntry>> =
         atomic(persistentMapOf())
 
+    private val keyObjectsByIndex: AtomicRef<PersistentList<MessageBundleEntry?>> = atomic(
+        persistentListOf()
+    )
+
     /** Add or replaces a translation in this message bundle */
     fun registerTranslation(messagesProvider: MessagesProvider) {
         localeToStringsRef.update { localeToStrings ->
@@ -53,13 +59,24 @@ open class MessageBundle(
 
     /** Register the keyObjects for this message bungle. */
     protected fun registerMessageBundleEntries(vararg entries: MessageBundleEntry) {
+        if (entries.isEmpty())
+            return
         val map = mutableMapOf<String, MessageBundleEntry>()
+        val array =
+            Array<MessageBundleEntry?>(
+                size = entries.reduce { e1, e2 -> if (e1.messageIndex > e2.messageIndex) e1 else e2 }.messageIndex + 1,
+                init = { _ -> null }
+            )
         for (entry in entries) {
             require(entry.messageBundle === this) { "The entries must a created with this bundle!" }
             require(!map.containsKey(entry.messageKey)) { "The messageKey ${entry.messageKey} is duplicate!" }
+            require(array[entry.messageIndex] == null) { "The messageIndex ${entry.messageIndex} is duplicate!" }
             map[entry.messageKey] = entry
+            array[entry.messageIndex] = entry
         }
+
         keyObjectsByName.update { map.toPersistentMap() }
+        keyObjectsByIndex.update { array.toList().toPersistentList() }
     }
 
     /**
@@ -92,6 +109,13 @@ open class MessageBundle(
         return keyObjectsByName.value[key]
     }
 
+    fun getEntryByIndex(index: Int): MessageBundleEntry? {
+        val list = keyObjectsByIndex.value;
+        if (index < 0 || index >= list.size)
+            return null
+        return list[index]
+    }
+
     /**
      * Get string with index from the [MessagesProvider] fitting to the locale.
      * Use default locale if no [MessagesProvider] or string at index is `null`
@@ -99,20 +123,25 @@ open class MessageBundle(
     protected fun getString0(index: Int, locale: Locale?): String {
         if (index < 0)
             throw IllegalArgumentException("Index must be greater or equal to 0")
-        var messages = localeToStringsRef.value[locale ?: i18n4k.locale]
+        val localeToUse = locale ?: i18n4k.locale
+        val messages = localeToStringsRef.value[localeToUse]
         var string: String? = null
         if (messages !== null && index < messages.size)
             string = messages[index]
         if (i18n4k.treadBlankStringAsNull && string?.isBlank() == true)
             string = null
+        // try less specific locale
+        if (string === null) {
+            val lessSpecificLocale = localeToUse.lessSpecificLocale
+            if (lessSpecificLocale != null)
+                string = getString0(index, lessSpecificLocale)
+        }
+        // try default locale
+        if (string === null && locale != i18n4k.defaultLocale)
+            string = getString0(index, i18n4k.defaultLocale)
+
         if (string === null)
-            messages = localeToStringsRef.value[i18n4k.defaultLocale]
-        if (messages !== null && index < messages.size)
-            string = messages[index]
-        if (i18n4k.treadBlankStringAsNull && string?.isBlank() == true)
-            string = null
-        if (string === null)
-            return "?$index?"
+            return "?${getEntryByIndex(index)?.messageKey ?: index}?"
         return string
     }
 
@@ -216,14 +245,14 @@ open class MessageBundle(
     private class LocalizedString0(
         override val messageBundle: MessageBundle,
         override val messageKey: String,
-        private val key: Int
+        override val messageIndex: Int
     ) : AbstractLocalizedString(), MessageBundleLocalizedString {
 
         override fun toString() =
             toString(null)
 
         override fun toString(locale: Locale?) =
-            messageBundle.getString0(key, locale)
+            messageBundle.getString0(messageIndex, locale)
 
 
         override fun equals(other: Any?): Boolean {
@@ -231,14 +260,14 @@ open class MessageBundle(
             if (other !is LocalizedString0) return false
 
             if (messageBundle != other.messageBundle) return false
-            if (key != other.key) return false
+            if (messageIndex != other.messageIndex) return false
 
             return true
         }
 
         override fun hashCode(): Int {
             var result = messageBundle.hashCode()
-            result = 31 * result + key
+            result = 31 * result + messageIndex
             return result
         }
     }
@@ -251,7 +280,7 @@ open class MessageBundle(
     private class LocalizedStringN(
         override val messageBundle: MessageBundle,
         override val messageKey: String,
-        private val key: Int,
+        override val messageIndex: Int,
         private val parameters: List<Any>
     ) : AbstractLocalizedString(), MessageBundleLocalizedString {
 
@@ -259,7 +288,7 @@ open class MessageBundle(
             toString(null)
 
         override fun toString(locale: Locale?) =
-            messageBundle.getStringN(key, parameters, locale)
+            messageBundle.getStringN(messageIndex, parameters, locale)
 
 
         override fun equals(other: Any?): Boolean {
@@ -267,7 +296,7 @@ open class MessageBundle(
             if (other !is LocalizedStringN) return false
 
             if (messageBundle != other.messageBundle) return false
-            if (key != other.key) return false
+            if (messageIndex != other.messageIndex) return false
             if (parameters != other.parameters) return false
 
             return true
@@ -275,7 +304,7 @@ open class MessageBundle(
 
         override fun hashCode(): Int {
             var result = messageBundle.hashCode()
-            result = 31 * result + key
+            result = 31 * result + messageIndex
             result = 31 * result + parameters.hashCode()
             return result
         }
@@ -289,98 +318,98 @@ open class MessageBundle(
     private data class LocalizedStringFactory1Bundled(
         override val messageBundle: MessageBundle,
         override val messageKey: String,
-        private val index: Int
+        override val messageIndex: Int
     ) : MessageBundleLocalizedStringFactory1 {
 
         override fun toString() =
             toString(null)
 
         fun toString(locale: Locale?) =
-            messageBundle.getString0(index, locale)
+            messageBundle.getString0(messageIndex, locale)
 
         override fun createString(p0: Any, locale: Locale?) =
-            messageBundle.getStringN(index, listOf(p0), locale)
+            messageBundle.getStringN(messageIndex, listOf(p0), locale)
 
         override fun createLocalizedString(p0: Any) =
-            messageBundle.getLocalizedString1(messageKey, index, p0)
+            messageBundle.getLocalizedString1(messageKey, messageIndex, p0)
     }
 
     private data class LocalizedStringFactory2Bundled(
         override val messageBundle: MessageBundle,
         override val messageKey: String,
-        private val index: Int
+        override val messageIndex: Int
     ) : MessageBundleLocalizedStringFactory2 {
 
         override fun toString() =
             toString(null)
 
         fun toString(locale: Locale?) =
-            messageBundle.getString0(index, locale)
+            messageBundle.getString0(messageIndex, locale)
 
         override fun createString(p0: Any, p1: Any, locale: Locale?) =
-            messageBundle.getStringN(index, listOf(p0, p1), locale)
+            messageBundle.getStringN(messageIndex, listOf(p0, p1), locale)
 
         override fun createLocalizedString(p0: Any, p1: Any) =
-            messageBundle.getLocalizedString2(messageKey, index, p0, p1)
+            messageBundle.getLocalizedString2(messageKey, messageIndex, p0, p1)
     }
 
     private data class LocalizedStringFactory3Bundled(
         override val messageBundle: MessageBundle,
         override val messageKey: String,
-        private val index: Int
+        override val messageIndex: Int
     ) : MessageBundleLocalizedStringFactory3 {
 
         override fun toString() =
             toString(null)
 
         fun toString(locale: Locale?) =
-            messageBundle.getString0(index, locale)
+            messageBundle.getString0(messageIndex, locale)
 
         override fun createString(p0: Any, p1: Any, p2: Any, locale: Locale?) =
-            messageBundle.getStringN(index, listOf(p0, p1, p2), locale)
+            messageBundle.getStringN(messageIndex, listOf(p0, p1, p2), locale)
 
         override fun createLocalizedString(p0: Any, p1: Any, p2: Any) =
-            messageBundle.getLocalizedString3(messageKey, index, p0, p1, p2)
+            messageBundle.getLocalizedString3(messageKey, messageIndex, p0, p1, p2)
 
     }
 
     private data class LocalizedStringFactory4Bundled(
         override val messageBundle: MessageBundle,
         override val messageKey: String,
-        private val index: Int
+        override val messageIndex: Int
     ) : MessageBundleLocalizedStringFactory4 {
 
         override fun toString() =
             toString(null)
 
         fun toString(locale: Locale?) =
-            messageBundle.getString0(index, locale)
+            messageBundle.getString0(messageIndex, locale)
 
         override fun createString(p0: Any, p1: Any, p2: Any, p3: Any, locale: Locale?) =
-            messageBundle.getStringN(index, listOf(p0, p1, p2, p3), locale)
+            messageBundle.getStringN(messageIndex, listOf(p0, p1, p2, p3), locale)
 
         override fun createLocalizedString(p0: Any, p1: Any, p2: Any, p3: Any) =
-            messageBundle.getLocalizedString4(messageKey, index, p0, p1, p2, p3)
+            messageBundle.getLocalizedString4(messageKey, messageIndex, p0, p1, p2, p3)
 
     }
 
     private data class LocalizedStringFactory5Bundled(
         override val messageBundle: MessageBundle,
         override val messageKey: String,
-        private val index: Int
+        override val messageIndex: Int
     ) : MessageBundleLocalizedStringFactory5 {
 
         override fun toString() =
             toString(null)
 
         fun toString(locale: Locale?) =
-            messageBundle.getString0(index, locale)
+            messageBundle.getString0(messageIndex, locale)
 
         override fun createString(p0: Any, p1: Any, p2: Any, p3: Any, p4: Any, locale: Locale?) =
-            messageBundle.getStringN(index, listOf(p0, p1, p2, p3, p4), locale)
+            messageBundle.getStringN(messageIndex, listOf(p0, p1, p2, p3, p4), locale)
 
         override fun createLocalizedString(p0: Any, p1: Any, p2: Any, p3: Any, p4: Any) =
-            messageBundle.getLocalizedString5(messageKey, index, p0, p1, p2, p3, p4)
+            messageBundle.getLocalizedString5(messageKey, messageIndex, p0, p1, p2, p3, p4)
 
     }
 }

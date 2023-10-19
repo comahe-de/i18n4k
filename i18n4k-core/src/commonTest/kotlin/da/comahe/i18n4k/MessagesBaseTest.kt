@@ -21,6 +21,8 @@ class MessageBundleTest {
         MessageTest1.unregisterAllTranslations()
         MessageTest1.registerTranslation(MessagesTest1_en)
         MessageTest1.registerTranslation(MessagesTest1_de)
+        MessageTest1.registerTranslation(MessagesTest1_de_AT)
+        MessageTest1.registerTranslation(MessagesTest1_de_AT_vorarlberg)
         MessageTest1.registerTranslation(MessagesTest1_xy)
     }
 
@@ -32,7 +34,7 @@ class MessageBundleTest {
         MessageTest1.unregisterAllTranslations()
         i18n4kConfig.locale = Locale("de")
 
-        assertEquals("?0?", MessageTest1.YES())
+        assertEquals("?YES?", MessageTest1.YES())
 
         MessageTest1.registerTranslation(MessagesTest1_en)
 
@@ -57,6 +59,72 @@ class MessageBundleTest {
         // "NO" has null value -> there for use default
         assertEquals("No", MessageTest1.NO())
 
+    }
+
+    @Test
+    fun testSpecificLocales() {
+
+        i18n4kConfig.locale = Locale("de")
+        assertEquals("Hallo Gerd!", MessageTest1.HELLO_X1("Gerd"))
+
+        i18n4kConfig.locale = Locale("de", "AT")
+        assertEquals("Servus Gerd!", MessageTest1.HELLO_X1("Gerd"))
+
+        i18n4kConfig.locale = Locale("de", "AT", "vorarlberg")
+        assertEquals("Zeawas Gerd!", MessageTest1.HELLO_X1("Gerd"))
+
+        // go to less specific locale
+
+        i18n4kConfig.locale = Locale("de", "AT", "tirol")
+        assertEquals("Servus Gerd!", MessageTest1.HELLO_X1("Gerd"))
+
+        i18n4kConfig.locale = Locale("de", "DE", "saxony")
+        assertEquals("Hallo Gerd!", MessageTest1.HELLO_X1("Gerd"))
+
+        i18n4kConfig.locale = Locale("de", "DE")
+        assertEquals("Hallo Gerd!", MessageTest1.HELLO_X1("Gerd"))
+
+        i18n4kConfig.locale = Locale("de")
+        assertEquals("Hallo Gerd!", MessageTest1.HELLO_X1("Gerd"))
+
+        i18n4kConfig.locale = Locale("fr", "FR")
+        assertEquals("Hello Gerd!", MessageTest1.HELLO_X1("Gerd"))
+
+        i18n4kConfig.locale = Locale("fr")
+        assertEquals("Hello Gerd!", MessageTest1.HELLO_X1("Gerd"))
+    }
+
+
+    @Test
+    fun testMissingSpecificLocales() {
+        i18n4kConfig.locale = Locale("de")
+        assertEquals("Etwas Text 1", MessageTest1.SOME_ARE_NULL_1())
+
+        i18n4kConfig.locale = Locale("de", "AT")
+        assertEquals("Etwas Text 1 für AT", MessageTest1.SOME_ARE_NULL_1())
+
+        i18n4kConfig.locale = Locale("de", "AT", "vorarlberg")
+        assertEquals("Etwas Text 1 für AT", MessageTest1.SOME_ARE_NULL_1())
+
+
+        i18n4kConfig.locale = Locale("de")
+        assertEquals("Etwas Text 2", MessageTest1.SOME_ARE_NULL_2())
+
+        i18n4kConfig.locale = Locale("de", "AT")
+        assertEquals("Etwas Text 2", MessageTest1.SOME_ARE_NULL_2())
+
+        i18n4kConfig.locale = Locale("de", "AT", "vorarlberg")
+        assertEquals("Etwas Text 2", MessageTest1.SOME_ARE_NULL_2())
+
+
+        i18n4kConfig.locale = Locale("de")
+        assertEquals("?NO_TEXT?", MessageTest1.NO_TEXT())
+
+        i18n4kConfig.locale = Locale("de", "AT")
+        assertEquals("?NO_TEXT?", MessageTest1.NO_TEXT())
+
+        i18n4kConfig.locale = Locale("de", "AT", "vorarlberg")
+        assertEquals("?NO_TEXT?", MessageTest1.NO_TEXT())
     }
 
     /** Tests the setting of simple parameters. */
