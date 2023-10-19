@@ -2,12 +2,17 @@
 
 package de.comahe.i18n4k
 
+import kotlinx.atomicfu.atomic
+import kotlinx.atomicfu.update
+import kotlinx.collections.immutable.persistentMapOf
+
 
 /**
  * Property to access [Locale.getLanguage]
  *
- * Direct expected property not possible because `java.util.Locale` should be a actual typealias
- * and getter cannot replace property currently: https://youtrack.jetbrains.com/issue/KT-15620
+ * Direct expected property not possible because `java.util.Locale` should
+ * be a actual typealias and getter cannot replace property currently:
+ * https://youtrack.jetbrains.com/issue/KT-15620
  */
 val Locale.language: String
     get() = this.getLanguage()
@@ -26,10 +31,36 @@ val Locale.country: String
 val Locale.variant: String
     get() = this.getVariant()
 
+/** Cache for [lessSpecificLocale] to prevent memory allocations. */
+private val lessSpecificLocaleCache = atomic(persistentMapOf<Locale, Locale?>())
+
 /**
- * Transforms a languageTag like "en_US_WIN" to a
- * Locale("en","US","WIN")
+ * Creates a locale that is one step less specific than this locale.
+ *
+ * Returns null if there is no less specific locale.
+ *
+ * E.g. "de_DE_saxony" would become "de_DE", "de_DE" would become "de" and
+ * "de" would become null.
  */
+val Locale.lessSpecificLocale: Locale?
+    get() {
+        if (variant.isEmpty() && country.isEmpty())
+            return null
+
+        var result = lessSpecificLocaleCache.value[this]
+        if (result === null) {
+            result = if (variant.isEmpty())
+                Locale(language)
+            else
+                Locale(language, country)
+        }
+        lessSpecificLocaleCache.update { it.put(this, result) }
+
+        return result
+    }
+
+
+/** Transforms a languageTag like "en_US_WIN" to a Locale("en","US","WIN") */
 fun forLocaleTag(languageTag: String, separator: String = "_"): Locale {
     val underscore1 = languageTag.indexOf(separator)
     if (underscore1 < 0)

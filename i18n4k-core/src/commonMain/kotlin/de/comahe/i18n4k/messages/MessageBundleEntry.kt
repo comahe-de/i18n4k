@@ -17,4 +17,7 @@ interface MessageBundleEntry {
     /** The key of the entry of the message bundle. */
     val messageKey: String
 
+    /** the index of the entry in the bundle */
+    val messageIndex: Int
+
 }

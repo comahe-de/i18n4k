@@ -18,6 +18,8 @@ object MessagesTest1_de : MessagesProvider {
         "Hallo {0}, {1}, {2}, {3} und {4}!",
         "Hallo {4}, {0}, {1}, {3} und {2}!",
         "Hallo {1}, {1}, {2}, {2} und {0}!",
+        "Etwas Text 1",
+        "Etwas Text 2",
     )
 
     override val locale = Locale("de")

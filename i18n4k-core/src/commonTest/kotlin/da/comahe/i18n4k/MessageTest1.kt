@@ -45,6 +45,17 @@ object MessageTest1 : MessageBundle() {
     @JvmField
     val HELLO_X5_3 = getLocalizedStringFactory5("HELLO_X5_3", 9)
 
+
+    @JvmField
+    val SOME_ARE_NULL_1 = getLocalizedString0("SOME_ARE_NULL_1", 10)
+
+    @JvmField
+    val SOME_ARE_NULL_2 = getLocalizedString0("SOME_ARE_NULL_2", 11)
+
+    /** To large index and no translations anywhere */
+    @JvmField
+    val NO_TEXT = getLocalizedString0("NO_TEXT", 20)
+
     init {
         registerMessageBundleEntries(
             YES,
@@ -57,6 +68,9 @@ object MessageTest1 : MessageBundle() {
             HELLO_X5,
             HELLO_X5_2,
             HELLO_X5_3,
+            SOME_ARE_NULL_1,
+            SOME_ARE_NULL_2,
+            NO_TEXT
         )
     }
 
