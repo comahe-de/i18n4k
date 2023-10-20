@@ -8,22 +8,29 @@ import kotlinx.browser.window
 import org.w3c.fetch.Headers
 import org.w3c.fetch.RequestInit
 
-/** Base class for loading the data of a [MessagesProvider] via a lazy loaded list of string */
+/**
+ * Base class for loading the data of a [MessagesProvider] via a lazy
+ * loaded list of string
+ */
 @Suppress("unused")
 class MessagesProviderFactoryViaFetch(
     /** Expected locale. Null for not checking. */
     private val expectedLocale: Locale? = null,
     private val pathToResource: String,
     private val onLoaded: (() -> Unit)? = null,
-    private val onFailed: ((Any) -> Unit)? = null
+    private val onFailed: ((Throwable) -> Unit)? = null
 ) : MessagesProviderFactory {
     override fun loadMessagesProvider(consumer: (MessagesProvider) -> Unit) {
         val headers = Headers()
         headers.append("encoding", "text/plain;charset='charset=utf-8'")
         window.fetch(
-            pathToResource, RequestInit(headers = headers)
+            pathToResource, RequestInit()
         )
-            .then { promise -> promise.text() }
+            .then { promise ->
+                if (!promise.ok)
+                    throw Exception(promise.statusText + " @ " + promise.url)
+                promise.text()
+            }
             .then { text ->
                 try {
                     consumer(MessagesProviderViaText(expectedLocale, text))
