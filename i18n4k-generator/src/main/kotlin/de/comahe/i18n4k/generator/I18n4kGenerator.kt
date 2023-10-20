@@ -262,7 +262,7 @@ class I18n4kGenerator(
 
         localisationObject.addProperty(
             PropertySpec.builder("locale", localeClassName, KModifier.OVERRIDE)
-                .initializer("""%T("${messagesData.locale}")""", localeClassName)
+                .initializer("""%T("${messagesData.locale.toTag("\",  \"")}")""", localeClassName)
                 .build()
         )
 

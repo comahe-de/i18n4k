@@ -60,7 +60,7 @@ val Welcome = FC<WelcomeProps> { props ->
     var init: Boolean by useState(props.init)
     var countLocales by useState(props.countLocales)
     if (init) {
-        // load "fr" and "nl" at runtime...
+        // load "fr", "nl" and "en_US_texas" at runtime...
         MyMessages.registerTranslationFactory(
             MessagesProviderFactoryViaFetch(
                 pathToResource = "x/y/MyMessages_fr.i18n4k.txt",
@@ -70,6 +70,12 @@ val Welcome = FC<WelcomeProps> { props ->
         MyMessages.registerTranslationFactory(
             MessagesProviderFactoryViaFetch(
                 pathToResource = "x/y/MyMessages_nl.i18n4k.txt",
+                onLoaded = { countLocales = MyMessages.locales.size }
+            )
+        )
+        MyMessages.registerTranslationFactory(
+            MessagesProviderFactoryViaFetch(
+                pathToResource = "x/y/MyMessages_en_US_texas.i18n4k.txt",
                 onLoaded = { countLocales = MyMessages.locales.size }
             )
         )

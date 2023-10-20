@@ -25,10 +25,10 @@ fun main(args: Array<String>) {
     myFrame.setSize(500, 500);
     myFrame.layout = MigLayout("wrap 1, fillx", "[grow]")
 
-    // load "fr" and "nl" at runtime
+    // load "fr", "nl" and "en_US_texas" at runtime
     MyMessages.registerTranslation(MessagesProviderViaResource(pathToResource = "/x/y/MyMessages_fr.i18n4k.txt"))
     MyMessages.registerTranslation(MessagesProviderViaResource(pathToResource = "/x/y/MyMessages_nl.i18n4k.txt"))
-
+    MyMessages.registerTranslation(MessagesProviderViaResource(pathToResource = "/x/y/MyMessages_en_US_texas.i18n4k.txt"))
 
     val label1 = JLabel("")
     val label2 = JLabel("");

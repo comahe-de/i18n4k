@@ -38,7 +38,7 @@ android {
 
 
 i18n4k {
-    sourceCodeLocales = ["en", "de"]
+    sourceCodeLocales = ["en",  "en_US", "de"]
 }
 
 dependencies {

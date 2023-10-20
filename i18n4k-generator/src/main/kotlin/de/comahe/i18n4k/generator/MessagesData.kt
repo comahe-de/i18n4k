@@ -1,6 +1,6 @@
 package de.comahe.i18n4k.generator
 
-import java.util.Locale
+import de.comahe.i18n4k.Locale
 
 /** Data of the message bundle for a given locale/language. Maps key-strings to translations-strings. */
 class MessagesData(
