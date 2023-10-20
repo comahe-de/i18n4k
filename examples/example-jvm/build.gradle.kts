@@ -10,7 +10,7 @@ plugins {
 // configuration
 
 i18n4k {
-    sourceCodeLocales = listOf("en", "de")
+    sourceCodeLocales = listOf("en", "en_US", "de")
 }
 
 configure<JavaPluginConvention> {

@@ -73,7 +73,7 @@ class MainActivity : AppCompatActivity() {
 
             i18n4k = i18n4kConfig
 
-            // load "fr" and "nl" at runtime
+            // load "fr", "nl" and "en_US_texas" at runtime
             MyMessages.registerTranslation(
                 MessagesProviderViaText(
                     text = String(
@@ -88,6 +88,15 @@ class MainActivity : AppCompatActivity() {
                     text = String(
                         context.resources.openRawResource(
                             R.raw.x_y_my_messages_nl_i18n4k
+                        ).readBytes()
+                    )
+                )
+            )
+            MyMessages.registerTranslation(
+                MessagesProviderViaText(
+                    text = String(
+                        context.resources.openRawResource(
+                            R.raw.x_y_my_messages_en_us_texas_i18n4k
                         ).readBytes()
                     )
                 )

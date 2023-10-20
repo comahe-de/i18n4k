@@ -81,12 +81,12 @@ fun forLocaleTag(languageTag: String, separator: String = "_"): Locale {
 }
 
 
-fun Locale.toTag(): String {
+fun Locale.toTag( separator: String = "_"): String {
     if (country.isEmpty())
         return language
     if (variant.isEmpty())
-        return language + "_" + country
-    return language + "_" + country + "_" + variant
+        return language + separator + country
+    return language + separator + country + separator + variant
 }
 
 /** Returns a name for the locale that is appropriate for display to the user in the language of the locale */

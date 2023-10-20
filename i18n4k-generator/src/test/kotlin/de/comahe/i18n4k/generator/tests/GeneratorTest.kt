@@ -11,7 +11,10 @@ import java.io.File
 
 internal val packageName = null
 internal val commentLocale = Locale("en")
-internal val sourceCodeLocales = listOf(Locale("en"), Locale("de"))
+internal val sourceCodeLocales = listOf(Locale("en"),
+    Locale("en", "US"),
+    Locale("en", "US", "texas"),
+    Locale("de"))
 
 internal val inputDirectory = File("src/test/files/source_text")
 
