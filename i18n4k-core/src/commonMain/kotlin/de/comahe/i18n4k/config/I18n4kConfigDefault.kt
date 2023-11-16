@@ -30,12 +30,17 @@ class I18n4kConfigDefault : I18n4kConfig {
     /** atomic ref for [treadBlankStringAsNull] */
     private val treadBlankStringAsNullRef: AtomicBoolean = atomic(true)
 
+
+    /** atomic ref for [ignoreMessageParseErrors] */
+    private val ignoreMessageParseErrorsRef: AtomicBoolean = atomic(super.ignoreMessageParseErrors)
+
     /** Restores the default settings. */
     fun restoreDefaultSettings() {
         defaultLocale = Locale("en")
         locale = systemLocale
         messageFormatter = MessageFormatterDefault
         treadBlankStringAsNull = true
+        ignoreMessageParseErrors = super.ignoreMessageParseErrors
     }
 
     /////////////////////////////////////////
@@ -73,4 +78,9 @@ class I18n4kConfigDefault : I18n4kConfig {
             treadBlankStringAsNullRef.value = value
         }
 
+    override var ignoreMessageParseErrors: Boolean
+        get() = ignoreMessageParseErrorsRef.value
+        set(value) {
+            ignoreMessageParseErrorsRef.value = value
+        }
 }

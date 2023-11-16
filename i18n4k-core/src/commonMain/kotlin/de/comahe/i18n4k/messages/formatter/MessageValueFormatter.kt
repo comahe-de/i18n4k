@@ -1,23 +1,26 @@
 package de.comahe.i18n4k.messages.formatter
 
 import de.comahe.i18n4k.Locale
+import de.comahe.i18n4k.messages.formatter.parsing.MessageFormatContext
+import de.comahe.i18n4k.messages.formatter.parsing.StylePart
 
-/** Format special types of values
+/**
+ * Format special types of values
  *
  * Used by [MessageFormatterDefault]
  */
 interface MessageValueFormatter {
 
-    /**
-     * Formats the given [value] in the given [formatType]
-     *
-     * @return
-     *      the formatted string, null is the value object had an incorrect type or value.
-     * */
+    /** ID of the type of the formatter */
+    val typeId: String
+
+    /** Formats the given [value] and writes is to [result]. */
     fun format(
-        value: Any,
-        formatType: CharSequence,
-        formatStyle: CharSequence?,
-        locale: Locale
-    ): CharSequence?
+        result: StringBuilder,
+        value: Any?,
+        style: StylePart?,
+        parameters: List<Any>,
+        locale: Locale,
+        context: MessageFormatContext,
+    )
 }

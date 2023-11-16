@@ -17,13 +17,15 @@ data class I18n4kConfigImmutable(
     override val locale: Locale,
     override val messageFormatter: MessageFormatter,
     override val treadBlankStringAsNull: Boolean,
+    override val ignoreMessageParseErrors: Boolean,
 ) : I18n4kConfig {
     /** constructor for getting the default settings */
     constructor() : this(
         defaultLocale = Locale("en"),
         locale = systemLocale,
         messageFormatter = MessageFormatterDefault,
-        treadBlankStringAsNull = true
+        treadBlankStringAsNull = true,
+        ignoreMessageParseErrors = true,
     )
 
     fun withLocaleTag(languageCodeNew: String) = withLocale(forLocaleTag(languageCodeNew))
@@ -32,6 +34,7 @@ data class I18n4kConfigImmutable(
         defaultLocale = defaultLocale,
         locale = localeNew,
         messageFormatter = messageFormatter,
-        treadBlankStringAsNull = treadBlankStringAsNull
+        treadBlankStringAsNull = treadBlankStringAsNull,
+        ignoreMessageParseErrors = ignoreMessageParseErrors,
     )
 }

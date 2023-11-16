@@ -19,4 +19,7 @@ class I18n4kConfigDelegate(val configProvider: () -> I18n4kConfig) : I18n4kConfi
 
     override val treadBlankStringAsNull: Boolean
         get() = configProvider().treadBlankStringAsNull
+
+    override val ignoreMessageParseErrors: Boolean
+        get() = configProvider().ignoreMessageParseErrors
 }
