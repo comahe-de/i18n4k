@@ -1,9 +1,14 @@
 package de.comahe.i18n4k.messages.formatter
 
 import de.comahe.i18n4k.Locale
-import de.comahe.i18n4k.messages.formatter.MessageFormatterDefault.valueFormatters
+import de.comahe.i18n4k.messages.formatter.parsing.MessageFormatContext
+import de.comahe.i18n4k.messages.formatter.parsing.MessageParser
+import de.comahe.i18n4k.messages.formatter.parsing.MessagePart
 import de.comahe.i18n4k.strings.LocalizedString
-import kotlinx.atomicfu.TraceBase.None.append
+import kotlinx.atomicfu.atomic
+import kotlinx.atomicfu.update
+import kotlinx.collections.immutable.persistentMapOf
+import kotlinx.collections.immutable.toPersistentMap
 
 /**
  * Default formatter for messages of `i18n4k`
@@ -21,11 +26,25 @@ import kotlinx.atomicfu.TraceBase.None.append
  *      { ArgumentIndex , FormatType }
  *      { ArgumentIndex , FormatType , FormatStyle }
  *
- * ArgumentIndex: argument with the given index in the parameter list. Zero-base (0 is the index of the first argument)
+ * ArgumentIndex: argument with the given index in the parameter list.
+ *                Zero-base (0 is the index of the first argument).
+ *                Use "~" if the index is irrelevant
  *
  * FormatType: type to format, like number,date, etc. Defined be registered formatter
  *
  * FormatStyle: Specific style to the FormatType
+ *      StyleModifier
+ *      StyleModifierNames: StyleModifier [ | StyleModifierNames: StyleModifier ] [ | StyleModifier ]
+ *
+ * StyleModifier: Free text description of the style.
+ *                Call also contain format pattern. So the patterns can be nested.
+ *
+ * StyleModifierNames: Names of the modifier. Can be a list of name separated by slash
+ *      StyleModifierName
+ *      StyleModifierName [ / StyleModifierName ]
+ *
+ * StyleModifierName: free text name of the modifier.
+ *
  *
  * ```
  *
@@ -52,103 +71,45 @@ import kotlinx.atomicfu.TraceBase.None.append
  * `FormatStyle`.
  *
  * The following [MessageValueFormatter] are added by default
- * * [MessageNumberFormatter]
+ * * [MessageNumberFormatters]
  */
 object MessageFormatterDefault : MessageFormatter {
 
-    private val valueFormatters = mapOf<CharSequence, MessageValueFormatter>(
-        MessageNumberFormatter.FORMAT_STYLE_AREA to MessageNumberFormatter,
-        MessageNumberFormatter.FORMAT_STYLE_LENGTH to MessageNumberFormatter,
-        MessageNumberFormatter.FORMAT_STYLE_NUMBER to MessageNumberFormatter,
-        MessageNumberFormatter.FORMAT_STYLE_TIMESPAN to MessageNumberFormatter,
-        MessageNumberFormatter.FORMAT_STYLE_WEIGHT to MessageNumberFormatter
+    private val messageFormatContext = atomic(
+        MessageFormatContext(
+            MessageNumberFormatters.all.associateBy({ it.typeId }, { it }).toPersistentMap()
+        )
     )
 
+    private val parsedMessageCache = atomic(persistentMapOf<String, MessagePart>())
+
     override fun format(message: String, parameters: List<Any>, locale: Locale): String {
-        val buffer = StringBuilder(message.length * 2)
-        var argumentPartStartIndex = 0
-        var argumentIndex: CharSequence? = null
-        var argumentFormatType: CharSequence? = null
-        var argumentFormatStyle: CharSequence? = null
-        var inQuotes = false
-        var inBraces = false
-        var oneQuote = false
-        var index = 0
-        for (c in message) {
-            when {
-                oneQuote -> {
-                    if (c == '\'')
-                        buffer.append('\'')
-                    else {
-                        buffer.append(c)
-                        inQuotes = !inQuotes
-                    }
-                    oneQuote = false
-                }
-                inQuotes -> {
-                    if (c == '\'')
-                        oneQuote = true
-                    else {
-                        buffer.append(c)
-                    }
-                }
+        return getMessagePartFor(message)
+            .format(parameters, locale, messageFormatContext.value)
+            .toString()
+    }
 
-                inBraces -> {
-                    if (c == ',' || c == '}') {
-                        val argumentPart = message.subSequence(argumentPartStartIndex, index).trim()
-                        argumentPartStartIndex = index + 1
+    override fun getMaxParameterIndex(message: String, locale: Locale): Int {
+        return getMessagePartFor(message).maxParameterIndex
+    }
 
-                        when {
-                            argumentIndex == null -> argumentIndex = argumentPart
-                            argumentFormatType == null -> argumentFormatType = argumentPart
-                            argumentFormatStyle == null -> argumentFormatStyle = argumentPart
-                        }
-                    }
-                    if (c == '}') {// end of argument
-                        var argObject: Any? = null
-                        val argIndex = argumentIndex.toString().toIntOrNull()
-                        if (argIndex !== null && parameters.size > argIndex)
-                            argObject = parameters[argIndex]
-                        if (argObject == null)
-                            buffer.append('{').append(argumentIndex).append('}')
-                        else
-                            buffer.append(formatParameter(argObject, argumentFormatType, argumentFormatStyle, locale))
-                        inBraces = false
-                        argumentIndex = null
-                        argumentFormatType = null
-                        argumentFormatStyle = null
-                    }
-                }
-                c == '\'' -> {
-                    oneQuote = true
-                }
+    private fun getMessagePartFor(message: String): MessagePart {
+        var result: MessagePart? = parsedMessageCache.value[message]
+        if (result != null)
+            return result
 
-                c == '{' -> {
-                    inBraces = true
-                    argumentPartStartIndex = index + 1
-                }
-                else -> {
-                    buffer.append(c)
-                }
+        parsedMessageCache.update { cache ->
+            var messagePart = cache[message]
+            if (messagePart != null) {
+                result = messagePart
+                return@update cache
             }
-            index++
+            messagePart = MessageParser(message).parseMessage()
+            result = messagePart
+            return@update cache.put(message, messagePart)
         }
-        return buffer.toString()
+        return result!!
     }
 
-    private fun formatParameter(
-        p: Any,
-        formatType: CharSequence?,
-        formatStyle: CharSequence?,
-        locale: Locale
-    ): CharSequence {
-        if (formatType != null) {
-            valueFormatters[formatType]
-                ?.format(p, formatType, formatStyle, locale)
-                ?.let { return it }
-        }
-        if (p is LocalizedString)
-            return p.toString(locale)
-        return p.toString()
-    }
+
 }

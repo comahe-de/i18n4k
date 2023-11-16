@@ -1,8 +1,8 @@
 package da.comahe.i18n4k
 
 import de.comahe.i18n4k.Locale
-import de.comahe.i18n4k.i18n4k
 import de.comahe.i18n4k.config.I18n4kConfigDefault
+import de.comahe.i18n4k.i18n4k
 import de.comahe.i18n4k.messages.formatter.MessageFormatterDefault.format
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -39,8 +39,10 @@ class MessageFormatterDefaultTest {
     }
 
 
-
-    /** Test formats of [de.comahe.i18n4k.impl.MessageNumberFormatter] */
+    /**
+     * Test formats of
+     * [de.comahe.i18n4k.messages.formatter.MessageNumberFormatters]
+     */
     @Test
     fun format_parameterNumberTest() {
         val locale = Locale("en")
@@ -75,10 +77,25 @@ class MessageFormatterDefaultTest {
 
         assertEquals("invalid ", format("invalid {0!", listOf("A"), locale))
         assertEquals("invalid 0}!", format("invalid 0}!", listOf("A"), locale))
-        assertEquals("invalid {{0}!", format("invalid {{0}!", listOf("A"), locale))
+        assertEquals("invalid ", format("invalid {{0}!", listOf("A"), locale))
         assertEquals("invalid A}!", format("invalid {0}}!", listOf("A"), locale))
-        assertEquals("invalid {0{0}}!", format("invalid {0{0}}!", listOf("A"), locale))
-        assertEquals("invalid {{0}0}!", format("invalid {{0}0}!", listOf("A"), locale))
+        assertEquals("invalid !", format("invalid {0{0}}!", listOf("A"), locale))
+        assertEquals("invalid !", format("invalid {{0}0}!", listOf("A"), locale))
+    }
+
+    /**
+     * Test invalid parameter notations inside the message strings. (like
+     * "{{0}")
+     */
+    @Test
+    fun format_invalidParamValues() {
+        val locale = Locale("en")
+
+        assertEquals("abc {10}", format("abc {10}", listOf("A"), locale))
+        assertEquals("abc {~}", format("abc {~}", listOf("A"), locale))
+        assertEquals("abc A", format("abc {0, foo}", listOf("A"), locale))
+        assertEquals("abc {~}", format("abc {~, foo}", listOf("A"), locale))
+
     }
 
     /** Test the quoting. (like "The curly: '{'") */

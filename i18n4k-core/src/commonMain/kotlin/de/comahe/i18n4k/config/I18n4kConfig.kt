@@ -22,4 +22,11 @@ interface I18n4kConfig {
      *  For null strings the default locale is used.
      */
     val treadBlankStringAsNull: Boolean
+
+    /**
+     * if true, error during parsing of messages will be ignored and the message
+     * will be printed without the invalid part.
+     */
+    val ignoreMessageParseErrors: Boolean
+        get() = true
 }
