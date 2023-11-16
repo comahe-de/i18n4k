@@ -1,7 +1,5 @@
 package de.comahe.i18n4k
 
-import kotlinx.browser.window
-
 actual data class Locale actual constructor(
     val language: String,
     val country: String,
@@ -23,5 +21,15 @@ actual data class Locale actual constructor(
     override fun toString(): String = toTag()
 }
 
-actual val systemLocale: Locale =
-    forLocaleTag(window.navigator.language,"-")
+actual val systemLocale: Locale = run {
+    var locale: Locale? = null
+    try {
+        if (jsTypeOf(kotlinx.browser.window) != "undefined")
+            locale = forLocaleTag(kotlinx.browser.window.navigator.language, "-")
+    } catch (ignore: Throwable) {
+    }
+    if (locale == null) {
+        locale = Locale("en")
+    }
+    return@run locale
+}

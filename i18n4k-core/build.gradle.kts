@@ -30,6 +30,13 @@ kotlin {
                 }
             }
         }
+        // test in a nodeJS environment without browser
+        nodejs {
+            testTask {
+                useMocha {
+                }
+            }
+        }
     }
     // #####  native targets...
     // # out commented targets are not supported by a used library
