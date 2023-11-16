@@ -5,6 +5,7 @@ import de.comahe.i18n4k.messages.formatter.parsing.MessageFormatContext
 import de.comahe.i18n4k.messages.formatter.parsing.MessageParser
 import de.comahe.i18n4k.messages.formatter.parsing.MessagePart
 import de.comahe.i18n4k.messages.formatter.types.MessageNumberFormatters
+import de.comahe.i18n4k.messages.formatter.types.MessageSelectFormatter
 import de.comahe.i18n4k.messages.formatter.types.MessageTransformFormatters
 import kotlinx.atomicfu.atomic
 import kotlinx.atomicfu.update
@@ -79,7 +80,8 @@ object MessageFormatterDefault : MessageFormatter {
     private val messageFormatContext = atomic(
         MessageFormatContext(
             (MessageNumberFormatters.all
-                + MessageTransformFormatters.all)
+                + MessageTransformFormatters.all
+                + MessageSelectFormatter)
                 .associateBy({ it.typeId }, { it }).toPersistentMap()
         )
     )
