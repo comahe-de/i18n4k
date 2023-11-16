@@ -1,6 +1,7 @@
-package de.comahe.i18n4k.messages.formatter
+package de.comahe.i18n4k.messages.formatter.types
 
 import de.comahe.i18n4k.Locale
+import de.comahe.i18n4k.messages.formatter.MessageValueFormatter
 import de.comahe.i18n4k.messages.formatter.parsing.MessageFormatContext
 import de.comahe.i18n4k.messages.formatter.parsing.StylePart
 import de.comahe.i18n4k.messages.formatter.parsing.toSimple
