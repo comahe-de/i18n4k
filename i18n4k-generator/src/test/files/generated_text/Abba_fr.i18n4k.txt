@@ -9,19 +9,35 @@ J'ai^
 dans
 le texte 
 ^
+{0} a oublié {3, select, one: son sac | ses {2} sacs}.
+^
+{~, capitalize, {0} } is the best!
+^
 ^
 3ème valeur : {2}
 ^
+fr: {0, select, a: {1, select, x: {4} | {5} } | b: {2, select, y: {6} | {7} } | {3, select, z: {8} | {9} }!
 ^
-Paramètre 1 : {0}
 ^
-Paramètre 2: {0},{1}
+Fr - Paramètre 1 : {0}
 ^
-Paramètre 3: {0},{1},{2}
+Fr - Paramètre 10: {0},{1},{2},{3},{4},{5},{6},{7},{8},{9}
 ^
-Paramètre 4: {0},{1},{2},{3}
+Fr - Paramètre 2: {0},{1}
 ^
-Paramètre 5: {0},{1},{2},{3},{4}
+Fr - Paramètre 3: {0},{1},{2}
+^
+Fr - Paramètre 4: {0},{1},{2},{3}
+^
+Fr - Paramètre 5: {0},{1},{2},{3},{4}
+^
+Fr - Paramètre 6: {0},{1},{2},{3},{4},{5}
+^
+Fr - Paramètre 7: {0},{1},{2},{3},{4},{5},{6}
+^
+Fr - Paramètre 8: {0},{1},{2},{3},{4},{5},{6},{7}
+^
+Fr - Paramètre 9: {0},{1},{2},{3},{4},{5},{6},{7},{8}
 ^
 %S%P%T%M%N%L - '{0}' '' '{''}'
 ^

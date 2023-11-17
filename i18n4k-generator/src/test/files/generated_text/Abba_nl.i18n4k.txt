@@ -9,20 +9,36 @@ IIk^
 twee in
 de tekst 
 ^
+{0} is {1, select, female: haar | zijn } {3, select, one: tas | {2} tassen} vergeten.
+^
+{~, capitalize, {0} } is das Beste!
+^
 ^
 3e waarde: {2}
 ^
+Nl: {0, select, a: {1, select, x: {4} | {5} } | b: {2, select, y: {6} | {7} } | {3, select, z: {8} | {9} }!
+^
 Niet alle hebben vertalingen
 ^
-Parameter 1: {0}
+Nl - Parameter 1: {0}
 ^
-Parameter 2: {0},{1}
+Nl - Parameter 10: {0},{1},{2},{3},{4},{5},{6},{7},{8},{9}
 ^
-Parameter 3: {0},{1},{2}
+Nl - Parameter 2: {0},{1}
 ^
-Parameter 4: {0},{1},{2},{3}
+Nl - Parameter 3: {0},{1},{2}
 ^
-Parameter 5: {0},{1},{2},{3},{4}
+Nl - Parameter 4: {0},{1},{2},{3}
+^
+Nl - Parameter 5: {0},{1},{2},{3},{4}
+^
+Nl - Parameter 6: {0},{1},{2},{3},{4},{5}
+^
+Nl - Parameter 7: {0},{1},{2},{3},{4},{5},{6}
+^
+Nl - Parameter 8: {0},{1},{2},{3},{4},{5},{6},{7}
+^
+Nl - Parameter 9: {0},{1},{2},{3},{4},{5},{6},{7},{8}
 ^
 %S%P%T%M%N%L - '{0}' '' '{''}'
 ^

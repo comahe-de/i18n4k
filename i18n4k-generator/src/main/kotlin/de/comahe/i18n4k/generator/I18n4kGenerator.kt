@@ -15,10 +15,15 @@ import de.comahe.i18n4k.Locale
 import de.comahe.i18n4k.messages.MessageBundle
 import de.comahe.i18n4k.messages.MessageBundleLocalizedString
 import de.comahe.i18n4k.messages.MessageBundleLocalizedStringFactory1
+import de.comahe.i18n4k.messages.MessageBundleLocalizedStringFactory10
 import de.comahe.i18n4k.messages.MessageBundleLocalizedStringFactory2
 import de.comahe.i18n4k.messages.MessageBundleLocalizedStringFactory3
 import de.comahe.i18n4k.messages.MessageBundleLocalizedStringFactory4
 import de.comahe.i18n4k.messages.MessageBundleLocalizedStringFactory5
+import de.comahe.i18n4k.messages.MessageBundleLocalizedStringFactory6
+import de.comahe.i18n4k.messages.MessageBundleLocalizedStringFactory7
+import de.comahe.i18n4k.messages.MessageBundleLocalizedStringFactory8
+import de.comahe.i18n4k.messages.MessageBundleLocalizedStringFactory9
 import de.comahe.i18n4k.messages.providers.MessagesProvider
 import de.comahe.i18n4k.toTag
 import java.io.File
@@ -161,14 +166,19 @@ class I18n4kGenerator(
                 3 -> MessageBundleLocalizedStringFactory3::class
                 4 -> MessageBundleLocalizedStringFactory4::class
                 5 -> MessageBundleLocalizedStringFactory5::class
+                6 -> MessageBundleLocalizedStringFactory6::class
+                7 -> MessageBundleLocalizedStringFactory7::class
+                8 -> MessageBundleLocalizedStringFactory8::class
+                9 -> MessageBundleLocalizedStringFactory9::class
+                10 -> MessageBundleLocalizedStringFactory10::class
                 else -> throw IllegalArgumentException()
             }
         }
 
         fieldNames.forEach { (key, fieldName) ->
             val paramCount = bundle.getMaxParameterIndexForKey(key) + 1
-            if (paramCount > 5)
-                throw IllegalArgumentException("The field '$key' has more than 5 parameters!")
+            if (paramCount > 10)
+                throw IllegalArgumentException("The field '$key' has more than 10 parameters!")
             val keyEscaped = key.replace("%", "%%");
             val property = PropertySpec.builder(fieldName, paramCountToClass(paramCount))
                 .initializer(

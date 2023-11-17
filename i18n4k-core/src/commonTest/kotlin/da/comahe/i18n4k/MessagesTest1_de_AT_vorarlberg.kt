@@ -18,6 +18,11 @@ object MessagesTest1_de_AT_vorarlberg : MessagesProvider {
         "Zeawas {0}, {1}, {2}, {3} und {4}!",
         "Zeawas {4}, {0}, {1}, {3} und {2}!",
         "Zeawas {1}, {1}, {2}, {2} und {0}!",
+        "Zeawas {0}, {1}, {2}, {3}, {4} und {5}!",
+        "Zeawas {0}, {1}, {2}, {3}, {4}, {5} und {6}!",
+        "Zeawas {0}, {1}, {2}, {3}, {4}, {5}, {6} und {7}!",
+        "Zeawas {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7} und {8}!",
+        "Zeawas {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8} und {9}!",
         null,
         null,
     )

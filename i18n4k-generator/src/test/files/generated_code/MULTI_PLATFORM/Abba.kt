@@ -2,10 +2,15 @@ import de.comahe.i18n4k.Locale
 import de.comahe.i18n4k.messages.MessageBundle
 import de.comahe.i18n4k.messages.MessageBundleLocalizedString
 import de.comahe.i18n4k.messages.MessageBundleLocalizedStringFactory1
+import de.comahe.i18n4k.messages.MessageBundleLocalizedStringFactory10
 import de.comahe.i18n4k.messages.MessageBundleLocalizedStringFactory2
 import de.comahe.i18n4k.messages.MessageBundleLocalizedStringFactory3
 import de.comahe.i18n4k.messages.MessageBundleLocalizedStringFactory4
 import de.comahe.i18n4k.messages.MessageBundleLocalizedStringFactory5
+import de.comahe.i18n4k.messages.MessageBundleLocalizedStringFactory6
+import de.comahe.i18n4k.messages.MessageBundleLocalizedStringFactory7
+import de.comahe.i18n4k.messages.MessageBundleLocalizedStringFactory8
+import de.comahe.i18n4k.messages.MessageBundleLocalizedStringFactory9
 import de.comahe.i18n4k.messages.providers.MessagesProvider
 import kotlin.Array
 import kotlin.Int
@@ -39,6 +44,20 @@ public object Abba : MessageBundle("Abba", "") {
       getLocalizedString0("Multi-Line-Value", 2)
 
   /**
+   * {0} has forgotten {1, select, female: her | his } {3, select, one: bag | {2} bags}.
+   */
+  @JvmStatic
+  public val forgotten_bags: MessageBundleLocalizedStringFactory4 =
+      getLocalizedStringFactory4("forgotten-bags", 3)
+
+  /**
+   * {~, capitalize, {0} } is the best!
+   */
+  @JvmStatic
+  public val format_pattern: MessageBundleLocalizedStringFactory1 =
+      getLocalizedStringFactory1("format-pattern", 4)
+
+  /**
    * Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Phasellus faucibus molestie nisl.
    * Mauris suscipit, ligula sit amet pharetra semper, nibh ante cursus purus, vel sagittis velit
    * mauris vel metus. Pellentesque ipsum. Integer malesuada. Fusce wisi. Nullam dapibus fermentum
@@ -52,81 +71,124 @@ public object Abba : MessageBundle("Abba", "") {
    */
   @JvmStatic
   public val longTextExample: MessageBundleLocalizedString = getLocalizedString0("longTextExample",
-      3)
+      5)
 
   /**
    * 3rd value: {2}
    */
   @JvmStatic
   public val max_param_3: MessageBundleLocalizedStringFactory3 =
-      getLocalizedStringFactory3("max_param-3", 4)
+      getLocalizedStringFactory3("max_param-3", 6)
+
+  /**
+   * En: {0, select, a: {1, select, x: {4} | {5} } | b: {2, select, y: {6} | {7} } | {3, select, z:
+   * {8} | {9} }!
+   */
+  @JvmStatic
+  public val nested_parameter: MessageBundleLocalizedStringFactory10 =
+      getLocalizedStringFactory10("nested-parameter", 7)
 
   /**
    * Not all have translations
    */
   @JvmStatic
   public val no_all_have_translations: MessageBundleLocalizedString =
-      getLocalizedString0("no-all-have-translations", 5)
+      getLocalizedString0("no-all-have-translations", 8)
 
   /**
-   * Parameter 1: {0}
+   * En - Parameter 1: {0}
    */
   @JvmStatic
   public val param_1: MessageBundleLocalizedStringFactory1 = getLocalizedStringFactory1("param_1",
-      6)
-
-  /**
-   * Parameter 2: {0},{1}
-   */
-  @JvmStatic
-  public val param_2: MessageBundleLocalizedStringFactory2 = getLocalizedStringFactory2("param_2",
-      7)
-
-  /**
-   * Parameter 3: {0},{1},{2}
-   */
-  @JvmStatic
-  public val param_3: MessageBundleLocalizedStringFactory3 = getLocalizedStringFactory3("param_3",
-      8)
-
-  /**
-   * Parameter 4: {0},{1},{2},{3}
-   */
-  @JvmStatic
-  public val param_4: MessageBundleLocalizedStringFactory4 = getLocalizedStringFactory4("param_4",
       9)
 
   /**
-   * Parameter 5: {0},{1},{2},{3},{4}
+   * En - Parameter 10: {0},{1},{2},{3},{4},{5},{6},{7},{8},{9}
+   */
+  @JvmStatic
+  public val param_10: MessageBundleLocalizedStringFactory10 =
+      getLocalizedStringFactory10("param_10", 10)
+
+  /**
+   * En - Parameter 2: {0},{1}
+   */
+  @JvmStatic
+  public val param_2: MessageBundleLocalizedStringFactory2 = getLocalizedStringFactory2("param_2",
+      11)
+
+  /**
+   * En - Parameter 3: {0},{1},{2}
+   */
+  @JvmStatic
+  public val param_3: MessageBundleLocalizedStringFactory3 = getLocalizedStringFactory3("param_3",
+      12)
+
+  /**
+   * En - Parameter 4: {0},{1},{2},{3}
+   */
+  @JvmStatic
+  public val param_4: MessageBundleLocalizedStringFactory4 = getLocalizedStringFactory4("param_4",
+      13)
+
+  /**
+   * En - Parameter 5: {0},{1},{2},{3},{4}
    */
   @JvmStatic
   public val param_5: MessageBundleLocalizedStringFactory5 = getLocalizedStringFactory5("param_5",
-      10)
+      14)
+
+  /**
+   * En - Parameter 6: {0},{1},{2},{3},{4},{5}
+   */
+  @JvmStatic
+  public val param_6: MessageBundleLocalizedStringFactory6 = getLocalizedStringFactory6("param_6",
+      15)
+
+  /**
+   * En - Parameter 7: {0},{1},{2},{3},{4},{5},{6}
+   */
+  @JvmStatic
+  public val param_7: MessageBundleLocalizedStringFactory7 = getLocalizedStringFactory7("param_7",
+      16)
+
+  /**
+   * En - Parameter 8: {0},{1},{2},{3},{4},{5},{6},{7}
+   */
+  @JvmStatic
+  public val param_8: MessageBundleLocalizedStringFactory8 = getLocalizedStringFactory8("param_8",
+      17)
+
+  /**
+   * En - Parameter 9: {0},{1},{2},{3},{4},{5},{6},{7},{8}
+   */
+  @JvmStatic
+  public val param_9: MessageBundleLocalizedStringFactory9 = getLocalizedStringFactory9("param_9",
+      18)
 
   /**
    * %S%P%T%M%N%L - '{0}' '' '{''}'
    */
   @JvmStatic
-  public val special_value: MessageBundleLocalizedString = getLocalizedString0("special-value", 11)
+  public val special_value: MessageBundleLocalizedString = getLocalizedString0("special-value", 19)
 
   /**
    * Extraterrestrial 👽
    */
   @JvmStatic
-  public val utf_8_value: MessageBundleLocalizedString = getLocalizedString0("utf-8-value", 12)
+  public val utf_8_value: MessageBundleLocalizedString = getLocalizedString0("utf-8-value", 20)
 
   /**
    * Special key
    */
   @JvmStatic
-  public val _Special_Key_: MessageBundleLocalizedString = getLocalizedString0("~Special#Key~", 13)
+  public val _Special_Key_: MessageBundleLocalizedString = getLocalizedString0("~Special#Key~", 21)
 
   /**
    * Special key 2
    */
   @JvmStatic
   public val _Special__S_P_T_M_N_L_Key2_: MessageBundleLocalizedString =
-      getLocalizedString0("~Special-%S%P%T%M%N%L-Key2~", 14)
+      getLocalizedString0("~Special-%S%P%T%M%N%L-Key2~", 22)
 
   init {
     registerTranslation(Abba_en)
@@ -135,8 +197,9 @@ public object Abba : MessageBundle("Abba", "") {
     registerTranslation(Abba_de)
   }
   init {
-    registerMessageBundleEntries(_1_number_key, Hello_World_, Multi_Line_Value, longTextExample,
-        max_param_3, no_all_have_translations, param_1, param_2, param_3, param_4, param_5,
+    registerMessageBundleEntries(_1_number_key, Hello_World_, Multi_Line_Value, forgotten_bags,
+        format_pattern, longTextExample, max_param_3, nested_parameter, no_all_have_translations,
+        param_1, param_10, param_2, param_3, param_4, param_5, param_6, param_7, param_8, param_9,
         special_value, utf_8_value, _Special_Key_, _Special__S_P_T_M_N_L_Key2_)
   }
 }
@@ -155,14 +218,22 @@ private object Abba_en : MessagesProvider {
       |circumflexes
       |in the text
       """.trimMargin(),
+      "{0} has forgotten {1, select, female: her | his } {3, select, one: bag | {2} bags}.",
+      "{~, capitalize, {0} } is the best!",
       "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Phasellus faucibus molestie nisl. Mauris suscipit, ligula sit amet pharetra semper, nibh ante cursus purus, vel sagittis velit mauris vel metus. Pellentesque ipsum. Integer malesuada. Fusce wisi. Nullam dapibus fermentum ipsum. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Integer rutrum, orci vestibulum ullamcorper ultricies, lacus quam ultricies odio, vitae placerat pede sem sit amet enim. Quisque tincidunt scelerisque libero. Etiam posuere lacus quis dolor. In laoreet, magna id viverra tincidunt, sem odio bibendum justo, vel imperdiet sapien wisi sed libero. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Pellentesque sapien.",
       "3rd value: {2}",
+      "En: {0, select, a: {1, select, x: {4} | {5} } | b: {2, select, y: {6} | {7} } | {3, select, z: {8} | {9} }!",
       "Not all have translations",
-      "Parameter 1: {0}",
-      "Parameter 2: {0},{1}",
-      "Parameter 3: {0},{1},{2}",
-      "Parameter 4: {0},{1},{2},{3}",
-      "Parameter 5: {0},{1},{2},{3},{4}",
+      "En - Parameter 1: {0}",
+      "En - Parameter 10: {0},{1},{2},{3},{4},{5},{6},{7},{8},{9}",
+      "En - Parameter 2: {0},{1}",
+      "En - Parameter 3: {0},{1},{2}",
+      "En - Parameter 4: {0},{1},{2},{3}",
+      "En - Parameter 5: {0},{1},{2},{3},{4}",
+      "En - Parameter 6: {0},{1},{2},{3},{4},{5}",
+      "En - Parameter 7: {0},{1},{2},{3},{4},{5},{6}",
+      "En - Parameter 8: {0},{1},{2},{3},{4},{5},{6},{7}",
+      "En - Parameter 9: {0},{1},{2},{3},{4},{5},{6},{7},{8}",
       "%S%P%T%M%N%L - '{0}' '' '{''}'",
       "Extraterrestrial 👽",
       "Special key",
@@ -184,6 +255,14 @@ private object Abba_en_US : MessagesProvider {
   private val _data: Array<String?> = arrayOf(
       null,
       "Hi, World",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
       null,
       null,
       null,
@@ -226,6 +305,14 @@ private object Abba_en_US_texas : MessagesProvider {
       null,
       null,
       null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
       null)
 
   override val locale: Locale = Locale("en",  "US",  "texas")
@@ -250,14 +337,22 @@ private object Abba_de : MessagesProvider {
       | Zirkumflex
       |im Text
       """.trimMargin(),
+      "{0} hat {1, select, female: ihre | seine } {3, select, one: Tasche | {2} Taschen} vergessen.",
+      "{~, capitalize, {0} } ist das Beste!",
       null,
       "3. Wert: {2}",
+      "De: {0, select, a: {1, select, x: {4} | {5} } | b: {2, select, y: {6} | {7} } | {3, select, z: {8} | {9} }!",
       "",
-      "Parameter 1: {0}",
-      "Parameter 2: {0},{1}",
-      "Parameter 3: {0},{1},{2}",
-      "Parameter 4: {0},{1},{2},{3},",
-      "Parameter 5: {0},{1},{2},{3},{4}",
+      "De - Parameter 1: {0}",
+      "De - Parameter 10: {0},{1},{2},{3},{4},{5},{6},{7},{8},{9}",
+      "De - Parameter 2: {0},{1}",
+      "De - Parameter 3: {0},{1},{2}",
+      "De - Parameter 4: {0},{1},{2},{3}",
+      "De - Parameter 5: {0},{1},{2},{3},{4}",
+      "De - Parameter 6: {0},{1},{2},{3},{4},{5}",
+      "De - Parameter 7: {0},{1},{2},{3},{4},{5},{6}",
+      "De - Parameter 8: {0},{1},{2},{3},{4},{5},{6},{7}",
+      "De - Parameter 9: {0},{1},{2},{3},{4},{5},{6},{7},{8}",
       "%S%P%T%M%N%L - '{0}' '' '{''}'",
       "Außerirdischer 👽",
       "Besonderer Schlüssel",
