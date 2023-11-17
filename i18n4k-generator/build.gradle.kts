@@ -8,11 +8,11 @@ dependencies {
 
     implementation(project(":i18n4k-core"))
 
-    implementation(Dependencies.kotlinPoet)
-    implementation(Dependencies.slf4jApi)
+    implementation(libs.kotlinPoet)
+    implementation(libs.slf4jApi)
 
-    testImplementation(Dependencies.logbackClassic)
-    testImplementation(Dependencies.junit)
+    testImplementation(libs.logbackClassic)
+    testImplementation(libs.junit)
 }
 
 configure<JavaPluginConvention> {

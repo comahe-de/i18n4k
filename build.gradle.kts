@@ -1,6 +1,6 @@
 plugins {
     idea
-    kotlin("jvm") version Versions.kotlin
+    kotlin("jvm") version libs.versions.kotlin
     `maven-publish`
     signing
 }

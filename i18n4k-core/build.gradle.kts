@@ -40,7 +40,7 @@ kotlin {
     }
     // #####  native targets...
     // # out commented targets are not supported by a used library
-    iosArm32()
+    // iosArm32() - https://blog.jetbrains.com/kotlin/2023/02/update-regarding-kotlin-native-targets/
     iosArm64()
     iosX64()
     iosSimulatorArm64()
@@ -53,7 +53,7 @@ kotlin {
     tvosSimulatorArm64()
     watchosArm32()
     watchosArm64()
-    watchosX86()
+    // watchosX86() - https://blog.jetbrains.com/kotlin/2023/02/update-regarding-kotlin-native-targets/
     watchosX64()
     watchosSimulatorArm64()
     //androidNativeArm32() // not supported by "atomicfu", "kotlinx-collections-immutable"
@@ -71,8 +71,8 @@ kotlin {
 
         val commonMain by getting {
             dependencies {
-                implementation(Dependencies.kotlinxAtomicfu)
-                implementation(Dependencies.kotlinxCollectionsImmutable)
+                implementation(libs.kotlinxAtomicfu)
+                implementation(libs.kotlinxCollectionsImmutable)
             }
         }
         val commonTest by getting {
@@ -97,8 +97,8 @@ kotlin {
         val jsTest by getting {
             dependencies {
                 implementation(kotlin("test-js"))
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+                implementation(libs.kotlinxCoroutinesCore)
+                implementation(libs.kotlinxCoroutinesTest)
 
             }
         }
@@ -157,12 +157,6 @@ kotlin {
         }
 
         // Apple / iOS
-        val iosArm32Main by getting {
-            dependsOn(appleCommonMain)
-        }
-        val iosArm32Test by getting {
-            dependsOn(appleCommonTest)
-        }
         val iosArm64Main by getting {
             dependsOn(appleCommonMain)
         }
@@ -197,22 +191,10 @@ kotlin {
         }
 
         // Apple /  Watch OS
-        val watchosArm32Main by getting {
-            dependsOn(appleCommonMain)
-        }
-        val watchosArm32Test by getting {
-            dependsOn(appleCommonTest)
-        }
         val watchosArm64Main by getting {
             dependsOn(appleCommonMain)
         }
         val watchosArm64Test by getting {
-            dependsOn(appleCommonTest)
-        }
-        val watchosX86Main by getting {
-            dependsOn(appleCommonMain)
-        }
-        val watchosX86Test by getting {
             dependsOn(appleCommonTest)
         }
         val watchosX64Main by getting {

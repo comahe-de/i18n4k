@@ -1,7 +1,7 @@
 plugins {
     kotlin("jvm") // version from main build.gradle.kts
     `java-gradle-plugin`
-    `gradle-plugin-publish`
+    alias(libs.plugins.gradlePluginPublish)
 }
 
 
@@ -19,10 +19,10 @@ dependencies {
     implementation(project(":i18n4k-generator"))
 
     compileOnly(gradleApi())
-    compileOnly(Dependencies.kotlinGradlePlugin)
-    compileOnly(Dependencies.androidGradlePlugin)
+    compileOnly(libs.kotlinGradlePlugin)
+    compileOnly(libs.androidGradlePlugin)
 
-    testImplementation(Dependencies.junit)
+    testImplementation(libs.junit)
 }
 
 configure<JavaPluginConvention> {
