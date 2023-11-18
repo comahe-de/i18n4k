@@ -23,6 +23,8 @@ junit = "4.13.2"
 gradlePluginPublish = "0.16.0"
 # https://mvnrepository.com/artifact/com.android.tools.build/gradle?repo=google
 androidPlugin = "7.2.2"
+# https://github.com/Kotlin/dokka
+dokkaPlugin = "1.9.10"
 
 
 [libraries]
@@ -43,3 +45,4 @@ junit =  { module = "junit:junit", version.ref = "junit" }
 [plugins]
 
 gradlePluginPublish = { id = "com.gradle.plugin-publish", version.ref = "gradlePluginPublish" }
+dokkaPlugin = { id = "org.jetbrains.dokka", version.ref = "dokkaPlugin" }

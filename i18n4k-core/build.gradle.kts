@@ -1,9 +1,6 @@
 plugins {
     kotlin("multiplatform") // version from main build.gradle.kts
-    // https://stackoverflow.com/a/66352905/2611134
-    // "I use older version of dokka library (1.4.0-rc), as newer version could not generate
-    // javadocs for all platforms"
-    id("org.jetbrains.dokka") version "1.4.0-rc"
+    alias(libs.plugins.dokkaPlugin)
 }
 
 repositories {
@@ -294,32 +291,12 @@ kotlin {
 // from https://stackoverflow.com/a/66352905/2611134
 tasks {
     create<Jar>("javadocJar") {
-        dependsOn(dokkaJavadoc)
+        // we cannot use `dokkaJavadoc`, as it does not support multiplatform projects
+        // https://slack-chats.kotlinlang.org/t/484606/is-there-a-workaround-for-getting-the-dokka-javadoc-plugin-t
+        dependsOn(dokkaHtml)
         archiveClassifier.set("javadoc")
-        from(dokkaJavadoc.get().outputDirectory)
+        from(dokkaHtml.get().outputDirectory)
     }
-
-    dokkaJavadoc {
-        dokkaSourceSets {
-            create("commonMain") {
-                displayName = "common"
-                platform = "common"
-            }
-        }
-    }
-}
-
-
-tasks {
-    dokkaJavadoc {
-        dokkaSourceSets.forEach {
-            println("#### dokkaa")
-            println(it.name)
-            println(it.sourceRoots)
-            println(it.platform)
-        }
-    }
-
 }
 
 // Publishing....
