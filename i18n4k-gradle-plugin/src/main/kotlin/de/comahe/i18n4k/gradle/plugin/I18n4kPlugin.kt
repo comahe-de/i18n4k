@@ -7,6 +7,7 @@ import org.gradle.api.file.SourceDirectorySet
 import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.SourceSetContainer
 import org.gradle.api.tasks.compile.JavaCompile
+import org.gradle.language.jvm.tasks.ProcessResources
 import org.gradle.plugins.ide.idea.IdeaPlugin
 import org.gradle.plugins.ide.idea.model.IdeaModel
 import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
@@ -103,11 +104,24 @@ open class I18n4kPlugin : Plugin<Project> {
         // "compileKotlinMetadata", ...
         project.tasks.matching { it.name.startsWith("compile") }
             .configureEach { it.dependsOn(GENERATE_I18N_SOURCES_TASK_NAME) }
-
         project.tasks.withType(KotlinCompile::class.java)
             .configureEach { it.dependsOn(GENERATE_I18N_SOURCES_TASK_NAME) }
         project.tasks.withType(JavaCompile::class.java)
             .configureEach { it.dependsOn(GENERATE_I18N_SOURCES_TASK_NAME) }
+
+        // Resource processing for normal projects
+        @Suppress("UnstableApiUsage")
+        project.tasks.withType(ProcessResources::class.java)
+            .configureEach { it.dependsOn(GENERATE_I18N_SOURCES_TASK_NAME) }
+        // Android resource processing:
+        // packageDebugResources, packageReleaseResources, ...
+        // mergeDebugResources, mergeReleaseResources, ...
+        project.tasks.matching {
+            (it.name.startsWith("package") || it.name.startsWith("merge"))
+                && it.name.endsWith("Resources")
+        }
+            .configureEach { it.dependsOn(GENERATE_I18N_SOURCES_TASK_NAME) }
+
     }
 
 
