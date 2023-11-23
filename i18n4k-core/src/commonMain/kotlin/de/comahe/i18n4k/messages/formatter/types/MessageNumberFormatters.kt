@@ -13,14 +13,18 @@ import kotlinx.collections.immutable.persistentListOf
 /**
  * A [MessageValueFormatter] for numbers ([Number])
  *
- * Supported values for `FormatType` (see FORMAT_STYLE_* constants)
+ * Format:
+ *
+ *     {~, FORMAT_TYPE, FORMAT_STYLE}
+ *
+ * Supported values for `FORMAT_TYPE` (see sub objects)
  * * number
  * * length
  * * area
  * * weight
  * * timespan
  *
- * Supported values for `FormatStyle`
+ * Supported values for `FORMAT_STYLE`
  * * "%.0P":
  *    * P: precision: If given, the position to which the rounding is to be
  *      made. Positive for after the decimal point, negative for before the

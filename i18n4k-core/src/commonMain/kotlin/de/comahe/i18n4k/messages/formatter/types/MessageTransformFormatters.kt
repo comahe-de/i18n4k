@@ -14,11 +14,12 @@ import kotlinx.collections.immutable.persistentListOf
  * Format:
  *
  *     {~, FORMAT_OPTION, TEXT_WITH_PATTERNS}
- * - FORMAT_OPTION
+ *
+ * - `FORMAT_OPTION`
  *    - uppercase: transform all letters to uppercase
  *    - lowercase: transform all letters to lowercase
  *    - capitalize: transform the first letter to uppercase
- * - TEXT_WITH_PATTERNS: Any text including patterns.
+ * - `TEXT_WITH_PATTERNS`: Any text including patterns.
  *
  * Example:
  *

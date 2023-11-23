@@ -18,7 +18,7 @@ _Internationalization for Kotlin_
 
 **Home:** [github.com/comahe-de/i18n4k](https://github.com/comahe-de/i18n4k)
 
-**Lastest release version:** 0.6.2
+**Lastest release version:** 0.7.0
 
 **Table of contents**
 
@@ -35,6 +35,7 @@ _Internationalization for Kotlin_
     + [Optimized message files](#optimized-message-files)
 * [Runtime configuration](#runtime-configuration)
 * [Hints for Android](#hints-for-android)
+* [Message format](#message-format)
 * [Example](#example)
 * [Example projects](#example-projects)
 * [Contribute](#contribute)
@@ -65,9 +66,8 @@ It provides
 ## Supported platforms
 
 * Java (JVM) & Android
-* JS (legacy and IR backend)
+* JS (IR backend)
 * Native:
-   * iosArm32
    * iosArm64
    * iosX64
    * iosSimulatorArm64
@@ -78,7 +78,6 @@ It provides
    * tvosArm64
    * tvosX64
    * tvosSimulatorArm64
-   * watchosArm32
    * watchosArm64
    * watchosX86
    * watchosX64
@@ -101,7 +100,7 @@ repositories {
 ```kotlin
 val commonMain by getting {
     dependencies {
-        implementation("de.comahe.i18n4k:i18n4k-core:0.6.2")
+        implementation("de.comahe.i18n4k:i18n4k-core:0.7.0")
     }
 }
 ```
@@ -110,7 +109,7 @@ val commonMain by getting {
 
 ```kotlin
 dependencies {
-    implementation("de.comahe.i18n4k:i18n4k-core-js:0.6.2")
+    implementation("de.comahe.i18n4k:i18n4k-core-js:0.7.0")
 }
 ```
 
@@ -118,7 +117,7 @@ dependencies {
 
 ```kotlin
 dependencies {
-    implementation("de.comahe.i18n4k:i18n4k-core-jvm:0.6.2")
+    implementation("de.comahe.i18n4k:i18n4k-core-jvm:0.7.0")
 }
 ```
 
@@ -128,7 +127,7 @@ Apply the plugin "de.comahe.i18n4k", e.g:
 
 ```kotlin
 plugins {
-    id("de.comahe.i18n4k") version "0.6.2"
+    id("de.comahe.i18n4k") version "0.7.0"
 }
 ```
 
@@ -189,12 +188,11 @@ the `i184k` variable.
 
 ## Hints for Android
 
-Since version 0.5.0 the generator plugin also supports Android projects.
-
 Generated resource files are not added to the "Java resource", but as "raw Android resources".
-As Android does not allow sub-folders or uppercase letters, the resource name it adapted: packages
-names are prefixed to the resource name and concatenate by "_". Also, camel case names are converted
-to sneak case. E.g. "/x/y/MyMessages_fr.i18n4k.txt" will be changed to "x_y_my_messages_fr_i18n4k".
+As Android does not allow sub-folders or uppercase letters, the resource name is adapted: packages
+names are prefixed to the resource name and concatenated by "_". 
+Also, camel case names are converted to sneak-case, 
+e.g. "/x/y/MyMessages_fr.i18n4k.txt" will be changed to "x_y_my_messages_fr_i18n4k".
 
 Generated raw resources can be loaded in the following way:
 
@@ -209,6 +207,28 @@ Generated raw resources can be loaded in the following way:
     )
 )
 ```
+
+## Message format
+
+The [default message format](./i18n4k-core/src/commonMain/kotlin/de/comahe/i18n4k/messages/formatter/MessageFormatterDefault.kt)
+is similar to the [Java-MessageFormat](https://docs.oracle.com/javase/8/docs/api/java/text/MessageFormat.html).
+E.g. the text "Hello, {0}" has one parameter.
+
+The parameter values can also be formatted,
+e.g. "{0,number, %.2}" formats parameter 0 as number with max. 2 fraction digits.
+
+The following message value formatters are available (see Kdoc from details):
+
+* [Numbers](./i18n4k-core/src/commonMain/kotlin/de/comahe/i18n4k/messages/formatter/types/MessageNumberFormatters.kt)
+* [Transformations](./i18n4k-core/src/commonMain/kotlin/de/comahe/i18n4k/messages/formatter/types/MessageTransformFormatters.kt)
+* [Select value from a list](./i18n4k-core/src/commonMain/kotlin/de/comahe/i18n4k/messages/formatter/types/MessageSelectFormatter.kt)
+
+For messages with parameters, the generator plugin 
+creates special [LocalizedStringFactories](./i18n4k-core/src/commonMain/kotlin/de/comahe/i18n4k/strings/LocalizedStringFactories.kt)
+where the parameters must be supplied as arguments to get the resulting string.
+
+Other message formatters can be implemented and be configured in 
+[I18n4kConfig](./i18n4k-core/src/commonMain/kotlin/de/comahe/i18n4k/config/I18n4kConfig.kt)`.messageFormatter`
 
 ## Example
 
@@ -368,7 +388,7 @@ very welcome.
 
 [badge-apache2.0]:https://img.shields.io/badge/License-Apache/2.0-blue.svg?style=flat
 
-[badge-version]:https://img.shields.io/badge/version-0.6.2-blueviolet?style=flat
+[badge-version]:https://img.shields.io/badge/version-0.7.0-blueviolet?style=flat
 
 [badge-maven]:https://img.shields.io/badge/Maven-Central-6262EC?style=flat
 

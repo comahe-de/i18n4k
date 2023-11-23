@@ -18,28 +18,28 @@ import kotlinx.collections.immutable.persistentMapOf
  * Format:
  *
  *     { PARAMETER_NUMBER, select, VALUE1:  TEXT1 | VALUE2 / VALUE3:  TEXT2 | regex#VALUE_REGEX : TEXT_REGEX | OTHERWISE_TEXT}
- * - PARAMETER_NUMBER:
+ * - `PARAMETER_NUMBER`:
  *    - Number of the parameter which value is matched against the values
  *      of the select list
- * - VALUE*:
+ * - `VALUE*`:
  *    - If a values matches the value of the parameter, the corresponding
  *      text (TEXT*) is selected
  *    - List of several values for the same text can be separated by slash
  *      "/"
- * - VALUE_REGEX
+ * - `VALUE_REGEX`
  *    - When the value is prefixed by "regex#", it is seen as regular
  *      repression, e.g. `regex#([A-Z])\w+`
  *    - If the regex matches the value of the parameter, the corresponding
  *      text (TEXT_REGEX) is selected
- * - TEXT*:
+ * - `TEXT*`:
  *    - Text that is returned by the pattern if the value matches the value
  *      of the parameter
  *    - Texts themselves can also contain patterns. So, the patterns can be
  *      nested.
- * - TEXT_REGEX
+ * - `TEXT_REGEX`
  *    - Like TEXT* but regex-groups can be refereed by <GROUP_NUMBER>
- * - OTHERWISE_TEXT
- *    - If non of the values before matched, this text will be selected
+ * - `OTHERWISE_TEXT`
+ *    - If none of the values before matched, this text will be selected
  *    - If there is no OTHERWISE_TEXT specified and no value matches, an
  *      empty string is returned
  *
@@ -48,7 +48,7 @@ import kotlinx.collections.immutable.persistentMapOf
  *
  * Example:
  *
- *     {0} has forgotten {1, select, female: her | his }  {3, select, one: bag | {2} bags}.
+ *     {0} has forgotten {1, select, female: her | his } {3, select, one: bag | {2} bags}.
  *
  * Usage:
  *
