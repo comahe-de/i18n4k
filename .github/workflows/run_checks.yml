@@ -29,7 +29,7 @@ jobs:
             ${{ runner.os }}-gradle-
 
     - name: Setting Java Home
-      run: echo "JAVA_HOME=$JAVA_HOME_11_X64" >> $GITHUB_ENV
+      run: echo "JAVA_HOME=$JAVA_HOME_17_X64" >> $GITHUB_ENV
     - name: Permission to run gradlew
       run: chmod +x ./gradlew 
         && chmod +x ./examples/example-js/gradlew
