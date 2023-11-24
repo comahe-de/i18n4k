@@ -20,7 +20,7 @@ junit = "4.13.2"
 ###############  Plugins ###################
 
 # https://plugins.gradle.org/plugin/com.gradle.plugin-publish
-gradlePluginPublish = "0.16.0"
+gradlePluginPublish = "1.2.0"
 # https://mvnrepository.com/artifact/com.android.tools.build/gradle?repo=google
 androidPlugin = "7.2.2"
 # https://github.com/Kotlin/dokka

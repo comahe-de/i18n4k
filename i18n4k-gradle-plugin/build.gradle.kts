@@ -40,25 +40,24 @@ tasks {
 }
 
 gradlePlugin {
+    website = "https://comahe-de.github.io/i18n4k"
+    vcsUrl = "https://github.com/comahe-de/i18n4k"
+
     plugins {
         create("i18n4k") {
             id = "de.comahe.i18n4k"
             implementationClass = "de.comahe.i18n4k.gradle.plugin.I18n4kPlugin"
             displayName = "i18n4k"
             description = "i18n4k - Internationalization for Kotlin - Code Generator"
-
+            tags = listOf(
+                "kotlin", "kotlin/multiplatform", "kotlin/js", "kotlin/jvm", "kotlin/native",
+                "i18n", "internationalization", "code generator"
+            )
         }
     }
 }
 
-pluginBundle {
-    website = "https://comahe-de.github.io/i18n4k"
-    vcsUrl = "https://github.com/comahe-de/i18n4k"
-    tags = listOf(
-        "kotlin", "kotlin/multiplatform", "kotlin/js", "kotlin/jvm", "kotlin/native",
-        "i18n", "internationalization", "code generator"
-    )
-}
+
 
 java {
     withSourcesJar()
