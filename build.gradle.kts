@@ -24,13 +24,14 @@ allprojects {
 subprojects {
     // add signing and Maven publish to each project
     apply<MavenPublishPlugin>()
-    apply<SigningPlugin>()
 
     val isSnapshot = version.toString().contains("SNAPSHOT");
 
     if (loadSecretProperties(this)
         && ((isSnapshot && BuildProperties.publishSnapshots) || (!isSnapshot && BuildProperties.publishReleases))
     ) {
+        apply<SigningPlugin>()
+
         // configure common things for signing and Maven publish for each project
         afterEvaluate {
             // need another `afterEvaluate` here, as some publications are added in an `afterEvaluate`
