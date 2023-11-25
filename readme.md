@@ -392,6 +392,6 @@ very welcome.
 
 [badge-maven]:https://img.shields.io/badge/Maven-Central-6262EC?style=flat
 
-[badge-kotlin]:https://img.shields.io/badge/Kotlin-1.8.22-orange?style=flat
+[badge-kotlin]:https://img.shields.io/badge/Kotlin-1.9.20-orange?style=flat
 
-[badge-gradle]:https://img.shields.io/badge/Gradle-7.6.0-1DA2BD?style=flat
+[badge-gradle]:https://img.shields.io/badge/Gradle-8.4.0-1DA2BD?style=flat
