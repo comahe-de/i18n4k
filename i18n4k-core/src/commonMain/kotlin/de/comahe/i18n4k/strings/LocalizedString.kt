@@ -8,9 +8,11 @@ interface LocalizedString {
     /** return value based on the currently set [Locale] in [i18n4k] ([I18n4kConfig.locale]) */
     override fun toString(): String
 
-    /** return value based on the given [Locale]
+    /**
+     * return value based on the given [Locale]
      *
-     * @param locale the [Locale] to be use. If null the current setting in [i18n4k] ([I18n4kConfig.locale]) will be used.
+     * @param locale the [Locale] to be use. If null the current setting in [i18n4k]
+     *     ([I18n4kConfig.locale]) will be used.
      */
     fun toString(locale: Locale?): String
 
@@ -21,4 +23,10 @@ interface LocalizedString {
     /** Shortcut for [toString] */
     operator fun invoke(locale: Locale?) =
         toString(locale)
+
+    /**
+     * Returns the value of the attribute with the given name or null if the attribute value is not
+     * defined.
+     */
+    fun getAttribute(attributeName: CharSequence, locale: Locale? = null): String? = null
 }

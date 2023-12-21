@@ -28,9 +28,6 @@ data class MessagePartParam(val index: Int?, val type: CharSequence?, var style:
                 parameters[index]
             }
 
-        if (value is LocalizedString)
-            value = value.toString(locale)
-
         if (type == null) {
             if (value == null)
                 result.append("{~}")
@@ -38,7 +35,7 @@ data class MessagePartParam(val index: Int?, val type: CharSequence?, var style:
                 result.append(value)
             return
         }
-        val formatter = context.formatterTypes[type]
+        val formatter = context.getFormatterFor(type)
         if (formatter == null) {
             if (value == null)
                 result.append("{~}")
@@ -47,7 +44,7 @@ data class MessagePartParam(val index: Int?, val type: CharSequence?, var style:
             return
         }
 
-        formatter.format(result, value, style, parameters, locale, context)
+        formatter.format(result, value, type, style, parameters, locale, context)
     }
 
 }

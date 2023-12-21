@@ -69,6 +69,7 @@ object MessageSelectFormatter : MessageValueFormatter {
     override fun format(
         result: StringBuilder,
         value: Any?,
+        typeId: CharSequence,
         style: StylePart?,
         parameters: List<Any>,
         locale: Locale,

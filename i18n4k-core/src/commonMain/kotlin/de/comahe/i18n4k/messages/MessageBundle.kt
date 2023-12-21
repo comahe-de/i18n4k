@@ -39,6 +39,10 @@ open class MessageBundle(
     private val localeToStringsRef: AtomicRef<PersistentMap<Locale, MessagesProvider>> =
         atomic(persistentMapOf())
 
+    /** Handles the locales with the "attr"-extension */
+    private val attribToLocaleToStringsRef: AtomicRef<PersistentMap<CharSequence, PersistentMap<Locale, MessagesProvider>>> =
+        atomic(persistentMapOf())
+
     /** Names of the keys mapped to the corresponding objects. */
     private val keyObjectsByName: AtomicRef<PersistentMap<String, MessageBundleEntry>> =
         atomic(persistentMapOf())
@@ -49,8 +53,23 @@ open class MessageBundle(
 
     /** Add or replaces a translation in this message bundle */
     fun registerTranslation(messagesProvider: MessagesProvider) {
-        localeToStringsRef.update { localeToStrings ->
-            localeToStrings.put(messagesProvider.locale, messagesProvider)
+        val extension = messagesProvider.locale.getExtension(EXTENSION_KEY_PRIVATE)
+        if (extension?.startsWith(EXTENSION_VALUE_ATTRIB_PREFIX) == true) {
+            val attrib = extension.substring(EXTENSION_VALUE_ATTRIB_PREFIX.length)
+            // store as attribute provider
+            attribToLocaleToStringsRef.update { attribToLocaleToStrings ->
+                val localeToStrings =
+                    (attribToLocaleToStrings[attrib] ?: persistentMapOf()).put(
+                        messagesProvider.locale.stripExtensions(),
+                        messagesProvider
+                    )
+                attribToLocaleToStrings.put(attrib, localeToStrings)
+            }
+
+        } else {
+            localeToStringsRef.update { localeToStrings ->
+                localeToStrings.put(messagesProvider.locale.stripExtensions(), messagesProvider)
+            }
         }
     }
 
@@ -87,6 +106,7 @@ open class MessageBundle(
     /** Remove all registered translations (see [registerTranslation]) */
     fun unregisterAllTranslations() {
         localeToStringsRef.update { persistentMapOf() }
+        attribToLocaleToStringsRef.update { persistentMapOf() }
     }
 
     /**
@@ -118,10 +138,24 @@ open class MessageBundle(
      * Use default locale if no [MessagesProvider] or string at index is `null`
      */
     protected fun getString0(index: Int, locale: Locale?): String {
+        return getMapString0(localeToStringsRef.value, index, locale)
+            ?: "?${getEntryByIndex(index)?.messageKey ?: index}?"
+    }
+
+    protected fun getAttribString0(attrib: CharSequence, index: Int, locale: Locale?): String? {
+        val map = attribToLocaleToStringsRef.value[attrib] ?: return null
+        return getMapString0(map, index, locale)
+    }
+
+    protected fun getMapString0(
+        map: PersistentMap<Locale, MessagesProvider>,
+        index: Int,
+        locale: Locale?
+    ): String? {
         if (index < 0)
             throw IllegalArgumentException("Index must be greater or equal to 0")
         val localeToUse = locale ?: i18n4k.locale
-        val messages = localeToStringsRef.value[localeToUse]
+        val messages = map[localeToUse]
         var string: String? = null
         if (messages !== null && index < messages.size)
             string = messages[index]
@@ -131,14 +165,12 @@ open class MessageBundle(
         if (string === null) {
             val lessSpecificLocale = localeToUse.lessSpecificLocale
             if (lessSpecificLocale != null)
-                string = getString0(index, lessSpecificLocale)
+                string = getMapString0(map, index, lessSpecificLocale)
         }
         // try default locale
         if (string === null && locale != i18n4k.defaultLocale)
-            string = getString0(index, i18n4k.defaultLocale)
+            string = getMapString0(map, index, i18n4k.defaultLocale)
 
-        if (string === null)
-            return "?${getEntryByIndex(index)?.messageKey ?: index}?"
         return string
     }
 
@@ -160,8 +192,8 @@ open class MessageBundle(
         )
 
     /**
-     * Similar to [getString0] but parameters are evaluated
-     * via the set [MessageFormatter] in [i18n4k]
+     * Similar to [getMapString0] but parameters are
+     * evaluated via the set [MessageFormatter] in [i18n4k]
      * ([de.comahe.i18n4k.config.I18n4kConfig.messageFormatter])
      */
     protected fun getStringN(index: Int, parameters: List<Any>, locale: Locale?) =
@@ -171,6 +203,7 @@ open class MessageBundle(
             locale ?: i18n4k.locale
         )
 
+    // @formatter:off
 
     /**
      * Create a [LocalizedString] for the given index.
@@ -231,6 +264,7 @@ open class MessageBundle(
     ): MessageBundleLocalizedString =
         LocalizedStringN(this, key, index, listOf(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9))
 
+    // @formatter:on
 
     /**
      * Create a factory for [LocalizedString] for the given index.
@@ -308,6 +342,14 @@ open class MessageBundle(
     ): MessageBundleLocalizedStringFactory10 =
         LocalizedStringFactory10Bundled(this, key, index)
 
+    ////////////////////////////////////////////////////////////
+    // companion
+    ////////////////////////////////////////////////////////////
+
+    companion object {
+        private const val EXTENSION_KEY_PRIVATE = 'x'
+        private const val EXTENSION_VALUE_ATTRIB_PREFIX = "attr-"
+    }
 
     ////////////////////////////////////////////////////////////
     // LocalizedString
@@ -329,6 +371,9 @@ open class MessageBundle(
         override fun toString(locale: Locale?) =
             messageBundle.getStringS(messageIndex, locale)
 
+        override fun getAttribute(attributeName: CharSequence, locale: Locale?): String? {
+            return messageBundle.getAttribString0(attributeName, messageIndex, locale)
+        }
 
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
@@ -365,6 +410,9 @@ open class MessageBundle(
         override fun toString(locale: Locale?) =
             messageBundle.getStringN(messageIndex, parameters, locale)
 
+        override fun getAttribute(attributeName: CharSequence, locale: Locale?): String? {
+            return messageBundle.getAttribString0(attributeName, messageIndex, locale)
+        }
 
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
@@ -500,11 +548,13 @@ open class MessageBundle(
         fun toString(locale: Locale?) =
             messageBundle.getString0(messageIndex, locale)
 
+        // @formatter:off
         override fun createString(p0: Any, p1: Any, p2: Any, p3: Any, p4: Any, p5: Any, locale: Locale?) =
             messageBundle.getStringN(messageIndex, listOf(p0, p1, p2, p3, p4, p5), locale)
 
         override fun createLocalizedString(p0: Any, p1: Any, p2: Any, p3: Any, p4: Any, p5: Any) =
             messageBundle.getLocalizedString6(messageKey, messageIndex, p0, p1, p2, p3, p4, p5)
+        // @formatter:on
     }
 
     private data class LocalizedStringFactory7Bundled(
@@ -519,11 +569,13 @@ open class MessageBundle(
         fun toString(locale: Locale?) =
             messageBundle.getString0(messageIndex, locale)
 
+        // @formatter:off
         override fun createString(p0: Any, p1: Any, p2: Any, p3: Any, p4: Any, p5: Any, p6: Any, locale: Locale?) =
             messageBundle.getStringN(messageIndex, listOf(p0, p1, p2, p3, p4, p5, p6), locale)
 
         override fun createLocalizedString(p0: Any, p1: Any, p2: Any, p3: Any, p4: Any, p5: Any, p6: Any) =
             messageBundle.getLocalizedString7(messageKey, messageIndex, p0, p1, p2, p3, p4, p5, p6)
+        // @formatter:on
     }
 
     private data class LocalizedStringFactory8Bundled(
@@ -538,11 +590,13 @@ open class MessageBundle(
         fun toString(locale: Locale?) =
             messageBundle.getString0(messageIndex, locale)
 
+        // @formatter:off
         override fun createString(p0: Any, p1: Any, p2: Any, p3: Any, p4: Any, p5: Any, p6: Any, p7: Any, locale: Locale?) =
             messageBundle.getStringN(messageIndex, listOf(p0, p1, p2, p3, p4, p5, p6, p7), locale)
 
         override fun createLocalizedString(p0: Any, p1: Any, p2: Any, p3: Any, p4: Any, p5: Any, p6: Any, p7: Any) =
             messageBundle.getLocalizedString8(messageKey, messageIndex, p0, p1, p2, p3, p4, p5, p6, p7)
+        // @formatter:on
     }
 
     private data class LocalizedStringFactory9Bundled(
@@ -557,11 +611,13 @@ open class MessageBundle(
         fun toString(locale: Locale?) =
             messageBundle.getString0(messageIndex, locale)
 
+        // @formatter:off
         override fun createString(p0: Any, p1: Any, p2: Any, p3: Any, p4: Any, p5: Any, p6: Any, p7: Any, p8: Any, locale: Locale?) =
             messageBundle.getStringN(messageIndex, listOf(p0, p1, p2, p3, p4, p5, p6, p7, p8), locale)
 
         override fun createLocalizedString(p0: Any, p1: Any, p2: Any, p3: Any, p4: Any, p5: Any, p6: Any, p7: Any, p8: Any) =
             messageBundle.getLocalizedString9(messageKey, messageIndex, p0, p1, p2, p3, p4, p5, p6, p7, p8)
+        // @formatter:on
     }
 
     private data class LocalizedStringFactory10Bundled(
@@ -576,10 +632,12 @@ open class MessageBundle(
         fun toString(locale: Locale?) =
             messageBundle.getString0(messageIndex, locale)
 
+        // @formatter:off
         override fun createString(p0: Any, p1: Any, p2: Any, p3: Any, p4: Any, p5: Any, p6: Any, p7: Any, p8: Any, p9: Any, locale: Locale?) =
             messageBundle.getStringN(messageIndex, listOf(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9), locale)
 
         override fun createLocalizedString(p0: Any, p1: Any, p2: Any, p3: Any, p4: Any, p5: Any, p6: Any, p7: Any, p8: Any, p9: Any) =
             messageBundle.getLocalizedString10(messageKey, messageIndex, p0, p1, p2, p3, p4, p5, p6, p7, p8, p9)
+        // @formatter:on
     }
 }

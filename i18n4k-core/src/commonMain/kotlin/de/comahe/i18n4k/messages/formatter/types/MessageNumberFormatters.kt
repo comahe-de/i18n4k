@@ -69,6 +69,7 @@ object MessageNumberFormatters {
         override fun format(
             result: StringBuilder,
             value: Any?,
+            typeId: CharSequence,
             style: StylePart?,
             parameters: List<Any>,
             locale: Locale,
@@ -181,7 +182,10 @@ object MessageNumberFormatters {
         }
     }
 
-    /** Parses the `formatStyle` and return the number of digits after the fraction sign. */
+    /**
+     * Parses the `formatStyle` and return the number of digits after the
+     * fraction sign.
+     */
     private fun parsePrecisionFromFormatStyle(formatStyle: CharSequence?): Int {
         if (formatStyle == null || !formatStyle.startsWith("%"))
             return Int.MAX_VALUE
@@ -197,7 +201,10 @@ object MessageNumberFormatters {
         return formatStyle.subSequence(idxStart, idxEnd).toString().toIntOrNull() ?: Int.MAX_VALUE
     }
 
-    /** Parses the `formatStyle` and return the number of digits after the fraction sign. */
+    /**
+     * Parses the `formatStyle` and return the number of digits after the
+     * fraction sign.
+     */
     private fun parseTailingFractionZerosFromFormatStyle(formatStyle: CharSequence?): Boolean {
         if (formatStyle == null || !formatStyle.startsWith("%"))
             return false

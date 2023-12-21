@@ -4,13 +4,14 @@ import de.comahe.i18n4k.Locale
 import de.comahe.i18n4k.messages.formatter.parsing.MessageFormatContext
 import de.comahe.i18n4k.messages.formatter.parsing.MessageParser
 import de.comahe.i18n4k.messages.formatter.parsing.MessagePart
+import de.comahe.i18n4k.messages.formatter.types.MessageAttribSelectFormatter
+import de.comahe.i18n4k.messages.formatter.types.MessageAttribValueFormatter
 import de.comahe.i18n4k.messages.formatter.types.MessageNumberFormatters
 import de.comahe.i18n4k.messages.formatter.types.MessageSelectFormatter
 import de.comahe.i18n4k.messages.formatter.types.MessageTransformFormatters
 import kotlinx.atomicfu.atomic
 import kotlinx.atomicfu.update
 import kotlinx.collections.immutable.persistentMapOf
-import kotlinx.collections.immutable.toPersistentMap
 
 /**
  * Default formatter for messages of `i18n4k`
@@ -81,8 +82,9 @@ object MessageFormatterDefault : MessageFormatter {
         MessageFormatContext(
             (MessageNumberFormatters.all
                 + MessageTransformFormatters.all
-                + MessageSelectFormatter)
-                .associateBy({ it.typeId }, { it }).toPersistentMap()
+                + MessageSelectFormatter
+                + MessageAttribValueFormatter
+                + MessageAttribSelectFormatter)
         )
     )
 
