@@ -9,5 +9,6 @@ dependencyResolutionManagement {
 }
 
 include("i18n4k-core")
+include("i18n4k-cldr-plural-rules")
 include("i18n4k-generator")
 include("i18n4k-gradle-plugin")

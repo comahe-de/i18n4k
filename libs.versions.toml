@@ -31,6 +31,7 @@ dokkaPlugin = "1.9.10"
 
 kotlinGradlePlugin =  { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 androidGradlePlugin =  { module = "com.android.tools.build:gradle", version.ref = "androidPlugin" }
+dokkaPlugin = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokkaPlugin" }
 
 kotlinxAtomicfu =  { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "kotlinxAtomicfu" }
 kotlinxCollectionsImmutable =  { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinxCollectionsImmutable" }
