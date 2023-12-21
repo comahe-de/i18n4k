@@ -10,24 +10,22 @@ import kotlinx.collections.immutable.persistentMapOf
 /**
  * Property to access [Locale.getLanguage]
  *
- * Direct expected property not possible because `java.util.Locale` should
- * be a actual typealias and getter cannot replace property currently:
- * https://youtrack.jetbrains.com/issue/KT-15620
+ * Direct expected property is not possible because `java.util.Locale`
+ * should be an actual typealias and getter cannot replace property
+ * currently: [KT-15620](https://youtrack.jetbrains.com/issue/KT-15620)
  */
 val Locale.language: String
     get() = this.getLanguage()
 
-/**
- * Property to access [Locale.getCountry]
- *
- */
+/** Property to access [Locale.getScript] */
+val Locale.script: String
+    get() = this.getScript()
+
+/** Property to access [Locale.getCountry] */
 val Locale.country: String
     get() = this.getCountry()
 
-/**
- * Property to access [Locale.getVariant]
- *
- */
+/** Property to access [Locale.getVariant] */
 val Locale.variant: String
     get() = this.getVariant()
 
@@ -60,225 +58,362 @@ val Locale.lessSpecificLocale: Locale?
     }
 
 
-/** Transforms a languageTag like "en_US_WIN" to a Locale("en","US","WIN") */
-fun forLocaleTag(languageTag: String, separator: String = "_"): Locale {
-    val underscore1 = languageTag.indexOf(separator)
-    if (underscore1 < 0)
-        return Locale(languageTag)
+/**
+ * Transforms a languageTag like "en_US_texas" to a
+ * Locale("en","US","texas")
+ *
+ * See [rfc5646](https://www.rfc-editor.org/rfc/rfc5646.html#section-2.1)
+ */
+fun forLocaleTag(languageTag: String, separator: Char = '_', separator2: Char = '-'): Locale {
+    require(languageTag.isNotEmpty()) { "Language tag was empty!" }
 
-    val underscore2 = languageTag.indexOf(separator, underscore1 + 1)
-    if (underscore2 < 0)
-        return Locale(
-            languageTag.substring(0, underscore1),
-            languageTag.substring(underscore1 + 1)
-        )
+    var language = ""
+    var script = ""
+    var country = ""
+    var variant = ""
+    val extensions = mutableMapOf<Char, String>()
 
-    return Locale(
-        languageTag.substring(0, underscore1),
-        languageTag.substring(underscore1 + 1, underscore2),
-        languageTag.substring(underscore2 + 1)
+    val parts = languageTag.split(separator, separator2)
+
+    // tool functions....
+    fun String.isAlpha() = all { it.isLetter() }
+    fun String.isDigit() = all { it.isDigit() }
+    fun String.isAlphaNum() = all { it.isLetterOrDigit() }
+
+
+    var index = 0;
+
+    language = parts[index++]
+    check(language.length in 2..8) { "Language must have between 2 and 8 chars. Actual: $language" }
+    check(language.isAlpha()) { "Language must only contain letters. Actual: $language" }
+
+    // up to 3 extlang -> not supported by Java implementation
+    //while (parts.size > index && parts[index].length == 3) {
+    //    language += "-" + parts[index++];
+    //}
+
+    // skip empty parts
+    while (parts.size > index && parts[index].isEmpty())
+        index++
+
+
+    // script
+    if (parts.size > index
+        && parts[index].isAlpha()
+        && parts[index].length == 4
     )
+        script = parts[index++]
+
+    // skip empty parts
+    while (parts.size > index && parts[index].isEmpty())
+        index++
+
+
+    // country / region
+    if (parts.size > index
+        && (
+            (parts[index].length == 2 && parts[index].isAlpha())
+                || (parts[index].length == 3 && parts[index].isDigit())
+            )
+    )
+        country = parts[index++]
+
+    // skip empty parts
+    while (parts.size > index && parts[index].isEmpty())
+        index++
+
+    // variant
+    if (parts.size > index
+        && ((parts[index].length in 5..8 && parts[index].isAlphaNum())
+            || (parts[index].length == 4 && parts[index][0].isDigit() && parts[index].isAlphaNum())
+            )
+    )
+        variant = parts[index++]
+
+    // skip empty parts
+    while (parts.size > index && parts[index].isEmpty())
+        index++
+
+
+    // read extensions
+    while (parts.size > index && parts[index].length == 1) {
+        val key = parts[index++]
+        val value = StringBuilder()
+        while (parts.size > index && parts[index].length in 2..8) {
+            if (value.isNotEmpty())
+                value.append("-")
+            value.append(parts[index++])
+        }
+        check(value.isNotEmpty()) { "Value for extension key '$key' is empty! language-tag: $languageTag" }
+        extensions[key[0]] = value.toString()
+    }
+    check(parts.size <= index) { "Unexpected part: ${parts[index]} -  language-tag: $languageTag" }
+
+    return createLocale(language, script, country, variant, extensions)
+}
+
+fun toLocaleTag(
+    language: String,
+    script: String,
+    country: String,
+    variant: String,
+    extensions: Map<Char, String>?,
+    separator: String = "_"
+): String {
+    val tag = StringBuilder()
+    tag.append(language)
+    if (script.isNotEmpty())
+        tag.append(separator).append(script)
+    if (country.isNotEmpty())
+        tag.append(separator).append(country)
+    if (variant.isNotEmpty())
+        tag.append(separator).append(variant)
+    extensions?.forEach { (key, value) ->
+        tag.append(separator).append(key).append(separator).append(value)
+    }
+    return tag.toString()
+}
+
+fun Locale.toTag(separator: String = "_"): String {
+
+    val extensions: Map<Char, String>?
+    if (hasExtensions()) {
+        extensions = mutableMapOf()
+        for (key in getExtensionKeys()) {
+            val value = getExtension(key)
+            if (value != null)
+                extensions[key] = value
+        }
+    } else
+        extensions = null
+
+    return toLocaleTag(language, script, country, variant, extensions, separator)
 }
 
 
-fun Locale.toTag( separator: String = "_"): String {
-    if (country.isEmpty())
-        return language
-    if (variant.isEmpty())
-        return language + separator + country
-    return language + separator + country + separator + variant
-}
-
-/** Returns a name for the locale that is appropriate for display to the user in the language of the locale */
+/**
+ * Returns a name for the locale that is appropriate for display to the
+ * user in the language of the locale
+ */
 fun Locale.getDisplayNameInLocale(): String {
-    val displayLanguage = localeTags.binarySearch(language).let {
+    val language = this.language.lowercase()
+    val script = this.script.lowercase()
+    val country = this.country.lowercase()
+    val variant = this.variant.lowercase()
+
+    var display = localeTags.binarySearch(language).let {
         if (it < 0)
-            language
+            this.language
         else
             localeDisplayName[it]
     }
 
-    if (country.isEmpty())
-        return displayLanguage
-
-    val displayCountry = localeTags.binarySearch(language + "_" + country).let {
-        if (it < 0)
-            "$displayLanguage ($country)"
-        else
-            localeDisplayName[it]
+    fun String.appendInfo(info: String): String {
+        val index = indexOf(")")
+        if (index < 0)
+            return "$this ($info)"
+        return substring(0, index) + "," + info + ")"
     }
 
-    if (variant.isEmpty())
-        return displayCountry
 
-
-    return localeTags.binarySearch(language + "_" + country + "_" + variant).let {
-        if (it < 0)
-            "${displayCountry.substringBefore(")")},$variant)"
+    display =
+        if (country.isEmpty())
+            display
         else
-            localeDisplayName[it]
-    }
+            localeTags.binarySearch(language + "_" + country).let {
+                if (it < 0)
+                    display.appendInfo(this.country)
+                else
+                    localeDisplayName[it]
+            }
+
+
+    display =
+        if (variant.isEmpty())
+            display
+        else
+            localeTags.binarySearch(language + "_" + country + "_" + variant).let {
+                if (it < 0)
+                    display.appendInfo(this.variant)
+                else
+                    localeDisplayName[it]
+
+            }
+
+   display =
+        if (script.isEmpty())
+            display
+        else
+            localeTags.binarySearch(language + "_" + country + "_" + variant + "#" + script).let {
+                if (it < 0)
+                    display.appendInfo(this.script)
+                else
+                    localeDisplayName[it]
+
+            }
+
+    return display
 }
 
-/** Locale  */
+/** Locale */
 private val localeTags = arrayListOf(
     "ar",
-    "ar_AE",
-    "ar_BH",
-    "ar_DZ",
-    "ar_EG",
-    "ar_IQ",
-    "ar_JO",
-    "ar_KW",
-    "ar_LB",
-    "ar_LY",
-    "ar_MA",
-    "ar_OM",
-    "ar_QA",
-    "ar_SA",
-    "ar_SD",
-    "ar_SY",
-    "ar_TN",
-    "ar_YE",
+    "ar_ae",
+    "ar_bh",
+    "ar_dz",
+    "ar_eg",
+    "ar_iq",
+    "ar_jo",
+    "ar_kw",
+    "ar_lb",
+    "ar_ly",
+    "ar_ma",
+    "ar_om",
+    "ar_qa",
+    "ar_sa",
+    "ar_sd",
+    "ar_sy",
+    "ar_tn",
+    "ar_ye",
     "be",
-    "be_BY",
+    "be_by",
     "bg",
-    "bg_BG",
+    "bg_bg",
     "ca",
-    "ca_ES",
+    "ca_es",
     "cs",
-    "cs_CZ",
+    "cs_cz",
     "da",
-    "da_DK",
+    "da_dk",
     "de",
-    "de_AT",
-    "de_CH",
-    "de_DE",
-    "de_GR",
-    "de_LU",
+    "de_at",
+    "de_ch",
+    "de_de",
+    "de_gr",
+    "de_lu",
     "el",
-    "el_CY",
-    "el_GR",
+    "el_cy",
+    "el_gr",
     "en",
-    "en_AU",
-    "en_CA",
-    "en_GB",
-    "en_IE",
-    "en_IN",
-    "en_MT",
-    "en_NZ",
-    "en_PH",
-    "en_SG",
-    "en_US",
-    "en_ZA",
+    "en_au",
+    "en_ca",
+    "en_gb",
+    "en_ie",
+    "en_in",
+    "en_mt",
+    "en_nz",
+    "en_ph",
+    "en_sg",
+    "en_us",
+    "en_za",
     "es",
-    "es_AR",
-    "es_BO",
-    "es_CL",
-    "es_CO",
-    "es_CR",
-    "es_CU",
-    "es_DO",
-    "es_EC",
-    "es_ES",
-    "es_GT",
-    "es_HN",
-    "es_MX",
-    "es_NI",
-    "es_PA",
-    "es_PE",
-    "es_PR",
-    "es_PY",
-    "es_SV",
-    "es_US",
-    "es_UY",
-    "es_VE",
+    "es_ar",
+    "es_bo",
+    "es_cl",
+    "es_co",
+    "es_cr",
+    "es_cu",
+    "es_do",
+    "es_ec",
+    "es_es",
+    "es_gt",
+    "es_hn",
+    "es_mx",
+    "es_ni",
+    "es_pa",
+    "es_pe",
+    "es_pr",
+    "es_py",
+    "es_sv",
+    "es_us",
+    "es_uy",
+    "es_ve",
     "et",
-    "et_EE",
+    "et_ee",
     "fi",
-    "fi_FI",
+    "fi_fi",
     "fr",
-    "fr_BE",
-    "fr_CA",
-    "fr_CH",
-    "fr_FR",
-    "fr_LU",
+    "fr_be",
+    "fr_ca",
+    "fr_ch",
+    "fr_fr",
+    "fr_lu",
     "ga",
-    "ga_IE",
+    "ga_ie",
     "hi",
-    "hi_IN",
+    "hi_in",
     "hr",
-    "hr_HR",
+    "hr_hr",
     "hu",
-    "hu_HU",
+    "hu_hu",
     "in",
-    "in_ID",
+    "in_id",
     "is",
-    "is_IS",
+    "is_is",
     "it",
-    "it_CH",
-    "it_IT",
+    "it_ch",
+    "it_it",
     "iw",
-    "iw_IL",
+    "iw_il",
     "ja",
-    "ja_JP",
+    "ja_jp",
     "ko",
-    "ko_KR",
+    "ko_kr",
     "lt",
-    "lt_LT",
+    "lt_lt",
     "lv",
-    "lv_LV",
+    "lv_lv",
     "mk",
-    "mk_MK",
+    "mk_mk",
     "ms",
-    "ms_MY",
+    "ms_my",
     "mt",
-    "mt_MT",
+    "mt_mt",
     "nl",
-    "nl_BE",
-    "nl_NL",
+    "nl_be",
+    "nl_nl",
     "no",
-    "no_NO",
-    "no_NO_NY",
+    "no_no",
+    "no_no_ny",
     "pl",
-    "pl_PL",
+    "pl_pl",
     "pt",
-    "pt_BR",
-    "pt_PT",
+    "pt_br",
+    "pt_pt",
     "ro",
-    "ro_RO",
+    "ro_ro",
     "ru",
-    "ru_RU",
+    "ru_ru",
     "sk",
-    "sk_SK",
+    "sk_sk",
     "sl",
-    "sl_SI",
+    "sl_si",
     "sq",
-    "sq_AL",
+    "sq_al",
     "sr",
-    "sr_BA",
-    "sr_BA_#Latn",
-    "sr_CS",
-    "sr_ME",
-    "sr_ME_#Latn",
-    "sr_RS",
-    "sr_RS_#Latn",
-    "sr__#Latn",
+    "sr_ba",
+    "sr_ba_#latn",
+    "sr_cs",
+    "sr_me",
+    "sr_me_#latn",
+    "sr_rs",
+    "sr_rs_#latn",
+    "sr__#latn",
     "sv",
-    "sv_SE",
+    "sv_se",
     "th",
-    "th_TH",
+    "th_th",
     "tr",
-    "tr_TR",
+    "tr_tr",
     "uk",
-    "uk_UA",
+    "uk_ua",
     "vi",
-    "vi_VN",
+    "vi_vn",
     "zh",
-    "zh_CN",
-    "zh_HK",
-    "zh_SG",
-    "zh_TW",
+    "zh_cn",
+    "zh_hk",
+    "zh_sg",
+    "zh_tw",
 )
 
 /** Display names of locales defined in [localeTags] */
