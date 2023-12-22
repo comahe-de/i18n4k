@@ -10,9 +10,9 @@ import kotlinx.collections.immutable.persistentMapOf
 /**
  * Property to access [Locale.getLanguage]
  *
- * Direct expected property is not possible because `java.util.Locale`
- * should be an actual typealias and getter cannot replace property
- * currently: [KT-15620](https://youtrack.jetbrains.com/issue/KT-15620)
+ * Direct expected property is not possible because `java.util.Locale` should
+ * be an actual typealias and getter cannot replace property currently:
+ * [KT-15620](https://youtrack.jetbrains.com/issue/KT-15620)
  */
 val Locale.language: String
     get() = this.getLanguage()
@@ -29,6 +29,18 @@ val Locale.country: String
 val Locale.variant: String
     get() = this.getVariant()
 
+
+/**
+ * Useful constant for the root locale.
+ *
+ * The root locale is the locale whose language, country, and variant are empty ("") strings.
+ *
+ * This is regarded as the base locale of all locales, and is used as the language/country neutral
+ * locale for the locale sensitive operations.
+ */
+val rootLocale = createLocale("")
+
+
 /** Cache for [lessSpecificLocale] to prevent memory allocations. */
 private val lessSpecificLocaleCache = atomic(persistentMapOf<Locale, Locale?>())
 
@@ -37,8 +49,7 @@ private val lessSpecificLocaleCache = atomic(persistentMapOf<Locale, Locale?>())
  *
  * Returns null if there is no less specific locale.
  *
- * E.g. "de_DE_saxony" would become "de_DE", "de_DE" would become "de" and
- * "de" would become null.
+ * E.g. "de_DE_saxony" would become "de_DE", "de_DE" would become "de" and "de" would become null.
  */
 val Locale.lessSpecificLocale: Locale?
     get() {
@@ -59,8 +70,7 @@ val Locale.lessSpecificLocale: Locale?
 
 
 /**
- * Transforms a languageTag like "en_US_texas" to a
- * Locale("en","US","texas")
+ * Transforms a languageTag like "en_US_texas" to a Locale("en","US","texas")
  *
  * See [rfc5646](https://www.rfc-editor.org/rfc/rfc5646.html#section-2.1)
  */
@@ -192,8 +202,8 @@ fun Locale.toTag(separator: String = "_"): String {
 
 
 /**
- * Returns a name for the locale that is appropriate for display to the
- * user in the language of the locale
+ * Returns a name for the locale that is appropriate for display to the user in the language of the
+ * locale
  */
 fun Locale.getDisplayNameInLocale(): String {
     val language = this.language.lowercase()
@@ -240,7 +250,7 @@ fun Locale.getDisplayNameInLocale(): String {
 
             }
 
-   display =
+    display =
         if (script.isEmpty())
             display
         else

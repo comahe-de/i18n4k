@@ -43,25 +43,23 @@ expect class Locale {
     /**
      * Language code.
      *
-     * Should be a
-     * [ISO 639-1 code](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes).
+     * Should be a [ISO 639-1 code](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes).
      *
      * Will be lowercase.
      */
     fun getLanguage(): String
 
     /**
-     * Returns the script for this locale, which should either be the empty
-     * string or an "ISO 15924 4"-letter script code.
+     * Returns the script for this locale, which should either be the empty string or an "ISO 15924
+     * 4"-letter script code.
      *
-     * The first letter is uppercase and the rest are lowercase, for example,
-     * 'Latn', 'Cyrl'.
+     * The first letter is uppercase and the rest are lowercase, for example, 'Latn', 'Cyrl'.
      */
     fun getScript(): String
 
     /**
-     * country/region code for this locale, which should either be the empty
-     * string, an uppercase ISO 3166 2-letter code, or a UN M.49 3-digit code.
+     * country/region code for this locale, which should either be the empty string, an uppercase
+     * ISO 3166 2-letter code, or a UN M.49 3-digit code.
      */
     fun getCountry(): String
 
@@ -79,24 +77,22 @@ expect class Locale {
     fun stripExtensions(): Locale
 
     /**
-     * Returns the extension (or private use) value associated with the
-     * specified key, or null if there is no extension associated with the key.
+     * Returns the extension (or private use) value associated with the specified key, or null if
+     * there is no extension associated with the key.
      *
      * To be well-formed, the key must be one of `[0-9A-Za-z]`.
      *
-     * Keys are case-insensitive, so for example, 'z' and 'Z' represent the
-     * same extension.
+     * Keys are case-insensitive, so for example, 'z' and 'Z' represent the same extension.
      *
      * @param key the extension key
-     * @return The extension, or null if this locale defines no extension for
-     *     the specified key.
+     * @return The extension, or null if this locale defines no extension for the specified key.
      * @throws IllegalArgumentException if key is not well-formed
      */
     fun getExtension(key: Char): String?
 
     /**
-     * Returns the set of extension keys associated with this locale, or the
-     * empty set if it has no extensions.
+     * Returns the set of extension keys associated with this locale, or the empty set if it has no
+     * extensions.
      *
      * The returned set is unmodifiable.
      *
@@ -122,3 +118,4 @@ expect fun createLocale(
 
 /** The current locale of the system or user */
 expect val systemLocale: Locale
+

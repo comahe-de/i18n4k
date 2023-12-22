@@ -51,27 +51,21 @@ import kotlinx.collections.immutable.persistentMapOf
  *
  * ```
  *
- * Within a String, a pair of single quotes can be used to quote any
- * arbitrary characters except single quotes. For example, pattern string
- * "'{0}'" represents string "{0}", not a FormatElement. A single quote
- * itself must be represented by doubled single quotes '' throughout
- * a String. For example, pattern string "'{''}'" is interpreted as a
- * sequence of '{ (start of quoting and a left curly brace), '' (a single
- * quote), and }' (a right curly brace and end of quoting), not '{' and '}'
- * (quoted left and right curly braces): representing string "{'}", not
- * "{}".
+ * Within a String, a pair of single quotes can be used to quote any arbitrary characters except
+ * single quotes. For example, pattern string "'{0}'" represents string "{0}", not a FormatElement.
+ * A single quote itself must be represented by doubled single quotes '' throughout a String.
+ * For example, pattern string "'{''}'" is interpreted as a sequence of '{ (start of quoting and
+ * a left curly brace), '' (a single quote), and }' (a right curly brace and end of quoting),
+ * not '{' and '}' (quoted left and right curly braces): representing string "{'}", not "{}".
  *
- * Any unmatched quote is treated as closed at the end of the given
- * pattern. For example, pattern string "'{0}" is treated as pattern
- * "'{0}'".
+ * Any unmatched quote is treated as closed at the end of the given pattern. For example, pattern
+ * string "'{0}" is treated as pattern "'{0}'".
  *
- * Any curly braces within an unquoted pattern must be balanced. For
- * example, "ab {0} de" and "ab '}' de" are valid patterns, but "ab {0'}'
- * de", "ab } de" and "''{''" are not.
+ * Any curly braces within an unquoted pattern must be balanced. For example, "ab {0} de" and "ab
+ * '}' de" are valid patterns, but "ab {0'}' de", "ab } de" and "''{''" are not.
  *
- * The `FormatType` is evaluated by [MessageValueFormatter]. The
- * [MessageValueFormatter] defines the possible values of the
- * `FormatStyle`.
+ * The `FormatType` is evaluated by [MessageValueFormatter]. The [MessageValueFormatter] defines the
+ * possible values of the `FormatStyle`.
  *
  * The following [MessageValueFormatter] are added by default
  * * [MessageNumberFormatters]
@@ -89,6 +83,10 @@ object MessageFormatterDefault : MessageFormatter {
     )
 
     private val parsedMessageCache = atomic(persistentMapOf<String, MessagePart>())
+
+    fun registerMessageValueFormatters(vararg f:  MessageValueFormatter) {
+        messageFormatContext.update { it.withMessageValueFormatters(*f) }
+    }
 
     override fun format(message: String, parameters: List<Any>, locale: Locale): String {
         return getMessagePartFor(message)

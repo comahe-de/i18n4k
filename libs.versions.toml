@@ -8,6 +8,8 @@ kotlinxAtomicfu = "0.23.0"
 kotlinxCollectionsImmutable = "0.3.6"
 # https://github.com/Kotlin/kotlinx.coroutines
 kotlinxCoroutines = "1.7.3"
+# https://github.com/Kotlin/kotlinx.serialization
+kotlinxSerialization = "1.6.2"
 # https://github.com/square/kotlinpoet
 kotlinPoet = "1.14.2"
 # https://www.slf4j.org/news.html
@@ -29,18 +31,19 @@ dokkaPlugin = "1.9.10"
 
 [libraries]
 
-kotlinGradlePlugin =  { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
-androidGradlePlugin =  { module = "com.android.tools.build:gradle", version.ref = "androidPlugin" }
+kotlinGradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+androidGradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "androidPlugin" }
 dokkaPlugin = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokkaPlugin" }
 
-kotlinxAtomicfu =  { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "kotlinxAtomicfu" }
-kotlinxCollectionsImmutable =  { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinxCollectionsImmutable" }
-kotlinxCoroutinesCore =  { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
-kotlinxCoroutinesTest =  { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
-kotlinPoet =  { module = "com.squareup:kotlinpoet", version.ref = "kotlinPoet" }
-slf4jApi =  { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
-logbackClassic =  { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
-junit =  { module = "junit:junit", version.ref = "junit" }
+kotlinxAtomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "kotlinxAtomicfu" }
+kotlinxCollectionsImmutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinxCollectionsImmutable" }
+kotlinxCoroutinesCore = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
+kotlinxCoroutinesTest = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
+kotlinxSerializationJson = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
+kotlinPoet = { module = "com.squareup:kotlinpoet", version.ref = "kotlinPoet" }
+slf4jApi = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
+logbackClassic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
+junit = { module = "junit:junit", version.ref = "junit" }
 
 
 [plugins]
