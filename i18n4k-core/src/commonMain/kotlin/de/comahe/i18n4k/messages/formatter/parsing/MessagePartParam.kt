@@ -1,7 +1,7 @@
 package de.comahe.i18n4k.messages.formatter.parsing
 
 import de.comahe.i18n4k.Locale
-import de.comahe.i18n4k.strings.LocalizedString
+import de.comahe.i18n4k.messages.formatter.MessageFormatContext
 import kotlin.math.max
 
 data class MessagePartParam(val index: Int?, val type: CharSequence?, var style: StylePart?) :

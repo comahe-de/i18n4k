@@ -1,6 +1,7 @@
 package de.comahe.i18n4k.messages.formatter.parsing
 
 import de.comahe.i18n4k.Locale
+import de.comahe.i18n4k.messages.formatter.MessageFormatContext
 import kotlinx.collections.immutable.ImmutableList
 
 data class MessagePartList(val list: ImmutableList<MessagePart>) : MessagePart {
