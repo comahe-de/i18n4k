@@ -9,6 +9,7 @@ object MessagesThingsAre_en : MessagesProvider {
     @JvmStatic
     private val data: Array<String?> = arrayOf(
         "The {0} is beautiful. You will love {0, attr:gender, m:him | f:her | n:it }!",
+        "The {0} is beautiful. You will love {0, gender, m:him | f:her | n:it }!",
         "{0} has gender {0, attr-gender}",
         "Not existing: {0, attr-none}",
         "Not existing with default: {0, attr-none, {1}! }",

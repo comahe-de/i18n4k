@@ -5,6 +5,7 @@ import de.comahe.i18n4k.messages.formatter.parsing.MessageParser
 import de.comahe.i18n4k.messages.formatter.parsing.MessagePart
 import de.comahe.i18n4k.messages.formatter.types.MessageAttribSelectFormatter
 import de.comahe.i18n4k.messages.formatter.types.MessageAttribValueFormatter
+import de.comahe.i18n4k.messages.formatter.types.MessageGenderSelectFormatter
 import de.comahe.i18n4k.messages.formatter.types.MessageNumberFormatters
 import de.comahe.i18n4k.messages.formatter.types.MessageSelectFormatter
 import de.comahe.i18n4k.messages.formatter.types.MessageTransformFormatters
@@ -73,17 +74,18 @@ object MessageFormatterDefault : MessageFormatter {
 
     private val messageFormatContext = atomic(
         MessageFormatContext(
-            (MessageNumberFormatters.all
+            MessageNumberFormatters.all
                 + MessageTransformFormatters.all
                 + MessageSelectFormatter
                 + MessageAttribValueFormatter
-                + MessageAttribSelectFormatter)
+                + MessageAttribSelectFormatter
+                + MessageGenderSelectFormatter
         )
     )
 
     private val parsedMessageCache = atomic(persistentMapOf<String, MessagePart>())
 
-    fun registerMessageValueFormatters(vararg f:  MessageValueFormatter) {
+    fun registerMessageValueFormatters(vararg f: MessageValueFormatter) {
         messageFormatContext.update { it.withMessageValueFormatters(*f) }
     }
 

@@ -3,6 +3,10 @@ package da.comahe.i18n4k.attribs
 import de.comahe.i18n4k.Locale
 import de.comahe.i18n4k.config.I18n4kConfigDefault
 import de.comahe.i18n4k.i18n4k
+import de.comahe.i18n4k.messages.formatter.provider.GenderProvider
+import de.comahe.i18n4k.messages.formatter.provider.GenderProviderDefault
+import de.comahe.i18n4k.messages.formatter.types.MessageGenderSelectFormatter
+import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -27,30 +31,40 @@ class MessageBundleAttributesTest {
         MessagesThingsAre.registerTranslation(MessagesThingsAre_de)
     }
 
+    @AfterTest
+    fun reset() {
+        MessageGenderSelectFormatter.genderProvider = GenderProviderDefault
+    }
+
     @Test
     fun englishTest() {
         i18n4kConfig.locale = Locale("en")
 
-        assertEquals(
-            "The moon is beautiful. You will love it!",
-            MessagesThingsAre.X_IS_BEAUTIFUL(MessagesThings.MOON)
-        )
-        assertEquals(
-            "The sun is beautiful. You will love it!",
-            MessagesThingsAre.X_IS_BEAUTIFUL(MessagesThings.SUN)
-        )
-        assertEquals(
-            "The water is beautiful. You will love it!",
-            MessagesThingsAre.X_IS_BEAUTIFUL(MessagesThings.WATER)
-        )
-        assertEquals(
-            "The Joseph is beautiful. You will love him!",
-            MessagesThingsAre.X_IS_BEAUTIFUL(MessagesThings.JOSEPH)
-        )
-        assertEquals(
-            "The Mary is beautiful. You will love her!",
-            MessagesThingsAre.X_IS_BEAUTIFUL(MessagesThings.MARY)
-        )
+        for (localizedStringFactory1 in arrayOf(
+            MessagesThingsAre.X_IS_BEAUTIFUL,
+            MessagesThingsAre.X_IS_BEAUTIFUL_2
+        )) {
+            assertEquals(
+                "The moon is beautiful. You will love it!",
+                localizedStringFactory1(MessagesThings.MOON)
+            )
+            assertEquals(
+                "The sun is beautiful. You will love it!",
+                localizedStringFactory1(MessagesThings.SUN)
+            )
+            assertEquals(
+                "The water is beautiful. You will love it!",
+                localizedStringFactory1(MessagesThings.WATER)
+            )
+            assertEquals(
+                "The Joseph is beautiful. You will love him!",
+                localizedStringFactory1(MessagesThings.JOSEPH)
+            )
+            assertEquals(
+                "The Mary is beautiful. You will love her!",
+                localizedStringFactory1(MessagesThings.MARY)
+            )
+        }
 
         assertEquals(
             "Mary has gender f",
@@ -70,26 +84,31 @@ class MessageBundleAttributesTest {
     fun germanTest() {
         i18n4kConfig.locale = Locale("de")
 
-        assertEquals(
-            "Der Mond ist schön. Du wirst ihn lieben!",
-            MessagesThingsAre.X_IS_BEAUTIFUL(MessagesThings.MOON)
-        )
-        assertEquals(
-            "Die Sonne ist schön. Du wirst sie lieben!",
-            MessagesThingsAre.X_IS_BEAUTIFUL(MessagesThings.SUN)
-        )
-        assertEquals(
-            "Das Wasser ist schön. Du wirst es lieben!",
-            MessagesThingsAre.X_IS_BEAUTIFUL(MessagesThings.WATER)
-        )
-        assertEquals(
-            "Der Joseph ist schön. Du wirst ihn lieben!",
-            MessagesThingsAre.X_IS_BEAUTIFUL(MessagesThings.JOSEPH)
-        )
-        assertEquals(
-            "Die Maria ist schön. Du wirst sie lieben!",
-            MessagesThingsAre.X_IS_BEAUTIFUL(MessagesThings.MARY)
-        )
+        for (localizedStringFactory1 in arrayOf(
+            MessagesThingsAre.X_IS_BEAUTIFUL,
+            MessagesThingsAre.X_IS_BEAUTIFUL_2,
+        )) {
+            assertEquals(
+                "Der Mond ist schön. Du wirst ihn lieben!",
+                localizedStringFactory1(MessagesThings.MOON)
+            )
+            assertEquals(
+                "Die Sonne ist schön. Du wirst sie lieben!",
+                localizedStringFactory1(MessagesThings.SUN)
+            )
+            assertEquals(
+                "Das Wasser ist schön. Du wirst es lieben!",
+                localizedStringFactory1(MessagesThings.WATER)
+            )
+            assertEquals(
+                "Der Joseph ist schön. Du wirst ihn lieben!",
+                localizedStringFactory1(MessagesThings.JOSEPH)
+            )
+            assertEquals(
+                "Die Maria ist schön. Du wirst sie lieben!",
+                localizedStringFactory1(MessagesThings.MARY)
+            )
+        }
 
         assertEquals(
             "Maria hat Geschlecht f",
@@ -127,6 +146,31 @@ class MessageBundleAttributesTest {
         assertEquals(
             "Nicht existent mit Default: foo!",
             MessagesThingsAre.NOT_EXISTING_ATTR_WITH_DEFAULT(MessagesThings.MARY, "foo")
+        )
+    }
+
+    /** Test setting a custom gender provider */
+    @Test
+    fun customGenderProviderTest() {
+        i18n4kConfig.locale = Locale("en")
+
+        //everything is "n"
+        MessageGenderSelectFormatter.genderProvider = object : GenderProvider {
+            override fun getGenderOf(value: Any?, locale: Locale?): String? {
+                return "n"
+            }
+        }
+        assertEquals(
+            "The water is beautiful. You will love it!",
+            MessagesThingsAre.X_IS_BEAUTIFUL_2(MessagesThings.WATER)
+        )
+        assertEquals(
+            "The Joseph is beautiful. You will love it!",
+            MessagesThingsAre.X_IS_BEAUTIFUL_2(MessagesThings.JOSEPH)
+        )
+        assertEquals(
+            "The Mary is beautiful. You will love it!",
+            MessagesThingsAre.X_IS_BEAUTIFUL_2(MessagesThings.MARY)
         )
     }
 }
