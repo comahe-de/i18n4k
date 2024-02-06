@@ -13,6 +13,7 @@ object MessagesThingsAre_de : MessagesProvider {
         "{0} hat Geschlecht {0, attr-gender}",
         "Nicht existent: {0, attr-none}",
         "Nicht existent mit Default: {0, attr-none, {1}! }",
+        "Die Farbe {0,gender, f: der | des } {0, decl-genitiv, {0}{0, gender, f: | s } }.",
     )
 
     override val locale = forLocaleTag("de")

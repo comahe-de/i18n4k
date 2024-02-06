@@ -5,6 +5,7 @@ import de.comahe.i18n4k.messages.formatter.parsing.MessageParser
 import de.comahe.i18n4k.messages.formatter.parsing.MessagePart
 import de.comahe.i18n4k.messages.formatter.types.MessageAttribSelectFormatter
 import de.comahe.i18n4k.messages.formatter.types.MessageAttribValueFormatter
+import de.comahe.i18n4k.messages.formatter.types.MessageDeclensionValueFormatter
 import de.comahe.i18n4k.messages.formatter.types.MessageGenderSelectFormatter
 import de.comahe.i18n4k.messages.formatter.types.MessageNumberFormatters
 import de.comahe.i18n4k.messages.formatter.types.MessageSelectFormatter
@@ -80,6 +81,7 @@ object MessageFormatterDefault : MessageFormatter {
                 + MessageAttribValueFormatter
                 + MessageAttribSelectFormatter
                 + MessageGenderSelectFormatter
+                + MessageDeclensionValueFormatter
         )
     )
 

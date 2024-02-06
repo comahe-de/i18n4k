@@ -26,6 +26,11 @@ object MessagesThingsAre : MessageBundle() {
     val NOT_EXISTING_ATTR_WITH_DEFAULT =
         getLocalizedStringFactory2("not_existing_attr_with_default", 4)
 
+    /** using "gender" and "declension" */
+    @JvmField
+    val THE_COLOR_OF_X = getLocalizedStringFactory1("the color of x", 5)
+
+
     init {
         registerMessageBundleEntries(
             X_IS_BEAUTIFUL,

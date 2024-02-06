@@ -3,8 +3,10 @@ package da.comahe.i18n4k.attribs
 import de.comahe.i18n4k.Locale
 import de.comahe.i18n4k.config.I18n4kConfigDefault
 import de.comahe.i18n4k.i18n4k
+import de.comahe.i18n4k.messages.formatter.provider.DeclensionProvider
 import de.comahe.i18n4k.messages.formatter.provider.GenderProvider
 import de.comahe.i18n4k.messages.formatter.provider.GenderProviderDefault
+import de.comahe.i18n4k.messages.formatter.types.MessageDeclensionValueFormatter
 import de.comahe.i18n4k.messages.formatter.types.MessageGenderSelectFormatter
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
@@ -25,6 +27,7 @@ class MessageBundleAttributesTest {
         MessagesThings.registerTranslation(MessagesThings_de)
         MessagesThings.registerTranslation(MessagesThings_en_x_attr_gender)
         MessagesThings.registerTranslation(MessagesThings_de_x_attr_gender)
+        MessagesThings.registerTranslation(MessagesThings_de_x_attr_decl_genitiv)
 
         MessagesThingsAre.unregisterAllTranslations()
         MessagesThingsAre.registerTranslation(MessagesThingsAre_en)
@@ -78,6 +81,11 @@ class MessageBundleAttributesTest {
             "water has gender n",
             MessagesThingsAre.X_HAS_GENDER(MessagesThings.WATER)
         )
+
+        assertEquals(
+            "The color of the sun.",
+            MessagesThingsAre.THE_COLOR_OF_X(MessagesThings.SUN)
+        )
     }
 
     @Test
@@ -121,6 +129,27 @@ class MessageBundleAttributesTest {
         assertEquals(
             "Wasser hat Geschlecht n",
             MessagesThingsAre.X_HAS_GENDER(MessagesThings.WATER)
+        )
+
+        assertEquals(
+            "Die Farbe des Mondes.",
+            MessagesThingsAre.THE_COLOR_OF_X(MessagesThings.MOON)
+        )
+        assertEquals(
+            "Die Farbe der Sonne.",
+            MessagesThingsAre.THE_COLOR_OF_X(MessagesThings.SUN)
+        )
+        assertEquals(
+            "Die Farbe des Wassers.",
+            MessagesThingsAre.THE_COLOR_OF_X(MessagesThings.WATER)
+        )
+        assertEquals(
+            "Die Farbe des Josephs.",
+            MessagesThingsAre.THE_COLOR_OF_X(MessagesThings.JOSEPH)
+        )
+        assertEquals(
+            "Die Farbe der Maria.",
+            MessagesThingsAre.THE_COLOR_OF_X(MessagesThings.MARY)
         )
     }
 
@@ -173,4 +202,31 @@ class MessageBundleAttributesTest {
             MessagesThingsAre.X_IS_BEAUTIFUL_2(MessagesThings.MARY)
         )
     }
+
+    /** Test setting a custom gender provider */
+    @Test
+    fun customDeclensionProviderTest() {
+        i18n4kConfig.locale = Locale("de")
+
+        //everything is "n"
+        MessageDeclensionValueFormatter.declensionProvider = object : DeclensionProvider {
+            override fun getDeclensionOf(
+                declensionCase: CharSequence,
+                value: Any?,
+                locale: Locale?
+            ): String? {
+                return value.toString() + "-o"
+            }
+
+        }
+        assertEquals(
+            "Die Farbe des Mond-o.",
+            MessagesThingsAre.THE_COLOR_OF_X(MessagesThings.MOON)
+        )
+        assertEquals(
+            "Die Farbe der Sonne-o.",
+            MessagesThingsAre.THE_COLOR_OF_X(MessagesThings.SUN)
+        )
+    }
+
 }
