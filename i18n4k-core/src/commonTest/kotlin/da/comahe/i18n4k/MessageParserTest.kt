@@ -258,6 +258,42 @@ class MessageParserTest {
         )
     }
 
+    @Test
+    fun testStyleNested3() {
+        assertEquals(
+            MessagePartParam(
+                0, "foo",
+                StylePartSimple(
+                    MessagePartList(
+                        persistentListOf(
+                            MessagePartParam(1, null, null),
+                            MessagePartText("#"),
+                            MessagePartParam(2, "abc",  StylePartSimple(MessagePartText("def"))),
+                            MessagePartText("-"),
+                            MessagePartParam(
+                                3, "bar",
+                                StylePartList(
+                                    persistentListOf(
+                                        StylePartNamed(
+                                            persistentSetOf("a"),
+                                            MessagePartText("1")
+                                        ),
+                                        StylePartNamed(
+                                            persistentSetOf("b"),
+                                            MessagePartText("2")
+                                        ),
+                                        StylePartSimple(MessagePartText("3"))
+                                    )
+                                )
+                            ),
+                        ),
+                    )
+                )
+            ),
+            parse("{0,foo, {1}#{2, abc, def }-{3, bar, a: 1 | b : 2 | 3 }}"),
+        )
+    }
+
 
     @Test()
     fun testMaxParameterIndex() {

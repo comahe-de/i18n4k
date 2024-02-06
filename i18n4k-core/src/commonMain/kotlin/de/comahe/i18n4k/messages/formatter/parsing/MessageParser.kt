@@ -5,10 +5,7 @@ import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableSet
 
-/**
- * Parser for the
- * [de.comahe.i18n4k.messages.formatter.MessageFormatterDefault] format
- */
+/** Parser for the [de.comahe.i18n4k.messages.formatter.MessageFormatterDefault] format */
 class MessageParser(
     private val message: CharSequence,
     private val ignoreMessageParseErrors: Boolean = i18n4k.ignoreMessageParseErrors
@@ -64,8 +61,7 @@ class MessageParser(
     }
 
     /**
-     * Parses the message in the given range, but trims whitespaces at the
-     * beginning and end.
+     * Parses the message in the given range, but trims whitespaces at the beginning and end.
      *
      * @param startIndex - the start index, inclusive.
      * @param endIndex - the end index, exclusive.
@@ -134,13 +130,13 @@ class MessageParser(
 
 
     /**
-     * Parses the style of the parameter, e.g. "a: b | c: d | e"
+     * Parses the style of the parameter, e.g. "a: {0,foo, x:1|y:2|3}-b | c: d | e"
      *
      * @param startIndex - the start index, inclusive.
      * @param endIndex - the end index, exclusive.
      */
     private fun parseStyle(startIndex: Int, endIndex: Int): StylePart {
-        var index = findVerticalBar(startIndex, endIndex)
+        var index = findNextCorrespondingVerticalBar(startIndex, endIndex)
         if (index >= endIndex)
             return parseStylePart(startIndex, endIndex)
 
@@ -150,7 +146,7 @@ class MessageParser(
 
         while (true) {
             lastIndex = index + 1
-            index = findVerticalBar(lastIndex, endIndex)
+            index = findNextCorrespondingVerticalBar(lastIndex, endIndex)
             parts += parseStylePart(lastIndex, index)
             if (index >= endIndex)
                 break
@@ -166,7 +162,7 @@ class MessageParser(
      * @param endIndex - the end index, exclusive.
      */
     private fun parseStylePart(startIndex: Int, endIndex: Int): StylePart {
-        val index = findColon(startIndex, endIndex)
+        val index = findNextCorrespondingColon(startIndex, endIndex)
         if (index < endIndex) {
             return StylePartNamed(
                 names = parseNames(startIndex, index),
@@ -206,24 +202,6 @@ class MessageParser(
 
     }
 
-    /** finds the next "," not quoted */
-    private fun findNextComma(startIndex: Int, endIndex: Int): Int {
-        return findNext(startIndex, endIndex, ',')
-
-    }
-
-    /** finds the next "|" not quoted */
-    private fun findVerticalBar(startIndex: Int, endIndex: Int): Int {
-        return findNext(startIndex, endIndex, '|')
-
-    }
-
-    /** finds the next ":" not quoted */
-    private fun findColon(startIndex: Int, endIndex: Int): Int {
-        return findNext(startIndex, endIndex, ':')
-
-    }
-
     /** finds the next "/" not quoted */
     private fun findSlash(startIndex: Int, endIndex: Int): Int {
         return findNext(startIndex, endIndex, '/')
@@ -246,11 +224,23 @@ class MessageParser(
         }
     }
 
-    /** finds the next "," not quoted and not inside a "{ ... }" */
     private fun findNextCorrespondingComma(startIndex: Int, endIndex: Int): Int {
+        return findNextCorrespondingChar(startIndex, endIndex, ',')
+    }
+
+    private fun findNextCorrespondingVerticalBar(startIndex: Int, endIndex: Int): Int {
+        return findNextCorrespondingChar(startIndex, endIndex, '|')
+    }
+
+    private fun findNextCorrespondingColon(startIndex: Int, endIndex: Int): Int {
+        return findNextCorrespondingChar(startIndex, endIndex, ':')
+    }
+
+    /** finds the next 'char' not quoted and not inside a "{ ... }" */
+    private fun findNextCorrespondingChar(startIndex: Int, endIndex: Int, char: Char): Int {
         var index = startIndex
         while (true) {
-            val commaIndex = findNextComma(index, endIndex)
+            val commaIndex = findNext(index, endIndex, char)
             if (commaIndex >= endIndex)
                 return endIndex
             val openIndex = findNextOpenBrace(index, endIndex)
@@ -263,10 +253,8 @@ class MessageParser(
         }
     }
 
-    /**
-     * finds the index of the next character matching the given character not
-     * quoted
-     */
+
+    /** finds the index of the next character matching the given character not quoted */
     private fun findNext(startIndex: Int, endIndex: Int, char: Char): Int {
         var inQuotes = false
         var oneQuote = false
