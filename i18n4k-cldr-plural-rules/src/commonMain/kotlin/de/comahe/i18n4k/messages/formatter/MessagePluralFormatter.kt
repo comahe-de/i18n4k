@@ -32,7 +32,7 @@ import de.comahe.i18n4k.messages.formatter.types.MessageSelectFormatter
  *
  * Example “plural”:
  * ```
- * COUNT_BAGS =  There {0, plural, one: is | ? are } {0} {0, plural, one: bag | ? bags}.
+ * COUNT_BAGS =  There {0, plural, one {is} other {are} } {0} {0, plural, one {bag} other {bags}}.
  *
  * COUNT_BAGS(1) -> There is 1 bag.
  * COUNT_BAGS(2) -> There are 2 bags.
@@ -40,7 +40,7 @@ import de.comahe.i18n4k.messages.formatter.types.MessageSelectFormatter
  *
  * Example “ordinal”:
  * ```
- * METING_NUMBER  = This is the {0}{0, ordinal, one: st | two: nd  | few: rd | ? th } meeting.
+ * METING_NUMBER  = This is the {0}{0, ordinal, one {st} two {nd} few {rd} other {th} } meeting.
  *
  * METING_NUMBER(1) -> This is the 1st meeting.
  * METING_NUMBER(4) -> This is the 4th meeting.

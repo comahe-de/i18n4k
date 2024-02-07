@@ -25,7 +25,7 @@ object MessagesTest1_en : MessagesProvider {
         "Hello {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8} and {9}!",
         "Some text 1",
         "Some text 2",
-        "{0} has forgotten {1, select, female: her | his } {3, select, one: bag | {2} bags}.",
+        "{0} has forgotten {1, select, female {her} other {his} } {3, select, one {bag} other {{2} bags}}.",
         "It''s {0, number, %.02}!",
         "It''s a qute! Look: ''",
 

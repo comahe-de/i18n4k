@@ -27,16 +27,16 @@ import kotlinx.atomicfu.update
  *
  * Example:
  * ```
- * FORGOTTER_BAG = The {0} has forgotten {0, gender, m: his | f: her | ? its) bag.
+ * FORGOTTEN_BAG = The {0} has forgotten {0, gender, m {his} f {her} other {its}) bag.
  *
- * FORGOTTER_BAG("boy")  ->  The boy has forgotten his bag.
+ * FORGOTTEN_BAG("boy")  ->  The boy has forgotten his bag.
  * ```
  *
  * A general purpose gender-provider may be based on large directories. But this is an extensive
  * task. Therefor the default implementation will use the attributes of the `LocalizedString`
  * (#43), like the “attrib-select-pattern”. So the example above would be written as
  *
- * `FORGOTTER_BAG( BOY )`
+ * `FORGOTTEN_BAG( BOY )`
  *
  * These subjects-string should be defined in a separate MessageBundle where also the “gender”
  * attribute is defined, e.g.

@@ -44,14 +44,15 @@ public object Abba : MessageBundle("Abba", "") {
       getLocalizedString0("Multi-Line-Value", 2)
 
   /**
-   * {0} has forgotten {1, select, female: her | his } {3, select, one: bag | {2} bags}.
+   * {0} has forgotten {1, select, female {her} other {his} } {3, select, one {bag} other {{2}
+   * bags}}.
    */
   @JvmStatic
   public val forgotten_bags: MessageBundleLocalizedStringFactory4 =
       getLocalizedStringFactory4("forgotten-bags", 3)
 
   /**
-   * {~, capitalize, {0} } is the best!
+   * {0, capitalize} is the best!
    */
   @JvmStatic
   public val format_pattern: MessageBundleLocalizedStringFactory1 =
@@ -81,8 +82,8 @@ public object Abba : MessageBundle("Abba", "") {
       getLocalizedStringFactory3("max_param-3", 6)
 
   /**
-   * En: {0, select, a: {1, select, x: {4} | {5} } | b: {2, select, y: {6} | {7} } | {3, select, z:
-   * {8} | {9} }!
+   * En: {0, select, a: {1, select, x: {{4}} other {{5}} } | b: {2, select, y {{6}} other {{7}} } |
+   * {3, select, z {{8}} other {{9}} }!
    */
   @JvmStatic
   public val nested_parameter: MessageBundleLocalizedStringFactory10 =
@@ -224,11 +225,11 @@ private object Abba_en : MessagesProvider {
       |circumflexes
       |in the text
       """.trimMargin(),
-      "{0} has forgotten {1, select, female: her | his } {3, select, one: bag | {2} bags}.",
-      "{~, capitalize, {0} } is the best!",
+      "{0} has forgotten {1, select, female {her} other {his} } {3, select, one {bag} other {{2} bags}}.",
+      "{0, capitalize} is the best!",
       "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Phasellus faucibus molestie nisl. Mauris suscipit, ligula sit amet pharetra semper, nibh ante cursus purus, vel sagittis velit mauris vel metus. Pellentesque ipsum. Integer malesuada. Fusce wisi. Nullam dapibus fermentum ipsum. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Integer rutrum, orci vestibulum ullamcorper ultricies, lacus quam ultricies odio, vitae placerat pede sem sit amet enim. Quisque tincidunt scelerisque libero. Etiam posuere lacus quis dolor. In laoreet, magna id viverra tincidunt, sem odio bibendum justo, vel imperdiet sapien wisi sed libero. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Pellentesque sapien.",
       "3rd value: {2}",
-      "En: {0, select, a: {1, select, x: {4} | {5} } | b: {2, select, y: {6} | {7} } | {3, select, z: {8} | {9} }!",
+      "En: {0, select, a: {1, select, x: {{4}} other {{5}} } | b: {2, select, y {{6}} other {{7}} } | {3, select, z {{8}} other {{9}} }!",
       "Not all have translations",
       "En - Parameter 1: {0}",
       "En - Parameter 10: {0},{1},{2},{3},{4},{5},{6},{7},{8},{9}",
@@ -346,11 +347,11 @@ private object Abba_de : MessagesProvider {
       | Zirkumflex
       |im Text
       """.trimMargin(),
-      "{0} hat {1, select, female: ihre | seine } {3, select, one: Tasche | {2} Taschen} vergessen.",
-      "{~, capitalize, {0} } ist das Beste!",
+      "{0} hat {1, select, female {ihre} other {seine} } {3, select, one {Tasche} other {{2} Taschen}} vergessen.",
+      "{0, capitalize} ist das Beste!",
       null,
       "3. Wert: {2}",
-      "De: {0, select, a: {1, select, x: {4} | {5} } | b: {2, select, y: {6} | {7} } | {3, select, z: {8} | {9} }!",
+      "De: {0, select, a: {1, select, x: {{4}} other {{5}} } | b: {2, select, y {{6}} other {{7}} } | {3, select, z {{8}} other {{9}} }!",
       "",
       "De - Parameter 1: {0}",
       "De - Parameter 10: {0},{1},{2},{3},{4},{5},{6},{7},{8},{9}",

@@ -22,7 +22,7 @@ class MessageSelectFormatterTest {
     @Test
     fun test_select_simple() {
         val locale = Locale("en")
-        val pattern = "{0, select, 0:zero|1/2:few|3/4/5/6:many|too much }";
+        val pattern = "{0, select, 0 {zero} 1 2 {few} 3 4 5 6 {many} other {too much} }";
 
         assertEquals("zero", format(pattern, listOf(0), locale))
         assertEquals("few", format(pattern, listOf(1), locale))
@@ -38,7 +38,7 @@ class MessageSelectFormatterTest {
     @Test
     fun test_select_nested() {
         val locale = Locale("en")
-        val pattern = "{0, select, 0:{1}|1/2:{2}|3/4/5/6:{3}|{4} }";
+        val pattern = "{0, select, 0 {{1}} 1 2 {{2}} 3 4 5 6 {{3}} other {{4}} }";
         val extraParams = listOf("zero", "few", "many", "too much")
 
         assertEquals("zero", format(pattern, listOf(0) + extraParams, locale))
@@ -56,7 +56,7 @@ class MessageSelectFormatterTest {
     fun test_select_regex() {
         val locale = Locale("en")
         val pattern =
-            "{0, select, 0:zero | regex#\\d+ : digits | regex#\\w+ : word | regex#[abc<>-]+ : mix | else }"
+            "{0, select, 0 {zero} /\\d+/ {digits} /\\w+/ {word} /[abc<>-]+/ {mix} other {else} }"
 
         assertEquals("zero", format(pattern, listOf(0), locale))
         assertEquals("digits", format(pattern, listOf(1), locale))
@@ -84,15 +84,17 @@ class MessageSelectFormatterTest {
 
         assertEquals("!", format("{~, select }!", listOf('a'), locale))
         assertEquals("!", format("{~, select , }!", listOf('a'), locale))
-        assertEquals("!", format("{~, select , a: x }!", listOf('a'), locale))
+        assertEquals("!", format("{~, select , a {x} }!", listOf('a'), locale))
 
         assertEquals("!", format("{0, select }!", listOf('a'), locale))
         assertEquals("!", format("{0, select , }!", listOf('a'), locale))
-        assertEquals("!", format("{0, select , b: y }!", listOf('a'), locale))
-        assertEquals("!", format("{0, select ,  |  x  }!", listOf('a'), locale))
-        assertEquals("!", format("{0, select ,  | a: x  }!", listOf('a'), locale))
+        assertEquals("!", format("{0, select , a }!", listOf('a'), locale))
+        assertEquals("!", format("{0, select , b }!", listOf('a'), locale))
+        assertEquals("!", format("{0, select , b  {y} }!", listOf('a'), locale))
+        assertEquals("!", format("{0, select , {} {x} }!", listOf('a'), locale))
+        assertEquals("!", format("{0, select , {} b {x} a }!", listOf('a'), locale))
 
-        assertEquals("{1}!", format("{1, select ,  x  }!", listOf('a'), locale))
-        assertEquals("{1}!", format("{1, select ,  a: x  }!", listOf('a'), locale))
+        assertEquals("{1}!", format("{1, select ,  {x}  }!", listOf('a'), locale))
+        assertEquals("{1}!", format("{1, select ,  a {x}  }!", listOf('a'), locale))
     }
 }

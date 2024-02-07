@@ -6,12 +6,13 @@ import de.comahe.i18n4k.strings.LocalizedString
 import de.comahe.i18n4k.strings.toString
 import kotlin.math.max
 
-data class MessagePartParam(val index: Int?, val type: CharSequence?, var style: StylePart?) :
+data class MessagePartParam(val index: Int?, val type: CharSequence? = null, var style: StylePart? = null) :
     MessagePart {
 
     override val maxParameterIndex: Int
         get() = max(index ?: -1, style?.maxParameterIndex ?: -1)
-
+    override val hasNamedParameters: Boolean
+        get() = false // TODO support named parameters
 
     override fun format(
         result: StringBuilder,

@@ -3,13 +3,7 @@ package de.comahe.i18n4k.messages.formatter.parsing
 import de.comahe.i18n4k.Locale
 import de.comahe.i18n4k.messages.formatter.MessageFormatContext
 
-sealed interface MessagePart {
-
-    /**
-     * returns the max used parameter index in the message. "-1" if there is no
-     * parameter
-     */
-    val maxParameterIndex: Int
+sealed interface MessagePart : TextWithParameters {
 
     fun format(
         result: StringBuilder,

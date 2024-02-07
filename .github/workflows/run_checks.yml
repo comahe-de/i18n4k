@@ -64,3 +64,16 @@ jobs:
       run: | 
         cd ./examples/example-android
         ./gradlew build --stacktrace
+    - uses: actions/upload-artifact@v4
+      if: ${{ always() }}
+      with:
+        name: test-reports-${{ matrix.os }}
+        path: |
+            i18n4k-core/build/test-results/
+            i18n4k-generator/build/test-results/
+            i18n4k-cldr-plural-rules/build/test-results/
+            i18n4k-gradle-plugin/build/test-results/
+            examples/example-js/build/test-results/
+            examples/example-jvm/build/test-results/
+            examples/example-mmp/build/test-results/
+            examples/example-android/build/test-results/

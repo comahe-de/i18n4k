@@ -9,7 +9,7 @@ object MessagesPlurals_pl : MessagesProvider {
     @JvmStatic
     private val data: Array<String?> = arrayOf(
         "{0}. rząd",
-        "{0} {0, plural, one: miesiąc | few: miesiące | many: miesięcy | miesiąca }",
+        "{0} {0, plural, one {miesiąc} few  {miesiące} many {miesięcy} other {miesiąca} }",
     )
 
     override val locale = forLocaleTag("pl")

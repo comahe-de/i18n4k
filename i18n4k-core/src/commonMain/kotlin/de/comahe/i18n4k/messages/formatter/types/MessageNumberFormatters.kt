@@ -1,10 +1,10 @@
 package de.comahe.i18n4k.messages.formatter.types
 
 import de.comahe.i18n4k.Locale
-import de.comahe.i18n4k.messages.formatter.MessageValueFormatter
 import de.comahe.i18n4k.messages.formatter.MessageFormatContext
+import de.comahe.i18n4k.messages.formatter.MessageValueFormatter
 import de.comahe.i18n4k.messages.formatter.parsing.StylePart
-import de.comahe.i18n4k.messages.formatter.parsing.toSimple
+import de.comahe.i18n4k.messages.formatter.parsing.firstArgument
 import de.comahe.i18n4k.strings.LocalizedString
 import de.comahe.i18n4k.strings.LocalizedStringNumber
 import de.comahe.i18n4k.strings.isDigit
@@ -85,7 +85,7 @@ object MessageNumberFormatters {
                 return
             }
 
-            val formatStyle = style?.toSimple()?.format(parameters, locale, context)
+            val formatStyle = style?.firstArgument()
 
             result.append(
                 formatNumber(

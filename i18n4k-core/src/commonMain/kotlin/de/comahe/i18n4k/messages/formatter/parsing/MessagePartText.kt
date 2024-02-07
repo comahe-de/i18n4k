@@ -8,6 +8,9 @@ data class MessagePartText(val text: CharSequence) : MessagePart {
     override val maxParameterIndex: Int
         get() = -1
 
+    override val hasNamedParameters: Boolean
+        get() = false
+
     override fun format(
         result: StringBuilder,
         parameters: List<Any>,

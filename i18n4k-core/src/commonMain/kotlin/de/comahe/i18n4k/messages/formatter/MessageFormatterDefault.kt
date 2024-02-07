@@ -37,18 +37,21 @@ import kotlinx.collections.immutable.persistentMapOf
  * FormatType: type to format, like number,date, etc. Defined be registered formatter
  *
  * FormatStyle: Specific style to the FormatType
- *      StyleModifier
- *      StyleModifierNames: StyleModifier [ | StyleModifierNames: StyleModifier ] [ | StyleModifier ]
+ *      StylePartArgument
+ *      StylePartMessage
+ *      StylePartList
  *
- * StyleModifier: Free text description of the style.
- *                Call also contain format pattern. So the patterns can be nested.
+ * StylePartArgument: A named argument for the style
+ *     String
  *
- * StyleModifierNames: Names of the modifier. Can be a list of name separated by slash
- *      StyleModifierName
- *      StyleModifierName [ / StyleModifierName ]
+ * StylePartMessage: A message text. Can also contain format pattern. So the patterns can be nested.
+ *      {MessageFormatPattern}
  *
- * StyleModifierName: free text name of the modifier.
- *
+ * StylePartList: A list of style parts
+ *      StylePartArgument
+ *      StylePartMessage
+ *      StylePartList [ StylePartArgument ]
+ *      StylePartList [ StylePartMessage ]
  *
  * ```
  *

@@ -5,12 +5,11 @@ import de.comahe.i18n4k.i18n4k
 import de.comahe.i18n4k.messages.formatter.MessageFormatContext
 import de.comahe.i18n4k.messages.formatter.MessageValueFormatter
 import de.comahe.i18n4k.messages.formatter.parsing.StylePart
-import de.comahe.i18n4k.messages.formatter.parsing.toSimple
+import de.comahe.i18n4k.messages.formatter.parsing.firstMessagePart
 import de.comahe.i18n4k.messages.formatter.provider.DeclensionProvider
 import de.comahe.i18n4k.messages.formatter.provider.DeclensionProviderDefault
 import kotlinx.atomicfu.atomic
 import kotlinx.atomicfu.update
-import kotlin.reflect.KClass
 
 /**
  * For languages that have irregular declension, a declension-provider is needed to find the
@@ -18,13 +17,13 @@ import kotlin.reflect.KClass
  *
  * Format:
  *
- * `{ PARAMETER_NUMBER, decl-DECLENSION_FORM, DEFAULT_VALUE }`
+ * `{ PARAMETER_NUMBER, decl-DECLENSION_FORM, {DEFAULT_VALUE} }`
  * * `PARAMETER_NUMBER`
- *    * Number of the parameter which values is matched against the values of the select list
+ *    * Number of the parameter which value is matched against the values of the select list
  * * `DECLENSION_FORM`
  *    * Name of the declension form. The value of the parameter should be transformed to this
  *      declension form.
- * * DEFAULT
+ * * DEFAULT_VALUE
  *       * Optional default value, if the attribute is null
  *
  * A general declension-provider may be based on large directories. But this is an extensive task.
@@ -33,7 +32,7 @@ import kotlin.reflect.KClass
  * Example:
  * * `HIGH_RISK_OF`
  *    * en: `The risk of a {0} is high.`
- *    * de: `Das Risiko eines {0, declension-genitive, {0}s } ist groß.`
+ *    * de: `Das Risiko eines {0, declension-genitive, {{0}s} } ist groß.`
  * * HIGH_RISK_OF( STORM )
  *    * en: `The risk of a storm is high.`
  *    * de: `Das Risiko eines Sturms ist groß.`
@@ -101,7 +100,7 @@ object MessageDeclensionValueFormatter : MessageValueFormatter {
         }
 
         if (declensionValue == null)
-            style?.toSimple()?.format(result, parameters, locale, context)
+            style?.firstMessagePart()?.format(result, parameters, locale, context)
                 ?: result.append(value)
         else
             result.append(declensionValue)

@@ -25,7 +25,7 @@ object MessagesTest1_de : MessagesProvider {
         "Hallo {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8} und {9}!",
         "Etwas Text 1",
         "Etwas Text 2",
-        "{0} hat {1, select, female: ihre | seine } {3, select, one: Tasche | {2} Taschen} vergessen.",
+        "{0} hat {1, select, female {ihre} other {seine} } {3, select, one {Tasche} other {{2} Taschen}} vergessen.",
         "Es ist {0, number, %.02}!",
         "Schau''s dir an! Ein Hochkomma: ''",
     )

@@ -9,14 +9,14 @@ J'ai^
 dans
 le texte 
 ^
-{0} a oublié {3, select, one: son sac | ses {2} sacs}.
+{0} a oublié {3, select, one {son sac} other {ses {2} sacs}}.
 ^
-{~, capitalize, {0} } is the best!
+{0, capitalize} est la meilleure!
 ^
 ^
 3ème valeur : {2}
 ^
-fr: {0, select, a: {1, select, x: {4} | {5} } | b: {2, select, y: {6} | {7} } | {3, select, z: {8} | {9} }!
+fr: {0, select, a: {1, select, x: {{4}} other {{5}} } | b: {2, select, y {{6}} other {{7}} } | {3, select, z {{8}} other {{9}} }!
 ^
 ^
 Fr - Paramètre 1 : {0}

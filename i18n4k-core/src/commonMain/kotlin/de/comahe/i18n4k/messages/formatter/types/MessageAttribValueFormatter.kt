@@ -4,7 +4,7 @@ import de.comahe.i18n4k.Locale
 import de.comahe.i18n4k.messages.formatter.MessageFormatContext
 import de.comahe.i18n4k.messages.formatter.MessageValueFormatter
 import de.comahe.i18n4k.messages.formatter.parsing.StylePart
-import de.comahe.i18n4k.messages.formatter.parsing.toSimple
+import de.comahe.i18n4k.messages.formatter.parsing.firstMessagePart
 import de.comahe.i18n4k.strings.LocalizedString
 
 /**
@@ -12,7 +12,7 @@ import de.comahe.i18n4k.strings.LocalizedString
  *
  * Format:
  *
- *     { PARAMETER_NUMBER, attr-NAME, DEFAULT}
+ *     { PARAMETER_NUMBER, attr-NAME, {DEFAULT}}
  *     - NAME
  *         Name of the attribute
  *     - DEFAULT
@@ -20,14 +20,14 @@ import de.comahe.i18n4k.strings.LocalizedString
  *
  * Example:
  *
- *     .
+ *     {0} has gender {0, attr-gender, {unknown}}.
  *
  * Usage:
  *
- *     FORGOTTEN_BAG( PETER, 1, "one")
- *     -> Peter has forgotten his bag.
- *     FORGOTTEN_BAG( MARY, 2, "few")
- *     -> Mary has forgotten her 2 bags.
+ *     FORGOTTEN_BAG( PETER )
+ *     -> Peter has gender male.
+ *     FORGOTTEN_BAG( MARY )
+ *     -> Mary has gender female.
  *
  * For files storing the attribute, the name of the attribute is appended as an extension after the
  * locale tag via “-x-attr-NAME“. E.g. for the attribute “gender”:
@@ -37,6 +37,15 @@ import de.comahe.i18n4k.strings.LocalizedString
  *     names_de-x-attrib-gender
  *     names_en-x-attrib-gender
  *     names_fr_FR-x-attrib-gender
+ *
+  * e.g.
+ *
+ * `subjects_en.properties`
+ *
+ * ```properties
+ * peter=male
+ * mary=female
+ * ```
  */
 object MessageAttribValueFormatter : MessageValueFormatter {
 
@@ -90,7 +99,7 @@ object MessageAttribValueFormatter : MessageValueFormatter {
                 (value as? LocalizedString)?.getAttribute(attrName, locale)
 
         if (attr == null)
-            style?.toSimple()?.format(result, parameters, locale, context)
+            style?.firstMessagePart()?.format(result, parameters, locale, context)
                 ?: result.append(value)
         else
             result.append(attr)

@@ -1,9 +1,7 @@
 package de.comahe.i18n4k.messages.formatter.parsing
 
 import de.comahe.i18n4k.i18n4k
-import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.collections.immutable.toImmutableSet
 
 /** Parser for the [de.comahe.i18n4k.messages.formatter.MessageFormatterDefault] format */
 class MessageParser(
@@ -24,8 +22,12 @@ class MessageParser(
      */
     private fun parseMessagePart(startIndex: Int, endIndex: Int): MessagePart {
         var index = findNextOpenBrace(startIndex, endIndex)
-        if (index >= endIndex)
-            return MessagePartText(readText(startIndex, endIndex))
+
+        if (!ignoreMessageParseErrors && index == endIndex - 1)
+            throw MessageParseException("Missing closing brace")
+        if (index >= endIndex - 1)
+            return MessagePartText(readText(startIndex, index))
+
 
         var lastIndex = startIndex
         val parts = mutableListOf<MessagePart>()
@@ -41,6 +43,9 @@ class MessageParser(
 
             // in braces
             index = findCorrespondingCloseBrace(lastIndex, endIndex)
+            if (!ignoreMessageParseErrors && index >= endIndex)
+                throw MessageParseException("Missing closing brace")
+
 
             try {
                 parts += parseParameterPattern(lastIndex, index)
@@ -54,6 +59,12 @@ class MessageParser(
                 break
 
             index = findNextOpenBrace(index, endIndex)
+        }
+
+        if (parts.isEmpty()) {
+            if (ignoreMessageParseErrors)
+                return MessagePartText("")
+            throw MessageParseException("Missing closing brace")
         }
         if (parts.size == 1)
             return parts[0]
@@ -130,65 +141,63 @@ class MessageParser(
 
 
     /**
-     * Parses the style of the parameter, e.g. "a: {0,foo, x:1|y:2|3}-b | c: d | e"
+     * Parses the list of styles of the parameter.
+     *
+     * Styles are separated by whitespaces. Single quotes and braces can be used union parts with
+     * whitespaces.
+     *
+     * Styles are interpreted as simple text ([StylePartArgument]) or if they are enclosed by brace
+     * as a nested complex message (any [StylePartMessage] instance)
      *
      * @param startIndex - the start index, inclusive.
      * @param endIndex - the end index, exclusive.
      */
     private fun parseStyle(startIndex: Int, endIndex: Int): StylePart {
-        var index = findNextCorrespondingVerticalBar(startIndex, endIndex)
-        if (index >= endIndex)
-            return parseStylePart(startIndex, endIndex)
+        @Suppress("NAME_SHADOWING")
+        val startIndex = trimStart(startIndex, endIndex)
 
-        var lastIndex = startIndex
+        @Suppress("NAME_SHADOWING")
+        val endIndex = trimEnd(startIndex, endIndex)
+
+        var indexOpenBrace = findNextOpenBrace(startIndex, endIndex)
+        var indexWhiteSpace = findNextWhitespace(startIndex, endIndex)
+        if (indexOpenBrace >= endIndex && indexWhiteSpace >= endIndex)
+            return StylePartArgument(readText(startIndex, endIndex))
+
         val parts = mutableListOf<StylePart>()
-        parts += parseStylePart(lastIndex, index)
 
-        while (true) {
-            lastIndex = index + 1
-            index = findNextCorrespondingVerticalBar(lastIndex, endIndex)
-            parts += parseStylePart(lastIndex, index)
-            if (index >= endIndex)
-                break
-        }
-
-        return StylePartList(parts.toImmutableList())
-    }
-
-    /**
-     * Parses the style part, e.g. "a: b"
-     *
-     * @param startIndex - the start index, inclusive.
-     * @param endIndex - the end index, exclusive.
-     */
-    private fun parseStylePart(startIndex: Int, endIndex: Int): StylePart {
-        val index = findNextCorrespondingColon(startIndex, endIndex)
-        if (index < endIndex) {
-            return StylePartNamed(
-                names = parseNames(startIndex, index),
-                data = parseMessagePartTrimmed(index + 1, endIndex),
-            )
-        }
-        return StylePartSimple(parseMessagePartTrimmed(startIndex, endIndex))
-    }
-
-    /**
-     * Parses the style names, e.g. "a / b / c "
-     *
-     * @param startIndex - the start index, inclusive.
-     * @param endIndex - the end index, exclusive.
-     */
-    private fun parseNames(startIndex: Int, endIndex: Int): ImmutableSet<CharSequence> {
         var lastIndex = startIndex
-        val names = mutableSetOf<CharSequence>()
-        while (true) {
-            val index = findSlash(lastIndex, endIndex)
-            names += readText(lastIndex, index).trim()
-            if (index >= endIndex)
-                break
-            lastIndex = index + 1
+
+        while (indexOpenBrace < endIndex || indexWhiteSpace < endIndex) {
+            if (indexWhiteSpace < indexOpenBrace) {
+                if (lastIndex < indexWhiteSpace)
+                    parts += StylePartArgument(readText(lastIndex, indexWhiteSpace))
+
+                lastIndex = findNextNonWhitespace(indexWhiteSpace, endIndex)
+                // is there a quote, which findNext would ignore?
+                val quoteIndex = message.indexOf("'", indexWhiteSpace)
+                @Suppress("ConvertTwoComparisonsToRangeCheck")
+                if (quoteIndex >= 0 && quoteIndex < lastIndex)
+                    lastIndex = quoteIndex
+
+            } else {
+                lastIndex = findCorrespondingCloseBrace(indexOpenBrace + 1, endIndex)
+                parts.add(StylePartMessage(parseMessagePart(indexOpenBrace + 1, lastIndex)))
+                if (lastIndex < endIndex)
+                    lastIndex++
+            }
+
+            indexWhiteSpace = findNextWhitespace(lastIndex, endIndex)
+            indexOpenBrace = findNextOpenBrace(lastIndex, endIndex)
         }
-        return names.toImmutableSet()
+        if (lastIndex < endIndex)
+            parts += StylePartArgument(readText(lastIndex, endIndex))
+        if (parts.size == 0)
+            return StylePartArgument("")
+        if (parts.size == 1)
+            return parts[0]
+        return StylePartList(parts.toImmutableList())
+
     }
 
     /** finds the next "{" not quoted */
@@ -206,6 +215,16 @@ class MessageParser(
     private fun findSlash(startIndex: Int, endIndex: Int): Int {
         return findNext(startIndex, endIndex, '/')
 
+    }
+
+    /** finds the next whitespace not quoted */
+    private fun findNextWhitespace(startIndex: Int, endIndex: Int): Int {
+        return findNext(startIndex, endIndex) { it.isWhitespace() }
+    }
+
+    /** finds the next non-whitespace not quoted */
+    private fun findNextNonWhitespace(startIndex: Int, endIndex: Int): Int {
+        return findNext(startIndex, endIndex) { !it.isWhitespace() }
     }
 
     /** finds the next "}" not quoted and not part of another "{" */
@@ -228,14 +247,6 @@ class MessageParser(
         return findNextCorrespondingChar(startIndex, endIndex, ',')
     }
 
-    private fun findNextCorrespondingVerticalBar(startIndex: Int, endIndex: Int): Int {
-        return findNextCorrespondingChar(startIndex, endIndex, '|')
-    }
-
-    private fun findNextCorrespondingColon(startIndex: Int, endIndex: Int): Int {
-        return findNextCorrespondingChar(startIndex, endIndex, ':')
-    }
-
     /** finds the next 'char' not quoted and not inside a "{ ... }" */
     private fun findNextCorrespondingChar(startIndex: Int, endIndex: Int, char: Char): Int {
         var index = startIndex
@@ -254,8 +265,16 @@ class MessageParser(
     }
 
 
-    /** finds the index of the next character matching the given character not quoted */
+    /**
+     * finds the index of the next character matching the given character not quoted
+     *
+     * @param char the char to search. null for whitespaces
+     */
     private fun findNext(startIndex: Int, endIndex: Int, char: Char): Int {
+        return findNext(startIndex, endIndex) { it == char }
+    }
+
+    private fun findNext(startIndex: Int, endIndex: Int, predicate: (Char) -> Boolean): Int {
         var inQuotes = false
         var oneQuote = false
         for (index in startIndex until endIndex) {
@@ -283,11 +302,36 @@ class MessageParser(
                     cRead = c
                 }
             }
-            if (cRead != null && cRead == char)
+            if (cRead != null && predicate(cRead))
                 return index
-
         }
         return endIndex
+    }
+
+    /**
+     * Returns the new start index, trimmed by whitespace.
+     *
+     * @param startIndex - the start index, inclusive.
+     * @param endIndex - the end index, exclusive.
+     */
+    private fun trimStart(startIndex: Int, endIndex: Int): Int {
+        var index = startIndex
+        while (index < endIndex && message[index].isWhitespace())
+            index++
+        return index
+    }
+
+    /**
+     * Returns the new end index, trimmed by whitespace.
+     *
+     * @param startIndex - the start index, inclusive.
+     * @param endIndex - the end index, exclusive.
+     */
+    private fun trimEnd(startIndex: Int, endIndex: Int): Int {
+        var index = endIndex - 1
+        while (index >= startIndex && message[index].isWhitespace())
+            index--
+        return index + 1
     }
 
     /**

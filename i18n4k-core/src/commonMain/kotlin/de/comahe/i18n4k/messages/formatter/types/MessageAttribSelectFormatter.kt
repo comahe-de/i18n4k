@@ -1,8 +1,8 @@
 package de.comahe.i18n4k.messages.formatter.types
 
 import de.comahe.i18n4k.Locale
-import de.comahe.i18n4k.messages.formatter.MessageValueFormatter
 import de.comahe.i18n4k.messages.formatter.MessageFormatContext
+import de.comahe.i18n4k.messages.formatter.MessageValueFormatter
 import de.comahe.i18n4k.messages.formatter.parsing.StylePart
 import de.comahe.i18n4k.strings.LocalizedString
 
@@ -11,17 +11,17 @@ import de.comahe.i18n4k.strings.LocalizedString
  *
  * Format:
  *
- *     { PARAMETER_NUMBER, attr:NAME, VALUE1: TEXT1 | VALUE2 / VALUE3: TEXT2 | regex#VALUE_REGEX : TEXT_REGEX | OTHERWISE_TEXT}
+ *     { PARAMETER_NUMBER, attr:NAME, VALUE1 {TEXT1} VALUE2 VALUE3 {TEXT2} /VALUE_REGEX/ {TEXT_REGEX} other {OTHERWISE_TEXT}}
  *     - NAME
  *         Name of the attribute
  *     - VALUE
- *         If a values matches the value of the attribute, the corresponding text (TEXT*) is selected
+ *         If a value matches the value of the attribute, the corresponding text (TEXT*) is selected
  *
  * The rest is similar to the select-pattern.
  *
  * Example:
  *
- *     {0} has forgotten {0, attr:gender, female: her | his } {2, select, one: bag | {2} bags}.
+ *     {0} has forgotten {0, attr:gender, female {her} other {his} } {2, select, one {bag} other {{1} bags}}.
  *
  * Usage:
  *
@@ -38,6 +38,15 @@ import de.comahe.i18n4k.strings.LocalizedString
  *     names_de-x-attr-gender
  *     names_en-x-attr-gender
  *     names_fr_FR-x-attr-gender
+ *
+ * e.g.
+ *
+ * `subjects_en.properties`
+ *
+ * ```properties
+ * peter=male
+ * mary=female
+ * ```
  */
 object MessageAttribSelectFormatter : MessageValueFormatter {
 

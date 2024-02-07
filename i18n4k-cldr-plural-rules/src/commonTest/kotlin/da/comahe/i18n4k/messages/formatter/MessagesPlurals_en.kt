@@ -8,8 +8,8 @@ object MessagesPlurals_en : MessagesProvider {
 
     @JvmStatic
     private val data: Array<String?> = arrayOf(
-        "{0}{0, ordinal, one: st | two: nd | few: rd | th} rank",
-        "{0} {0, plural, one: month | months}",
+        "{0}{0, ordinal,  one {st} two {nd} few {rd} other {th}} rank",
+        "{0} {0, plural, one {month} other {months}}",
     )
 
     override val locale = forLocaleTag("en")
