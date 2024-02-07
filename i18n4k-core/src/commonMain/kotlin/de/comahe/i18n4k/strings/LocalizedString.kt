@@ -30,3 +30,17 @@ interface LocalizedString {
      */
     fun getAttribute(attributeName: CharSequence, locale: Locale? = null): String? = null
 }
+
+/**
+ * Return the string value based on the given [Locale].
+ *
+ * If this is not a [LocalizedString] the notmal [toString] will be called.
+ *
+ * @param locale the [Locale] to be use. If null the current setting in [i18n4k]
+ *     ([I18n4kConfig.locale]) will be used.
+ */
+fun Any?.toString(locale: Locale?): String {
+    if (this is LocalizedString)
+        return this.toString(locale)
+    return this.toString()
+}

@@ -2,6 +2,8 @@ package de.comahe.i18n4k.messages.formatter.parsing
 
 import de.comahe.i18n4k.Locale
 import de.comahe.i18n4k.messages.formatter.MessageFormatContext
+import de.comahe.i18n4k.strings.LocalizedString
+import de.comahe.i18n4k.strings.toString
 import kotlin.math.max
 
 data class MessagePartParam(val index: Int?, val type: CharSequence?, var style: StylePart?) :
@@ -32,7 +34,7 @@ data class MessagePartParam(val index: Int?, val type: CharSequence?, var style:
             if (value == null)
                 result.append("{~}")
             else
-                result.append(value)
+                result.append(value.toString(locale))
             return
         }
         val formatter = context.getFormatterFor(type)
@@ -40,7 +42,7 @@ data class MessagePartParam(val index: Int?, val type: CharSequence?, var style:
             if (value == null)
                 result.append("{~}")
             else
-                result.append(value)
+                result.append(value.toString(locale))
             return
         }
 
