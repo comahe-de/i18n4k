@@ -4,7 +4,7 @@ version = "1.0.0-SNAPSHOT"
 
 plugins {
     kotlin("multiplatform") version "1.9.10"
-    id("de.comahe.i18n4k") version "0.7.0"
+    id("de.comahe.i18n4k") version "0.7.1"
 }
 
 // ####################################
@@ -68,7 +68,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation("de.comahe.i18n4k:i18n4k-core:0.7.0")
+                implementation("de.comahe.i18n4k:i18n4k-core:0.7.1")
             }
         }
         val commonTest by getting {
