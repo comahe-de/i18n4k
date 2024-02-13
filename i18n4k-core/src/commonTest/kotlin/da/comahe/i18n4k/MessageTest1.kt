@@ -82,6 +82,12 @@ object MessageTest1 : MessageBundle() {
      */
     val NUMBER_PATTERN = getLocalizedStringFactory1("NUMBER_PATTERN", 18)
 
+
+    /**
+     * It's a qute! Look: '
+     */
+    val SINGLE_QUOTES = getLocalizedString0("SINGLE_QUOTES", 19)
+
     /** To large index and no translations anywhere */
     @JvmField
     val NO_TEXT = getLocalizedString0("NO_TEXT", 20)

@@ -10,7 +10,7 @@ import kotlin.test.assertSame
 import kotlin.test.fail
 
 class MessageBundleTest {
-    private  var i18n4kConfig = I18n4kConfigDefault()
+    private var i18n4kConfig = I18n4kConfigDefault()
 
     @BeforeTest
     fun init() {
@@ -28,8 +28,8 @@ class MessageBundleTest {
 
 
     /**
-     * Tests add new translations, fallback to default when translations are
-     * missing, setting of locale
+     * Tests add new translations, fallback to default when translations are missing, setting of
+     * locale
      */
     @Test
     fun registerTranslationTest() {
@@ -334,7 +334,21 @@ class MessageBundleTest {
         val de = Locale("de")
         assertEquals(
             "Es ist 1.234,57!",
-            MessageTest1.NUMBER_PATTERN(1234.56789,de)
+            MessageTest1.NUMBER_PATTERN(1234.56789, de)
+        )
+    }
+
+    /** See bug: Double single quotes are not escaped in string without parameters #59 */
+    @Test
+    fun singedQuotesTest() {
+        assertEquals(
+            "It's a qute! Look: '",
+            MessageTest1.SINGLE_QUOTES()
+        )
+        val de = Locale("de")
+        assertEquals(
+            "Schau's dir an! Ein Hochkomma: '",
+            MessageTest1.SINGLE_QUOTES(de)
         )
     }
 }

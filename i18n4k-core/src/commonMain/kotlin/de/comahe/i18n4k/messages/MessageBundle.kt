@@ -148,6 +148,18 @@ open class MessageBundle(
     // http://www.unicode.org/cldr/charts/27/supplemental/language_plural_rules.html
 
     /**
+     * Similar to [getString0] but for strings with not parameters the escape
+     * sequences are evaluated via the set [MessageFormatter] in [i18n4k]
+     * ([de.comahe.i18n4k.config.I18n4kConfig.messageFormatter])
+     */
+    protected fun getStringS(index: Int, locale: Locale?) =
+        i18n4k.messageFormatter.format(
+            getString0(index, locale),
+            listOf(),
+            locale ?: i18n4k.locale
+        )
+
+    /**
      * Similar to [getString0] but parameters are evaluated
      * via the set [MessageFormatter] in [i18n4k]
      * ([de.comahe.i18n4k.config.I18n4kConfig.messageFormatter])
@@ -315,7 +327,7 @@ open class MessageBundle(
             toString(null)
 
         override fun toString(locale: Locale?) =
-            messageBundle.getString0(messageIndex, locale)
+            messageBundle.getStringS(messageIndex, locale)
 
 
         override fun equals(other: Any?): Boolean {

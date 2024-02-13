@@ -27,6 +27,7 @@ object MessagesTest1_de : MessagesProvider {
         "Etwas Text 2",
         "{0} hat {1, select, female: ihre | seine } {3, select, one: Tasche | {2} Taschen} vergessen.",
         "Es ist {0, number, %.02}!",
+        "Schau''s dir an! Ein Hochkomma: ''",
     )
 
     override val locale = Locale("de")

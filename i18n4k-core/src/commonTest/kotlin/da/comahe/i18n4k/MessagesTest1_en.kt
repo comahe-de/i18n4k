@@ -27,6 +27,7 @@ object MessagesTest1_en : MessagesProvider {
         "Some text 2",
         "{0} has forgotten {1, select, female: her | his } {3, select, one: bag | {2} bags}.",
         "It''s {0, number, %.02}!",
+        "It''s a qute! Look: ''",
 
     )
 
