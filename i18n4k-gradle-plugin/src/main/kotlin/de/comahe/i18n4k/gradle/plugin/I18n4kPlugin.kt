@@ -113,6 +113,13 @@ open class I18n4kPlugin : Plugin<Project> {
         @Suppress("UnstableApiUsage")
         project.tasks.withType(ProcessResources::class.java)
             .configureEach { it.dependsOn(GENERATE_I18N_SOURCES_TASK_NAME) }
+
+        // Jar-Tasks...
+        project.tasks.withType(org.gradle.jvm.tasks.Jar::class.java)
+            .configureEach { it.dependsOn(GENERATE_I18N_SOURCES_TASK_NAME) }
+        project.tasks.withType(org.gradle.api.tasks.bundling.Jar::class.java)
+            .configureEach { it.dependsOn(GENERATE_I18N_SOURCES_TASK_NAME) }
+
         // Android resource processing:
         // packageDebugResources, packageReleaseResources, ...
         // mergeDebugResources, mergeReleaseResources, ...
@@ -125,10 +132,7 @@ open class I18n4kPlugin : Plugin<Project> {
     }
 
 
-    /**
-     * Finds the [SourceDirectorySet] depending on the project type (jvm,
-     * multiplatform, ...)
-     */
+    /** Finds the [SourceDirectorySet] depending on the project type (jvm, multiplatform, ...) */
     private fun findSourceDirectorySet(
         project: Project,
         type: SourceDirectoryType
@@ -166,7 +170,7 @@ open class I18n4kPlugin : Plugin<Project> {
         }
     }
 
-    /**  Adds the [getGeneratedSourcesDirectory] to the Kotlin sources */
+    /** Adds the [getGeneratedSourcesDirectory] to the Kotlin sources */
     private fun addGeneratedSourcesDirectoryToSourceSets(project: Project) {
         if (config.generationTargetPlatform == GenerationTargetPlatform.JVM) {
             val sourceSets = project.properties["sourceSets"] as SourceSetContainer
@@ -186,9 +190,7 @@ open class I18n4kPlugin : Plugin<Project> {
         }
     }
 
-    /**
-     * Adds the [getGeneratedLanguageFilesDirectory] to the resources
-     */
+    /** Adds the [getGeneratedLanguageFilesDirectory] to the resources */
     private fun addGeneratedLanguageFilesDirectoryToResources(project: Project) {
         val genResDir = getGeneratedLanguageFilesDirectory(project, config)
         genResDir.mkdirs()
@@ -208,7 +210,7 @@ open class I18n4kPlugin : Plugin<Project> {
         }
     }
 
-    /**  Adds the [getGeneratedSourcesDirectory] to the IDEs (IDEA) set of generated sources */
+    /** Adds the [getGeneratedSourcesDirectory] to the IDEs (IDEA) set of generated sources */
     private fun markGeneratedSourcesDirectoryAsGeneratedInIde(
         project: Project,
         ideaModel: IdeaModel?
