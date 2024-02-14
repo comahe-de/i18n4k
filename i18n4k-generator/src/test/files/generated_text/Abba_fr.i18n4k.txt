@@ -39,6 +39,8 @@ Fr - Paramètre 8: {0},{1},{2},{3},{4},{5},{6},{7}
 ^
 Fr - Paramètre 9: {0},{1},{2},{3},{4},{5},{6},{7},{8}
 ^
+Ce '{0}' n'est pas un paramètre, à cause des caractères '' qui l'entourent.
+^
 %S%P%T%M%N%L - '{0}' '' '{''}'
 ^
 Extraterrestre 👽

@@ -146,25 +146,30 @@ public object Abba : MessageBundle("Abba", "") {
       18)
 
   /**
+   * This '{0}' is not a parameter because of the '' characters around it.
+   */
+  public val single_quotes: MessageBundleLocalizedString = getLocalizedString0("single.quotes", 19)
+
+  /**
    * %S%P%T%M%N%L - '{0}' '' '{''}'
    */
-  public val special_value: MessageBundleLocalizedString = getLocalizedString0("special-value", 19)
+  public val special_value: MessageBundleLocalizedString = getLocalizedString0("special-value", 20)
 
   /**
    * Extraterrestrial 👽
    */
-  public val utf_8_value: MessageBundleLocalizedString = getLocalizedString0("utf-8-value", 20)
+  public val utf_8_value: MessageBundleLocalizedString = getLocalizedString0("utf-8-value", 21)
 
   /**
    * Special key
    */
-  public val _Special_Key_: MessageBundleLocalizedString = getLocalizedString0("~Special#Key~", 21)
+  public val _Special_Key_: MessageBundleLocalizedString = getLocalizedString0("~Special#Key~", 22)
 
   /**
    * Special key 2
    */
   public val _Special__S_P_T_M_N_L_Key2_: MessageBundleLocalizedString =
-      getLocalizedString0("~Special-%S%P%T%M%N%L-Key2~", 22)
+      getLocalizedString0("~Special-%S%P%T%M%N%L-Key2~", 23)
 
   init {
     registerTranslation(Abba_en)
@@ -176,7 +181,7 @@ public object Abba : MessageBundle("Abba", "") {
     registerMessageBundleEntries(_1_number_key, Hello_World_, Multi_Line_Value, forgotten_bags,
         format_pattern, longTextExample, max_param_3, nested_parameter, no_all_have_translations,
         param_1, param_10, param_2, param_3, param_4, param_5, param_6, param_7, param_8, param_9,
-        special_value, utf_8_value, _Special_Key_, _Special__S_P_T_M_N_L_Key2_)
+        single_quotes, special_value, utf_8_value, _Special_Key_, _Special__S_P_T_M_N_L_Key2_)
   }
 }
 
@@ -209,6 +214,7 @@ private object Abba_en : MessagesProvider {
       "En - Parameter 7: {0},{1},{2},{3},{4},{5},{6}",
       "En - Parameter 8: {0},{1},{2},{3},{4},{5},{6},{7}",
       "En - Parameter 9: {0},{1},{2},{3},{4},{5},{6},{7},{8}",
+      "This '{0}' is not a parameter because of the '' characters around it.",
       "%S%P%T%M%N%L - '{0}' '' '{''}'",
       "Extraterrestrial 👽",
       "Special key",
@@ -249,6 +255,7 @@ private object Abba_en_US : MessagesProvider {
       null,
       null,
       null,
+      null,
       null)
 
   override val locale: Locale = Locale("en",  "US")
@@ -266,6 +273,7 @@ private object Abba_en_US_texas : MessagesProvider {
   private val _data: Array<String?> = arrayOf(
       null,
       "Howdy, World",
+      null,
       null,
       null,
       null,
@@ -325,6 +333,7 @@ private object Abba_de : MessagesProvider {
       "De - Parameter 7: {0},{1},{2},{3},{4},{5},{6}",
       "De - Parameter 8: {0},{1},{2},{3},{4},{5},{6},{7}",
       "De - Parameter 9: {0},{1},{2},{3},{4},{5},{6},{7},{8}",
+      "Dieses '{0}' ist kein Parameter, wegen der ''-Zeichen drumherum.",
       "%S%P%T%M%N%L - '{0}' '' '{''}'",
       "Außerirdischer 👽",
       "Besonderer Schlüssel",
