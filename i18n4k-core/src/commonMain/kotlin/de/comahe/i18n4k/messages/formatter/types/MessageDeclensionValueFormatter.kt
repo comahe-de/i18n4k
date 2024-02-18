@@ -1,6 +1,7 @@
 package de.comahe.i18n4k.messages.formatter.types
 
 import de.comahe.i18n4k.Locale
+import de.comahe.i18n4k.i18n4k
 import de.comahe.i18n4k.messages.formatter.MessageFormatContext
 import de.comahe.i18n4k.messages.formatter.MessageValueFormatter
 import de.comahe.i18n4k.messages.formatter.parsing.StylePart
@@ -74,13 +75,6 @@ import kotlin.reflect.KClass
  */
 object MessageDeclensionValueFormatter : MessageValueFormatter {
 
-    private val declensionProviderRef = atomic<DeclensionProvider>(DeclensionProviderDefault)
-
-    @Suppress("MemberVisibilityCanBePrivate")
-    var declensionProvider: DeclensionProvider
-        get() = declensionProviderRef.value
-        set(value) = declensionProviderRef.update { value }
-
     override val typeId: String
         get() = "decl-"
 
@@ -103,7 +97,7 @@ object MessageDeclensionValueFormatter : MessageValueFormatter {
                 null
 
         val declensionValue = declensionCase?.let {
-            declensionProvider.getDeclensionOf(it, value, locale)
+            i18n4k.declensionProvider.getDeclensionOf(it, value, locale)
         }
 
         if (declensionValue == null)

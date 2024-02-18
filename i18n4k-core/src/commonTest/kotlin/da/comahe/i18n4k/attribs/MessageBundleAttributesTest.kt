@@ -34,11 +34,6 @@ class MessageBundleAttributesTest {
         MessagesThingsAre.registerTranslation(MessagesThingsAre_de)
     }
 
-    @AfterTest
-    fun reset() {
-        MessageGenderSelectFormatter.genderProvider = GenderProviderDefault
-    }
-
     @Test
     fun englishTest() {
         i18n4kConfig.locale = Locale("en")
@@ -184,7 +179,7 @@ class MessageBundleAttributesTest {
         i18n4kConfig.locale = Locale("en")
 
         //everything is "n"
-        MessageGenderSelectFormatter.genderProvider = object : GenderProvider {
+        i18n4kConfig.genderProvider = object : GenderProvider {
             override fun getGenderOf(value: Any?, locale: Locale?): String? {
                 return "n"
             }
@@ -209,7 +204,7 @@ class MessageBundleAttributesTest {
         i18n4kConfig.locale = Locale("de")
 
         //everything is "n"
-        MessageDeclensionValueFormatter.declensionProvider = object : DeclensionProvider {
+        i18n4kConfig.declensionProvider = object : DeclensionProvider {
             override fun getDeclensionOf(
                 declensionCase: CharSequence,
                 value: Any?,

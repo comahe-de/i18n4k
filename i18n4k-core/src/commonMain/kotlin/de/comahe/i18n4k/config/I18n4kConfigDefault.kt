@@ -3,10 +3,15 @@ package de.comahe.i18n4k.config
 import de.comahe.i18n4k.Locale
 import de.comahe.i18n4k.messages.formatter.MessageFormatter
 import de.comahe.i18n4k.messages.formatter.MessageFormatterDefault
+import de.comahe.i18n4k.messages.formatter.provider.DeclensionProvider
+import de.comahe.i18n4k.messages.formatter.provider.DeclensionProviderDefault
+import de.comahe.i18n4k.messages.formatter.provider.GenderProvider
+import de.comahe.i18n4k.messages.formatter.provider.GenderProviderDefault
 import de.comahe.i18n4k.systemLocale
 import kotlinx.atomicfu.AtomicBoolean
 import kotlinx.atomicfu.AtomicRef
 import kotlinx.atomicfu.atomic
+import kotlinx.atomicfu.update
 
 /** Mutabel implementation of the configuration for all the I18N parameters */
 @Suppress("MemberVisibilityCanBePrivate")
@@ -34,6 +39,12 @@ class I18n4kConfigDefault : I18n4kConfig {
     /** atomic ref for [ignoreMessageParseErrors] */
     private val ignoreMessageParseErrorsRef: AtomicBoolean = atomic(super.ignoreMessageParseErrors)
 
+    /** atomic ref for [genderProvider] */
+    private val genderProviderRef = atomic<GenderProvider>(GenderProviderDefault)
+
+    /** atomic ref for [declensionProvider] */
+    private val declensionProviderRef = atomic<DeclensionProvider>(DeclensionProviderDefault)
+
     /** Restores the default settings. */
     fun restoreDefaultSettings() {
         defaultLocale = Locale("en")
@@ -41,6 +52,8 @@ class I18n4kConfigDefault : I18n4kConfig {
         messageFormatter = MessageFormatterDefault
         treadBlankStringAsNull = true
         ignoreMessageParseErrors = super.ignoreMessageParseErrors
+        genderProvider = GenderProviderDefault
+        declensionProvider = DeclensionProviderDefault
     }
 
     /////////////////////////////////////////
@@ -70,7 +83,7 @@ class I18n4kConfigDefault : I18n4kConfig {
      * if a string of a localisation is null, the default locale is used. If this flag is true,
      * blank strings (empty of only whitespace) are also threaded as null.
      *
-     *  For null strings the default locale is used.
+     * For null strings the default locale is used.
      */
     override var treadBlankStringAsNull: Boolean
         get() = treadBlankStringAsNullRef.value
@@ -83,4 +96,12 @@ class I18n4kConfigDefault : I18n4kConfig {
         set(value) {
             ignoreMessageParseErrorsRef.value = value
         }
+
+    override var genderProvider: GenderProvider
+        get() = genderProviderRef.value
+        set(value) = genderProviderRef.update { value }
+
+    override var declensionProvider: DeclensionProvider
+        get() = declensionProviderRef.value
+        set(value) = declensionProviderRef.update { value }
 }

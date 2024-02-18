@@ -1,11 +1,13 @@
 package de.comahe.i18n4k.messages.formatter.types
 
 import de.comahe.i18n4k.Locale
+import de.comahe.i18n4k.i18n4k
 import de.comahe.i18n4k.messages.formatter.MessageFormatContext
 import de.comahe.i18n4k.messages.formatter.MessageValueFormatter
 import de.comahe.i18n4k.messages.formatter.parsing.StylePart
 import de.comahe.i18n4k.messages.formatter.provider.GenderProvider
 import de.comahe.i18n4k.messages.formatter.provider.GenderProviderDefault
+import de.comahe.i18n4k.messages.formatter.provider.GenderProviderDefault.getGenderOf
 import kotlinx.atomicfu.atomic
 import kotlinx.atomicfu.update
 
@@ -57,12 +59,6 @@ import kotlinx.atomicfu.update
  */
 object MessageGenderSelectFormatter : MessageValueFormatter {
 
-    private val genderProviderRef = atomic<GenderProvider>(GenderProviderDefault)
-
-    @Suppress("MemberVisibilityCanBePrivate")
-    var genderProvider: GenderProvider
-        get() = genderProviderRef.value
-        set(value) = genderProviderRef.update { value }
 
     override val typeId: String
         get() = "gender"
@@ -78,7 +74,7 @@ object MessageGenderSelectFormatter : MessageValueFormatter {
     ) {
         return MessageSelectFormatter.format(
             result,
-            genderProvider.getGenderOf(value, locale),
+            i18n4k.genderProvider.getGenderOf(value, locale),
             MessageSelectFormatter.typeId,
             style,
             parameters,
