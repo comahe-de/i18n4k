@@ -207,11 +207,11 @@ class PluralRuleTest {
         for ((lang, value) in allSamples) {
 
             for ((category, samples) in value) {
-
+                println("Testing $lang - $category")
                 val locale = forLocaleTag(lang)
                 // we only test languages that have rules
                 val pluralRule = PluralRule.create(locale.language, locale.country, type)
-                    ?: throw IllegalStateException("No rule for: $lang")
+                    ?: throw IllegalStateException("No rule for: $lang - ${locale.language} - ${locale.country}")
 
                 for (sample in samples) {
                     if (pluralRule.select(sample) == null)

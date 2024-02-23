@@ -967,7 +967,9 @@ object PluralRules {
             "yo" -> _C_RULE_14
             "root" -> _C_RULE_14
             "wo" -> _C_RULE_14
+            // id==in, see https://stackoverflow.com/a/55965008/2611134
             "id" -> _C_RULE_14
+            "in" -> _C_RULE_14
             "sah" -> _C_RULE_14
             "ig" -> _C_RULE_14
             "ses" -> _C_RULE_14
@@ -1028,13 +1030,17 @@ object PluralRules {
             "lij" -> _C_RULE_31
             "et" -> _C_RULE_31
             "sc" -> _C_RULE_31
+            // yi==ji, see https://stackoverflow.com/a/55965008/2611134
             "yi" -> _C_RULE_31
+            "ji" -> _C_RULE_31
             "fy" -> _C_RULE_31
             "ia" -> _C_RULE_31
             "ur" -> _C_RULE_31
             "nl" -> _C_RULE_31
             "scn" -> _C_RULE_31
+            // he==iw, see https://stackoverflow.com/a/55965008/2611134
             "he" -> _C_RULE_32
+            "iw" -> _C_RULE_32
             "be" -> _C_RULE_33
             "fr" -> _C_RULE_34
             "kw" -> _C_RULE_35
@@ -1105,7 +1111,9 @@ object PluralRules {
             "hr" -> _O_RULE_10
             "lv" -> _O_RULE_10
             "ia" -> _O_RULE_10
+            // id==in, see https://stackoverflow.com/a/55965008/2611134
             "id" -> _O_RULE_10
+            "in" -> _O_RULE_10
             "ur" -> _O_RULE_10
             "ml" -> _O_RULE_10
             "mn" -> _O_RULE_10
@@ -1159,7 +1167,9 @@ object PluralRules {
             "th" -> _O_RULE_10
             "pl" -> _O_RULE_10
             "da" -> _O_RULE_10
+            // he==iw, see https://stackoverflow.com/a/55965008/2611134
             "he" -> _O_RULE_10
+            "iw" -> _O_RULE_10
             "tr" -> _O_RULE_10
             "cy" -> _O_RULE_11
             "kw" -> _O_RULE_12

@@ -17,16 +17,25 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Cache Gradle and Konan stuff
+    - name: Cache Gradle stuff
+      if: ${{ always() }}
       uses: actions/cache@v2
       with:
         path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
-            ~/.konan/
         key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
         restore-keys: |
             ${{ runner.os }}-gradle-
+    - name: Cache Konan stuff
+      if: ${{ always() }}
+      uses: actions/cache@v2
+      with:
+        path: |
+            ~/.konan/
+        key: ${{ runner.os }}-konan-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: |
+            ${{ runner.os }}-konan-
 
     - name: Setting Java Home
       run: echo "JAVA_HOME=$JAVA_HOME_17_X64" >> $GITHUB_ENV
