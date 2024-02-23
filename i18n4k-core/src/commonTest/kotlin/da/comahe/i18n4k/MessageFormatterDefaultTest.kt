@@ -2,8 +2,10 @@ package da.comahe.i18n4k
 
 import de.comahe.i18n4k.Locale
 import de.comahe.i18n4k.config.I18n4kConfigDefault
+import de.comahe.i18n4k.forLocaleTag
 import de.comahe.i18n4k.i18n4k
 import de.comahe.i18n4k.messages.formatter.MessageFormatterDefault.format
+import de.comahe.i18n4k.messages.formatter.MessageParametersMap
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -75,7 +77,7 @@ class MessageFormatterDefaultTest {
     fun format_invalidParamNotionTest() {
         val locale = Locale("en")
 
-        assertEquals("invalid ", format("invalid {0!", listOf("A"), locale))
+        assertEquals("invalid A", format("invalid {0,!", listOf("A"), locale))
         assertEquals("invalid 0}!", format("invalid 0}!", listOf("A"), locale))
         assertEquals("invalid ", format("invalid {{0}!", listOf("A"), locale))
         assertEquals("invalid A}!", format("invalid {0}}!", listOf("A"), locale))
@@ -91,7 +93,7 @@ class MessageFormatterDefaultTest {
     fun format_invalidParamValues() {
         val locale = Locale("en")
 
-        assertEquals("abc {10}", format("abc {10}", listOf("A"), locale))
+        assertEquals("abc {9}", format("abc {9}", listOf("A"), locale))
         assertEquals("abc {~}", format("abc {~}", listOf("A"), locale))
         assertEquals("abc A", format("abc {0, foo}", listOf("A"), locale))
         assertEquals("abc {~}", format("abc {~, foo}", listOf("A"), locale))
@@ -145,5 +147,28 @@ class MessageFormatterDefaultTest {
         assertEquals("q {'0} A", format("q '{''0}' {0}", listOf("A"), locale))
         assertEquals("q 'A' '' A", format("q ''{0}'' '''' {0}", listOf("A"), locale))
         assertEquals("q A' {0} {0}", format("q {0}'' '{0} {0}", listOf("A"), locale))
+    }
+
+    @Test
+    fun testParameterNames() {
+
+        val locale = forLocaleTag("en")
+        val params = MessageParametersMap("a" to "1", "b" to "2", "c" to "3", "d" to "4")
+
+        assertEquals("1 2 3 4 !", format("{a} {b} {c} {d} !", params, locale))
+
+        assertEquals(
+            "2! !",
+            format("{a, select, 1 {{b}!} 2 {{c}?} other {{d}#}} !", params, locale)
+        )
+        assertEquals(
+            "3? !",
+            format("{b, select, 1 {{b}!} 2 {{c}?} other {{d}#}} !", params, locale)
+        )
+        assertEquals(
+            "4# !",
+            format("{c, select, 1 {{b}!} 2 {{c}?} other {{d}#}} !", params, locale)
+        )
+
     }
 }

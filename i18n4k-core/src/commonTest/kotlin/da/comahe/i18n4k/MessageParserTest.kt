@@ -15,7 +15,6 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
-import kotlin.time.Duration.Companion.parse
 
 class MessageParserTest {
 
@@ -49,23 +48,23 @@ class MessageParserTest {
     @Test
     fun testParameterSimple() {
         assertEquals(
-            MessagePartParam(0, null, null),
+            MessagePartParam("0", null, null),
             parse("{0}"),
         )
 
         assertEquals(
-            MessagePartParam(1, "foo", null),
+            MessagePartParam("1", "foo", null),
             parse("{1, foo }"),
         )
 
         assertEquals(
-            MessagePartParam(2, "foo", StylePartArgument("bar")),
+            MessagePartParam("2", "foo", StylePartArgument("bar")),
             parse("{2, foo , bar }"),
         )
 
         assertEquals(
             MessagePartParam(
-                null,
+                "~",
                 "foobar",
                 StylePartList(StylePartArgument("bar"), StylePartArgument("foo"))
             ),
@@ -77,13 +76,13 @@ class MessageParserTest {
     fun testParameterQuotes() {
 
         assertEquals(
-            MessagePartParam(2, "foo", StylePartArgument("bar")),
+            MessagePartParam("2", "foo", StylePartArgument("bar")),
             parse("{2, foo , 'bar' }"),
         )
 
         assertEquals(
             MessagePartParam(
-                null,
+                "~",
                 "foobar",
                 StylePartList(StylePartArgument("bar"), StylePartArgument("foo"))
             ),
@@ -92,7 +91,7 @@ class MessageParserTest {
 
         assertEquals(
             MessagePartParam(
-                null,
+                "~",
                 "foobar",
                 StylePartList(StylePartArgument(" bar "), StylePartArgument(" foo "))
             ),
@@ -101,7 +100,7 @@ class MessageParserTest {
 
         assertEquals(
             MessagePartParam(
-                null,
+                "~",
                 "foobar",
                 StylePartArgument("bar foo")
             ),
@@ -110,7 +109,7 @@ class MessageParserTest {
 
         assertEquals(
             MessagePartParam(
-                null,
+                "~",
                 "foobar",
                 StylePartList(
                     StylePartArgument(" "),
@@ -123,7 +122,7 @@ class MessageParserTest {
 
         assertEquals(
             MessagePartParam(
-                null,
+                "~",
                 "foobar",
                 StylePartList(
                     StylePartArgument(" "),
@@ -138,7 +137,7 @@ class MessageParserTest {
 
         assertEquals(
             MessagePartParam(
-                null,
+                "~",
                 "foobar",
                 StylePartList(
                     StylePartArgument("'"),
@@ -156,11 +155,11 @@ class MessageParserTest {
     fun testParameterLists() {
         assertEquals(
             MessagePartList(
-                MessagePartParam(0, null, null),
-                MessagePartParam(1, "foo", null),
-                MessagePartParam(2, "foo", StylePartArgument("bar")),
+                MessagePartParam("0", null, null),
+                MessagePartParam("1", "foo", null),
+                MessagePartParam("2", "foo", StylePartArgument("bar")),
                 MessagePartParam(
-                    null,
+                    "~",
                     "foobar",
                     StylePartList(StylePartArgument("bar"), StylePartArgument("foo"))
                 ),
@@ -173,13 +172,13 @@ class MessageParserTest {
     fun testParameterListsInStyle() {
         assertEquals(
             MessagePartParam(
-                0, "xyz",
+                "0", "xyz",
                 StylePartMessage(
                     MessagePartList(
-                        MessagePartParam(1, "foo", null),
-                        MessagePartParam(2, "foo", StylePartArgument("bar")),
+                        MessagePartParam("1", "foo", null),
+                        MessagePartParam("2", "foo", StylePartArgument("bar")),
                         MessagePartParam(
-                            null,
+                            "~",
                             "foobar",
                             StylePartList(StylePartArgument("bar"), StylePartArgument("foo"))
                         )
@@ -195,14 +194,14 @@ class MessageParserTest {
         assertEquals(
             MessagePartList(
                 MessagePartText("A "),
-                MessagePartParam(0, null, null),
+                MessagePartParam("0", null, null),
                 MessagePartText(" b "),
-                MessagePartParam(1, "foo", null),
+                MessagePartParam("1", "foo", null),
                 MessagePartText(" c "),
-                MessagePartParam(2, "foo", StylePartArgument("bar")),
+                MessagePartParam("2", "foo", StylePartArgument("bar")),
                 MessagePartText(" "),
                 MessagePartParam(
-                    null,
+                    "~",
                     "foobar",
                     StylePartList(StylePartArgument("bar"), StylePartArgument("foo"))
                 ),
@@ -218,17 +217,17 @@ class MessageParserTest {
             MessagePartList(
                 MessagePartText("A "),
                 MessagePartParam(
-                    0, "xyz",
+                    "0", "xyz",
                     StylePartList(
                         StylePartArgument("b"),
                         StylePartMessage(MessagePartText(" foo ")),
                         StylePartArgument("c"),
                         StylePartMessage(
                             MessagePartList(
-                                MessagePartParam(2, "foo", StylePartArgument("bar")),
+                                MessagePartParam("2", "foo", StylePartArgument("bar")),
                                 MessagePartText(" "),
                                 MessagePartParam(
-                                    null, "foobar", StylePartList(
+                                    "~", "foobar", StylePartList(
                                         StylePartArgument("bar"),
                                         StylePartArgument("foo"),
                                     )
@@ -250,13 +249,13 @@ class MessageParserTest {
     fun testStyleNested() {
         assertEquals(
             MessagePartParam(
-                0, "foo",
+                "0", "foo",
                 StylePartMessage(
                     MessagePartParam(
-                        1, "bar",
+                        "1", "bar",
                         StylePartMessage(
                             MessagePartParam(
-                                2, "foobar",
+                                "2", "foobar",
                                 StylePartArgument("hi!"),
                             )
                         ),
@@ -267,34 +266,27 @@ class MessageParserTest {
         )
     }
 
-
     @Test()
-    fun testMaxParameterIndex() {
+    fun testParameterName() {
         assertEquals(
-            6,
-            parse("{0,foo, op1 {{1, bar, {{2, foobar, {{3, zu , {{4}} }} }}  }} op2 {{5, bar3} - {6, foobar3, ' III ' }} }").maxParameterIndex
-        )
-        assertEquals(
-            6,
-            parse("{5,foo, op1 {{6, bar, {{2, foobar, {{3, zu , {{4}} }} }}  }} op2 {{0, bar3} - {1, foobar3, ' III ' }} }").maxParameterIndex
-        )
-        assertEquals(
-            6,
-            parse("{3,foo, op1 {{4, bar, {{1, foobar, {{6, zu , {{0}} }} }}  }} op2 {{2, bar3} - {1, foobar3, ' III ' }} }").maxParameterIndex
-        )
-        assertEquals(
-            6,
-            parse("{6,foo, op1 {{0, bar, {{5, foobar, {{4, zu , {{3}} }} }}  }} op2 {{1, bar3} - {2, foobar3, ' III ' }} }").maxParameterIndex
+            setOf<CharSequence>( "a b", "c", "e", "f", "'", "g", "{", "}"),
+            getParameterNames("{ a b } { c , d } { e' '} { ' 'f} {''} {' g '} {'{'} {'}'}")
         )
     }
 
     @Test()
-    fun testInvalidIndex() {
+    fun testParameterNameComplex() {
+        assertEquals(
+            setOf<CharSequence>("0", "1", "2", "3", "4", "5", "6"),
+            getParameterNames("{0,foo, op1 {{1, bar, {{2, foobar, {{3, zu , {{4}} }} }}  }} op2 {{5, bar3} - {6, foobar3, ' III ' }} }")
+        )
+    }
+
+    @Test()
+    fun testInvalidName() {
         assertFailsWith(MessageParseException::class) { parse("{}") }
-        assertFailsWith(MessageParseException::class) { parse("{a}") }
-        assertFailsWith(MessageParseException::class) { parse("{.}") }
-        assertFailsWith(MessageParseException::class) { parse("{1a}") }
-        assertFailsWith(MessageParseException::class) { parse("{-1}") }
+        assertFailsWith(MessageParseException::class) { parse("{ }") }
+        assertFailsWith(MessageParseException::class) { parse("{' '}") }
     }
 
     @Test()
@@ -307,6 +299,8 @@ class MessageParserTest {
         assertFailsWith(MessageParseException::class) { parse(" { { }") }
         assertFailsWith(MessageParseException::class) { parse(" { } {") }
         assertFailsWith(MessageParseException::class) { parse(" { } { ") }
+        assertFailsWith(MessageParseException::class) { parse(" { 0, { , ") }
+        assertFailsWith(MessageParseException::class) { parse(" { 0, } , ") }
         assertFailsWith(MessageParseException::class) { parse(" { 0, foo , ") }
         assertFailsWith(MessageParseException::class) { parse(" { 0, foo , {") }
         assertFailsWith(MessageParseException::class) { parse(" { 0, foo , { }") }
@@ -327,7 +321,7 @@ class MessageParserTest {
         assertEquals(
             MessagePartList(
                 MessagePartText(" "),
-                MessagePartParam(index = 0),
+                MessagePartParam("0"),
                 MessagePartText(" "),
             ),
             parse(" {0} {")
@@ -335,7 +329,7 @@ class MessageParserTest {
         assertEquals(
             MessagePartList(
                 MessagePartText(" "),
-                MessagePartParam(index = 0),
+                MessagePartParam("0"),
                 MessagePartText(" "),
             ), parse(" {0} { ")
         )
@@ -343,7 +337,7 @@ class MessageParserTest {
             MessagePartList(
                 MessagePartText(" "),
                 MessagePartParam(
-                    index = 0, "foo",
+                    "0", "foo",
                     StylePartArgument(""),
                 )
             ),
@@ -353,7 +347,7 @@ class MessageParserTest {
             MessagePartList(
                 MessagePartText(" "),
                 MessagePartParam(
-                    index = 0, "foo",
+                    "0", "foo",
                     StylePartMessage(MessagePartText("")),
                 )
             ),
@@ -363,7 +357,7 @@ class MessageParserTest {
             MessagePartList(
                 MessagePartText(" "),
                 MessagePartParam(
-                    index = 0, "foo",
+                    "0", "foo",
                     StylePartMessage(MessagePartText(" ")),
                 )
             ),
@@ -373,8 +367,8 @@ class MessageParserTest {
             MessagePartList(
                 MessagePartText(" "),
                 MessagePartParam(
-                    index = 0, "foo",
-                    StylePartMessage(MessagePartParam(1)),
+                    "0", "foo",
+                    StylePartMessage(MessagePartParam("1")),
                 )
             ),
             parse(" { 0, foo , {{1}")
@@ -384,14 +378,19 @@ class MessageParserTest {
             MessagePartList(
                 MessagePartText(" "),
                 MessagePartParam(
-                    index = 0, "foo",
-                    StylePartMessage(MessagePartParam(1)),
+                    "0", "foo",
+                    StylePartMessage(MessagePartParam("1")),
                 )
             ),
             parse(" { 0, foo , {{1}}")
         )
     }
 
+    private fun getParameterNames(message: String): Set<CharSequence> {
+        val names = mutableSetOf<CharSequence>()
+        parse(message).fillInParameterNames(names)
+        return names
+    }
 
     private fun parse(message: String): MessagePart {
         return MessageParser(message).parseMessage()

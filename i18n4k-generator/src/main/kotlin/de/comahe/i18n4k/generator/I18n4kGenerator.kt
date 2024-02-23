@@ -24,6 +24,8 @@ import de.comahe.i18n4k.messages.MessageBundleLocalizedStringFactory6
 import de.comahe.i18n4k.messages.MessageBundleLocalizedStringFactory7
 import de.comahe.i18n4k.messages.MessageBundleLocalizedStringFactory8
 import de.comahe.i18n4k.messages.MessageBundleLocalizedStringFactory9
+import de.comahe.i18n4k.messages.MessageBundleLocalizedStringFactoryN
+import de.comahe.i18n4k.messages.NameToIndexMapperNumbersFrom1
 import de.comahe.i18n4k.messages.providers.MessagesProvider
 import de.comahe.i18n4k.toTag
 import java.io.File
@@ -74,10 +76,11 @@ class I18n4kGenerator(
     private val generationTarget: GenerationTargetPlatform
 ) {
 
-    /** sorted map
-     * key: all keys that are present in the language files
-     * value: the name of the field in the generated Kotlin file */
-    val fieldNames = sortedMapOf<String, String>()
+    /**
+     * sorted map key: all keys that are present in the language files value: the name of the field
+     * in the generated Kotlin file
+     */
+    val fieldNames = sortedMapOf<String, String>(AlphanumComparator.Companion.INSTANCE_ENGLISH)
 
     init {
         bundle.messageDataMap.values.forEach { data ->
@@ -171,21 +174,33 @@ class I18n4kGenerator(
                 8 -> MessageBundleLocalizedStringFactory8::class
                 9 -> MessageBundleLocalizedStringFactory9::class
                 10 -> MessageBundleLocalizedStringFactory10::class
-                else -> throw IllegalArgumentException()
+                else -> MessageBundleLocalizedStringFactoryN::class
             }
         }
 
         fieldNames.forEach { (key, fieldName) ->
-            val paramCount = bundle.getMaxParameterIndexForKey(key) + 1
-            if (paramCount > 10)
-                throw IllegalArgumentException("The field '$key' has more than 10 parameters!")
+            val params = bundle.getMessageParametersNames(key)
+                .filter { it != "~" }// remove the null token
+                .map { it.toString() }
+                .sortedWith(AlphanumComparator.INSTANCE_ENGLISH)
+
+            val paramCount = params.size
             val keyEscaped = key.replace("%", "%%");
             val property = PropertySpec.builder(fieldName, paramCountToClass(paramCount))
                 .initializer(
                     when (paramCount) {
                         0 -> "getLocalizedString0(\"$keyEscaped\", $index)"
-                        else -> "getLocalizedStringFactory$paramCount(\"$keyEscaped\", $index)"
-                    }
+                        in 1..MAX_PARAMETER_LIST_COUNT ->
+                            "getLocalizedStringFactory$paramCount(\"$keyEscaped\", $index" + (
+                                if (isOnlySortedDigitsStartingAt0(params))
+                                    ")"
+                                else if (isOnlySortedDigitsStartingAt1(params))
+                                    ", %T)"
+                                else
+                                    ", ${params.joinToString(", ") { "\"$it\"" }})"
+                                )
+                        else -> "getLocalizedStringFactoryN(\"$keyEscaped\", $index)"
+                    }, NameToIndexMapperNumbersFrom1::class
                 )
             if (generationTarget == GenerationTargetPlatform.JVM
                 || generationTarget == GenerationTargetPlatform.ANDROID
@@ -195,8 +210,13 @@ class I18n4kGenerator(
 
             if (commentLocale != null) {
                 bundle.messageDataMap[commentLocale]?.messages?.get(key)?.let { text ->
-                    property.addKdoc(text.replace("%", "%%"))
+                    property.addKdoc(text.replace("%", "%%") + "\n\n")
                 }
+            }
+            if (params.isNotEmpty()) {
+                property.addKdoc("Parameters: \n")
+                for ((paramIndex, param) in params.withIndex())
+                    property.addKdoc("* p$paramIndex: $param\n")
             }
 
             messageObject.addProperty(property.build())
@@ -354,5 +374,45 @@ class I18n4kGenerator(
             prevCharacter = character
         }
         return snakeCase.toString()
+    }
+
+    companion object {
+        /**
+         * Max count of parameters that can be used as a parameter list. For more a
+         * [de.comahe.i18n4k.messages.formatter.MessageParameters] object must be used.
+         */
+        const val MAX_PARAMETER_LIST_COUNT = 10
+
+        private fun isOnlySortedDigitsStartingAt0(parameters: List<String>): Boolean {
+            if (parameters.size > MAX_PARAMETER_LIST_COUNT)
+                return false
+
+            var character = '0'
+
+            for (param in parameters) {
+                if (param.length != 1)
+                    return false
+                if (param[0] != character)
+                    return false
+                character++
+            }
+            return true
+        }
+
+        private fun isOnlySortedDigitsStartingAt1(parameters: List<String>): Boolean {
+            if (parameters.size > MAX_PARAMETER_LIST_COUNT)
+                return false
+
+            var character = '1'
+            val character10 = '9' + 1
+            for (param in parameters) {
+                if (param.length != 1) // only 10 allowed with more than 2 digits.
+                    return (character10 == character && param == "10")
+                if (param[0] != character)
+                    return false
+                character++
+            }
+            return true
+        }
     }
 }

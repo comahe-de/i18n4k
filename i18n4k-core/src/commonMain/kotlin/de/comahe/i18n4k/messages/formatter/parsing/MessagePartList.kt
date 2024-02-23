@@ -2,6 +2,7 @@ package de.comahe.i18n4k.messages.formatter.parsing
 
 import de.comahe.i18n4k.Locale
 import de.comahe.i18n4k.messages.formatter.MessageFormatContext
+import de.comahe.i18n4k.messages.formatter.MessageParameters
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -10,19 +11,14 @@ data class MessagePartList(val list: ImmutableList<MessagePart>) : MessagePart {
     constructor(part: MessagePart) : this(persistentListOf(part))
     constructor(vararg parts: MessagePart) : this(persistentListOf(*parts))
 
-    override val maxParameterIndex: Int
-        get() =
-            if (hasNamedParameters)
-                -1
-            else
-                list.maxOf { it.maxParameterIndex }
-
-    override val hasNamedParameters: Boolean
-        get() = list.firstOrNull() { it.hasNamedParameters } != null
+    override fun fillInParameterNames(names: MutableSet<CharSequence>) {
+        for (part in list)
+            part.fillInParameterNames(names)
+    }
 
     override fun format(
         result: StringBuilder,
-        parameters: List<Any>,
+        parameters: MessageParameters,
         locale: Locale,
         context: MessageFormatContext
     ) {

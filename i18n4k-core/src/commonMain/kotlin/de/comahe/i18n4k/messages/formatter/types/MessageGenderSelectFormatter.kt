@@ -3,6 +3,7 @@ package de.comahe.i18n4k.messages.formatter.types
 import de.comahe.i18n4k.Locale
 import de.comahe.i18n4k.i18n4k
 import de.comahe.i18n4k.messages.formatter.MessageFormatContext
+import de.comahe.i18n4k.messages.formatter.MessageParameters
 import de.comahe.i18n4k.messages.formatter.MessageValueFormatter
 import de.comahe.i18n4k.messages.formatter.parsing.StylePart
 import de.comahe.i18n4k.messages.formatter.provider.GenderProvider
@@ -68,7 +69,7 @@ object MessageGenderSelectFormatter : MessageValueFormatter {
         value: Any?,
         typeId: CharSequence,
         style: StylePart?,
-        parameters: List<Any>,
+        parameters: MessageParameters,
         locale: Locale,
         context: MessageFormatContext
     ) {

@@ -28,6 +28,19 @@ object MessagesTest1_de : MessagesProvider {
         "{0} hat {1, select, female {ihre} other {seine} } {3, select, one {Tasche} other {{2} Taschen}} vergessen.",
         "Es ist {0, number, %.02}!",
         "Schau''s dir an! Ein Hochkomma: ''",
+        "Hallo {pa}!",
+        "Hallo {pa} & {pa}!",
+        "Hallo {pa} und {pb}!",
+        "Hallo {pa}, {pb} und {pc}!",
+        "Hallo {pa}, {pb}, {pc} und {pd}!",
+        "Hallo {pa}, {pb}, {pc}, {pd} und {pe}!",
+        "Hallo {pe}, {pa}, {pb}, {pd} und {pc}!",
+        "Hallo {pb}, {pb}, {pe}, {pe} und {pa}!",
+        "Hallo {pa}, {pb}, {pc}, {pd}, {pe} und {pf}!",
+        "Hallo {pa}, {pb}, {pc}, {pd}, {pe}, {pf} und {pg}!",
+        "Hallo {pa}, {pb}, {pc}, {pd}, {pe}, {pf}, {pg} und {ph}!",
+        "Hallo {pa}, {pb}, {pc}, {pd}, {pe}, {pf}, {pg}, {ph} und {pi}!",
+        "Hallo {pa}, {pb}, {pc}, {pd}, {pe}, {pf}, {pg}, {ph}, {pi} und {pj}!",
     )
 
     override val locale = Locale("de")

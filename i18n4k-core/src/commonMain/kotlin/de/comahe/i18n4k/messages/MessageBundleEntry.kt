@@ -8,7 +8,11 @@ package de.comahe.i18n4k.messages
  * [de.comahe.i18n4k.strings.LocalizedStringFactory2],
  * [de.comahe.i18n4k.strings.LocalizedStringFactory3],
  * [de.comahe.i18n4k.strings.LocalizedStringFactory4],
- * [de.comahe.i18n4k.strings.LocalizedStringFactory5]
+ * [de.comahe.i18n4k.strings.LocalizedStringFactory5],
+ * [de.comahe.i18n4k.strings.LocalizedStringFactory6],
+ * [de.comahe.i18n4k.strings.LocalizedStringFactory7],
+ * [de.comahe.i18n4k.strings.LocalizedStringFactory8],
+ * [de.comahe.i18n4k.strings.LocalizedStringFactory9],
  */
 interface MessageBundleEntry {
     /** The message bundle where the entry belongs to */

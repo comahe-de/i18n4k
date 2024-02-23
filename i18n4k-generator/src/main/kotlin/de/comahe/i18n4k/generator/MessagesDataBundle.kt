@@ -27,18 +27,22 @@ class MessagesDataBundle(
         return sb.toString()
     }
 
-    /** finds the max used parameter index of a message string (see [MessageFormatter]).
-     * "-1" if there is no parameter  */
-    fun getMaxParameterIndexForKey(key: String): Int =
+    /**
+     * finds the names of used parameter of a message string (see [MessageFormatter]).
+     *
+     * Empty if there are no parameters.
+     */
+    fun getMessageParametersNames(key: String): Set<CharSequence> =
         messageDataMap.values
             .map { it.messages[key] }
             .map { message ->
-                if (message == null) -1
+                if (message == null) setOf()
                 else messageDataMap.keys
                     .map { locale ->
-                        messageFormatter.getMaxParameterIndex(message, locale)
+                        messageFormatter.getMessageParametersNames(message, locale)
                     }
-                    .maxOrNull() ?: -1
+            }.flatten()
+            .fold(mutableSetOf<CharSequence>()) { result, current ->
+                result.addAll(current); result
             }
-            .maxOrNull() ?: -1
 }

@@ -11,6 +11,8 @@ import de.comahe.i18n4k.messages.MessageBundleLocalizedStringFactory6
 import de.comahe.i18n4k.messages.MessageBundleLocalizedStringFactory7
 import de.comahe.i18n4k.messages.MessageBundleLocalizedStringFactory8
 import de.comahe.i18n4k.messages.MessageBundleLocalizedStringFactory9
+import de.comahe.i18n4k.messages.MessageBundleLocalizedStringFactoryN
+import de.comahe.i18n4k.messages.NameToIndexMapperNumbersFrom1
 import de.comahe.i18n4k.messages.providers.MessagesProvider
 import kotlin.Array
 import kotlin.Int
@@ -21,36 +23,69 @@ import kotlin.String
  */
 public object Abba : MessageBundle("Abba", "") {
   /**
+   * Special key
+   */
+  public val _Special_Key_: MessageBundleLocalizedString = getLocalizedString0("~Special#Key~", 0)
+
+  /**
+   * Special key 2
+   */
+  public val _Special__S_P_T_M_N_L_Key2_: MessageBundleLocalizedString =
+      getLocalizedString0("~Special-%S%P%T%M%N%L-Key2~", 1)
+
+  /**
    * Number
    */
-  public val _1_number_key: MessageBundleLocalizedString = getLocalizedString0("1-number-key", 0)
+  public val _1_number_key: MessageBundleLocalizedString = getLocalizedString0("1-number-key", 2)
 
   /**
-   * Hello, World
+   * It is {a}!
+   *
+   * Parameters: 
+   * * p0: 1
+   * * p1: 2
+   * * p2: a
+   * * p3: b
    */
-  public val Hello_World_: MessageBundleLocalizedString = getLocalizedString0("Hello World!", 1)
-
-  /**
-   * I ^
-   * ^have two
-   * circumflexes
-   * in the text
-   */
-  public val Multi_Line_Value: MessageBundleLocalizedString =
-      getLocalizedString0("Multi-Line-Value", 2)
+  public val different_names: MessageBundleLocalizedStringFactory4 =
+      getLocalizedStringFactory4("different-names", 3, "1", "2", "a", "b")
 
   /**
    * {0} has forgotten {1, select, female {her} other {his} } {3, select, one {bag} other {{2}
    * bags}}.
+   *
+   * Parameters: 
+   * * p0: 0
+   * * p1: 1
+   * * p2: 2
+   * * p3: 3
    */
   public val forgotten_bags: MessageBundleLocalizedStringFactory4 =
-      getLocalizedStringFactory4("forgotten-bags", 3)
+      getLocalizedStringFactory4("forgotten-bags", 4)
 
   /**
    * {0, capitalize} is the best!
+   *
+   * Parameters: 
+   * * p0: 0
    */
   public val format_pattern: MessageBundleLocalizedStringFactory1 =
-      getLocalizedStringFactory1("format-pattern", 4)
+      getLocalizedStringFactory1("format-pattern", 5)
+
+  /**
+   * {~, capitalize, {{0} and {1}} are the best!
+   *
+   * Parameters: 
+   * * p0: 0
+   * * p1: 1
+   */
+  public val format_pattern2: MessageBundleLocalizedStringFactory2 =
+      getLocalizedStringFactory2("format-pattern2", 6)
+
+  /**
+   * Hello, World
+   */
+  public val Hello_World_: MessageBundleLocalizedString = getLocalizedString0("Hello World!", 7)
 
   /**
    * Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Phasellus faucibus molestie nisl.
@@ -65,112 +100,357 @@ public object Abba : MessageBundle("Abba", "") {
    * magnam aliquam quaerat voluptatem. Pellentesque sapien.
    */
   public val longTextExample: MessageBundleLocalizedString = getLocalizedString0("longTextExample",
-      5)
+      8)
 
   /**
    * 3rd value: {2}
+   *
+   * Parameters: 
+   * * p0: 2
    */
-  public val max_param_3: MessageBundleLocalizedStringFactory3 =
-      getLocalizedStringFactory3("max_param-3", 6)
+  public val max_param_3: MessageBundleLocalizedStringFactory1 =
+      getLocalizedStringFactory1("max_param-3", 9, "2")
+
+  /**
+   * En: A-{0a}, Z-{0z}, ABC-{1abc}, D-{a1}, DD-{a10}, DDD-{a9}, W-{b}, X-{0}, Y-{1}, Z-{a}
+   *
+   * Parameters: 
+   * * p0: 0
+   * * p1: 0a
+   * * p2: 0z
+   * * p3: 1
+   * * p4: 1abc
+   * * p5: a
+   * * p6: a1
+   * * p7: a9
+   * * p8: a10
+   * * p9: b
+   */
+  public val mixed_named_parameters: MessageBundleLocalizedStringFactory10 =
+      getLocalizedStringFactory10("mixed-named-parameters", 10, "0", "0a", "0z", "1", "1abc", "a",
+      "a1", "a9", "a10", "b")
+
+  /**
+   * En: A-{0a}, B-{12z}, C-{9zb}, D-{21z}, F-{21a}, D-{9za}
+   *
+   * Parameters: 
+   * * p0: 0a
+   * * p1: 9za
+   * * p2: 9zb
+   * * p3: 12z
+   * * p4: 21a
+   * * p5: 21z
+   */
+  public val mixed_named_parameters2: MessageBundleLocalizedStringFactory6 =
+      getLocalizedStringFactory6("mixed-named-parameters2", 11, "0a", "9za", "9zb", "12z", "21a",
+      "21z")
+
+  /**
+   * En: A-{a0}, B-{a12}, C-{a9}, D-{a21}, F-{b1}, D-{b01}
+   *
+   * Parameters: 
+   * * p0: a0
+   * * p1: a9
+   * * p2: a12
+   * * p3: a21
+   * * p4: b1
+   * * p5: b01
+   */
+  public val mixed_named_parameters3: MessageBundleLocalizedStringFactory6 =
+      getLocalizedStringFactory6("mixed-named-parameters3", 12, "a0", "a9", "a12", "a21", "b1",
+      "b01")
+
+  /**
+   * I ^
+   * ^have two
+   * circumflexes
+   * in the text
+   */
+  public val Multi_Line_Value: MessageBundleLocalizedString =
+      getLocalizedString0("Multi-Line-Value", 13)
+
+  /**
+   * En: A-{a}, Z-{z}, ABC-{abc}
+   *
+   * Parameters: 
+   * * p0: a
+   * * p1: abc
+   * * p2: z
+   */
+  public val named_parameters: MessageBundleLocalizedStringFactory3 =
+      getLocalizedStringFactory3("named-parameters", 14, "a", "abc", "z")
 
   /**
    * En: {0, select, a: {1, select, x: {{4}} other {{5}} } | b: {2, select, y {{6}} other {{7}} } |
    * {3, select, z {{8}} other {{9}} }!
+   *
+   * Parameters: 
+   * * p0: 0
+   * * p1: 4
+   * * p2: 5
+   * * p3: 6
+   * * p4: 7
+   * * p5: 8
+   * * p6: 9
    */
-  public val nested_parameter: MessageBundleLocalizedStringFactory10 =
-      getLocalizedStringFactory10("nested-parameter", 7)
+  public val nested_parameter: MessageBundleLocalizedStringFactory7 =
+      getLocalizedStringFactory7("nested-parameter", 15, "0", "4", "5", "6", "7", "8", "9")
 
   /**
    * Not all have translations
    */
   public val no_all_have_translations: MessageBundleLocalizedString =
-      getLocalizedString0("no-all-have-translations", 8)
+      getLocalizedString0("no-all-have-translations", 16)
 
   /**
    * En - Parameter 1: {0}
+   *
+   * Parameters: 
+   * * p0: 0
    */
   public val param_1: MessageBundleLocalizedStringFactory1 = getLocalizedStringFactory1("param_1",
-      9)
-
-  /**
-   * En - Parameter 10: {0},{1},{2},{3},{4},{5},{6},{7},{8},{9}
-   */
-  public val param_10: MessageBundleLocalizedStringFactory10 =
-      getLocalizedStringFactory10("param_10", 10)
-
-  /**
-   * En - Parameter 2: {0},{1}
-   */
-  public val param_2: MessageBundleLocalizedStringFactory2 = getLocalizedStringFactory2("param_2",
-      11)
-
-  /**
-   * En - Parameter 3: {0},{1},{2}
-   */
-  public val param_3: MessageBundleLocalizedStringFactory3 = getLocalizedStringFactory3("param_3",
-      12)
-
-  /**
-   * En - Parameter 4: {0},{1},{2},{3}
-   */
-  public val param_4: MessageBundleLocalizedStringFactory4 = getLocalizedStringFactory4("param_4",
-      13)
-
-  /**
-   * En - Parameter 5: {0},{1},{2},{3},{4}
-   */
-  public val param_5: MessageBundleLocalizedStringFactory5 = getLocalizedStringFactory5("param_5",
-      14)
-
-  /**
-   * En - Parameter 6: {0},{1},{2},{3},{4},{5}
-   */
-  public val param_6: MessageBundleLocalizedStringFactory6 = getLocalizedStringFactory6("param_6",
-      15)
-
-  /**
-   * En - Parameter 7: {0},{1},{2},{3},{4},{5},{6}
-   */
-  public val param_7: MessageBundleLocalizedStringFactory7 = getLocalizedStringFactory7("param_7",
-      16)
-
-  /**
-   * En - Parameter 8: {0},{1},{2},{3},{4},{5},{6},{7}
-   */
-  public val param_8: MessageBundleLocalizedStringFactory8 = getLocalizedStringFactory8("param_8",
       17)
 
   /**
+   * En - Parameter 2: {0},{1}
+   *
+   * Parameters: 
+   * * p0: 0
+   * * p1: 1
+   */
+  public val param_2: MessageBundleLocalizedStringFactory2 = getLocalizedStringFactory2("param_2",
+      18)
+
+  /**
+   * En - Parameter 3: {0},{1},{2}
+   *
+   * Parameters: 
+   * * p0: 0
+   * * p1: 1
+   * * p2: 2
+   */
+  public val param_3: MessageBundleLocalizedStringFactory3 = getLocalizedStringFactory3("param_3",
+      19)
+
+  /**
+   * En - Parameter 4: {0},{1},{2},{3}
+   *
+   * Parameters: 
+   * * p0: 0
+   * * p1: 1
+   * * p2: 2
+   * * p3: 3
+   */
+  public val param_4: MessageBundleLocalizedStringFactory4 = getLocalizedStringFactory4("param_4",
+      20)
+
+  /**
+   * En - Parameter {1},{2},{3},{4}
+   *
+   * Parameters: 
+   * * p0: 1
+   * * p1: 2
+   * * p2: 3
+   * * p3: 4
+   */
+  public val param_4_startAt1: MessageBundleLocalizedStringFactory4 =
+      getLocalizedStringFactory4("param_4_startAt1", 21, NameToIndexMapperNumbersFrom1)
+
+  /**
+   * En - Parameter {3},{4},{5},{6}
+   *
+   * Parameters: 
+   * * p0: 3
+   * * p1: 4
+   * * p2: 5
+   * * p3: 6
+   */
+  public val param_4_startAt3: MessageBundleLocalizedStringFactory4 =
+      getLocalizedStringFactory4("param_4_startAt3", 22, "3", "4", "5", "6")
+
+  /**
+   * En - Parameter 5: {0},{1},{2},{3},{4}
+   *
+   * Parameters: 
+   * * p0: 0
+   * * p1: 1
+   * * p2: 2
+   * * p3: 3
+   * * p4: 4
+   */
+  public val param_5: MessageBundleLocalizedStringFactory5 = getLocalizedStringFactory5("param_5",
+      23)
+
+  /**
+   * En - Parameter 6: {0},{1},{2},{3},{4},{5}
+   *
+   * Parameters: 
+   * * p0: 0
+   * * p1: 1
+   * * p2: 2
+   * * p3: 3
+   * * p4: 4
+   * * p5: 5
+   */
+  public val param_6: MessageBundleLocalizedStringFactory6 = getLocalizedStringFactory6("param_6",
+      24)
+
+  /**
+   * En - Parameter 7: {0},{1},{2},{3},{4},{5},{6}
+   *
+   * Parameters: 
+   * * p0: 0
+   * * p1: 1
+   * * p2: 2
+   * * p3: 3
+   * * p4: 4
+   * * p5: 5
+   * * p6: 6
+   */
+  public val param_7: MessageBundleLocalizedStringFactory7 = getLocalizedStringFactory7("param_7",
+      25)
+
+  /**
+   * En - Parameter 8: {0},{1},{2},{3},{4},{5},{6},{7}
+   *
+   * Parameters: 
+   * * p0: 0
+   * * p1: 1
+   * * p2: 2
+   * * p3: 3
+   * * p4: 4
+   * * p5: 5
+   * * p6: 6
+   * * p7: 7
+   */
+  public val param_8: MessageBundleLocalizedStringFactory8 = getLocalizedStringFactory8("param_8",
+      26)
+
+  /**
    * En - Parameter 9: {0},{1},{2},{3},{4},{5},{6},{7},{8}
+   *
+   * Parameters: 
+   * * p0: 0
+   * * p1: 1
+   * * p2: 2
+   * * p3: 3
+   * * p4: 4
+   * * p5: 5
+   * * p6: 6
+   * * p7: 7
+   * * p8: 8
    */
   public val param_9: MessageBundleLocalizedStringFactory9 = getLocalizedStringFactory9("param_9",
-      18)
+      27)
+
+  /**
+   * En - Parameter 10: {0},{1},{2},{3},{4},{5},{6},{7},{8},{9}
+   *
+   * Parameters: 
+   * * p0: 0
+   * * p1: 1
+   * * p2: 2
+   * * p3: 3
+   * * p4: 4
+   * * p5: 5
+   * * p6: 6
+   * * p7: 7
+   * * p8: 8
+   * * p9: 9
+   */
+  public val param_10: MessageBundleLocalizedStringFactory10 =
+      getLocalizedStringFactory10("param_10", 28)
+
+  /**
+   * En - Parameter {1},{2},{3},{4},{5},{6},{7},{8},{9},{10}
+   *
+   * Parameters: 
+   * * p0: 1
+   * * p1: 2
+   * * p2: 3
+   * * p3: 4
+   * * p4: 5
+   * * p5: 6
+   * * p6: 7
+   * * p7: 8
+   * * p8: 9
+   * * p9: 10
+   */
+  public val param_10_startAt1: MessageBundleLocalizedStringFactory10 =
+      getLocalizedStringFactory10("param_10_startAt1", 29, NameToIndexMapperNumbersFrom1)
+
+  /**
+   * En - Parameter {3},{4},{5},{6},{7},{8},{9},{10},{11},{12}
+   *
+   * Parameters: 
+   * * p0: 3
+   * * p1: 4
+   * * p2: 5
+   * * p3: 6
+   * * p4: 7
+   * * p5: 8
+   * * p6: 9
+   * * p7: 10
+   * * p8: 11
+   * * p9: 12
+   */
+  public val param_10_startAt3: MessageBundleLocalizedStringFactory10 =
+      getLocalizedStringFactory10("param_10_startAt3", 30, "3", "4", "5", "6", "7", "8", "9", "10",
+      "11", "12")
+
+  /**
+   * En - Parameter 11: {0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10}
+   *
+   * Parameters: 
+   * * p0: 0
+   * * p1: 1
+   * * p2: 2
+   * * p3: 3
+   * * p4: 4
+   * * p5: 5
+   * * p6: 6
+   * * p7: 7
+   * * p8: 8
+   * * p9: 9
+   * * p10: 10
+   */
+  public val param_11: MessageBundleLocalizedStringFactoryN = getLocalizedStringFactoryN("param_11",
+      31)
+
+  /**
+   * En - Parameter 12: {0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11}
+   *
+   * Parameters: 
+   * * p0: 0
+   * * p1: 1
+   * * p2: 2
+   * * p3: 3
+   * * p4: 4
+   * * p5: 5
+   * * p6: 6
+   * * p7: 7
+   * * p8: 8
+   * * p9: 9
+   * * p10: 10
+   * * p11: 11
+   */
+  public val param_12: MessageBundleLocalizedStringFactoryN = getLocalizedStringFactoryN("param_12",
+      32)
 
   /**
    * This '{0}' is not a parameter because of the '' characters around it.
    */
-  public val single_quotes: MessageBundleLocalizedString = getLocalizedString0("single.quotes", 19)
+  public val single_quotes: MessageBundleLocalizedString = getLocalizedString0("single.quotes", 33)
 
   /**
    * %S%P%T%M%N%L - '{0}' '' '{''}'
    */
-  public val special_value: MessageBundleLocalizedString = getLocalizedString0("special-value", 20)
+  public val special_value: MessageBundleLocalizedString = getLocalizedString0("special-value", 34)
 
   /**
    * Extraterrestrial 👽
    */
-  public val utf_8_value: MessageBundleLocalizedString = getLocalizedString0("utf-8-value", 21)
-
-  /**
-   * Special key
-   */
-  public val _Special_Key_: MessageBundleLocalizedString = getLocalizedString0("~Special#Key~", 22)
-
-  /**
-   * Special key 2
-   */
-  public val _Special__S_P_T_M_N_L_Key2_: MessageBundleLocalizedString =
-      getLocalizedString0("~Special-%S%P%T%M%N%L-Key2~", 23)
+  public val utf_8_value: MessageBundleLocalizedString = getLocalizedString0("utf-8-value", 35)
 
   init {
     registerTranslation(Abba_en)
@@ -179,10 +459,13 @@ public object Abba : MessageBundle("Abba", "") {
     registerTranslation(Abba_de)
   }
   init {
-    registerMessageBundleEntries(_1_number_key, Hello_World_, Multi_Line_Value, forgotten_bags,
-        format_pattern, longTextExample, max_param_3, nested_parameter, no_all_have_translations,
-        param_1, param_10, param_2, param_3, param_4, param_5, param_6, param_7, param_8, param_9,
-        single_quotes, special_value, utf_8_value, _Special_Key_, _Special__S_P_T_M_N_L_Key2_)
+    registerMessageBundleEntries(_Special_Key_, _Special__S_P_T_M_N_L_Key2_, _1_number_key,
+        different_names, forgotten_bags, format_pattern, format_pattern2, Hello_World_,
+        longTextExample, max_param_3, mixed_named_parameters, mixed_named_parameters2,
+        mixed_named_parameters3, Multi_Line_Value, named_parameters, nested_parameter,
+        no_all_have_translations, param_1, param_2, param_3, param_4, param_4_startAt1,
+        param_4_startAt3, param_5, param_6, param_7, param_8, param_9, param_10, param_10_startAt1,
+        param_10_startAt3, param_11, param_12, single_quotes, special_value, utf_8_value)
   }
 }
 
@@ -191,35 +474,47 @@ public object Abba : MessageBundle("Abba", "") {
  */
 private object Abba_en : MessagesProvider {
   private val _data: Array<String?> = arrayOf(
+      "Special key",
+      "Special key 2",
       "Number",
+      "It is {a}!",
+      "{0} has forgotten {1, select, female {her} other {his} } {3, select, one {bag} other {{2} bags}}.",
+      "{0, capitalize} is the best!",
+      "{~, capitalize, {{0} and {1}} are the best!",
       "Hello, World",
+      "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Phasellus faucibus molestie nisl. Mauris suscipit, ligula sit amet pharetra semper, nibh ante cursus purus, vel sagittis velit mauris vel metus. Pellentesque ipsum. Integer malesuada. Fusce wisi. Nullam dapibus fermentum ipsum. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Integer rutrum, orci vestibulum ullamcorper ultricies, lacus quam ultricies odio, vitae placerat pede sem sit amet enim. Quisque tincidunt scelerisque libero. Etiam posuere lacus quis dolor. In laoreet, magna id viverra tincidunt, sem odio bibendum justo, vel imperdiet sapien wisi sed libero. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Pellentesque sapien.",
+      "3rd value: {2}",
+      "En: A-{0a}, Z-{0z}, ABC-{1abc}, D-{a1}, DD-{a10}, DDD-{a9}, W-{b}, X-{0}, Y-{1}, Z-{a}",
+      "En: A-{0a}, B-{12z}, C-{9zb}, D-{21z}, F-{21a}, D-{9za}",
+      "En: A-{a0}, B-{a12}, C-{a9}, D-{a21}, F-{b1}, D-{b01}",
       """
       |I ^
       |^have two
       |circumflexes
       |in the text
       """.trimMargin(),
-      "{0} has forgotten {1, select, female {her} other {his} } {3, select, one {bag} other {{2} bags}}.",
-      "{0, capitalize} is the best!",
-      "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Phasellus faucibus molestie nisl. Mauris suscipit, ligula sit amet pharetra semper, nibh ante cursus purus, vel sagittis velit mauris vel metus. Pellentesque ipsum. Integer malesuada. Fusce wisi. Nullam dapibus fermentum ipsum. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Integer rutrum, orci vestibulum ullamcorper ultricies, lacus quam ultricies odio, vitae placerat pede sem sit amet enim. Quisque tincidunt scelerisque libero. Etiam posuere lacus quis dolor. In laoreet, magna id viverra tincidunt, sem odio bibendum justo, vel imperdiet sapien wisi sed libero. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Pellentesque sapien.",
-      "3rd value: {2}",
+      "En: A-{a}, Z-{z}, ABC-{abc}",
       "En: {0, select, a: {1, select, x: {{4}} other {{5}} } | b: {2, select, y {{6}} other {{7}} } | {3, select, z {{8}} other {{9}} }!",
       "Not all have translations",
       "En - Parameter 1: {0}",
-      "En - Parameter 10: {0},{1},{2},{3},{4},{5},{6},{7},{8},{9}",
       "En - Parameter 2: {0},{1}",
       "En - Parameter 3: {0},{1},{2}",
       "En - Parameter 4: {0},{1},{2},{3}",
+      "En - Parameter {1},{2},{3},{4}",
+      "En - Parameter {3},{4},{5},{6}",
       "En - Parameter 5: {0},{1},{2},{3},{4}",
       "En - Parameter 6: {0},{1},{2},{3},{4},{5}",
       "En - Parameter 7: {0},{1},{2},{3},{4},{5},{6}",
       "En - Parameter 8: {0},{1},{2},{3},{4},{5},{6},{7}",
       "En - Parameter 9: {0},{1},{2},{3},{4},{5},{6},{7},{8}",
+      "En - Parameter 10: {0},{1},{2},{3},{4},{5},{6},{7},{8},{9}",
+      "En - Parameter {1},{2},{3},{4},{5},{6},{7},{8},{9},{10}",
+      "En - Parameter {3},{4},{5},{6},{7},{8},{9},{10},{11},{12}",
+      "En - Parameter 11: {0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10}",
+      "En - Parameter 12: {0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11}",
       "This '{0}' is not a parameter because of the '' characters around it.",
       "%S%P%T%M%N%L - '{0}' '' '{''}'",
-      "Extraterrestrial 👽",
-      "Special key",
-      "Special key 2")
+      "Extraterrestrial 👽")
 
   override val locale: Locale = Locale("en")
 
@@ -235,7 +530,19 @@ private object Abba_en : MessagesProvider {
 private object Abba_en_US : MessagesProvider {
   private val _data: Array<String?> = arrayOf(
       null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
       "Hi, World",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
       null,
       null,
       null,
@@ -273,7 +580,19 @@ private object Abba_en_US : MessagesProvider {
 private object Abba_en_US_texas : MessagesProvider {
   private val _data: Array<String?> = arrayOf(
       null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
       "Howdy, World",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
       null,
       null,
       null,
@@ -310,35 +629,47 @@ private object Abba_en_US_texas : MessagesProvider {
  */
 private object Abba_de : MessagesProvider {
   private val _data: Array<String?> = arrayOf(
+      "Besonderer Schlüssel",
+      "Besonderer Schlüssel 2",
       "Nummer",
+      "Es ist {1}!",
+      "{0} hat {1, select, female {ihre} other {seine} } {3, select, one {Tasche} other {{2} Taschen}} vergessen.",
+      "{0, capitalize} ist das Beste!",
+      "{~, capitalize, {{0} und {1}} sind das Beste!",
       "Hallo, Welt!",
+      null,
+      "3. Wert: {2}",
+      "De: A-{0a}, Z-{0z}, ABC-{1abc}, D-{a1}, DD-{a10}, DDD-{a9}, W-{b}, X-{0}, Y-{1}, Z-{a}",
+      "En: A-{0a}, B-{12z}, C-{9zb}, D-{21z}, F-{21a}, D-{9za}",
+      "En: A-{a0}, B-{a12}, C-{a9}, D-{a21}, F-{b1}, D-{b01}",
       """
       |Ich ^
       |^ habe zwei
       | Zirkumflex
       |im Text
       """.trimMargin(),
-      "{0} hat {1, select, female {ihre} other {seine} } {3, select, one {Tasche} other {{2} Taschen}} vergessen.",
-      "{0, capitalize} ist das Beste!",
-      null,
-      "3. Wert: {2}",
+      "De: A-{a}, Z-{z}, ABC-{abc}",
       "De: {0, select, a: {1, select, x: {{4}} other {{5}} } | b: {2, select, y {{6}} other {{7}} } | {3, select, z {{8}} other {{9}} }!",
       "",
       "De - Parameter 1: {0}",
-      "De - Parameter 10: {0},{1},{2},{3},{4},{5},{6},{7},{8},{9}",
       "De - Parameter 2: {0},{1}",
       "De - Parameter 3: {0},{1},{2}",
       "De - Parameter 4: {0},{1},{2},{3}",
+      "De - Parameter {1},{2},{3},{4}",
+      "De - Parameter {3},{4},{5},{6}",
       "De - Parameter 5: {0},{1},{2},{3},{4}",
       "De - Parameter 6: {0},{1},{2},{3},{4},{5}",
       "De - Parameter 7: {0},{1},{2},{3},{4},{5},{6}",
       "De - Parameter 8: {0},{1},{2},{3},{4},{5},{6},{7}",
       "De - Parameter 9: {0},{1},{2},{3},{4},{5},{6},{7},{8}",
+      "De - Parameter 10: {0},{1},{2},{3},{4},{5},{6},{7},{8},{9}",
+      "De - Parameter {1},{2},{3},{4},{5},{6},{7},{8},{9},{10}",
+      "De - Parameter {3},{4},{5},{6},{7},{8},{9},{10},{11},{12}",
+      "De - Parameter 11: {0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10}",
+      "De - Parameter 12: {0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11}",
       "Dieses '{0}' ist kein Parameter, wegen der ''-Zeichen drumherum.",
       "%S%P%T%M%N%L - '{0}' '' '{''}'",
-      "Außerirdischer 👽",
-      "Besonderer Schlüssel",
-      "Besonderer Schlüssel 2")
+      "Außerirdischer 👽")
 
   override val locale: Locale = Locale("de")
 

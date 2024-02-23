@@ -2,6 +2,7 @@ package de.comahe.i18n4k.messages.formatter.types
 
 import de.comahe.i18n4k.Locale
 import de.comahe.i18n4k.messages.formatter.MessageFormatContext
+import de.comahe.i18n4k.messages.formatter.MessageParameters
 import de.comahe.i18n4k.messages.formatter.MessageValueFormatter
 import de.comahe.i18n4k.messages.formatter.parsing.MessagePart
 import de.comahe.i18n4k.messages.formatter.parsing.StylePart
@@ -67,7 +68,7 @@ object MessageSelectFormatter : MessageValueFormatter {
         value: Any?,
         typeId: CharSequence,
         style: StylePart?,
-        parameters: List<Any>,
+        parameters: MessageParameters,
         locale: Locale,
         context: MessageFormatContext
     ) {

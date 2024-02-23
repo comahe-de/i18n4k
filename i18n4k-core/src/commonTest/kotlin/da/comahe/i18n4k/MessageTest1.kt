@@ -88,9 +88,64 @@ object MessageTest1 : MessageBundle() {
      */
     val SINGLE_QUOTES = getLocalizedString0("SINGLE_QUOTES", 19)
 
+    // @formatter:off
+
+    /* Hello {pa} */
+    @JvmField
+    val HELLO_X1_NAMED = getLocalizedStringFactory1("HELLO_X1_NAMED", 20, "pa")
+
+    /* Hello {pa} & {pa} */
+    @JvmField
+    val HELLO_X1_2_NAMED = getLocalizedStringFactory1("HELLO_X1_2_NAMED", 21, "pa")
+
+    /* Hello {pa} and {pb} */
+    @JvmField
+    val HELLO_X2_NAMED = getLocalizedStringFactory2("HELLO_X2_NAMED", 22,"pa", "pb")
+
+    /* Hello {pa}, {pb} and {pc} */
+    @JvmField
+    val HELLO_X3_NAMED = getLocalizedStringFactory3("HELLO_X3_NAMED", 23,"pa", "pb", "pc")
+    /* Hello {pa}, {pb}, {pc} and {pd} */
+    @JvmField
+    val HELLO_X4_NAMED = getLocalizedStringFactory4("HELLO_X4_NAMED", 24,"pa", "pb", "pc", "pd")
+
+    /* Hello {pa}, {pb}, {pc}, {pd} and {pe} */
+    @JvmField
+    val HELLO_X5_NAMED = getLocalizedStringFactory5("HELLO_X5_NAMED", 25,"pa", "pb", "pc", "pd", "pe")
+
+    /* Hello {pe}, {pa}, {pb}, {pd} and {pc} */
+    @JvmField
+    val HELLO_X5_2_NAMED = getLocalizedStringFactory5("HELLO_X5_NAMED", 26,"pa", "pb", "pc", "pd", "pe")
+
+    /* Hello {pb}, {pb}, {pc}, {pc} and {pa}! */
+    @JvmField
+    val HELLO_X5_3_NAMED = getLocalizedStringFactory5("HELLO_X5_NAMED", 27,"pa", "pb", "pc", "pd", "pe")
+
+    /* Hello {pa}, {pb}, {pc}, {pd}, {pe} and {pf} */
+    @JvmField
+    val HELLO_X6_NAMED = getLocalizedStringFactory6("HELLO_X6_NAMED", 28,"pa", "pb", "pc", "pd", "pe", "pf")
+
+    /* Hello {pa}, {pb}, {pc}, {pd}, {pe}, {pf} and {pg} */
+    @JvmField
+    val HELLO_X7_NAMED = getLocalizedStringFactory7("HELLO_X7_NAMED", 29,"pa", "pb", "pc", "pd", "pe", "pf", "pg")
+
+    /* Hello {pa}, {pb}, {pc}, {pd}, {pe}, {pf}, {pg} and {ph} */
+    @JvmField
+    val HELLO_X8_NAMED = getLocalizedStringFactory8("HELLO_X8_NAMED", 30,"pa", "pb", "pc", "pd", "pe", "pf", "pg", "ph")
+
+    /* Hello {pa}, {pb}, {pc}, {pd}, {pe}, {pf}, {pg}, {ph} and {pi} */
+    @JvmField
+    val HELLO_X9_NAMED = getLocalizedStringFactory9("HELLO_X9_NAMED", 31,"pa", "pb", "pc", "pd", "pe", "pf", "pg", "ph", "pi")
+
+    /* Hello {pa}, {pb}, {pc}, {pd}, {pe}, {pf}, {pg}, {ph}, {pi} and {pj} */
+    @JvmField
+    val HELLO_X10_NAMED = getLocalizedStringFactory10("HELLO_X10_NAMED", 32,"pa", "pb", "pc", "pd", "pe", "pf", "pg", "ph", "pi", "pj")
+
+    // @formatter:on
+
     /** To large index and no translations anywhere */
     @JvmField
-    val NO_TEXT = getLocalizedString0("NO_TEXT", 20)
+    val NO_TEXT = getLocalizedString0("NO_TEXT", 33)
 
     init {
         registerMessageBundleEntries(

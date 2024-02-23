@@ -48,7 +48,10 @@ class MessageParser(
 
 
             try {
-                parts += parseParameterPattern(lastIndex, index)
+                val part = parseParameterPattern(lastIndex, index)
+                // skip empty parts
+                if (part !is MessagePartText || part.text.isNotEmpty())
+                    parts += part
             } catch (e: MessageParseException) {
                 if (!ignoreMessageParseErrors)
                     throw e
@@ -94,19 +97,35 @@ class MessageParser(
      * @param startIndex - the start index, inclusive.
      * @param endIndex - the end index, exclusive.
      */
-    private fun parseParameterPattern(startIndex: Int, endIndex: Int): MessagePartParam {
+    private fun parseParameterPattern(startIndex: Int, endIndex: Int): MessagePart {
         var lastIndex = startIndex
 
         // read parameter index
         var index = findNextCorrespondingComma(lastIndex, endIndex)
-        val parameterIndex = parseParameterIndex(lastIndex, index)
+        // check for invalid braces
+        if (index > findNextOpenBrace(lastIndex, endIndex)
+            || index > findNextCloseBrace(lastIndex, endIndex)
+        ) {
+            if (ignoreMessageParseErrors)
+                return MessagePartText("")
+            throw MessageParseException("Found not escaped braces in parameter name.")
+        }
+        val parameterIndex = parseParameterName(lastIndex, index)
         if (index >= endIndex)
             return MessagePartParam(parameterIndex, null, null)
 
         // read type
         lastIndex = index + 1
         index = findNextCorrespondingComma(lastIndex, endIndex)
-        val parameterType = readText(lastIndex, index).trim()
+        // check for invalid braces
+        if (index > findNextOpenBrace(lastIndex, endIndex)
+            || index > findNextCloseBrace(lastIndex, endIndex)
+        ) {
+            if (ignoreMessageParseErrors)
+                return MessagePartText("")
+            throw MessageParseException("Found not escaped braces in parameter type.")
+        }
+        val parameterType = parseTypeName(lastIndex, index)
         if (index >= endIndex)
             return MessagePartParam(parameterIndex, parameterType, null)
 
@@ -123,22 +142,30 @@ class MessageParser(
     }
 
     /**
-     * Parses the index of the parameter
+     * Parses the name of the parameter
      *
      * @param startIndex - the start index, inclusive.
      * @param endIndex - the end index, exclusive.
      */
-    private fun parseParameterIndex(startIndex: Int, endIndex: Int): Int? {
-        val text = readText(startIndex, endIndex).trim()
-        if (text == "~")
-            return null
-        val index = text.toString().toIntOrNull()
-            ?: throw MessageParseException("Parameter index (\"$text\") is not a valid integer number! In Message: $message")
-        if (index < 0)
-            throw MessageParseException("Parameter index (\"$text\") must be positive or zero! In Message: $message")
-        return index
+    private fun parseParameterName(startIndex: Int, endIndex: Int): CharSequence {
+        val name = readText(startIndex, endIndex).trim()
+        if (name.isEmpty())
+            throw MessageParseException("Parameter name must not be empty or blank!")
+        return name
     }
 
+    /**
+     * Parses the name of the type
+     *
+     * @param startIndex - the start index, inclusive.
+     * @param endIndex - the end index, exclusive.
+     */
+    private fun parseTypeName(startIndex: Int, endIndex: Int): CharSequence {
+        val name = readText(startIndex, endIndex).trim()
+        if (name.isEmpty())
+            throw MessageParseException("Type name must not be empty or blank!")
+        return name
+    }
 
     /**
      * Parses the list of styles of the parameter.

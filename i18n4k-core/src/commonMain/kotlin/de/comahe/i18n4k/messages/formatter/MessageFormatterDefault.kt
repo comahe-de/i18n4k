@@ -94,14 +94,16 @@ object MessageFormatterDefault : MessageFormatter {
         messageFormatContext.update { it.withMessageValueFormatters(*f) }
     }
 
-    override fun format(message: String, parameters: List<Any>, locale: Locale): String {
+    override fun format(message: String, parameters: MessageParameters, locale: Locale): String {
         return getMessagePartFor(message)
             .format(parameters, locale, messageFormatContext.value)
             .toString()
     }
 
-    override fun getMaxParameterIndex(message: String, locale: Locale): Int {
-        return getMessagePartFor(message).maxParameterIndex
+    override fun getMessageParametersNames(message: String, locale: Locale): Set<CharSequence> {
+        val parameterNames = mutableSetOf<CharSequence>()
+        getMessagePartFor(message).fillInParameterNames(parameterNames)
+        return parameterNames
     }
 
     private fun getMessagePartFor(message: String): MessagePart {

@@ -28,7 +28,19 @@ object MessagesTest1_en : MessagesProvider {
         "{0} has forgotten {1, select, female {her} other {his} } {3, select, one {bag} other {{2} bags}}.",
         "It''s {0, number, %.02}!",
         "It''s a qute! Look: ''",
-
+        "Hello {pa}!",
+        "Hello {pa} & {pa}!",
+        "Hello {pa} and {pb}!",
+        "Hello {pa}, {pb} and {pc}!",
+        "Hello {pa}, {pb}, {pc} and {pd}!",
+        "Hello {pa}, {pb}, {pc}, {pd} and {pe}!",
+        "Hello {pe}, {pa}, {pb}, {pd} and {pc}!",
+        "Hello {pb}, {pb}, {pe}, {pe} and {pa}!",
+        "Hello {pa}, {pb}, {pc}, {pd}, {pe} and {pf}!",
+        "Hello {pa}, {pb}, {pc}, {pd}, {pe}, {pf} and {pg}!",
+        "Hello {pa}, {pb}, {pc}, {pd}, {pe}, {pf}, {pg} and {ph}!",
+        "Hello {pa}, {pb}, {pc}, {pd}, {pe}, {pf}, {pg}, {ph} and {pi}!",
+        "Hello {pa}, {pb}, {pc}, {pd}, {pe}, {pf}, {pg}, {ph}, {pi} and {pj}!",
     )
 
     override val locale = Locale("en")

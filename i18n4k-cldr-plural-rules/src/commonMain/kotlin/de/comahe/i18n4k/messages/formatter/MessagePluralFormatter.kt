@@ -53,7 +53,7 @@ abstract class MessagePluralFormatter : MessageValueFormatter {
         value: Any?,
         typeId: CharSequence,
         style: StylePart?,
-        parameters: List<Any>,
+        parameters: MessageParameters,
         locale: Locale,
         context: MessageFormatContext,
     ) {

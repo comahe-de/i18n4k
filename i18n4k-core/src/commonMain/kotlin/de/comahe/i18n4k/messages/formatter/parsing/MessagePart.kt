@@ -2,18 +2,19 @@ package de.comahe.i18n4k.messages.formatter.parsing
 
 import de.comahe.i18n4k.Locale
 import de.comahe.i18n4k.messages.formatter.MessageFormatContext
+import de.comahe.i18n4k.messages.formatter.MessageParameters
 
 sealed interface MessagePart : TextWithParameters {
 
     fun format(
         result: StringBuilder,
-        parameters: List<Any>,
+        parameters: MessageParameters,
         locale: Locale,
         context: MessageFormatContext
     )
 
     fun format(
-        parameters: List<Any>,
+        parameters: MessageParameters,
         locale: Locale,
         context: MessageFormatContext
     ): CharSequence {

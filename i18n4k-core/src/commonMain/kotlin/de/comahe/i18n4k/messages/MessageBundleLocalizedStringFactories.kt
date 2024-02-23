@@ -10,7 +10,9 @@ import de.comahe.i18n4k.strings.LocalizedStringFactory6
 import de.comahe.i18n4k.strings.LocalizedStringFactory7
 import de.comahe.i18n4k.strings.LocalizedStringFactory8
 import de.comahe.i18n4k.strings.LocalizedStringFactory9
+import de.comahe.i18n4k.strings.LocalizedStringFactoryN
 
+interface MessageBundleLocalizedStringFactoryN : LocalizedStringFactoryN, MessageBundleEntry
 interface MessageBundleLocalizedStringFactory1 : LocalizedStringFactory1, MessageBundleEntry
 interface MessageBundleLocalizedStringFactory2 : LocalizedStringFactory2, MessageBundleEntry
 interface MessageBundleLocalizedStringFactory3 : LocalizedStringFactory3, MessageBundleEntry

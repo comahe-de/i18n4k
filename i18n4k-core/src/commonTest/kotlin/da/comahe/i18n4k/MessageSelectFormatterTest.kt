@@ -94,7 +94,7 @@ class MessageSelectFormatterTest {
         assertEquals("!", format("{0, select , {} {x} }!", listOf('a'), locale))
         assertEquals("!", format("{0, select , {} b {x} a }!", listOf('a'), locale))
 
-        assertEquals("{1}!", format("{1, select ,  {x}  }!", listOf('a'), locale))
-        assertEquals("{1}!", format("{1, select ,  a {x}  }!", listOf('a'), locale))
+        assertEquals("x!", format("{1, select ,  {x}  }!", listOf('a'), locale))
+        assertEquals("!", format("{1, select ,  a {x}  }!", listOf('a'), locale))
     }
 }

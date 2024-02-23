@@ -2,7 +2,9 @@ package da.comahe.i18n4k
 
 import de.comahe.i18n4k.Locale
 import de.comahe.i18n4k.config.I18n4kConfigDefault
+import de.comahe.i18n4k.forLocaleTag
 import de.comahe.i18n4k.i18n4k
+import de.comahe.i18n4k.messages.formatter.MessageParametersMap
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -350,5 +352,112 @@ class MessageBundleTest {
             "Schau's dir an! Ein Hochkomma: '",
             MessageTest1.SINGLE_QUOTES(de)
         )
+    }
+
+    @Test
+    fun namedParametersTest() {
+
+        assertEquals("Hello a!", MessageTest1.HELLO_X1_NAMED("a"))
+        assertEquals(
+            "Hello a!", MessageTest1.HELLO_X1_NAMED.asN(
+                MessageParametersMap("pa" to "a", "pb" to "b")
+            )
+        )
+        assertEquals(
+            "Hello a!",
+            MessageTest1.HELLO_X1_NAMED.asN("pa" to "a", "pb" to "b")
+        )
+        assertEquals(
+            "Hello a!",
+            MessageTest1.HELLO_X1_NAMED.asN["pa" to "a", "pb" to "b"].toString()
+        )
+
+        assertEquals("Hello a and b!", MessageTest1.HELLO_X2_NAMED("a", "b"))
+        assertEquals(
+            "Hello a and b!", MessageTest1.HELLO_X2_NAMED.asN(
+                MessageParametersMap("pa" to "a", "pb" to "b")
+            )
+        )
+        assertEquals(
+            "Hello a and b!",
+            MessageTest1.HELLO_X2_NAMED.asN("pa" to "a", "pb" to "b")
+        )
+        assertEquals(
+            "Hello a and b!",
+            MessageTest1.HELLO_X2_NAMED.asN["pa" to "a", "pb" to "b"].toString()
+        )
+        ////////////////////////////////////////
+        val de = forLocaleTag("de")
+
+        assertEquals("Hallo a!", MessageTest1.HELLO_X1_NAMED("a", de))
+        assertEquals(
+            "Hallo a!", MessageTest1.HELLO_X1_NAMED.asN(
+                MessageParametersMap("pa" to "a"), de
+            )
+        )
+        assertEquals(
+            "Hallo a!",
+            MessageTest1.HELLO_X1_NAMED.asN("pa" to "a", locale = de)
+        )
+        assertEquals(
+            "Hallo a!",
+            MessageTest1.HELLO_X1_NAMED.asN["pa" to "a"].toString(de)
+        )
+
+        assertEquals("Hallo a und b!", MessageTest1.HELLO_X2_NAMED("a", "b", de))
+        assertEquals(
+            "Hallo a und b!", MessageTest1.HELLO_X2_NAMED.asN(
+                MessageParametersMap("pa" to "a", "pb" to "b"), de
+            )
+        )
+        assertEquals(
+            "Hallo a und b!",
+            MessageTest1.HELLO_X2_NAMED.asN("pa" to "a", "pb" to "b", locale = de)
+        )
+        assertEquals(
+            "Hallo a und b!",
+            MessageTest1.HELLO_X2_NAMED.asN["pa" to "a", "pb" to "b"].toString(de)
+        )
+    }
+
+    /** Tests the setting of simple parameters. */
+    @Test
+    fun parameterTest_named_toString() {
+        // @formatter:off
+        assertEquals("Hello a!", MessageTest1.HELLO_X1_NAMED("a"))
+        assertEquals("Hello a & a!", MessageTest1.HELLO_X1_2_NAMED("a"))
+        assertEquals("Hello a and b!", MessageTest1.HELLO_X2_NAMED("a", "b"))
+        assertEquals("Hello a, b and c!", MessageTest1.HELLO_X3_NAMED("a", "b", "c"))
+        assertEquals("Hello a, b, c and d!", MessageTest1.HELLO_X4_NAMED("a", "b", "c", "d"))
+        assertEquals("Hello a, b, c, d and e!", MessageTest1.HELLO_X5_NAMED("a", "b", "c", "d", "e"))
+        assertEquals("Hello a, b, c, d, e and f!", MessageTest1.HELLO_X6_NAMED("a", "b", "c", "d", "e", "f"))
+        assertEquals("Hello a, b, c, d, e, f and g!", MessageTest1.HELLO_X7_NAMED("a", "b", "c", "d", "e", "f", "g"))
+        assertEquals("Hello a, b, c, d, e, f, g and h!", MessageTest1.HELLO_X8_NAMED("a", "b", "c", "d", "e", "f", "g", "h"))
+        assertEquals("Hello a, b, c, d, e, f, g, h and i!", MessageTest1.HELLO_X9_NAMED("a", "b", "c", "d", "e", "f", "g", "h", "i"))
+        assertEquals("Hello a, b, c, d, e, f, g, h, i and j!", MessageTest1.HELLO_X10_NAMED("a", "b", "c", "d", "e", "f", "g", "h", "i", "j"))
+
+        assertEquals("Hello e, a, b, d and c!", MessageTest1.HELLO_X5_2_NAMED("a", "b", "c", "d", "e"))
+        assertEquals("Hello b, b, e, e and a!", MessageTest1.HELLO_X5_3_NAMED("a", "b", "c", "d", "e"))
+        // @formatter:on
+    }
+
+    @Test
+    fun parameterTest_named_toLocalizedString() {
+        // @formatter:off
+        assertEquals("Hello a!", MessageTest1.HELLO_X1_NAMED["a"].toString())
+        assertEquals("Hello a & a!", MessageTest1.HELLO_X1_2_NAMED["a"].toString())
+        assertEquals("Hello a and b!", MessageTest1.HELLO_X2_NAMED["a", "b"].toString())
+        assertEquals("Hello a, b and c!", MessageTest1.HELLO_X3_NAMED["a", "b", "c"].toString())
+        assertEquals("Hello a, b, c and d!", MessageTest1.HELLO_X4_NAMED["a", "b", "c", "d"].toString())
+        assertEquals("Hello a, b, c, d and e!", MessageTest1.HELLO_X5_NAMED["a", "b", "c", "d", "e"].toString())
+        assertEquals("Hello a, b, c, d, e and f!", MessageTest1.HELLO_X6_NAMED["a", "b", "c", "d", "e", "f"].toString())
+        assertEquals("Hello a, b, c, d, e, f and g!", MessageTest1.HELLO_X7_NAMED["a", "b", "c", "d", "e", "f", "g"].toString())
+        assertEquals("Hello a, b, c, d, e, f, g and h!", MessageTest1.HELLO_X8_NAMED["a", "b", "c", "d", "e", "f", "g", "h"].toString())
+        assertEquals("Hello a, b, c, d, e, f, g, h and i!", MessageTest1.HELLO_X9_NAMED["a", "b", "c", "d", "e", "f", "g", "h", "i"].toString())
+        assertEquals("Hello a, b, c, d, e, f, g, h, i and j!", MessageTest1.HELLO_X10_NAMED["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"].toString())
+
+        assertEquals("Hello e, a, b, d and c!", MessageTest1.HELLO_X5_2_NAMED["a", "b", "c", "d", "e"].toString())
+        assertEquals("Hello b, b, e, e and a!", MessageTest1.HELLO_X5_3_NAMED["a", "b", "c", "d", "e"].toString())
+        // @formatter:on       // @formatter:on
     }
 }

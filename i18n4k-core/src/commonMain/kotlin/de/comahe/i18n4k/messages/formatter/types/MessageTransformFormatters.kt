@@ -2,6 +2,7 @@ package de.comahe.i18n4k.messages.formatter.types
 
 import de.comahe.i18n4k.Locale
 import de.comahe.i18n4k.messages.formatter.MessageFormatContext
+import de.comahe.i18n4k.messages.formatter.MessageParameters
 import de.comahe.i18n4k.messages.formatter.MessageValueFormatter
 import de.comahe.i18n4k.messages.formatter.parsing.StylePart
 import de.comahe.i18n4k.messages.formatter.parsing.firstMessagePart
@@ -14,7 +15,8 @@ import kotlinx.collections.immutable.persistentListOf
  * Format:
  *
  *     {PARAMETER, FORMAT_OPTION, {TEXT_WITH_PATTERNS}}
- * - `PARAMETER`: The parameter to format. Can be "~" if TEXT_WITH_PATTERNS
+ *
+ * - `PARAMETER`: The parameter to format. Can be "~" if TEXT_WITH_PATTERNS is set.
  * - `FORMAT_OPTION`
  *    - uppercase: transform all letters to uppercase
  *    - lowercase: transform all letters to lowercase
@@ -44,7 +46,7 @@ object MessageTransformFormatters {
             value: Any?,
             typeId: CharSequence,
             style: StylePart?,
-            parameters: List<Any>,
+            parameters: MessageParameters,
             locale: Locale,
             context: MessageFormatContext,
         ) {

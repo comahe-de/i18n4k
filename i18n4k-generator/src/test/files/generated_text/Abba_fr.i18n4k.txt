@@ -1,33 +1,51 @@
 fr
 ^
+Clé spéciale
+^
+Clé spéciale 2
+^
 Numéro
 ^
+Il s''agit de {b}!
+^
+{0} a oublié {3, select, one {son sac} other {ses {2} sacs}}.
+^
+{0, capitalize} est la meilleure!
+^
+{~, capitalize, {{0} e {1}} sont les meilleurs!
+^
 Salut monde!
+^
+^
+3ème valeur : {2}
+^
+Fr: A-{0a}, Z-{0z}, ABC-{1abc}, D-{a1}, DD-{a10}, DDD-{a9}, W-{b}, X-{0}, Y-{1}, Z-{a}
+^
+Fr: A-{0a}, B-{12z}, C-{9zb}, D-{21z}, F-{21a}, D-{9za}
+^
+Fr: A-{a0}, B-{a12}, C-{a9}, D-{a21}, F-{b1}, D-{b01}
 ^
 J'ai^
 ^^deux circonflexes
 dans
 le texte 
 ^
-{0} a oublié {3, select, one {son sac} other {ses {2} sacs}}.
-^
-{0, capitalize} est la meilleure!
-^
-^
-3ème valeur : {2}
+Fr: A-{a}, Z-{z}, ABC-{abc}
 ^
 fr: {0, select, a: {1, select, x: {{4}} other {{5}} } | b: {2, select, y {{6}} other {{7}} } | {3, select, z {{8}} other {{9}} }!
 ^
 ^
 Fr - Paramètre 1 : {0}
 ^
-Fr - Paramètre 10: {0},{1},{2},{3},{4},{5},{6},{7},{8},{9}
-^
 Fr - Paramètre 2: {0},{1}
 ^
 Fr - Paramètre 3: {0},{1},{2}
 ^
 Fr - Paramètre 4: {0},{1},{2},{3}
+^
+Fr - Paramètre {1},{2},{3},{4}
+^
+Fr - Paramètre {3},{4},{5},{6}
 ^
 Fr - Paramètre 5: {0},{1},{2},{3},{4}
 ^
@@ -39,13 +57,19 @@ Fr - Paramètre 8: {0},{1},{2},{3},{4},{5},{6},{7}
 ^
 Fr - Paramètre 9: {0},{1},{2},{3},{4},{5},{6},{7},{8}
 ^
+Fr - Paramètre 10: {0},{1},{2},{3},{4},{5},{6},{7},{8},{9}
+^
+Fr - Paramètre {1},{2},{3},{4},{5},{6},{7},{8},{9},{10}
+^
+Fr - Paramètre {3},{4},{5},{6},{7},{8},{9},{10},{11},{12}
+^
+Fr - Paramètre 11: {0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10}
+^
+Fr - Paramètre 12: {0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11}
+^
 Ce '{0}' n'est pas un paramètre, à cause des caractères '' qui l'entourent.
 ^
 %S%P%T%M%N%L - '{0}' '' '{''}'
 ^
 Extraterrestre 👽
-^
-Clé spéciale
-^
-Clé spéciale 2
 ^
