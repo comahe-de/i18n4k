@@ -239,7 +239,7 @@ class MessageParserTest {
                 ),
                 MessagePartText(" ff? "),
             ),
-            parse("A {0, xyz, b { foo } c {{2, foo , bar } {~, foobar , bar foo }} d! } ff? "),
+            parse("A {0, xyz, b{ foo } c {{2, foo , bar } {~, foobar , bar foo }}d! } ff? "),
         )
     }
 

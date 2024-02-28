@@ -208,6 +208,11 @@ class MessageParser(
                     lastIndex = quoteIndex
 
             } else {
+                //argument before '{' without whitespace?
+                val argumentText = readText(lastIndex, indexOpenBrace).trim()
+                if (argumentText.isNotEmpty())
+                    parts += StylePartArgument(argumentText)
+                // read the message part
                 lastIndex = findCorrespondingCloseBrace(indexOpenBrace + 1, endIndex)
                 parts.add(StylePartMessage(parseMessagePart(indexOpenBrace + 1, lastIndex)))
                 if (lastIndex < endIndex)
