@@ -3,9 +3,7 @@ package da.comahe.i18n4k.messages.formatter
 import de.comahe.i18n4k.Locale
 import de.comahe.i18n4k.config.I18n4kConfigDefault
 import de.comahe.i18n4k.i18n4k
-import de.comahe.i18n4k.messages.formatter.MessageFormatterDefault
-import de.comahe.i18n4k.messages.formatter.MessagePluralCardinalFormatter
-import de.comahe.i18n4k.messages.formatter.MessagePluralOrdinalFormatter
+import de.comahe.i18n4k.i18n4kInitCldrPluralRules
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -14,10 +12,7 @@ class MessagePluralsTest {
     private var i18n4kConfig = I18n4kConfigDefault()
 
     init {
-        MessageFormatterDefault.registerMessageValueFormatters(
-            MessagePluralCardinalFormatter,
-            MessagePluralOrdinalFormatter
-        )
+        i18n4kInitCldrPluralRules()
     }
 
     @BeforeTest
@@ -113,7 +108,7 @@ class MessagePluralsTest {
         assertEquals("xth rank", MessagesPlurals.RANK_ORDINAL("x"))
 
     }
-    
+
     @Test
     fun ordinalTest_de() {
         i18n4kConfig.locale = Locale("de")
@@ -134,7 +129,7 @@ class MessagePluralsTest {
         assertEquals("x. Rang", MessagesPlurals.RANK_ORDINAL("x"))
 
     }
-    
+
     @Test
     fun ordinalTest_pl() {
         i18n4kConfig.locale = Locale("pl")

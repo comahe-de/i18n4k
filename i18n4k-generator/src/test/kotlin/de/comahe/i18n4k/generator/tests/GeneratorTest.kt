@@ -1,6 +1,7 @@
 package de.comahe.i18n4k.generator.tests
 
 import de.comahe.i18n4k.Locale
+import de.comahe.i18n4k.forLocaleTag
 import de.comahe.i18n4k.generator.GenerationTargetPlatform
 import de.comahe.i18n4k.generator.I18n4kProcessor
 import de.comahe.i18n4k.i18n4k
@@ -11,10 +12,13 @@ import java.io.File
 
 internal val packageName = null
 internal val commentLocale = Locale("en")
-internal val sourceCodeLocales = listOf(Locale("en"),
-    Locale("en", "US"),
-    Locale("en", "US", "texas"),
-    Locale("de"))
+internal val sourceCodeLocales = listOf(
+    forLocaleTag("en"),
+    forLocaleTag("en_x_attrib_gender"),
+    forLocaleTag("en_US"),
+    forLocaleTag("en_US_texas"),
+    forLocaleTag("de"),
+    forLocaleTag("de_x_attrib_gender"),)
 
 internal val inputDirectory = File("src/test/files/source_text")
 

@@ -35,7 +35,7 @@ import kotlinx.atomicfu.update
  *
  * A general purpose gender-provider may be based on large directories. But this is an extensive
  * task. Therefor the default implementation will use the attributes of the `LocalizedString`
- * (#43), like the “attrib-select-pattern”. So the example above would be written as
+ * (#43), like the “attr-select-pattern”. So the example above would be written as
  *
  * `FORGOTTEN_BAG( BOY )`
  *

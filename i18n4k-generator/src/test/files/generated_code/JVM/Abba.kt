@@ -1,4 +1,5 @@
 import de.comahe.i18n4k.Locale
+import de.comahe.i18n4k.forLocaleTag
 import de.comahe.i18n4k.messages.MessageBundle
 import de.comahe.i18n4k.messages.MessageBundleLocalizedString
 import de.comahe.i18n4k.messages.MessageBundleLocalizedStringFactory1
@@ -554,7 +555,7 @@ private object Abba_en : MessagesProvider {
       "%S%P%T%M%N%L - '{0}' '' '{''}'",
       "Extraterrestrial 👽")
 
-  override val locale: Locale = Locale("en")
+  override val locale: Locale = forLocaleTag("en")
 
   override val size: Int
     get() = _data.size
@@ -605,7 +606,7 @@ private object Abba_en_US : MessagesProvider {
       null,
       null)
 
-  override val locale: Locale = Locale("en",  "US")
+  override val locale: Locale = forLocaleTag("en_US")
 
   override val size: Int
     get() = _data.size
@@ -656,7 +657,7 @@ private object Abba_en_US_texas : MessagesProvider {
       null,
       null)
 
-  override val locale: Locale = Locale("en",  "US",  "texas")
+  override val locale: Locale = forLocaleTag("en_US_texas")
 
   override val size: Int
     get() = _data.size
@@ -712,7 +713,7 @@ private object Abba_de : MessagesProvider {
       "%S%P%T%M%N%L - '{0}' '' '{''}'",
       "Außerirdischer 👽")
 
-  override val locale: Locale = Locale("de")
+  override val locale: Locale = forLocaleTag("de")
 
   override val size: Int
     get() = _data.size

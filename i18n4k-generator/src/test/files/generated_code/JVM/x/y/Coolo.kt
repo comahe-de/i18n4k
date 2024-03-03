@@ -1,6 +1,7 @@
 package x.y
 
 import de.comahe.i18n4k.Locale
+import de.comahe.i18n4k.forLocaleTag
 import de.comahe.i18n4k.messages.MessageBundle
 import de.comahe.i18n4k.messages.MessageBundleLocalizedString
 import de.comahe.i18n4k.messages.providers.MessagesProvider
@@ -43,7 +44,7 @@ private object Coolo_en : MessagesProvider {
       "do that!",
       "do this!")
 
-  override val locale: Locale = Locale("en")
+  override val locale: Locale = forLocaleTag("en")
 
   override val size: Int
     get() = _data.size
@@ -60,7 +61,7 @@ private object Coolo_de : MessagesProvider {
       "mach jenes!",
       "mach das!!")
 
-  override val locale: Locale = Locale("de")
+  override val locale: Locale = forLocaleTag("de")
 
   override val size: Int
     get() = _data.size

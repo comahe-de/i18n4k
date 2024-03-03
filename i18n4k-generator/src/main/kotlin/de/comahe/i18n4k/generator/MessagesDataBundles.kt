@@ -3,6 +3,7 @@
 package de.comahe.i18n4k.generator
 
 import de.comahe.i18n4k.Locale
+import de.comahe.i18n4k.forLocaleTag
 import de.comahe.i18n4k.messages.formatter.MessageFormatter
 import java.io.File
 import java.io.FileInputStream
@@ -21,11 +22,9 @@ class MessagesDataBundles(
     /**
      * Searches recursively for supported language files and adds the to the bundles.
      *
-     * @param inputDirectory
-     *      the directory to search for
-     * @param packageName
-     *      Package name where the generated classes will be stored.
-     *      If null (default) the path relative to the [inputDirectory]  will be used.
+     * @param inputDirectory the directory to search for
+     * @param packageName Package name where the generated classes will be stored. If null (default)
+     *     the path relative to the [inputDirectory] will be used.
      */
     fun findLanguageBundles(
         inputDirectory: File,
@@ -36,12 +35,11 @@ class MessagesDataBundles(
 
     /**
      * Searches recursively for "i18n4k" config files
-     * @param dir
-     *      the directory to search for
-     * @param currentPackageName
-     *      name of the package relative to the start directory.
-     * @param fixedPackageName
-     *      If not null, this package name will be used instead of the [currentPackageName]
+     *
+     * @param dir the directory to search for
+     * @param currentPackageName name of the package relative to the start directory.
+     * @param fixedPackageName If not null, this package name will be used instead of the
+     *     [currentPackageName]
      */
     private fun findLanguageBundlesRecursive(
         dir: File,
@@ -66,9 +64,9 @@ class MessagesDataBundles(
      *
      * Several formats of language file may be supported and used according to the file name.
      *
-     * @return
-     *      if the file was added (supported format); false if the format of the file was not supported
-     * */
+     * @return if the file was added (supported format); false if the format of the file was not
+     *     supported
+     */
     fun addLanguageFile(packageName: String, file: File): Boolean {
         val m: Matcher = BUNDLE_FILE_PATTERN.matcher(file.name)
         if (m.find()) {
@@ -79,10 +77,7 @@ class MessagesDataBundles(
                     name = m.group(1) ?: return false
                 ),
                 MessagesData(
-                    locale = Locale(
-                        m.group(2) ?: return false,
-                        m.group(3) ?: "",
-                        m.group(4) ?: ""),
+                    locale = forLocaleTag(m.group(2)),
                     messages = loadProperties(file)
                 )
             )
@@ -91,9 +86,7 @@ class MessagesDataBundles(
         return false // file not supported
     }
 
-    /**
-     *  adds the message bundle
-     */
+    /** adds the message bundle */
     private fun addToBundles(bundleName: BundleName, messagesData: MessagesData) {
         val bundle: MessagesDataBundle =
             bundles.computeIfAbsent(bundleName) { n -> MessagesDataBundle(n, messageFormatter) }
@@ -123,12 +116,13 @@ class MessagesDataBundles(
 
 
     /**
-     * Contains several patterns for language file names. Group 1 must be the name. Group 2 the language ID
+     * Contains several patterns for language file names. Group 1 must be the name. Group 2 the
+     * language ID
      */
     companion object {
 
         /** Patern to identify "*.properties"-files */
         val BUNDLE_FILE_PATTERN = Pattern
-            .compile("^([^_]+)_([a-z]{2})(?:_([A-Z]{2}))?(?:_([a-zA-Z]+))?.properties\$")!!
+            .compile("^([^_]+)[_\\-]([a-zA-Z_\\-]+).properties\$")!!
     }
 }

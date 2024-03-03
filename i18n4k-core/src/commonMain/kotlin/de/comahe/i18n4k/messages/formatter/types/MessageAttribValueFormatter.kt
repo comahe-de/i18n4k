@@ -33,11 +33,11 @@ import de.comahe.i18n4k.strings.LocalizedString
  * For files storing the attribute, the name of the attribute is appended as an extension after the
  * locale tag via “-x-attr-NAME“. E.g. for the attribute “gender”:
  *
- *     names_de_DE_saxiona-x-attrib-gender
- *     names_de_DE-x-attrib-gender
- *     names_de-x-attrib-gender
- *     names_en-x-attrib-gender
- *     names_fr_FR-x-attrib-gender
+ *     names_de_DE_saxiona-x-attr-gender
+ *     names_de_DE-x-attr-gender
+ *     names_de-x-attr-gender
+ *     names_en-x-attr-gender
+ *     names_fr_FR-x-attr-gender
  *
   * e.g.
  *

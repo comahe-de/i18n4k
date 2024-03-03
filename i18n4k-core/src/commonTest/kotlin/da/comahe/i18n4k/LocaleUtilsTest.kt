@@ -7,6 +7,7 @@ import de.comahe.i18n4k.forLocaleTag
 import de.comahe.i18n4k.getDisplayNameInLocale
 import de.comahe.i18n4k.language
 import de.comahe.i18n4k.script
+import de.comahe.i18n4k.toTag
 import de.comahe.i18n4k.variant
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -231,6 +232,16 @@ class LocaleUtilsTest {
             "de", "", "", "saxony", mapOf('a' to "cd")
         )
 
+        // region left out
+        assertLocale(
+            forLocaleTag("de-a-cd"),
+            "de", "", "", "", mapOf('a' to "cd")
+        )
+        assertLocale(
+            forLocaleTag("de-saxony-a-cd"),
+            "de", "", "", "saxony", mapOf('a' to "cd")
+        )
+
     }
 
     @Test
@@ -260,6 +271,41 @@ class LocaleUtilsTest {
         assertFails { forLocaleTag("12") }
     }
 
+    @Test
+    fun toTagTest() {
+        assertEquals(
+            "de_DE",
+            forLocaleTag("de-de").toTag()
+        )
+        assertEquals(
+            "de_DE_saxony",
+            forLocaleTag("de-de-saxony").toTag()
+        )
+        assertEquals(
+            "de_DE_saxony_a_bc",
+            forLocaleTag("de-de-saxony-a-bc").toTag()
+        )
+
+        assertEquals(
+            "de_DE_a_bc",
+            forLocaleTag("de-de-a-bc").toTag()
+        )
+
+        assertEquals(
+            "de_saxony_a_bc",
+            forLocaleTag("de-saxony-a-bc").toTag()
+        )
+
+        assertEquals(
+            "de_a_bc",
+            forLocaleTag("de-a-bc").toTag()
+        )
+
+        assertEquals(
+        "de_x_attr-gender",
+            forLocaleTag("de-x-attr-gender").toTag()
+        )
+    }
 
     private fun assertLocale(
         locale: Locale,

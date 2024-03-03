@@ -1,4 +1,4 @@
-de_AT_vorarlberg
+de_AT_vorarlbe
 ^
 ^
 ^
