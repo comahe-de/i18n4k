@@ -11,17 +11,30 @@ import net.miginfocom.swing.MigLayout
 import x.y.Actions
 import x.y.MyMessages
 import x.y.Things
+import java.awt.Font
 import javax.swing.JButton
 import javax.swing.JComboBox
 import javax.swing.JFrame
 import javax.swing.JLabel
 import javax.swing.JSeparator
 import javax.swing.JTextField
+import javax.swing.UIManager
 import javax.swing.WindowConstants
 import javax.swing.event.DocumentEvent
 import javax.swing.event.DocumentListener
 
+
 fun main(args: Array<String>) {
+
+    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName())
+    val fontNotoEmoji: Font? = MyMessages::class.java.getResourceAsStream("/NotoEmoji-VariableFont_wght.ttf").use {
+        if (it != null)
+            Font.createFont(Font.TRUETYPE_FONT, it).deriveFont(20f)
+        else
+            null
+    }
+
+
     val i18n4kConfig = I18n4kConfigDefault()
     i18n4k = i18n4kConfig
 
@@ -56,10 +69,15 @@ fun main(args: Array<String>) {
     val labelThingShapeOrder = JLabel("")
     val labelAttrValue = JLabel("")
     val labelAttrSelect = JLabel("")
+    val labelThingEmoji = JLabel("")
 
     val comboThings = JComboBox<LocalizedString>()
     val textCountOfShapes = JTextField()
     val textOrdinalOfShape = JTextField()
+
+    if (fontNotoEmoji != null) {
+        labelThingEmoji.font = fontNotoEmoji
+    }
 
     val buttons = mutableMapOf<Locale, JButton>()
 
@@ -81,17 +99,20 @@ fun main(args: Array<String>) {
         labelCountOfShapes.text = Actions.count_of_shapes()
         labelOrdinalOfShape.text = Actions.ordinal_of_shape()
 
-        val selectedThing = comboThings.selectedItem
+        val selectedThing = comboThings.selectedItem as LocalizedString?
         val count = textCountOfShapes.text
         val ordinal = textOrdinalOfShape.text
 
         if (selectedThing == null) {
+            labelThingEmoji.text = "-"
             labelThingChangedShape.text = ""
             labelThingShapeCount.text = ""
             labelThingShapeOrder.text = ""
             labelAttrValue.text = ""
             labelAttrSelect.text = ""
         } else {
+            labelThingEmoji.text = selectedThing.getAttribute("emoji")
+
             labelThingChangedShape.text = Actions.change_shape(selectedThing)
             labelThingShapeCount.text = Actions.shape_count(count, selectedThing)
             labelThingShapeOrder.text = Actions.shape_order(ordinal, selectedThing)
@@ -155,6 +176,7 @@ fun main(args: Array<String>) {
 
     myFrame.add(labelSelectThing, "growx")
     myFrame.add(comboThings, "growx")
+    myFrame.add(labelThingEmoji)
 
     myFrame.add(labelCountOfShapes, "split 2")
     myFrame.add(textCountOfShapes, "growx")

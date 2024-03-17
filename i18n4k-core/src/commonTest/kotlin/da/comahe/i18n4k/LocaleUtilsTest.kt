@@ -6,6 +6,7 @@ import de.comahe.i18n4k.createLocale
 import de.comahe.i18n4k.forLocaleTag
 import de.comahe.i18n4k.getDisplayNameInLocale
 import de.comahe.i18n4k.language
+import de.comahe.i18n4k.rootLocale
 import de.comahe.i18n4k.script
 import de.comahe.i18n4k.toTag
 import de.comahe.i18n4k.variant
@@ -13,6 +14,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFails
 import kotlin.test.assertFalse
+import kotlin.test.assertSame
 
 class LocaleUtilsTest {
 
@@ -117,6 +119,20 @@ class LocaleUtilsTest {
 
     @Test
     fun forLocaleTagTest() {
+        assertLocale(
+            forLocaleTag(""),
+            "", "", "", "", null
+        )
+
+        assertSame(
+            forLocaleTag(""),
+            rootLocale
+        )
+
+        assertLocale(
+            forLocaleTag("x_attr_common"),
+            "", "", "", "", mapOf('x' to "attr-common")
+        )
 
         // /############# test lang
         assertLocale(
@@ -302,7 +318,7 @@ class LocaleUtilsTest {
         )
 
         assertEquals(
-        "de_x_attr-gender",
+            "de_x_attr-gender",
             forLocaleTag("de-x-attr-gender").toTag()
         )
     }

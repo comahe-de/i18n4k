@@ -4,6 +4,7 @@ import de.comahe.i18n4k.Locale
 import de.comahe.i18n4k.country
 import de.comahe.i18n4k.language
 import de.comahe.i18n4k.lessSpecificLocale
+import de.comahe.i18n4k.rootLocale
 import de.comahe.i18n4k.toTag
 import de.comahe.i18n4k.variant
 import kotlin.test.Test
@@ -53,7 +54,7 @@ class LocaleTest {
 
         assertEquals(Locale("de", "AT"), locale2)
         assertEquals(Locale("de"), locale1)
-        assertNull(locale1.lessSpecificLocale)
+        assertEquals(rootLocale, locale1.lessSpecificLocale)
 
         // cache should be used
         assertSame(locale2, locale3.lessSpecificLocale)

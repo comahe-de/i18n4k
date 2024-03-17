@@ -47,14 +47,17 @@ private val lessSpecificLocaleCache = atomic(persistentMapOf<Locale, Locale?>())
 /**
  * Creates a locale that is one step less specific than this locale.
  *
- * Returns null if there is no less specific locale.
+ * Returns [rootLocale] if there is no less specific locale.
  *
- * E.g. "de_DE_saxony" would become "de_DE", "de_DE" would become "de" and "de" would become null.
+ * E.g. `de_DE_saxony` would become `de_DE`,
+ * `de_DE` would become `de`,
+ * `de` would become `` ([rootLocale]),
+ * and `` ([rootLocale]) would stay as it is.
  */
-val Locale.lessSpecificLocale: Locale?
+val Locale.lessSpecificLocale: Locale
     get() {
         if (variant.isEmpty() && country.isEmpty())
-            return null
+            return rootLocale
 
         var result = lessSpecificLocaleCache.value[this]
         if (result === null) {
@@ -75,7 +78,9 @@ val Locale.lessSpecificLocale: Locale?
  * See [rfc5646](https://www.rfc-editor.org/rfc/rfc5646.html#section-2.1)
  */
 fun forLocaleTag(languageTag: String, separator: Char = '_', separator2: Char = '-'): Locale {
-    require(languageTag.isNotEmpty()) { "Language tag was empty!" }
+
+    if (languageTag.isBlank())
+        return rootLocale
 
     var language = ""
     var script = ""
@@ -83,7 +88,7 @@ fun forLocaleTag(languageTag: String, separator: Char = '_', separator2: Char = 
     var variant = ""
     val extensions = mutableMapOf<Char, String>()
 
-    val parts = languageTag.split(separator, separator2)
+    val parts = languageTag.trim().split(separator, separator2)
 
     // tool functions....
     fun String.isAlpha() = all { it.isLetter() }
@@ -93,9 +98,11 @@ fun forLocaleTag(languageTag: String, separator: Char = '_', separator2: Char = 
 
     var index = 0;
 
-    language = parts[index++]
-    check(language.length in 2..8) { "Language must have between 2 and 8 chars. Actual: $language" }
-    check(language.isAlpha()) { "Language must only contain letters. Actual: $language" }
+    if (parts.size > index
+        && parts[index].isAlpha()
+        && parts[index].length in 2..8
+    )
+        language = parts[index++]
 
     // up to 3 extlang -> not supported by Java implementation
     //while (parts.size > index && parts[index].length == 3) {

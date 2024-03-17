@@ -11,6 +11,7 @@ import de.comahe.i18n4k.messages.formatter.MessageParametersEmpty
 import de.comahe.i18n4k.messages.formatter.MessageParametersList
 import de.comahe.i18n4k.messages.providers.MessagesProvider
 import de.comahe.i18n4k.messages.providers.MessagesProviderFactory
+import de.comahe.i18n4k.rootLocale
 import de.comahe.i18n4k.strings.AbstractLocalizedString
 import de.comahe.i18n4k.strings.LocalizedString
 import de.comahe.i18n4k.strings.LocalizedStringFactoryX
@@ -141,19 +142,21 @@ open class MessageBundle(
      * if no [MessagesProvider] or string at index is `null`
      */
     protected fun getString0(index: Int, locale: Locale?): String {
-        return getMapString0(localeToStringsRef.value, index, locale)
+        return getMapString0(localeToStringsRef.value, index, locale, true)
             ?: "?${getEntryByIndex(index)?.messageKey ?: index}?"
     }
 
     protected fun getAttribString0(attrib: CharSequence, index: Int, locale: Locale?): String? {
         val map = attribToLocaleToStringsRef.value[attrib] ?: return null
-        return getMapString0(map, index, locale)
+        return getMapString0(map, index, locale, true)
     }
 
     protected fun getMapString0(
         map: PersistentMap<Locale, MessagesProvider>,
         index: Int,
-        locale: Locale?
+        locale: Locale?,
+        /** true, if also the default locale should be tried */
+        tryDefault: Boolean,
     ): String? {
         if (index < 0)
             throw IllegalArgumentException("Index must be greater or equal to 0")
@@ -165,14 +168,12 @@ open class MessageBundle(
         if (i18n4k.treadBlankStringAsNull && string?.isBlank() == true)
             string = null
         // try less specific locale
-        if (string === null) {
-            val lessSpecificLocale = localeToUse.lessSpecificLocale
-            if (lessSpecificLocale != null)
-                string = getMapString0(map, index, lessSpecificLocale)
+        if (string === null && localeToUse != rootLocale) {
+            string = getMapString0(map, index, localeToUse.lessSpecificLocale, tryDefault)
         }
         // try default locale
-        if (string === null && locale != i18n4k.defaultLocale)
-            string = getMapString0(map, index, i18n4k.defaultLocale)
+        if (string === null && tryDefault && localeToUse != i18n4k.defaultLocale)
+            string = getMapString0(map, index, i18n4k.defaultLocale, false)
 
         return string
     }

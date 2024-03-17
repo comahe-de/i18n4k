@@ -2,13 +2,10 @@ package da.comahe.i18n4k.attribs
 
 import de.comahe.i18n4k.Locale
 import de.comahe.i18n4k.config.I18n4kConfigDefault
+import de.comahe.i18n4k.forLocaleTag
 import de.comahe.i18n4k.i18n4k
 import de.comahe.i18n4k.messages.formatter.provider.DeclensionProvider
 import de.comahe.i18n4k.messages.formatter.provider.GenderProvider
-import de.comahe.i18n4k.messages.formatter.provider.GenderProviderDefault
-import de.comahe.i18n4k.messages.formatter.types.MessageDeclensionValueFormatter
-import de.comahe.i18n4k.messages.formatter.types.MessageGenderSelectFormatter
-import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -28,10 +25,51 @@ class MessageBundleAttributesTest {
         MessagesThings.registerTranslation(MessagesThings_en_x_attr_gender)
         MessagesThings.registerTranslation(MessagesThings_de_x_attr_gender)
         MessagesThings.registerTranslation(MessagesThings_de_x_attr_decl_genitiv)
+        MessagesThings.registerTranslation(MessagesThings_x_attr_common)
 
         MessagesThingsAre.unregisterAllTranslations()
         MessagesThingsAre.registerTranslation(MessagesThingsAre_en)
         MessagesThingsAre.registerTranslation(MessagesThingsAre_de)
+    }
+
+    @Test
+    fun getAttributeTest() {
+        i18n4kConfig.locale = forLocaleTag("en")
+
+        assertEquals("n", MessagesThings.MOON.getAttribute("gender"))
+        assertEquals("n", MessagesThings.SUN.getAttribute("gender"))
+        assertEquals("n", MessagesThings.WATER.getAttribute("gender"))
+        assertEquals("m", MessagesThings.JOSEPH.getAttribute("gender"))
+        assertEquals("f", MessagesThings.MARY.getAttribute("gender"))
+
+
+        i18n4kConfig.locale = forLocaleTag("de")
+
+        assertEquals("m", MessagesThings.MOON.getAttribute("gender"))
+        assertEquals("f", MessagesThings.SUN.getAttribute("gender"))
+        assertEquals("n", MessagesThings.WATER.getAttribute("gender"))
+        assertEquals("m", MessagesThings.JOSEPH.getAttribute("gender"))
+        assertEquals("f", MessagesThings.MARY.getAttribute("gender"))
+    }
+
+     @Test
+    fun getAttributeCommonTest() {
+        i18n4kConfig.locale = forLocaleTag("en")
+
+        assertEquals("X1", MessagesThings.MOON.getAttribute("common"))
+        assertEquals("X2", MessagesThings.SUN.getAttribute("common"))
+        assertEquals("X3", MessagesThings.WATER.getAttribute("common"))
+        assertEquals("X4", MessagesThings.JOSEPH.getAttribute("common"))
+        assertEquals("X5", MessagesThings.MARY.getAttribute("common"))
+
+
+        i18n4kConfig.locale = forLocaleTag("de")
+
+        assertEquals("X1", MessagesThings.MOON.getAttribute("common"))
+        assertEquals("X2", MessagesThings.SUN.getAttribute("common"))
+        assertEquals("X3", MessagesThings.WATER.getAttribute("common"))
+        assertEquals("X4", MessagesThings.JOSEPH.getAttribute("common"))
+        assertEquals("X5", MessagesThings.MARY.getAttribute("common"))
     }
 
     @Test
