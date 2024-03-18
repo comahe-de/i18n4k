@@ -1,0 +1,59 @@
+== Declension formatter
+
+For languages that have irregular declension.
+It replaces the parameter value with the value returned
+by configured declension-provider.
+
+Values for  xref:general.adoc#formatter_-general[`FORMAT_TYPE`]:
+`decl-DECLENSION_FORM`, where `DECLENSION_FORM` is the name
+of the declension form.
+
+The first value of xref:general.adoc#formatter_-general[`FORMAT_STYLE`]
+is used when the parameter value or declension value is null.
+It must be enclosed with curly braces: `{...}`.
+
+The default implementation of the declension-provider
+uses the xref:../attributes.adoc[attribute] `decl-DECLENSION_FORM`,
+where `DECLENSION_FORM` is the name of the declension form.
+
+
+Example:
+
+* Messages:
+** en: `The risk of a {0} is high.`
+** de: `Das Risiko eines {0, decl-genitive, {{0}s} } ist groß.`
+* For parameter `storm`
+** en: `The risk of a storm is high.`
+** de: `Das Risiko eines Sturms ist groß.`
+*  For parameter `spark`
+** en: `The risk of a spark is high.`
+** de: `Das Risiko eines Funkens ist groß.`
+
+No declension for English needed.
+
+For German, the following properties files for the `subject` message bundle are needed:
+
+`subjects_de.properties`
+
+[source]
+----
+spark=Funke
+storm=Sturm
+----
+
+`subjects_de_-x-attr-decl-genitive.properties`
+
+[source]
+----
+spark=Funkens
+----
+
+(“Sturm” has regular declension and doesn't need a declension entry.)
+
+
+
+
+'''
+
+Back to xref:index.adoc[Formatters]
+

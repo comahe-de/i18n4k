@@ -6,6 +6,7 @@ import de.comahe.i18n4k.messages.formatter.MessageParameters
 import de.comahe.i18n4k.messages.formatter.MessageValueFormatter
 import de.comahe.i18n4k.messages.formatter.parsing.StylePart
 import de.comahe.i18n4k.messages.formatter.parsing.firstMessagePart
+import de.comahe.i18n4k.strings.LocalizedAttributable
 import de.comahe.i18n4k.strings.LocalizedString
 
 /**
@@ -97,7 +98,7 @@ object MessageAttribValueFormatter : MessageValueFormatter {
             if (attrName == null)
                 null
             else
-                (value as? LocalizedString)?.getAttribute(attrName, locale)
+                (value as? LocalizedAttributable)?.getAttribute(attrName, locale)
 
         if (attr == null)
             style?.firstMessagePart()?.format(result, parameters, locale, context)

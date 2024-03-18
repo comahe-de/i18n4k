@@ -1,0 +1,86 @@
+== Parameters
+
+=== General information
+
+Messages often need some external parameters,
+e.g. `The value must be higer than {0} and lower than {1}!`,
+where `{0}`  and `{1}` are the parameters in the message.
+
+Each parameter is enclosed in curly braces.
+The text inside the curly braces is the name of the parameter.
+The name may contain any character,
+but reserved characters in the name need to be xref:escaping.adoc[escaped].
+Leading and tailing whitespaces of the name are trimmed.
+Inside the curly braces, xref:formatters/index.adoc[additional formatting options] can be specified.
+
+`LocalizedString` objects can also be used as parameters,
+where the string value of the specified locale will be used.
+
+A parameter may be used several times inside the message string,
+e.g. `This is {name}. I like {name}!`
+
+=== LocalizedStringFactory* for paramters
+
+Depending on the count of different parameters of a message,
+the source code generator generates a `LocalizedStringFactory*`  for the message
+with the corresponding count of parameters.
+This works with up to 10 parameters,
+e.g. `LocalizedStringFactory1`, `LocalizedStringFactory2` and so on.
+
+The `String` or `LocalizedString` can than be retrieved
+using the `invoke` or the `get` operator function.
+The code generator also generates a comment
+where the name of the message parameter is mapped to the corresponding function parameter.
+
+E.g.
+
+[source, kotlin]
+----
+val myString : String =
+    MyMessageBundle.myMessage("abc", "def)
+val myLocalizedString : LocalizedString =
+    MyMessageBundle.myMessage["abc", "def"]
+----
+
+For more than 10 parameters, the `LocalizedStringFactoryN` interface is used.
+There a `MessageParameters` implementation or a vararg array of `Pair` need to be passed
+for the parameters.
+
+E.g.
+
+[source, kotlin]
+----
+val myString : String =
+    MyMessageBundle.myMessage11(
+        "0" to "a", "1" to "b", "2" to "c", "3" to "d",
+        "4" to "e", "5" to "f", "6" to "g", "7" to "h",
+        "8" to "i", "9" to "j", "10" to "k" )
+val myLocalizedString : LocalizedString =
+    MyMessageBundle.myMessage11[
+        "0" to "a", "1" to "b", "2" to "c", "3" to "d",
+        "4" to "e", "5" to "f", "6" to "g", "7" to "h",
+        "8" to "i", "9" to "j", "10" to "k" ]
+----
+
+This pair-notation has the advantage
+that the name of the parameter is explicitly stated in the code.
+But it is also more verbose and a parameter may be forgotten.
+
+If you want to use the pair-notation also for messages with less than 11 parameters
+(`LocalizedStringFactory[1-10]`),
+you can call the `asN` value, which returns the `LocalizedStringFactoryN` interface.
+
+E.g.:
+
+[source, kotlin]
+----
+val myString : String =
+    MyMessageBundle.myMessage.asN("0" to "abc", "1" to "def")
+val myLocalizedString : LocalizedString =
+    MyMessageBundle.myMessage.asN["0" to "abc", "1" to "def"]
+----
+
+
+'''
+
+Back to xref:index.adoc[Index]

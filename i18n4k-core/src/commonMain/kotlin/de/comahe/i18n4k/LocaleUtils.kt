@@ -49,10 +49,8 @@ private val lessSpecificLocaleCache = atomic(persistentMapOf<Locale, Locale?>())
  *
  * Returns [rootLocale] if there is no less specific locale.
  *
- * E.g. `de_DE_saxony` would become `de_DE`,
- * `de_DE` would become `de`,
- * `de` would become `` ([rootLocale]),
- * and `` ([rootLocale]) would stay as it is.
+ * E.g. `de_DE_saxony` would become `de_DE`, `de_DE` would become `de`, `de` would become ``
+ * ([rootLocale]), and `` ([rootLocale]) would stay as it is.
  */
 val Locale.lessSpecificLocale: Locale
     get() {
@@ -71,6 +69,34 @@ val Locale.lessSpecificLocale: Locale
         return result
     }
 
+/**
+ * Applies all possible locales in the chain, until `block` returns a non-null value and returns
+ * this value.
+ *
+ * Returns null if there are no more possible locales.
+ *
+ * This function can be used in cases when different locales should be tried to compute the chain of
+ * locales that should be tried.
+ *
+ * @param localeToStart Start locale to check. If null [de.comahe.i18n4k.config.I18n4kConfig.locale]
+ *     in [i18n4k] is used.
+ */
+inline fun <R> applyLocales(localeToStart: Locale? = null, block: (Locale) -> R?): R? {
+    var tryDefault = true
+    var localeToUse = localeToStart ?: i18n4k.locale
+    while (true) {
+        val result = block(localeToUse)
+        if (result != null)
+            return result
+        if (localeToUse != rootLocale) {
+            localeToUse = localeToUse.lessSpecificLocale
+        } else if (tryDefault && localeToUse != i18n4k.defaultLocale) {
+            tryDefault = false
+            localeToUse = i18n4k.defaultLocale
+        } else
+            return null
+    }
+}
 
 /**
  * Transforms a languageTag like "en_US_texas" to a Locale("en","US","texas")

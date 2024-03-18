@@ -1,0 +1,81 @@
+== Plural and ordinal formatters
+
+[NOTE]
+====
+To use this feature, you have to include the following additional dependency: `de.comahe.i18n4k:i18n4k-cldr-plural-rules:VERSION`.
+
+A call to the function `i18n4kInitCldrPluralRules()`
+is also needed to register the formatters.
+====
+
+It works like the  xref:select.adoc[select formatter],
+but instead of using the number value of the parameter directly,
+the number is converted to a plural category.
+
+Predefined values for the  plural category are:
+
+* zero
+* one
+* two
+* few
+* many
+* other
+
+There are two different plural rule types
+
+* https://en.wikipedia.org/wiki/Cardinal_numeral[cardinals]
+* https://en.wikipedia.org/wiki/Ordinal_numeral[ordinals]
+
+The plural category computation is based on the
+https://cldr.unicode.org/index/cldr-spec/plural-rules[Plural Rules]
+of the Unicode CLDR. They have a large
+collection of
+https://www.unicode.org/cldr/charts/43/supplemental/language_plural_rules.html[rules]
+for almost all languages.
+
+Value of xref:general.adoc#formatter_-general[`FORMAT_TYPE`]:
+
+* For cardinals the `plural` key is used.
+* For ordinals the `ordinal` key is used.
+
+Definition for xref:general.adoc#formatter_-general[`FORMAT_STYLE`]
+is the same as for the xref:select.adoc[select formatter].
+
+Example for `plural`:
+
+[source]
+----
+There {count, plural, one {is} other {are} } {count} {count, plural, one {bag} other {bags}}.
+----
+
+Result for [count: 1]: +
+_There is 1 bag._
+
+Result for [count: 2]: +
+_There are 2 bags._
+
+
+Example `ordinal`:
+
+[source]
+----
+This is the {count}{count, ordinal, one {st} two {nd} few {rd} other {th} } meeting.
+----
+
+
+Result for [count: 1]: +
+_This is the 1st meeting._
+
+Result for [count: 2]: +
+_This is the 2nd meeting._
+
+Result for [count: 4]: +
+_This is the 4th meeting._
+
+
+
+
+'''
+
+Back to xref:index.adoc[Formatters]
+

@@ -1,0 +1,32 @@
+== Transforming formatter
+
+Provides the possibility to transform the letters to uppercase, lowercase or capitalize
+(uppercase the first letter, rest lowercase).
+
+Supported values for xref:general.adoc#formatter_-general[`FORMAT_TYPE`]
+
+* `uppercase`: transform all letters to uppercase
+* `lowercase`: transform all letters to lowercase
+* `capitalize`: transform the first letter to uppercase
+
+
+The first value of xref:general.adoc#formatter_-general[`FORMAT_STYLE`] is used when the parameter value is null or `~`.
+It must be enclosed with curly braces: `{...}`.
+The text including parameters is evaluated and transformed afterwards.
+
+*Examples:*
+
+    {0, capitalize } is the best!
+
+Result for [0 :  ice]: +
+_Ice is the best!_
+
+    {~, capitalize, {{0}+{1}} } is the best!
+
+Result for [0: ice, 1 :  tea]: +
+_Ice+tea is the best!_
+
+'''
+
+Back to xref:index.adoc[Formatters]
+

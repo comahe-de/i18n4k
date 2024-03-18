@@ -1,0 +1,16 @@
+== Escaping reserved characters
+
+
+The curly braces characters `{}` and the single quote `'` are reserved characters
+and need to be escaped.
+
+Escaping is done by enclosing the characters by single quotes,
+e.g. `These are curly braces: '{ }'` results in `These are curly braces: { }`
+
+An exception is the single quote. It is escaped using a double singe quote,
+e.g.: `This isn''t a double quote!` result in `This isn't a double quote!`
+
+
+'''
+
+Back to xref:index.adoc[Index]

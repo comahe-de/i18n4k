@@ -12,6 +12,7 @@ object MessagesThingsAre_en : MessagesProvider {
         "The {0} is beautiful. You will love {0, gender, m {him} f {her} n {it} }!",
         "{0} has gender {0, attr-gender}",
         "Not existing: {0, attr-none}",
+        "Not existing 2: {0, attr-none2}",
         "Not existing with default: {0, attr-none, {{1}!} }",
         "The color of the {0}.",
     )

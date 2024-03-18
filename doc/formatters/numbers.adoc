@@ -1,0 +1,50 @@
+== Number formatter
+
+Formatting for numbers.
+
+Supported values for xref:general.adoc#formatter_-general[`FORMAT_TYPE`]
+
+* `number`: Normal number, with fraction and grouping
+* `length`: Format the number as length. The number must be in meters (m).
+* `area`: Format the number as area. The number must be  in square-meters (m²).
+* `weight`: Format the number as weight. The number must be  in grams (g).
+* `timespan`: Format the number as timespan. The number must be  in seconds (s).
+
+
+Supported values for xref:general.adoc#formatter_-general[`FORMAT_STYLE`] (optional):
+
+
+* `%.0P`:
+** `P`:U sed precision.
+If given, the position to which the rounding is to be made.
+Positive for after the decimal point,
+negative for before the decimal point,
+0 for without decimal places.
+** `0`: Tailing zeros.
+If given and `P` is positive, `P` is the exact number digits after the fraction sign
+(zeros are appended if necessary).
+
+
+Usage examples for number = 12345.6789:
+
+* `{0, number}`: Format parameter 0 as number: `12,345.6789`
+* `{0, number, %.2}`: Format parameter 0 as number
+with max. two fraction
+  digits: `12,345.68`
+* `{0, number, %.06}`: Format parameter 0 as number
+with exact six fraction digits: `12,345.678900`
+* `{0, length}`: Format parameter 0 as length (in meters): `12.3456789 km`
+* `{0, length, %.2}`: Format parameter 0 as length (in meters)
+with two fraction digits, e.g. `12.35 km`
+* `{0, area}`: Format parameter 0 as area (in m²): `12,345.6789 m²`
+* `{0, area, %.2}`: Format parameter 0 as area (in m²)
+with two fraction digits, e.g. `12,345.68 m²`
+* `{0, weight}`: Format parameter 0 as weight (in grams): `12.3456789 kg`
+* `{0, weight, %.2}`: Format parameter 0 as weight (in grams)
+with two fraction digits, e.g. `12.35 kg`
+* `{0, timespan}`: Format parameter 0 as timespan (in seconds): `3:25:45 h`
+
+'''
+
+Back to xref:index.adoc[Formatters]
+

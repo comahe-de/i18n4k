@@ -36,6 +36,7 @@ _Internationalization for Kotlin_
 * [Runtime configuration](#runtime-configuration)
 * [Hints for Android](#hints-for-android)
 * [Message format](#message-format)
+* [Further dokumentation](#further-dokumentation)
 * [Example](#example)
 * [Example projects](#example-projects)
 * [Contribute](#contribute)
@@ -213,15 +214,11 @@ Generated raw resources can be loaded in the following way:
 The [default message format](./i18n4k-core/src/commonMain/kotlin/de/comahe/i18n4k/messages/formatter/MessageFormatterDefault.kt)
 is similar to the [Java-MessageFormat](https://docs.oracle.com/javase/8/docs/api/java/text/MessageFormat.html).
 E.g. the text "Hello, {0}" has one parameter.
+Any string can be used as parameter name.
 
 The parameter values can also be formatted,
 e.g. "{0,number, %.2}" formats parameter 0 as number with max. 2 fraction digits.
-
-The following message value formatters are available (see Kdoc from details):
-
-* [Numbers](./i18n4k-core/src/commonMain/kotlin/de/comahe/i18n4k/messages/formatter/types/MessageNumberFormatters.kt)
-* [Transformations](./i18n4k-core/src/commonMain/kotlin/de/comahe/i18n4k/messages/formatter/types/MessageTransformFormatters.kt)
-* [Select value from a list](./i18n4k-core/src/commonMain/kotlin/de/comahe/i18n4k/messages/formatter/types/MessageSelectFormatter.kt)
+See [Formatters](./doc/formatters/index.adoc) for more information.
 
 For messages with parameters, the generator plugin 
 creates special [LocalizedStringFactories](./i18n4k-core/src/commonMain/kotlin/de/comahe/i18n4k/strings/LocalizedStringFactories.kt)
@@ -229,6 +226,11 @@ where the parameters must be supplied as arguments to get the resulting string.
 
 Other message formatters can be implemented and be configured in 
 [I18n4kConfig](./i18n4k-core/src/commonMain/kotlin/de/comahe/i18n4k/config/I18n4kConfig.kt)`.messageFormatter`
+
+## Further dokumentation
+
+For more advanced features, have a look at the 
+[documenation files](./doc/index.adoc)
 
 ## Example
 

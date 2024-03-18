@@ -1,6 +1,7 @@
 package de.comahe.i18n4k.messages.formatter.provider
 
 import de.comahe.i18n4k.Locale
+import de.comahe.i18n4k.strings.LocalizedAttributable
 import de.comahe.i18n4k.strings.LocalizedString
 
 interface DeclensionProvider {
@@ -14,7 +15,7 @@ object DeclensionProviderDefault : DeclensionProvider {
         value: Any?,
         locale: Locale?
     ): String? {
-        return (value as? LocalizedString)?.getAttribute(
+        return (value as? LocalizedAttributable)?.getAttribute(
             DECLENSION_ATTRIBUTE_PREFIX + declensionCase,
             locale
         )

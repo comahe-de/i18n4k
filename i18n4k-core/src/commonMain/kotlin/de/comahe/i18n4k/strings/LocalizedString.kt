@@ -2,14 +2,23 @@ package de.comahe.i18n4k.strings
 
 import de.comahe.i18n4k.Locale
 
-/** For objects that change their [toString] method based on the set [Locale] in [i18n4k] */
+/** For objects that change their [toString] method based on the set [Locale] in [de.comahe.i18n4k.i18n4k] */
 interface LocalizedString {
 
-    /** return value based on the currently set [Locale] in [i18n4k] ([I18n4kConfig.locale]) */
+    /**
+     * Returns the string value based on the currently set [Locale] in [de.comahe.i18n4k.i18n4k]
+     * ([de.comahe.i18n4k.config.I18n4kConfig.locale])
+     *
+     * Also, less specific locales and the default locale were used to find a string value if no
+     * value is available for the given locale.
+     */
     override fun toString(): String
 
     /**
-     * return value based on the given [Locale]
+     * Returns the string value based on the given [Locale].
+     *
+     * Also, less specific locales and the default locale were used to find a string value if no
+     * value is available for the given locale.
      *
      * @param locale the [Locale] to be use. If null the current setting in [i18n4k]
      *     ([I18n4kConfig.locale]) will be used.
@@ -23,12 +32,6 @@ interface LocalizedString {
     /** Shortcut for [toString] */
     operator fun invoke(locale: Locale?) =
         toString(locale)
-
-    /**
-     * Returns the value of the attribute with the given name or null if the attribute value is not
-     * defined.
-     */
-    fun getAttribute(attributeName: CharSequence, locale: Locale? = null): String? = null
 }
 
 /**

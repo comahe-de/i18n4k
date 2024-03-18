@@ -1,0 +1,14 @@
+== Formatters
+
+* xref:general.adoc[General]
+* xref:numbers.adoc[Numbers]
+* xref:transforming.adoc[Transforming]
+* xref:select.adoc[Select]
+* xref:plurals.adoc[Plurals]
+* xref:attribute.adoc[Attributes]
+* xref:declension.adoc[Declension]
+
+'''
+
+Back to xref:../index.adoc[Index]
+

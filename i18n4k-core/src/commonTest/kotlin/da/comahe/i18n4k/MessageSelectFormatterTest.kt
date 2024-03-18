@@ -36,6 +36,38 @@ class MessageSelectFormatterTest {
     }
 
     @Test
+    fun test_select_other() {
+        val locale = Locale("en")
+        val pattern1 = "{0, select, 0 {zero} other {else} }"
+        val pattern2 = "{0, select, 0 {zero} {else} }"
+        val pattern3 = "{0, select, 0 {zero} }"
+
+        assertEquals("zero", format(pattern1, listOf(0), locale))
+        assertEquals("zero", format(pattern2, listOf(0), locale))
+        assertEquals("zero", format(pattern3, listOf(0), locale))
+        assertEquals("else", format(pattern1, listOf(1), locale))
+        assertEquals("", format(pattern2, listOf(1), locale))
+        assertEquals("", format(pattern3, listOf(1), locale))
+    }
+
+    @Test
+    fun test_select_multiMatch() {
+        val locale = Locale("en")
+        val pattern1 = "{0, select, 0 {zero} 1 {one} 0 {zero2} 1 {one2} }"
+        val pattern2 = "{0, select, 0 1 {zero one} 0 {zero} 1 {one} }"
+        val pattern3 = "{0, select, other {else} 0 {zero} 1 {one} }"
+
+        assertEquals("zero", format(pattern1, listOf(0), locale))
+        assertEquals("one", format(pattern1, listOf(1), locale))
+
+        assertEquals("zero one", format(pattern2, listOf(0), locale))
+        assertEquals("zero one", format(pattern2, listOf(1), locale))
+
+        assertEquals("else", format(pattern3, listOf(0), locale))
+        assertEquals("else", format(pattern3, listOf(1), locale))
+    }
+
+    @Test
     fun test_select_nested() {
         val locale = Locale("en")
         val pattern = "{0, select, 0 {{1}} 1 2 {{2}} 3 4 5 6 {{3}} other {{4}} }";

@@ -1,0 +1,33 @@
+[[formatter_-general]]
+== General
+
+Message parameters can be formatted using several formatters.
+To use a formatter, the parameter in curly braces is extended with additional parameters.
+The parameter options are all in the following style:
+
+----
+{PARAMETER_NAME, FORMAT_TYPE, FORMAT_STYLE}
+----
+* `PARAMETER_NAME`: Name of the parameter
+Leading and tailing whitespaces are trimmed.
+Reserved characters need to be xref:../escaping.adoc[escaped].
+* `FORMAT_TYPE`: The type / identifier of the formatter, in general a single word.
+Leading and tailing whitespaces are trimmed.
+Reserved characters need to be xref:../escaping.adoc[escaped].
+* `FORMAT_STYLE`: A list of whitespace seperated options for the formatter. +
+This can be optional depending on the `FORMAT_TYPE`. +
+The list of options can also contain message texts with nested parameters.
+Message text must be enclosed in curly braces.
+Reserved characters need to be xref:../escaping.adoc[escaped].
+
+E.g.:
+
+
+* `{0, number}`
+* `{0, number, %.2}`
+* `{0, select, 1 {value 1} 2 {value 2} ohter {Other value: {0}} }`
+
+
+'''
+
+Back to xref:index.adoc[Formatters]

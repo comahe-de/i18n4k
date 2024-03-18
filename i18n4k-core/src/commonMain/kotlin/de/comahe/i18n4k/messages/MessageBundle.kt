@@ -3,6 +3,7 @@
 package de.comahe.i18n4k.messages
 
 import de.comahe.i18n4k.Locale
+import de.comahe.i18n4k.applyLocales
 import de.comahe.i18n4k.i18n4k
 import de.comahe.i18n4k.lessSpecificLocale
 import de.comahe.i18n4k.messages.formatter.MessageFormatter
@@ -142,40 +143,31 @@ open class MessageBundle(
      * if no [MessagesProvider] or string at index is `null`
      */
     protected fun getString0(index: Int, locale: Locale?): String {
-        return getMapString0(localeToStringsRef.value, index, locale, true)
+        return getMapString0(localeToStringsRef.value, index, locale)
             ?: "?${getEntryByIndex(index)?.messageKey ?: index}?"
     }
 
     protected fun getAttribString0(attrib: CharSequence, index: Int, locale: Locale?): String? {
         val map = attribToLocaleToStringsRef.value[attrib] ?: return null
-        return getMapString0(map, index, locale, true)
+        return getMapString0(map, index, locale)
     }
 
     protected fun getMapString0(
         map: PersistentMap<Locale, MessagesProvider>,
         index: Int,
         locale: Locale?,
-        /** true, if also the default locale should be tried */
-        tryDefault: Boolean,
     ): String? {
         if (index < 0)
             throw IllegalArgumentException("Index must be greater or equal to 0")
-        val localeToUse = locale ?: i18n4k.locale
-        val messages = map[localeToUse]
-        var string: String? = null
-        if (messages !== null && index < messages.size)
-            string = messages[index]
-        if (i18n4k.treadBlankStringAsNull && string?.isBlank() == true)
-            string = null
-        // try less specific locale
-        if (string === null && localeToUse != rootLocale) {
-            string = getMapString0(map, index, localeToUse.lessSpecificLocale, tryDefault)
+        return applyLocales(locale) { localeToUse ->
+            val messages = map[localeToUse]
+            var string: String? = null
+            if (messages !== null && index < messages.size)
+                string = messages[index]
+            if (i18n4k.treadBlankStringAsNull && string?.isBlank() == true)
+                string = null
+            return@applyLocales string
         }
-        // try default locale
-        if (string === null && tryDefault && localeToUse != i18n4k.defaultLocale)
-            string = getMapString0(map, index, i18n4k.defaultLocale, false)
-
-        return string
     }
 
     /**

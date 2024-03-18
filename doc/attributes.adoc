@@ -1,0 +1,260 @@
+== Attributes
+
+
+=== Purpose
+
+Attributes are used by some xref:formatters/index.adoc[formatters]
+for computing or selecting the resulting message part.
+
+=== Usage
+
+Attributes of objects can be used
+if they implement the `LocalizedAttributable` interface.
+It has only one method to be implemented
+
+[source, kotlin]
+----
+fun getAttribute(attributeName: CharSequence, locale: Locale? = null): String?
+----
+
+The `LocalizedString` objects of the `MessageBundle` implement it.
+But also other implementations could be used,
+like the `LocalizedAttributeMap` implementation.
+
+The example project _example-jvm_ illustrates the different
+possibilities of attributes.
+
+[[using_LocalizedAttributeMap]]
+=== Using LocalizedAttributeMap
+
+E.g. the xref:formatters/attribute.adoc[ attribute-select-formatter] could be used like this
+
+// see de.comahe.i18n4k.LocalizedStringMapTest.testAttributes
+[source,kotlin]
+----
+val en = forLocaleTag("en")
+val de = forLocaleTag("de")
+
+val attributesWoman = LocalizedAttributeMap(
+    Triple("gender", en, "f"),
+    Triple("gender", de, "f"),
+    Triple("color", en, "red"),
+    Triple("color", de, "rot"),
+)
+
+val attributesMan = LocalizedAttributeMap(
+    Triple("gender", en, "m"),
+    Triple("gender", de, "m"),
+    Triple("color", en, "grey"),
+    Triple("color", de, "grau"),
+)
+
+val attributesSun = LocalizedAttributeMap(
+    Triple("gender", en, "n"),
+    Triple("gender", de, "f"),
+    Triple("color", en, "yellow"),
+    Triple("color", de, "gelb"),
+)
+
+val attributesMoon = LocalizedAttributeMap(
+    Triple("gender", en, "n"),
+    Triple("gender", de, "m"),
+    Triple("color", en, "white"),
+    Triple("color", de, "weiß"),
+)
+val attributesWater = LocalizedAttributeMap(
+    Triple("gender", en, "n"),
+    Triple("gender", de, "n"),
+    Triple("color", en, "blue"),
+    Triple("color", de, "blau"),
+)
+
+val woman = LocalizedStringMap(
+    en to "woman", de to "Frau",
+    attributes = attributesWoman
+)
+val man = LocalizedStringMap(
+    en to "man", de to "Mann",
+    attributes = attributesMan,
+)
+val moon = LocalizedStringMap(
+    en to "moon", de to "Mond",
+    attributes = attributesMoon,
+)
+val sun = LocalizedStringMap(
+    en to "sun", de to "Sonne",
+    attributes = attributesSun,
+)
+val water = LocalizedStringMap(
+    en to "water", de to "Wasser",
+    attributes = attributesWater,
+)
+
+val messageThisIsX = LocalizedStringFactoryMap(
+    en to "This is the {thing}. {thing, attr:gender, m {He} f {She} n {It} } has the color {thing, attr-color}.",
+    de to "Das ist {thing, attr:gender, m {der} f {die} n {das} } {thing}. {thing, attr:gender, m {Er} f {Sie} n {Es} } hat die Farbe {thing, attr-color}.",
+)
+
+
+assertEquals(
+    "This is the man. He has the color grey.",
+    messageThisIsX("thing" to man, locale = en)
+)
+assertEquals(
+    "This is the woman. She has the color red.",
+    messageThisIsX("thing" to woman, locale = en)
+)
+assertEquals(
+    "This is the moon. It has the color white.",
+    messageThisIsX("thing" to moon, locale = en)
+)
+assertEquals(
+    "This is the sun. It has the color yellow.",
+    messageThisIsX("thing" to sun, locale = en)
+)
+assertEquals(
+    "This is the water. It has the color blue.",
+    messageThisIsX("thing" to water, locale = en)
+)
+
+assertEquals(
+    "Das ist der Mann. Er hat die Farbe grau.",
+    messageThisIsX("thing" to man, locale = de)
+)
+assertEquals(
+    "Das ist die Frau. Sie hat die Farbe rot.",
+    messageThisIsX("thing" to woman, locale = de)
+)
+assertEquals(
+    "Das ist der Mond. Er hat die Farbe weiß.",
+    messageThisIsX("thing" to moon, locale = de)
+)
+assertEquals(
+    "Das ist die Sonne. Sie hat die Farbe gelb.",
+    messageThisIsX("thing" to sun, locale = de)
+)
+assertEquals(
+    "Das ist das Wasser. Es hat die Farbe blau.",
+    messageThisIsX("thing" to water, locale = de)
+)
+----
+
+=== Using message bundles
+
+For storing attribute values in a message bundle,
+additional properties files are needed
+where the attribute name is appended as an extension after the locale tag
+via “-x-attr-NAME“.
+
+E.g. for the attribute “gender” and the message bunlde “things”:
+
+* things_en-x-attr-gender
+* things_en_US-x-attr-gender
+* things_de-x-attr-gender
+* things_de_DE-x-attr-gender
+* things_de_DE_saxiona-x-attr-gender
+* things_fr-x-attr-gender
+* things_fr_FR-x-attr-gender
+
+A similar result like in the example for
+xref:using_LocalizedAttributeMap[LocalizedAttributeMap]
+could be achieved by creating two message bundles
+(`things` and `myMessages`) with the following properties-files:
+
+_things_en.properties_
+[source, properties]
+----
+man=man
+woman=woman
+moon=moon
+sun=sun
+water=water
+----
+
+_things_en-x-attr-gender.properties_
+[source, properties]
+----
+man=m
+woman=f
+moon=n
+sun=n
+water=n
+----
+
+_things_en-x-attr-color.properties_
+[source, properties]
+----
+man=grey
+woman=red
+moon=white
+sun=yellow
+water=blue
+----
+
+
+_things_de.properties_
+[source, properties]
+----
+man=Mann
+woman=Frau
+moon=Mond
+sun=Sonne
+water=Wasser
+----
+
+
+_things_de-x-attr-gender.properties_
+[source, properties]
+----
+man=m
+woman=f
+moon=m
+sun=f
+water=n
+----
+
+_things_de-x-attr-color.properties_
+[source, properties]
+----
+man=grau
+woman=rot
+moon=weiß
+sun=gelb
+water=blau
+----
+
+_myMessages_en.properties_
+[source, properties]
+----
+thisIsX=This is the {thing}. {thing, attr:gender, m {He} f {She} n {It} } has the color {thing, attr-color}.
+someOtherMessage=...
+----
+
+_myMessages_de.properties_
+[source, properties]
+----
+thisIsX=Das ist {thing, attr:gender, m {der} f {die} n {das} } {thing}. {thing, attr:gender, m {Er} f {Sie} n {Es} } hat die Farbe {thing, attr-color}.
+someOtherMessage=...
+----
+
+And then using the generated code in your code:
+
+[source, kotlin]
+----
+assertEquals(
+    "This is the man. He has the color grey.",
+    MyMessages.thisIsX(Things.man , locale = en)
+)
+
+assertEquals(
+    "This is the woman. She has the color red.",
+    MyMessages.thisIsX(Things.woman , locale = en)
+)
+
+...
+----
+
+
+'''
+
+Back to xref:index.adoc[Index]

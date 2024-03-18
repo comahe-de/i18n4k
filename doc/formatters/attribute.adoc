@@ -1,0 +1,47 @@
+== Attribute formatter
+
+Instead of using string value of a parameter,
+the attribute formatters use the value of an attribute with a specified name.
+For more information on attributes,
+see xref:../attributes.adoc[here].
+
+=== Attribute value
+
+Inserts the value of the attribute wiht the given name and locale.
+
+Value for xref:general.adoc#formatter_-general[`FORMAT_TYPE`]:
+`attr-NAME`, where `NAME` is the name of the attribute.
+
+The first value of xref:general.adoc#formatter_-general[`FORMAT_STYLE`] is used when the parameter value or attribute value is null.
+It must be enclosed with curly braces: `{...}`.
+
+Example:
+
+[source]
+----
+It has the color {0, attr-color, {none}}
+----
+
+
+=== Attribute select
+
+It works like the xref:select.adoc[select formatter],
+but uses the value of the attribute for the select.
+
+Value for xref:general.adoc#formatter_-general[`FORMAT_TYPE`]:
+`attr:NAME`, where `NAME` is the name of the attribute.
+
+Definition for xref:general.adoc#formatter_-general[`FORMAT_STYLE`]
+is the same as for the xref:select.adoc[select formatter].
+
+
+Example:
+
+----
+{0} has forgotten {0, attr:gender, female {her} male {his} other {its} } bag.
+----
+
+'''
+
+Back to xref:index.adoc[Formatters]
+

@@ -6,6 +6,8 @@ import de.comahe.i18n4k.forLocaleTag
 import de.comahe.i18n4k.i18n4k
 import de.comahe.i18n4k.messages.formatter.provider.DeclensionProvider
 import de.comahe.i18n4k.messages.formatter.provider.GenderProvider
+import de.comahe.i18n4k.strings.LocalizedAttributeMap
+import de.comahe.i18n4k.strings.LocalizedStringMap
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -52,7 +54,7 @@ class MessageBundleAttributesTest {
         assertEquals("f", MessagesThings.MARY.getAttribute("gender"))
     }
 
-     @Test
+    @Test
     fun getAttributeCommonTest() {
         i18n4kConfig.locale = forLocaleTag("en")
 
@@ -262,4 +264,50 @@ class MessageBundleAttributesTest {
         )
     }
 
+    @Test
+    fun attributableTest() {
+        val en = forLocaleTag("en")
+        val de = forLocaleTag("de")
+        val fr = forLocaleTag("fr")
+
+        val attributeMap = LocalizedAttributeMap(
+            Triple("none", en, "nothing"),
+            Triple("none", de, "nichts"),
+            Triple("none2", en, "empty"),
+            Triple("none2", de, "leer"),
+        )
+
+        i18n4kConfig.locale = en
+
+        assertEquals(
+            "Not existing: nothing",
+            MessagesThingsAre.NOT_EXISTING_ATTR(attributeMap)
+        )
+        assertEquals(
+            "Not existing 2: empty",
+            MessagesThingsAre.NOT_EXISTING_ATTR2(attributeMap)
+        )
+
+        i18n4kConfig.locale = fr
+
+        assertEquals(
+            "Not existing: nothing",
+            MessagesThingsAre.NOT_EXISTING_ATTR(attributeMap)
+        )
+        assertEquals(
+            "Not existing 2: empty",
+            MessagesThingsAre.NOT_EXISTING_ATTR2(attributeMap)
+        )
+
+        i18n4kConfig.locale = de
+
+        assertEquals(
+            "Nicht existent: nichts",
+            MessagesThingsAre.NOT_EXISTING_ATTR(attributeMap)
+        )
+        assertEquals(
+            "Nicht existent 2: leer",
+            MessagesThingsAre.NOT_EXISTING_ATTR2(attributeMap)
+        )
+    }
 }

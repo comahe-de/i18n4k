@@ -73,6 +73,30 @@ class MessageParserTest {
     }
 
     @Test
+    fun testParameterNameWhitespaces() {
+        assertEquals(
+            MessagePartParam("a b c", null, null),
+            parse("{ a b c }"),
+        )
+        assertEquals(
+            MessagePartParam("a b c", "e d f", null),
+            parse("{ a b c , e d f }"),
+        )
+    }
+
+    @Test
+    fun testParameterNameQotes() {
+        assertEquals(
+            MessagePartParam("a' b' c", "d' e' f", null),
+            parse("{ a'' b'' c ,  d'' e'' f }"),
+        )
+        assertEquals(
+            MessagePartParam("a{} b c", "e d{} f", null),
+            parse("{ a'{} b' c , e 'd{} 'f }"),
+        )
+    }
+
+    @Test
     fun testParameterQuotes() {
 
         assertEquals(
@@ -269,7 +293,7 @@ class MessageParserTest {
     @Test()
     fun testParameterName() {
         assertEquals(
-            setOf<CharSequence>( "a b", "c", "e", "f", "'", "g", "{", "}"),
+            setOf<CharSequence>("a b", "c", "e", "f", "'", "g", "{", "}"),
             getParameterNames("{ a b } { c , d } { e' '} { ' 'f} {''} {' g '} {'{'} {'}'}")
         )
     }

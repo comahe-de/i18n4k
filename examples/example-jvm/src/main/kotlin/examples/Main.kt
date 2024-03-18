@@ -5,6 +5,7 @@ import de.comahe.i18n4k.config.I18n4kConfigDefault
 import de.comahe.i18n4k.getDisplayNameInLocale
 import de.comahe.i18n4k.i18n4k
 import de.comahe.i18n4k.i18n4kInitCldrPluralRules
+import de.comahe.i18n4k.messages.MessageBundleLocalizedString
 import de.comahe.i18n4k.messages.provider.MessagesProviderViaResource
 import de.comahe.i18n4k.strings.LocalizedString
 import net.miginfocom.swing.MigLayout
@@ -71,7 +72,7 @@ fun main(args: Array<String>) {
     val labelAttrSelect = JLabel("")
     val labelThingEmoji = JLabel("")
 
-    val comboThings = JComboBox<LocalizedString>()
+    val comboThings = JComboBox<MessageBundleLocalizedString>()
     val textCountOfShapes = JTextField()
     val textOrdinalOfShape = JTextField()
 
@@ -99,7 +100,7 @@ fun main(args: Array<String>) {
         labelCountOfShapes.text = Actions.count_of_shapes()
         labelOrdinalOfShape.text = Actions.ordinal_of_shape()
 
-        val selectedThing = comboThings.selectedItem as LocalizedString?
+        val selectedThing = comboThings.selectedItem as MessageBundleLocalizedString?
         val count = textCountOfShapes.text
         val ordinal = textOrdinalOfShape.text
 

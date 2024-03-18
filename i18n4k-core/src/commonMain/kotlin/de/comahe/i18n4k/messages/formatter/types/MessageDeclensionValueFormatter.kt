@@ -65,7 +65,7 @@ import kotlinx.atomicfu.update
  * storm=Sturm
  * ```
  *
- * `subjects_de_-x-attr-declension-genitive.properties`
+ * `subjects_de_-x-attr-decl-genitive.properties`
  *
  * ```
  * spark=Funkens
