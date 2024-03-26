@@ -23,7 +23,7 @@ open class I18n4kExtension {
      *
      * Default: "en"
      */
-    val commentLocale: String? = "en"
+    var commentLocale: String? = "en"
 
     /** For which locale tags ([toTag]) an source code language mapping should be produced.
      *
