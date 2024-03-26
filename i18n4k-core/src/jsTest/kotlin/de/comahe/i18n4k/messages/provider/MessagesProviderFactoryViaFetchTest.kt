@@ -1,10 +1,9 @@
 package de.comahe.i18n4k.messages.provider
 
-import da.comahe.i18n4k.MessageTest1
+import de.comahe.i18n4k.MessageTest1
 import de.comahe.i18n4k.config.I18n4kConfigImmutable
 import de.comahe.i18n4k.forLocaleTag
 import de.comahe.i18n4k.i18n4k
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.test.runTest
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
