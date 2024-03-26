@@ -1,17 +1,17 @@
 [versions]
 
-# https://kotlinlang.org/docs/releases.html#release-details
-kotlin = "1.9.21"
+# https://kotlinlang.org/docs/releases.html#release-dbbbetails
+kotlin = "1.9.23"
 # https://github.com/Kotlin/kotlinx-atomicfu
-kotlinxAtomicfu = "0.23.0"
+kotlinxAtomicfu = "0.23.2"
 # https://github.com/Kotlin/kotlinx.collections.immutable
-kotlinxCollectionsImmutable = "0.3.6"
+kotlinxCollectionsImmutable = "0.3.7"
 # https://github.com/Kotlin/kotlinx.coroutines
-kotlinxCoroutines = "1.7.3"
+kotlinxCoroutines = "1.8.0"
 # https://github.com/Kotlin/kotlinx.serialization
 kotlinxSerialization = "1.6.2"
 # https://github.com/square/kotlinpoet
-kotlinPoet = "1.14.2"
+kotlinPoet = "1.16.0"
 # https://www.slf4j.org/news.html
 slf4j = "1.7.36"
 # https://logback.qos.ch/news.html
@@ -22,11 +22,11 @@ junit = "4.13.2"
 ###############  Plugins ###################
 
 # https://plugins.gradle.org/plugin/com.gradle.plugin-publish
-gradlePluginPublish = "1.2.0"
+gradlePluginPublish = "1.2.1"
 # https://mvnrepository.com/artifact/com.android.tools.build/gradle?repo=google
 androidPlugin = "7.2.2"
 # https://github.com/Kotlin/dokka
-dokkaPlugin = "1.9.10"
+dokkaPlugin = "1.9.20"
 
 
 [libraries]
