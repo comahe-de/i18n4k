@@ -49,7 +49,7 @@ val Welcome = FC<WelcomeProps> { props ->
         MyMessages.locales.forEach { locale ->
             button {
                 +locale.getDisplayNameInLocale()
-                +(if (i18n4kProp.locale.language == locale.language) " # " else "")
+                +(if (i18n4kProp.locale == locale) " # " else "")
                 onClick = { _ ->
                     i18n4kProp = i18n4kProp.withLocale(locale)
                 }
