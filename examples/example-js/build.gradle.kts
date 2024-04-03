@@ -3,7 +3,7 @@ version = "1.0.0-SNAPSHOT"
 
 plugins {
     kotlin("js") version "1.9.20"
-    id("de.comahe.i18n4k") version "0.8.0"
+    id("de.comahe.i18n4k") version "0.8.1-SNAPSHOT"
 }
 
 // ####################################
@@ -42,7 +42,7 @@ dependencies {
     implementation("org.jetbrains.kotlin-wrappers:kotlin-react:18.2.0-pre.349")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom:18.2.0-pre.349")
 
-    implementation("de.comahe.i18n4k:i18n4k-core-js:0.8.0")
+    implementation("de.comahe.i18n4k:i18n4k-core-js:0.8.1-SNAPSHOT")
 }
 
 // Fix build error message "Entry index.html is a duplicate but no duplicate handling strategy has been set."
