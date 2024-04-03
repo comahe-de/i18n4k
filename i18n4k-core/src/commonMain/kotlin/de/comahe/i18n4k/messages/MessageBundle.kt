@@ -12,6 +12,7 @@ import de.comahe.i18n4k.messages.formatter.MessageParametersEmpty
 import de.comahe.i18n4k.messages.formatter.MessageParametersList
 import de.comahe.i18n4k.messages.providers.MessagesProvider
 import de.comahe.i18n4k.messages.providers.MessagesProviderFactory
+import de.comahe.i18n4k.removeExtensions
 import de.comahe.i18n4k.rootLocale
 import de.comahe.i18n4k.strings.AbstractLocalizedString
 import de.comahe.i18n4k.strings.LocalizedString
@@ -66,7 +67,7 @@ open class MessageBundle(
             attribToLocaleToStringsRef.update { attribToLocaleToStrings ->
                 val localeToStrings =
                     (attribToLocaleToStrings[attrib] ?: persistentMapOf()).put(
-                        messagesProvider.locale.stripExtensions(),
+                        messagesProvider.locale.removeExtensions(),
                         messagesProvider
                     )
                 attribToLocaleToStrings.put(attrib, localeToStrings)
@@ -74,7 +75,7 @@ open class MessageBundle(
 
         } else {
             localeToStringsRef.update { localeToStrings ->
-                localeToStrings.put(messagesProvider.locale.stripExtensions(), messagesProvider)
+                localeToStrings.put(messagesProvider.locale.removeExtensions(), messagesProvider)
             }
         }
     }

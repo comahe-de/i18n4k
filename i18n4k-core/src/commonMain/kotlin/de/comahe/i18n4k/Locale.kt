@@ -66,16 +66,6 @@ expect class Locale {
     /** the variant code for this locale. Can be an empty string */
     fun getVariant(): String
 
-    /** Returns `true` if this `Locale` has any extensions. */
-    fun hasExtensions(): Boolean
-
-    /**
-     * Returns a copy of this (or this itself) `Locale` with no extensions.
-     *
-     * If this `Locale` has no extensions, this `Locale` is returned.
-     */
-    fun stripExtensions(): Locale
-
     /**
      * Returns the extension (or private use) value associated with the specified key, or null if
      * there is no extension associated with the key.

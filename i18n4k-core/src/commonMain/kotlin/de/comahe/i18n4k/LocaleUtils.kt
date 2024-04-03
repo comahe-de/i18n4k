@@ -69,6 +69,22 @@ val Locale.lessSpecificLocale: Locale
         return result
     }
 
+
+/**
+ * Returns a copy of this (or this itself) `Locale` with no extensions.
+ *
+ * If this `Locale` has no extensions, this `Locale` is returned.
+ *
+ * HINT: same as `Locale.stripExtensions()` but this method is only available since Android API 26.
+ * Therefore, use this method.
+ */
+fun Locale.removeExtensions(): Locale {
+    if (getExtensionKeys().isEmpty())
+        return this
+    return createLocale(language, script, country, variant, persistentMapOf())
+}
+
+
 /**
  * Applies all possible locales in the chain, until `block` returns a non-null value and returns
  * this value.
@@ -220,7 +236,7 @@ fun toLocaleTag(
 fun Locale.toTag(separator: String = "_"): String {
 
     val extensions: Map<Char, String>?
-    if (hasExtensions()) {
+    if (getExtensionKeys().isNotEmpty()) {
         extensions = mutableMapOf()
         for (key in getExtensionKeys()) {
             val value = getExtension(key)

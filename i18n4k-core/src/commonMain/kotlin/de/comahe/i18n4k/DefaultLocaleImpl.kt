@@ -33,15 +33,6 @@ class DefaultLocaleImpl(
     fun getCountry(): String = country
     fun getVariant(): String = variant
 
-
-    fun hasExtensions(): Boolean = extensions.isNotEmpty()
-
-    fun stripExtensions(): DefaultLocaleImpl {
-        if (hasExtensions())
-            return DefaultLocaleImpl(language, script, country, variant, persistentMapOf())
-        return this
-    }
-
     fun getExtension(key: Char): String? = extensions[key]
 
     fun getExtensionKeys(): Set<Char> = extensions.keys

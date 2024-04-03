@@ -3,8 +3,8 @@ package de.comahe.i18n4k
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFails
-import kotlin.test.assertFalse
 import kotlin.test.assertSame
+import kotlin.test.assertTrue
 
 class LocaleUtilsTest {
 
@@ -327,7 +327,7 @@ class LocaleUtilsTest {
         assertEquals(country, locale.country)
         assertEquals(variant, locale.variant)
         if (extensions == null)
-            assertFalse(locale.hasExtensions())
+            assertTrue(locale.getExtensionKeys().isEmpty())
         else {
             assertEquals(locale.getExtensionKeys(), extensions.keys)
             for ((key, value) in extensions) {
