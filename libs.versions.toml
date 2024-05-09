@@ -1,7 +1,7 @@
 [versions]
 
 # https://kotlinlang.org/docs/releases.html#release-dbbbetails
-kotlin = "1.9.23"
+kotlin = "1.9.24"
 # https://github.com/Kotlin/kotlinx-atomicfu
 kotlinxAtomicfu = "0.23.2"
 # https://github.com/Kotlin/kotlinx.collections.immutable
@@ -9,7 +9,7 @@ kotlinxCollectionsImmutable = "0.3.7"
 # https://github.com/Kotlin/kotlinx.coroutines
 kotlinxCoroutines = "1.8.0"
 # https://github.com/Kotlin/kotlinx.serialization
-kotlinxSerialization = "1.6.2"
+kotlinxSerialization = "1.6.3"
 # https://github.com/square/kotlinpoet
 kotlinPoet = "1.16.0"
 # https://www.slf4j.org/news.html
