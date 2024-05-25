@@ -2,18 +2,13 @@
 
 package de.comahe.i18n4k.messages
 
-import de.comahe.i18n4k.Locale
-import de.comahe.i18n4k.applyLocales
-import de.comahe.i18n4k.i18n4k
-import de.comahe.i18n4k.lessSpecificLocale
+import de.comahe.i18n4k.*
 import de.comahe.i18n4k.messages.formatter.MessageFormatter
 import de.comahe.i18n4k.messages.formatter.MessageParameters
 import de.comahe.i18n4k.messages.formatter.MessageParametersEmpty
 import de.comahe.i18n4k.messages.formatter.MessageParametersList
 import de.comahe.i18n4k.messages.providers.MessagesProvider
 import de.comahe.i18n4k.messages.providers.MessagesProviderFactory
-import de.comahe.i18n4k.removeExtensions
-import de.comahe.i18n4k.rootLocale
 import de.comahe.i18n4k.strings.AbstractLocalizedString
 import de.comahe.i18n4k.strings.LocalizedString
 import de.comahe.i18n4k.strings.LocalizedStringFactoryX
@@ -133,7 +128,7 @@ open class MessageBundle(
     }
 
     fun getEntryByIndex(index: Int): MessageBundleEntry? {
-        val list = keyObjectsByIndex.value;
+        val list = keyObjectsByIndex.value
         if (index < 0 || index >= list.size)
             return null
         return list[index]

@@ -59,7 +59,7 @@ class LocaleUtilsTest {
 
         assertEquals(
             "norsk (Norge,nynorsk)",
-            Locale("no", "NO", "NY").getDisplayNameInLocale()
+            createLocale("no", null, "NO", "nynorsk").getDisplayNameInLocale()
         )
         assertEquals(
             "norsk (Norge)",

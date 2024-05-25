@@ -22,7 +22,7 @@ class MessageTransformFormattersTest {
      */
     @Test
     fun test_transform_single() {
-        val locale = Locale("en")
+        val locale = createLocale("en")
         val params = listOf("hello WORLD")
 
         assertEquals("HELLO WORLD!", format("{0, uppercase }!", params, locale))
@@ -30,13 +30,13 @@ class MessageTransformFormattersTest {
         assertEquals("Hello WORLD!", format("{0, capitalize }!", params, locale))
     }
 
-        /**
+    /**
      * Test formats of
      * [de.comahe.i18n4k.messages.formatter.types.MessageTransformFormatters]
      */
     @Test
     fun test_transform_textMessage() {
-        val locale = Locale("en")
+        val locale = createLocale("en")
         val params = listOf("hello WORLD", "oK")
 
         assertEquals("HELLO WORLD-OK!", format("{~, uppercase, {{0}-{1}} }!", params, locale))
@@ -46,13 +46,13 @@ class MessageTransformFormattersTest {
         assertEquals("@hello WORLD-oK!", format("{~, capitalize, {@{0}-{1}} }!", params, locale))
     }
 
-     @Test
+    @Test
     fun test_invalid() {
-        val locale = Locale("en")
+        val locale = createLocale("en")
         val params = listOf("hello WORLD")
 
         assertEquals("!", format("{~, uppercase }!", params, locale))
         assertEquals("{1}!", format("{~, lowercase, {{1}} }!", params, locale))
         assertEquals("{1}!", format("{~, capitalize, {{1}} {{0}} }!", params, locale))
-     }
+    }
 }

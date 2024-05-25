@@ -60,9 +60,9 @@ val Locale.lessSpecificLocale: Locale
         var result = lessSpecificLocaleCache.value[this]
         if (result === null) {
             result = if (variant.isEmpty())
-                Locale(language)
+                createLocale(language)
             else
-                Locale(language, country)
+                createLocale(language, null, country)
         }
         lessSpecificLocaleCache.update { it.put(this, result) }
 
@@ -138,7 +138,7 @@ fun forLocaleTag(languageTag: String, separator: Char = '_', separator2: Char = 
     fun String.isAlphaNum() = all { it.isLetterOrDigit() }
 
 
-    var index = 0;
+    var index = 0
 
     if (parts.size > index
         && parts[index].isAlpha()

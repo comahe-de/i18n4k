@@ -7,7 +7,6 @@ import de.comahe.i18n4k.messages.formatter.MessageValueFormatter
 import de.comahe.i18n4k.messages.formatter.parsing.StylePart
 import de.comahe.i18n4k.messages.formatter.parsing.firstMessagePart
 import de.comahe.i18n4k.strings.LocalizedAttributable
-import de.comahe.i18n4k.strings.LocalizedString
 
 /**
  * Inserts the values of the given attribute of the parameter

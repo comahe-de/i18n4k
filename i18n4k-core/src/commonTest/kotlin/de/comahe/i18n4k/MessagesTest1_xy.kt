@@ -8,7 +8,7 @@ object MessagesTest1_xy : MessagesProvider {
     @JvmStatic
     private val data: Array<String?> = arrayOf("")
 
-    override val locale = Locale("xy")
+    override val locale = createLocale("xy")
 
     override val size = data.size
 

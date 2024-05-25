@@ -79,7 +79,7 @@ fun createDefaultLocaleImpl(
 
     return DefaultLocaleImpl(
         language.trim().lowercase(),
-        script?.trim()?.capitalize() ?: "",
+        script?.trim()?.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() } ?: "",
         country?.trim()?.uppercase() ?: "",
         variant?.trim()?.lowercase() ?: "",
         extensionsBuilder.build()

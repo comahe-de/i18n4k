@@ -14,11 +14,11 @@ actual fun createLocale(
 
     builder.setLanguage(language.lowercase())
     if (script != null)
-        builder.setScript(script.capitalize())
+        builder.setScript(script.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() })
     if (country != null)
         builder.setRegion(country.uppercase())
     if (variant != null)
-        builder.setVariant(variant.lowercase())
+        builder.setVariant(variant.lowercase().take(8))
     extensions?.forEach { (key, value) ->
         builder.setExtension(key.lowercaseChar(), value.lowercase())
     }

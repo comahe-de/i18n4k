@@ -6,11 +6,6 @@ import de.comahe.i18n4k.messages.formatter.MessageFormatContext
 import de.comahe.i18n4k.messages.formatter.MessageParameters
 import de.comahe.i18n4k.messages.formatter.MessageValueFormatter
 import de.comahe.i18n4k.messages.formatter.parsing.StylePart
-import de.comahe.i18n4k.messages.formatter.provider.GenderProvider
-import de.comahe.i18n4k.messages.formatter.provider.GenderProviderDefault
-import de.comahe.i18n4k.messages.formatter.provider.GenderProviderDefault.getGenderOf
-import kotlinx.atomicfu.atomic
-import kotlinx.atomicfu.update
 
 /**
  * It is like a normal select-pattern (#36), but instead of using the value of the parameter

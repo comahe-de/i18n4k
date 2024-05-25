@@ -6,7 +6,6 @@ import de.comahe.i18n4k.messages.formatter.MessageParameters
 import de.comahe.i18n4k.messages.formatter.MessageValueFormatter
 import de.comahe.i18n4k.messages.formatter.parsing.StylePart
 import de.comahe.i18n4k.strings.LocalizedAttributable
-import de.comahe.i18n4k.strings.LocalizedString
 
 /**
  * Select a text value based on the named attribute value of the parameter.

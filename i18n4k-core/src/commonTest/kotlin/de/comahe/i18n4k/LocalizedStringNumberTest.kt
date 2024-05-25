@@ -18,7 +18,7 @@ class LocalizedStringNumberTest {
     fun init() {
         i18n4k = i18n4kConfig
         i18n4kConfig.restoreDefaultSettings()
-        i18n4kConfig.locale = Locale("en")
+        i18n4kConfig.locale = createLocale("en")
     }
 
 
@@ -167,7 +167,7 @@ class LocalizedStringNumberTest {
 
     @Test
     fun formatGermanTest() {
-        i18n4kConfig.locale = Locale("de")
+        i18n4kConfig.locale = createLocale("de")
 
         assertEquals("123.456,789", LocalizedStringNumber(123_456.789).toString())
     }

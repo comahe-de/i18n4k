@@ -1,6 +1,7 @@
 package de.comahe.i18n4k.config
 
 import de.comahe.i18n4k.Locale
+import de.comahe.i18n4k.createLocale
 import de.comahe.i18n4k.forLocaleTag
 import de.comahe.i18n4k.messages.formatter.MessageFormatter
 import de.comahe.i18n4k.messages.formatter.MessageFormatterDefault
@@ -28,7 +29,7 @@ data class I18n4kConfigImmutable(
 ) : I18n4kConfig {
     /** constructor for getting the default settings */
     constructor() : this(
-        defaultLocale = Locale("en"),
+        defaultLocale = createLocale("en"),
         locale = systemLocale,
         messageFormatter = MessageFormatterDefault,
         treadBlankStringAsNull = true,

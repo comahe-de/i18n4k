@@ -14,7 +14,7 @@ class CompositeLocalizedStringTest {
     fun init() {
         i18n4k = i18n4kConfig
         i18n4kConfig.restoreDefaultSettings()
-        i18n4kConfig.locale = Locale("en")
+        i18n4kConfig.locale = createLocale("en")
 
         MessageTest1.unregisterAllTranslations()
         MessageTest1.registerTranslation(MessagesTest1_en)

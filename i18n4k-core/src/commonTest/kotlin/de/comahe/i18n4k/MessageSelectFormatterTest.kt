@@ -19,7 +19,7 @@ class MessageSelectFormatterTest {
 
     @Test
     fun test_select_simple() {
-        val locale = Locale("en")
+        val locale = createLocale("en")
         val pattern = "{0, select, 0 {zero} 1 2 {few} 3 4 5 6 {many} other {too much} }";
 
         assertEquals("zero", format(pattern, listOf(0), locale))
@@ -35,7 +35,7 @@ class MessageSelectFormatterTest {
 
     @Test
     fun test_select_other() {
-        val locale = Locale("en")
+        val locale = createLocale("en")
         val pattern1 = "{0, select, 0 {zero} other {else} }"
         val pattern2 = "{0, select, 0 {zero} {else} }"
         val pattern3 = "{0, select, 0 {zero} }"
@@ -50,7 +50,7 @@ class MessageSelectFormatterTest {
 
     @Test
     fun test_select_multiMatch() {
-        val locale = Locale("en")
+        val locale = createLocale("en")
         val pattern1 = "{0, select, 0 {zero} 1 {one} 0 {zero2} 1 {one2} }"
         val pattern2 = "{0, select, 0 1 {zero one} 0 {zero} 1 {one} }"
         val pattern3 = "{0, select, other {else} 0 {zero} 1 {one} }"
@@ -67,7 +67,7 @@ class MessageSelectFormatterTest {
 
     @Test
     fun test_select_nested() {
-        val locale = Locale("en")
+        val locale = createLocale("en")
         val pattern = "{0, select, 0 {{1}} 1 2 {{2}} 3 4 5 6 {{3}} other {{4}} }";
         val extraParams = listOf("zero", "few", "many", "too much")
 
@@ -84,7 +84,7 @@ class MessageSelectFormatterTest {
 
     @Test
     fun test_select_regex() {
-        val locale = Locale("en")
+        val locale = createLocale("en")
         val pattern =
             "{0, select, 0 {zero} /\\d+/ {digits} /\\w+/ {word} /[abc<>-]+/ {mix} other {else} }"
 
@@ -110,7 +110,7 @@ class MessageSelectFormatterTest {
 
     @Test
     fun test_invalid() {
-        val locale = Locale("en")
+        val locale = createLocale("en")
 
         assertEquals("!", format("{~, select }!", listOf('a'), locale))
         assertEquals("!", format("{~, select , }!", listOf('a'), locale))

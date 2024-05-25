@@ -1,7 +1,7 @@
 package de.comahe.i18n4k.messages.formatter
 
-import de.comahe.i18n4k.Locale
 import de.comahe.i18n4k.config.I18n4kConfigDefault
+import de.comahe.i18n4k.createLocale
 import de.comahe.i18n4k.i18n4k
 import de.comahe.i18n4k.i18n4kInitCldrPluralRules
 import kotlin.test.BeforeTest
@@ -19,7 +19,7 @@ class MessagePluralsTest {
     fun init() {
         i18n4k = i18n4kConfig
         i18n4kConfig.restoreDefaultSettings()
-        i18n4kConfig.locale = Locale("en")
+        i18n4kConfig.locale = createLocale("en")
 
         MessagesPlurals.unregisterAllTranslations()
         MessagesPlurals.registerTranslation(MessagesPlurals_en)
@@ -30,7 +30,7 @@ class MessagePluralsTest {
 
     @Test
     fun cardinalTest_en() {
-        i18n4kConfig.locale = Locale("en")
+        i18n4kConfig.locale = createLocale("en")
 
         assertEquals("1 month", MessagesPlurals.MONTH_COUNT("1"))
         assertEquals("1 month", MessagesPlurals.MONTH_COUNT(1))
@@ -50,7 +50,7 @@ class MessagePluralsTest {
 
     @Test
     fun cardinalTest_de() {
-        i18n4kConfig.locale = Locale("de")
+        i18n4kConfig.locale = createLocale("de")
 
         assertEquals("1 Monat", MessagesPlurals.MONTH_COUNT("1"))
         assertEquals("1 Monat", MessagesPlurals.MONTH_COUNT(1))
@@ -70,7 +70,7 @@ class MessagePluralsTest {
 
     @Test
     fun cardinalTest_pl() {
-        i18n4kConfig.locale = Locale("pl")
+        i18n4kConfig.locale = createLocale("pl")
 
         assertEquals("1 miesiąc", MessagesPlurals.MONTH_COUNT("1"))
         assertEquals("1 miesiąc", MessagesPlurals.MONTH_COUNT(1))
@@ -90,7 +90,7 @@ class MessagePluralsTest {
 
     @Test
     fun ordinalTest_en() {
-        i18n4kConfig.locale = Locale("en")
+        i18n4kConfig.locale = createLocale("en")
 
         assertEquals("1st rank", MessagesPlurals.RANK_ORDINAL("1"))
         assertEquals("1st rank", MessagesPlurals.RANK_ORDINAL(1))
@@ -111,7 +111,7 @@ class MessagePluralsTest {
 
     @Test
     fun ordinalTest_de() {
-        i18n4kConfig.locale = Locale("de")
+        i18n4kConfig.locale = createLocale("de")
 
         assertEquals("1. Rang", MessagesPlurals.RANK_ORDINAL("1"))
         assertEquals("1. Rang", MessagesPlurals.RANK_ORDINAL(1))
@@ -132,7 +132,7 @@ class MessagePluralsTest {
 
     @Test
     fun ordinalTest_pl() {
-        i18n4kConfig.locale = Locale("pl")
+        i18n4kConfig.locale = createLocale("pl")
 
         assertEquals("1. rząd", MessagesPlurals.RANK_ORDINAL("1"))
         assertEquals("1. rząd", MessagesPlurals.RANK_ORDINAL(1))

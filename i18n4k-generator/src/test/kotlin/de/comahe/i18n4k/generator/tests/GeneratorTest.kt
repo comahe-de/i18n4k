@@ -35,7 +35,7 @@ class GeneratorTest {
     @Test
     fun compareGeneratedFiles() {
 
-        for (target in GenerationTargetPlatform.values()) {
+        for (target in GenerationTargetPlatform.entries) {
             val processor = I18n4kProcessor(
                 inputDirectory = inputDirectory,
                 generatedSourcesDirectory = File(actualGeneratedSourcesDirectory, target.name),

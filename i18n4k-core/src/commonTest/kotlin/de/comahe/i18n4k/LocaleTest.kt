@@ -9,7 +9,7 @@ class LocaleTest {
 
     @Test
     fun testLanguage() {
-        val locale = Locale("de")
+        val locale = createLocale("de")
         assertEquals("de", locale.language)
         assertEquals("", locale.country)
         assertEquals("", locale.variant)
@@ -19,7 +19,7 @@ class LocaleTest {
 
     @Test
     fun testLanguageAndCountry() {
-        val locale = Locale("de", "AT")
+        val locale = createLocale("de", null, "AT")
         assertEquals("de", locale.language)
         assertEquals("AT", locale.country)
         assertEquals("", locale.variant)
@@ -29,7 +29,7 @@ class LocaleTest {
 
     @Test
     fun testLanguageCountryAndVariant() {
-        val locale = Locale("de", "AT", "gaudi")
+        val locale = createLocale("de", null, "AT", "gaudi")
         assertEquals("de", locale.language)
         assertEquals("AT", locale.country)
         assertEquals("gaudi", locale.variant)
@@ -38,14 +38,14 @@ class LocaleTest {
 
     @Test
     fun testLessSpecificLocale() {
-        val locale3 = Locale("de", "AT", "gaudi")
+        val locale3 = createLocale("de", null, "AT", "gaudi")
         val locale2 = locale3.lessSpecificLocale
         assertNotNull(locale2)
         val locale1 = locale2.lessSpecificLocale
         assertNotNull(locale1)
 
-        assertEquals(Locale("de", "AT"), locale2)
-        assertEquals(Locale("de"), locale1)
+        assertEquals(createLocale("de", null, "AT"), locale2)
+        assertEquals(createLocale("de"), locale1)
         assertEquals(rootLocale, locale1.lessSpecificLocale)
 
         // cache should be used

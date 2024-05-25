@@ -15,7 +15,7 @@ class MessageBundleTest {
     fun init() {
         i18n4k = i18n4kConfig
         i18n4kConfig.restoreDefaultSettings()
-        i18n4kConfig.locale = Locale("en")
+        i18n4kConfig.locale = createLocale("en")
 
         MessageTest1.unregisterAllTranslations()
         MessageTest1.registerTranslation(MessagesTest1_en)
@@ -33,7 +33,7 @@ class MessageBundleTest {
     @Test
     fun registerTranslationTest() {
         MessageTest1.unregisterAllTranslations()
-        i18n4kConfig.locale = Locale("de")
+        i18n4kConfig.locale = createLocale("de")
 
         assertEquals("?YES?", MessageTest1.YES())
 
@@ -45,7 +45,7 @@ class MessageBundleTest {
 
         assertEquals("Ja", MessageTest1.YES())
 
-        i18n4kConfig.locale = Locale("xy")
+        i18n4kConfig.locale = createLocale("xy")
 
         assertEquals("Yes", MessageTest1.YES())
 
@@ -65,66 +65,65 @@ class MessageBundleTest {
     @Test
     fun testSpecificLocales() {
 
-        i18n4kConfig.locale = Locale("de")
+        i18n4kConfig.locale = createLocale("de")
         assertEquals("Hallo Gerd!", MessageTest1.HELLO_X1("Gerd"))
 
-        i18n4kConfig.locale = Locale("de", "AT")
+        i18n4kConfig.locale = createLocale("de", null, "AT")
         assertEquals("Servus Gerd!", MessageTest1.HELLO_X1("Gerd"))
 
-        i18n4kConfig.locale = Locale("de", "AT", "vorarlberg")
+        i18n4kConfig.locale = createLocale("de", null, "AT", "Voralberg")
         assertEquals("Zeawas Gerd!", MessageTest1.HELLO_X1("Gerd"))
 
         // go to less specific locale
 
-        i18n4kConfig.locale = Locale("de", "AT", "tirol")
+        i18n4kConfig.locale = createLocale("de", null, "AT")
         assertEquals("Servus Gerd!", MessageTest1.HELLO_X1("Gerd"))
 
-        i18n4kConfig.locale = Locale("de", "DE", "saxony")
+        i18n4kConfig.locale = createLocale("de", null, "DE", "saxony")
         assertEquals("Hallo Gerd!", MessageTest1.HELLO_X1("Gerd"))
 
-        i18n4kConfig.locale = Locale("de", "DE")
+        i18n4kConfig.locale = createLocale("de", null,"DE")
         assertEquals("Hallo Gerd!", MessageTest1.HELLO_X1("Gerd"))
 
-        i18n4kConfig.locale = Locale("de")
+        i18n4kConfig.locale = createLocale("de")
         assertEquals("Hallo Gerd!", MessageTest1.HELLO_X1("Gerd"))
 
-        i18n4kConfig.locale = Locale("fr", "FR")
+        i18n4kConfig.locale = createLocale("fr", null, "FR")
         assertEquals("Hello Gerd!", MessageTest1.HELLO_X1("Gerd"))
 
-        i18n4kConfig.locale = Locale("fr")
+        i18n4kConfig.locale = createLocale("fr")
         assertEquals("Hello Gerd!", MessageTest1.HELLO_X1("Gerd"))
     }
 
 
     @Test
     fun testMissingSpecificLocales() {
-        i18n4kConfig.locale = Locale("de")
+        i18n4kConfig.locale = createLocale("de")
         assertEquals("Etwas Text 1", MessageTest1.SOME_ARE_NULL_1())
 
-        i18n4kConfig.locale = Locale("de", "AT")
+        i18n4kConfig.locale = createLocale("de", null, "AT")
         assertEquals("Etwas Text 1 für AT", MessageTest1.SOME_ARE_NULL_1())
 
-        i18n4kConfig.locale = Locale("de", "AT", "vorarlberg")
+        i18n4kConfig.locale = createLocale("de", null, "AT")
         assertEquals("Etwas Text 1 für AT", MessageTest1.SOME_ARE_NULL_1())
 
-
-        i18n4kConfig.locale = Locale("de")
+        i18n4kConfig.locale = createLocale("de")
         assertEquals("Etwas Text 2", MessageTest1.SOME_ARE_NULL_2())
 
-        i18n4kConfig.locale = Locale("de", "AT")
+        i18n4kConfig.locale = createLocale("de")
         assertEquals("Etwas Text 2", MessageTest1.SOME_ARE_NULL_2())
 
-        i18n4kConfig.locale = Locale("de", "AT", "vorarlberg")
+        i18n4kConfig.locale = createLocale("de", null, "AT", "voralberg")
         assertEquals("Etwas Text 2", MessageTest1.SOME_ARE_NULL_2())
 
 
-        i18n4kConfig.locale = Locale("de")
+        i18n4kConfig.locale = createLocale("de")
         assertEquals("?NO_TEXT?", MessageTest1.NO_TEXT())
 
-        i18n4kConfig.locale = Locale("de", "AT")
+        i18n4kConfig.locale = createLocale("de", null, "AT")
         assertEquals("?NO_TEXT?", MessageTest1.NO_TEXT())
 
-        i18n4kConfig.locale = Locale("de", "AT", "vorarlberg")
+        i18n4kConfig.locale = createLocale("de", null, "AT", "voralberg")
         assertEquals("?NO_TEXT?", MessageTest1.NO_TEXT())
     }
 
@@ -172,7 +171,7 @@ class MessageBundleTest {
     /** Tests the setting of simple parameters. */
     @Test
     fun parameterTest_toString_locale() {
-        val l = Locale("de")
+        val l = createLocale("de")
         // @formatter:off
         assertEquals("Hallo a!", MessageTest1.HELLO_X1("a",l))
         assertEquals("Hallo a & a!", MessageTest1.HELLO_X1_2("a",l))
@@ -193,7 +192,7 @@ class MessageBundleTest {
 
     @Test
     fun parameterTest_toLocalizedString_locale() {
-        val l = Locale("de")
+        val l = createLocale("de")
         // @formatter:off
         assertEquals("Hallo a!", MessageTest1.HELLO_X1["a"].toString(l))
         assertEquals("Hallo a & a!", MessageTest1.HELLO_X1_2["a"].toString(l))
@@ -305,7 +304,7 @@ class MessageBundleTest {
             MessageTest1.SELECT_PATTERN("Sara", "female", "3", "few")
         )
 
-        val de = Locale("de")
+        val de = createLocale("de")
         assertEquals(
             "Peter hat seine Tasche vergessen.",
             MessageTest1.SELECT_PATTERN("Peter", "male", "1", "one", de)
@@ -330,7 +329,7 @@ class MessageBundleTest {
             "It's 1,234.57!",
             MessageTest1.NUMBER_PATTERN(1234.56789)
         )
-        val de = Locale("de")
+        val de = createLocale("de")
         assertEquals(
             "Es ist 1.234,57!",
             MessageTest1.NUMBER_PATTERN(1234.56789, de)
@@ -344,7 +343,7 @@ class MessageBundleTest {
             "It's a qute! Look: '",
             MessageTest1.SINGLE_QUOTES()
         )
-        val de = Locale("de")
+        val de = createLocale("de")
         assertEquals(
             "Schau's dir an! Ein Hochkomma: '",
             MessageTest1.SINGLE_QUOTES(de)
@@ -353,7 +352,6 @@ class MessageBundleTest {
 
     @Test
     fun namedParametersTest() {
-
         assertEquals("Hello a!", MessageTest1.HELLO_X1_NAMED("a"))
         assertEquals(
             "Hello a!", MessageTest1.HELLO_X1_NAMED.asN(

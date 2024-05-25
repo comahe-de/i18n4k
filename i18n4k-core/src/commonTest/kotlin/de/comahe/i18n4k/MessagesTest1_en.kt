@@ -42,7 +42,7 @@ object MessagesTest1_en : MessagesProvider {
         "Hello {pa}, {pb}, {pc}, {pd}, {pe}, {pf}, {pg}, {ph}, {pi} and {pj}!",
     )
 
-    override val locale = Locale("en")
+    override val locale = createLocale("en")
 
     override val size = data.size
 
