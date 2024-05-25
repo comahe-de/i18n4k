@@ -1,6 +1,5 @@
 package de.comahe.i18n4k.messages.providers
 
-import de.comahe.i18n4k.Locale
 import de.comahe.i18n4k.forLocaleTag
 import de.comahe.i18n4k.language
 

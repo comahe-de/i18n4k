@@ -1,7 +1,7 @@
 package de.comahe.i18n4k.attribs
 
-import de.comahe.i18n4k.Locale
 import de.comahe.i18n4k.config.I18n4kConfigDefault
+import de.comahe.i18n4k.createLocale
 import de.comahe.i18n4k.forLocaleTag
 import de.comahe.i18n4k.i18n4k
 import de.comahe.i18n4k.messages.formatter.provider.DeclensionProvider
@@ -18,7 +18,7 @@ class MessageBundleAttributesTest {
     fun init() {
         i18n4k = i18n4kConfig
         i18n4kConfig.restoreDefaultSettings()
-        i18n4kConfig.locale = Locale("en")
+        i18n4kConfig.locale = createLocale("en")
 
         MessagesThings.unregisterAllTranslations()
         MessagesThings.registerTranslation(MessagesThings_en)
@@ -75,7 +75,7 @@ class MessageBundleAttributesTest {
 
     @Test
     fun englishTest() {
-        i18n4kConfig.locale = Locale("en")
+        i18n4kConfig.locale = createLocale("en")
 
         for (localizedStringFactory1 in arrayOf(
             MessagesThingsAre.X_IS_BEAUTIFUL,
@@ -124,7 +124,7 @@ class MessageBundleAttributesTest {
 
     @Test
     fun germanTest() {
-        i18n4kConfig.locale = Locale("de")
+        i18n4kConfig.locale = createLocale("de")
 
         for (localizedStringFactory1 in arrayOf(
             MessagesThingsAre.X_IS_BEAUTIFUL,
@@ -189,7 +189,7 @@ class MessageBundleAttributesTest {
 
     @Test
     fun notExistingAttributeTest() {
-        i18n4kConfig.locale = Locale("en")
+        i18n4kConfig.locale = createLocale("en")
 
         assertEquals(
             "Not existing: Mary",
@@ -200,7 +200,7 @@ class MessageBundleAttributesTest {
             MessagesThingsAre.NOT_EXISTING_ATTR_WITH_DEFAULT(MessagesThings.MARY, "foo")
         )
 
-        i18n4kConfig.locale = Locale("de")
+        i18n4kConfig.locale = createLocale("de")
 
         assertEquals(
             "Nicht existent: Maria",
@@ -215,7 +215,7 @@ class MessageBundleAttributesTest {
     /** Test setting a custom gender provider */
     @Test
     fun customGenderProviderTest() {
-        i18n4kConfig.locale = Locale("en")
+        i18n4kConfig.locale = createLocale("en")
 
         //everything is "n"
         i18n4kConfig.genderProvider = object : GenderProvider {
@@ -240,7 +240,7 @@ class MessageBundleAttributesTest {
     /** Test setting a custom gender provider */
     @Test
     fun customDeclensionProviderTest() {
-        i18n4kConfig.locale = Locale("de")
+        i18n4kConfig.locale = createLocale("de")
 
         //everything is "n"
         i18n4kConfig.declensionProvider = object : DeclensionProvider {

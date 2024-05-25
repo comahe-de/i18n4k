@@ -1,6 +1,5 @@
 package de.comahe.i18n4k.strings
 
-import de.comahe.i18n4k.Locale
 import de.comahe.i18n4k.messages.formatter.MessageParameters
 import de.comahe.i18n4k.messages.formatter.MessageParametersMap
 

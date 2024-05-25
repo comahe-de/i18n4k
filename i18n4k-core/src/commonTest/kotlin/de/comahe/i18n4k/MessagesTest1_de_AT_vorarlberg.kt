@@ -26,7 +26,7 @@ object MessagesTest1_de_AT_vorarlberg : MessagesProvider {
         null,
     )
 
-    override val locale = Locale("de", "AT", "vorarlberg")
+    override val locale = createLocale("de")
 
     override val size = data.size
 

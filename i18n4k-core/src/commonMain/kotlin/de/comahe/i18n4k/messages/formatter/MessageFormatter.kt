@@ -1,6 +1,5 @@
 package de.comahe.i18n4k.messages.formatter
 
-import de.comahe.i18n4k.Locale
 import de.comahe.i18n4k.messages.NameToIndexMapperNumbersFrom0
 
 /** The formatter used to insert and format the parameters of the message text */

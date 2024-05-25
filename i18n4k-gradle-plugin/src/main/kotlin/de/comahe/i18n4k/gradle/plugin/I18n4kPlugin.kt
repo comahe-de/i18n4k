@@ -234,7 +234,7 @@ open class I18n4kPlugin : Plugin<Project> {
             val dir = File(
                 config.sourceCodeOutputDirectory.replace(
                     "{buildDir}",
-                    project.buildDir.absolutePath
+                    project.layout.buildDirectory.get().asFile.absolutePath
                 )
             )
             dir.mkdirs()
@@ -246,7 +246,7 @@ open class I18n4kPlugin : Plugin<Project> {
             val dir = File(
                 config.languageFilesOutputDirectory.replace(
                     "{buildDir}",
-                    project.buildDir.absolutePath
+                    project.layout.buildDirectory.get().asFile.absolutePath
                 )
             )
             dir.mkdirs()

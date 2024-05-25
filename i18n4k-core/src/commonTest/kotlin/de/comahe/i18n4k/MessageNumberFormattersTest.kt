@@ -22,7 +22,7 @@ class MessageNumberFormattersTest {
      */
     @Test
     fun format_parameterNumberTest() {
-        val locale = Locale("en")
+        val locale = createLocale("en")
         val params = listOf(12345.6789)
 
         assertEquals("12,345.6789 #", format("{0,number} #", params, locale))
@@ -48,7 +48,7 @@ class MessageNumberFormattersTest {
 
     @Test
     fun format_parameterNumberTest_de() {
-        val locale = Locale("de")
+        val locale = createLocale("de")
         val params = listOf(12345.6789)
 
         assertEquals("12.345,6789 #", format("{0,number} #", params, locale))

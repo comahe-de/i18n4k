@@ -31,17 +31,17 @@ class MessagesProviderViaTextTest {
         var provider: MessagesProviderViaText
 
         // check "sn" ok
-        provider = MessagesProviderViaText(Locale("sn"), text)
-        assertEquals(Locale("sn"), provider.locale)
+        provider = MessagesProviderViaText(createLocale("sn"), text)
+        assertEquals(createLocale("sn"), provider.locale)
 
 
         // no check
         provider = MessagesProviderViaText(null, text)
-        assertEquals(Locale("sn"), provider.locale)
+        assertEquals(createLocale("sn"), provider.locale)
 
         // check "en" failed
         try {
-            provider = MessagesProviderViaText(Locale("en"), text)
+            provider = MessagesProviderViaText(createLocale("en"), text)
             provider.locale // trigger loading...
             fail("Should throw that locale is not 'de'")
         } catch (ignored: IllegalArgumentException) {
@@ -73,9 +73,9 @@ class MessagesProviderViaTextTest {
                 ^
                 end
             """.trimIndent()
-        val provider = MessagesProviderViaText(Locale("sn"), text)
+        val provider = MessagesProviderViaText(createLocale("sn"), text)
 
-        assertEquals(Locale("sn"), provider.locale)
+        assertEquals(createLocale("sn"), provider.locale)
 
         assertEquals("nu", provider[0])
         assertEquals("ne", provider[1])
@@ -86,7 +86,7 @@ class MessagesProviderViaTextTest {
         assertEquals("^ a ^", provider[6])
         assertEquals("end", provider[7])
 
-        i18n4kConfig.locale = Locale("sn")
+        i18n4kConfig.locale = createLocale("sn")
         MessageTest1.registerTranslation(MessagesTest1_en)
         MessageTest1.registerTranslation(provider)
 

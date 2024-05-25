@@ -2,7 +2,6 @@
 
 package de.comahe.i18n4k.messages
 
-import de.comahe.i18n4k.Locale
 import de.comahe.i18n4k.applyLocales
 import de.comahe.i18n4k.i18n4k
 import de.comahe.i18n4k.lessSpecificLocale

@@ -20,7 +20,7 @@ class MessageFormatterDefaultTest {
     /** Tests the setting of simple parameters. */
     @Test
     fun format_parameterTest() {
-        val locale = Locale("en")
+        val locale = createLocale("en")
 
         assertEquals("A", format("{0}", listOf("A"), locale))
         assertEquals("-A-", format("-{0}-", listOf("A"), locale))
@@ -44,7 +44,7 @@ class MessageFormatterDefaultTest {
      */
     @Test
     fun format_parameterNumberTest() {
-        val locale = Locale("en")
+        val locale = createLocale("en")
         val params = listOf(12345.6789);
 
         assertEquals("12,345.6789 #", format("{0,number} #", params, locale))
@@ -65,14 +65,14 @@ class MessageFormatterDefaultTest {
         assertEquals("12.345678900 kg #", format("{0,weight, %.09} #", params, locale))
         assertEquals("3:25:46 h #", format("{0,timespan} #", params, locale))
 
-        assertEquals("12.345,6789 #", format("{0,number} #", params, Locale("de")))
+        assertEquals("12.345,6789 #", format("{0,number} #", params, createLocale("de")))
 
     }
 
     /** Test invalid parameter notations inside the message strings. (like "{{0}") */
     @Test
     fun format_invalidParamNotionTest() {
-        val locale = Locale("en")
+        val locale = createLocale("en")
 
         assertEquals("invalid A", format("invalid {0,!", listOf("A"), locale))
         assertEquals("invalid 0}!", format("invalid 0}!", listOf("A"), locale))
@@ -88,7 +88,7 @@ class MessageFormatterDefaultTest {
      */
     @Test
     fun format_invalidParamValues() {
-        val locale = Locale("en")
+        val locale = createLocale("en")
 
         assertEquals("abc {9}", format("abc {9}", listOf("A"), locale))
         assertEquals("abc {~}", format("abc {~}", listOf("A"), locale))
@@ -100,7 +100,7 @@ class MessageFormatterDefaultTest {
     /** Test the quoting. (like "The curly: '{'") */
     @Test
     fun format_quotingTest() {
-        val locale = Locale("en")
+        val locale = createLocale("en")
 
         assertEquals("", format("'", listOf("A"), locale))
         assertEquals("'", format("''", listOf("A"), locale))
@@ -138,7 +138,14 @@ class MessageFormatterDefaultTest {
         assertEquals("''a''", format("'''''a''''", listOf("A"), locale))
         assertEquals("'''a''", format("''''''a''''", listOf("A"), locale))
         assertEquals("q A {0}", format("q {0} '{0}'", listOf("A"), locale))
-        assertEquals("q {'} 'a'b'  '{'}' 'a''b' ''{''}'' ''a''b'' {0}  A", format("q '{''}' ''a''b''  '''{'''}''' '''a''''b''' ''''{''''}'''' '''''a''''b''''' {0} ' {0}", listOf("A"), locale))
+        assertEquals(
+            "q {'} 'a'b'  '{'}' 'a''b' ''{''}'' ''a''b'' {0}  A",
+            format(
+                "q '{''}' ''a''b''  '''{'''}''' '''a''''b''' ''''{''''}'''' '''''a''''b''''' {0} ' {0}",
+                listOf("A"),
+                locale
+            )
+        )
         assertEquals("q {'} 'A' '{0}' ''A''", format("q '{''}' ''{0}'' '''{0}''' ''''{0}''''", listOf("A"), locale))
         assertEquals("q {0} A", format("q '{'0'}' {0}", listOf("A"), locale))
         assertEquals("q {'0} A", format("q '{''0}' {0}", listOf("A"), locale))

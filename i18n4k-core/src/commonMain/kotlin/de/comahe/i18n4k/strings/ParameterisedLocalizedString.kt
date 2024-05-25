@@ -1,6 +1,5 @@
 package de.comahe.i18n4k.strings
 
-import de.comahe.i18n4k.Locale
 import de.comahe.i18n4k.i18n4k
 import de.comahe.i18n4k.messages.NameToIndexMapper
 import de.comahe.i18n4k.messages.NameToIndexMapperNumbersFrom0

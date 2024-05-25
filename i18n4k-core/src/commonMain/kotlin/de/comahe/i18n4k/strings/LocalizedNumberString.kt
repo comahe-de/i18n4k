@@ -225,7 +225,7 @@ data class LocalizedStringNumber @JvmOverloads constructor(
         private fun normalizeNumber(text: StringBuilder) {
             for (i in text.indices) {
                 if (!text[i].isDigit())
-                    text[i] = text[i].toLowerCase()
+                    text[i] = text[i].lowercaseChar()
             }
             while (true) {
                 val plusSign = text.indexOf("+")

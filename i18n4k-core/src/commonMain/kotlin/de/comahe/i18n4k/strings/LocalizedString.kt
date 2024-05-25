@@ -1,7 +1,5 @@
 package de.comahe.i18n4k.strings
 
-import de.comahe.i18n4k.Locale
-
 /** For objects that change their [toString] method based on the set [Locale] in [de.comahe.i18n4k.i18n4k] */
 interface LocalizedString {
 

@@ -60,9 +60,9 @@ val Locale.lessSpecificLocale: Locale
         var result = lessSpecificLocaleCache.value[this]
         if (result === null) {
             result = if (variant.isEmpty())
-                Locale(language)
+                createLocale(language)
             else
-                Locale(language, country)
+                createLocale(language, country)
         }
         lessSpecificLocaleCache.update { it.put(this, result) }
 

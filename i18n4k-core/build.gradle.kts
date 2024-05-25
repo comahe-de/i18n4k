@@ -1,3 +1,7 @@
+@file:OptIn(ExperimentalKotlinGradlePluginApi::class)
+
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+
 plugins {
     id("i18n4k.kmp-build")
     id("i18n4k.publish-build")
@@ -6,7 +10,7 @@ plugins {
 
 kotlin {
     // the sources of all the targets
-    @Suppress("UNUSED_VARIABLE", "UnusedPrivateMember")
+    @Suppress("UnusedPrivateMember")
     sourceSets {
 
         val commonMain by getting {
@@ -42,5 +46,9 @@ kotlin {
 
             }
         }
+    }
+
+    compilerOptions {
+        freeCompilerArgs.add("-Xexpect-actual-classes")
     }
 }
