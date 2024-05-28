@@ -1,5 +1,7 @@
 package de.comahe.i18n4k.messages.providers
 
+import de.comahe.i18n4k.Locale
+
 /** Base class for loading the data of a [MessagesProvider] via a lazy loaded list of string */
 @Suppress("unused")
 abstract class MessagesProviderViaLoading(

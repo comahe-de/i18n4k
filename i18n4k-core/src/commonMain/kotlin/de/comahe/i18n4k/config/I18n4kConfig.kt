@@ -1,5 +1,6 @@
 package de.comahe.i18n4k.config
 
+import de.comahe.i18n4k.Locale
 import de.comahe.i18n4k.messages.formatter.MessageFormatter
 import de.comahe.i18n4k.messages.formatter.provider.DeclensionProvider
 import de.comahe.i18n4k.messages.formatter.provider.DeclensionProviderDefault

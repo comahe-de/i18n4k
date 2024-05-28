@@ -68,15 +68,15 @@ class MessageBundleTest {
         i18n4kConfig.locale = createLocale("de")
         assertEquals("Hallo Gerd!", MessageTest1.HELLO_X1("Gerd"))
 
-        i18n4kConfig.locale = createLocale("de")
+        i18n4kConfig.locale = createLocale("de", null, "AT")
         assertEquals("Servus Gerd!", MessageTest1.HELLO_X1("Gerd"))
 
-        i18n4kConfig.locale = createLocale("de")
+        i18n4kConfig.locale = createLocale("de", null, "AT", "Voralberg")
         assertEquals("Zeawas Gerd!", MessageTest1.HELLO_X1("Gerd"))
 
         // go to less specific locale
 
-        i18n4kConfig.locale = createLocale("de")
+        i18n4kConfig.locale = createLocale("de", null, "AT")
         assertEquals("Servus Gerd!", MessageTest1.HELLO_X1("Gerd"))
 
         i18n4kConfig.locale = createLocale("de")
@@ -101,12 +101,11 @@ class MessageBundleTest {
         i18n4kConfig.locale = createLocale("de")
         assertEquals("Etwas Text 1", MessageTest1.SOME_ARE_NULL_1())
 
-        i18n4kConfig.locale = createLocale("de")
+        i18n4kConfig.locale = createLocale("de", null, "AT")
         assertEquals("Etwas Text 1 für AT", MessageTest1.SOME_ARE_NULL_1())
 
-        i18n4kConfig.locale = createLocale("de")
+        i18n4kConfig.locale = createLocale("de", null, "AT")
         assertEquals("Etwas Text 1 für AT", MessageTest1.SOME_ARE_NULL_1())
-
 
         i18n4kConfig.locale = createLocale("de")
         assertEquals("Etwas Text 2", MessageTest1.SOME_ARE_NULL_2())
@@ -353,7 +352,6 @@ class MessageBundleTest {
 
     @Test
     fun namedParametersTest() {
-
         assertEquals("Hello a!", MessageTest1.HELLO_X1_NAMED("a"))
         assertEquals(
             "Hello a!", MessageTest1.HELLO_X1_NAMED.asN(

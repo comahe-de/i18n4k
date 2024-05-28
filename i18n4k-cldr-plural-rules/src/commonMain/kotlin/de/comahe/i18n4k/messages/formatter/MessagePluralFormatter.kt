@@ -1,5 +1,6 @@
 package de.comahe.i18n4k.messages.formatter
 
+import de.comahe.i18n4k.Locale
 import de.comahe.i18n4k.cldr.plurals.PluralCategory
 import de.comahe.i18n4k.cldr.plurals.PluralRule
 import de.comahe.i18n4k.messages.formatter.parsing.StylePart

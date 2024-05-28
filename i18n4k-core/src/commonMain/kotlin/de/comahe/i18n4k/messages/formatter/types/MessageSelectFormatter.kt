@@ -1,5 +1,6 @@
 package de.comahe.i18n4k.messages.formatter.types
 
+import de.comahe.i18n4k.Locale
 import de.comahe.i18n4k.messages.formatter.MessageFormatContext
 import de.comahe.i18n4k.messages.formatter.MessageParameters
 import de.comahe.i18n4k.messages.formatter.MessageValueFormatter
@@ -81,7 +82,7 @@ object MessageSelectFormatter : MessageValueFormatter {
         if (style is StylePartMessage)
             return style.messagePart
 
-        var foundMatch = false;
+        var foundMatch = false
         if (style is StylePartList) {
             for (subStyle in style.list) {
                 if (subStyle is StylePartArgument && valueMatches(value, subStyle.value))

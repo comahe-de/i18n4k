@@ -1,7 +1,7 @@
 package de.comahe.i18n4k.messages.formatter.provider
 
+import de.comahe.i18n4k.Locale
 import de.comahe.i18n4k.strings.LocalizedAttributable
-import de.comahe.i18n4k.strings.LocalizedString
 
 interface GenderProvider {
         fun getGenderOf(value: Any?, locale: Locale?): String?

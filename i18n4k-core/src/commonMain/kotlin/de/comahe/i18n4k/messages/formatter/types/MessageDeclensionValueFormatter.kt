@@ -1,15 +1,12 @@
 package de.comahe.i18n4k.messages.formatter.types
 
+import de.comahe.i18n4k.Locale
 import de.comahe.i18n4k.i18n4k
 import de.comahe.i18n4k.messages.formatter.MessageFormatContext
 import de.comahe.i18n4k.messages.formatter.MessageParameters
 import de.comahe.i18n4k.messages.formatter.MessageValueFormatter
 import de.comahe.i18n4k.messages.formatter.parsing.StylePart
 import de.comahe.i18n4k.messages.formatter.parsing.firstMessagePart
-import de.comahe.i18n4k.messages.formatter.provider.DeclensionProvider
-import de.comahe.i18n4k.messages.formatter.provider.DeclensionProviderDefault
-import kotlinx.atomicfu.atomic
-import kotlinx.atomicfu.update
 
 /**
  * For languages that have irregular declension, a declension-provider is needed to find the

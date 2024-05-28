@@ -1,5 +1,7 @@
 package de.comahe.i18n4k.messages.providers
 
+import de.comahe.i18n4k.Locale
+
 /** A [MessagesProvider] that uses a simple list */
 @Suppress("unused")
 class MessagesProviderViaList(

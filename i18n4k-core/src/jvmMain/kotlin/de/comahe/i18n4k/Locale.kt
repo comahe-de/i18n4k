@@ -18,7 +18,7 @@ actual fun createLocale(
     if (country != null)
         builder.setRegion(country.uppercase())
     if (variant != null)
-        builder.setVariant(variant.lowercase())
+        builder.setVariant(variant.lowercase().take(8))
     extensions?.forEach { (key, value) ->
         builder.setExtension(key.lowercaseChar(), value.lowercase())
     }

@@ -1,5 +1,7 @@
 package de.comahe.i18n4k.strings
 
+import de.comahe.i18n4k.Locale
+
 /** For objects that hold different attribute values for different [Locale] values */
 interface LocalizedAttributable {
 

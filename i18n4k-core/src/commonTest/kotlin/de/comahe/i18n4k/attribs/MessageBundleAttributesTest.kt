@@ -1,5 +1,6 @@
 package de.comahe.i18n4k.attribs
 
+import de.comahe.i18n4k.Locale
 import de.comahe.i18n4k.config.I18n4kConfigDefault
 import de.comahe.i18n4k.createLocale
 import de.comahe.i18n4k.forLocaleTag

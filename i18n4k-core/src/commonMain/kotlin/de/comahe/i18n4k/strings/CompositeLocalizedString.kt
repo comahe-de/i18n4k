@@ -1,5 +1,7 @@
 package de.comahe.i18n4k.strings
 
+import de.comahe.i18n4k.Locale
+
 /** A combination of two [LocalizedString] forming a new one */
 class CompositeLocalizedString(
     private val string1: LocalizedString,

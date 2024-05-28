@@ -14,11 +14,8 @@
 
 package de.comahe.i18n4k.cldr.plurals
 
-import de.comahe.i18n4k.country
-import de.comahe.i18n4k.createLocale
-import de.comahe.i18n4k.language
+import de.comahe.i18n4k.*
 import de.comahe.i18n4k.cldr.plurals.PluralOperand.Companion.from
-import de.comahe.i18n4k.rootLocale
 
 
 /**

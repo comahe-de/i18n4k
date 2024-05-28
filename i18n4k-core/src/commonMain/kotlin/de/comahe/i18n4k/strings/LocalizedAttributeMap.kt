@@ -1,5 +1,6 @@
 package de.comahe.i18n4k.strings
 
+import de.comahe.i18n4k.Locale
 import de.comahe.i18n4k.applyLocales
 
 /** A map of attribute values per locale that can be used attribute-based message formatters. */

@@ -1,5 +1,7 @@
 package de.comahe.i18n4k.messages.providers
 
+import de.comahe.i18n4k.Locale
+
 /** Load a text string.
  *
  * Text must be formatted as described in [MessagesProviderViaLoadingText] */
