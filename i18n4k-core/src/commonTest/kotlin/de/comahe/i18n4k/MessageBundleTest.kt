@@ -79,16 +79,16 @@ class MessageBundleTest {
         i18n4kConfig.locale = createLocale("de", null, "AT")
         assertEquals("Servus Gerd!", MessageTest1.HELLO_X1("Gerd"))
 
-        i18n4kConfig.locale = createLocale("de")
+        i18n4kConfig.locale = createLocale("de", null, "DE", "saxony")
+        assertEquals("Hallo Gerd!", MessageTest1.HELLO_X1("Gerd"))
+
+        i18n4kConfig.locale = createLocale("de", null,"DE")
         assertEquals("Hallo Gerd!", MessageTest1.HELLO_X1("Gerd"))
 
         i18n4kConfig.locale = createLocale("de")
         assertEquals("Hallo Gerd!", MessageTest1.HELLO_X1("Gerd"))
 
-        i18n4kConfig.locale = createLocale("de")
-        assertEquals("Hallo Gerd!", MessageTest1.HELLO_X1("Gerd"))
-
-        i18n4kConfig.locale = createLocale("fr")
+        i18n4kConfig.locale = createLocale("fr", null, "FR")
         assertEquals("Hello Gerd!", MessageTest1.HELLO_X1("Gerd"))
 
         i18n4kConfig.locale = createLocale("fr")
@@ -113,17 +113,17 @@ class MessageBundleTest {
         i18n4kConfig.locale = createLocale("de")
         assertEquals("Etwas Text 2", MessageTest1.SOME_ARE_NULL_2())
 
-        i18n4kConfig.locale = createLocale("de")
+        i18n4kConfig.locale = createLocale("de", null, "AT", "voralberg")
         assertEquals("Etwas Text 2", MessageTest1.SOME_ARE_NULL_2())
 
 
         i18n4kConfig.locale = createLocale("de")
         assertEquals("?NO_TEXT?", MessageTest1.NO_TEXT())
 
-        i18n4kConfig.locale = createLocale("de")
+        i18n4kConfig.locale = createLocale("de", null, "AT")
         assertEquals("?NO_TEXT?", MessageTest1.NO_TEXT())
 
-        i18n4kConfig.locale = createLocale("de")
+        i18n4kConfig.locale = createLocale("de", null, "AT", "voralberg")
         assertEquals("?NO_TEXT?", MessageTest1.NO_TEXT())
     }
 
