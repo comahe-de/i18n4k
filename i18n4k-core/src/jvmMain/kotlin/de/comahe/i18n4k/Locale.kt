@@ -1,5 +1,7 @@
 package de.comahe.i18n4k
 
+import de.comahe.i18n4k.strings.capitalize
+
 
 actual typealias Locale = java.util.Locale
 
@@ -14,7 +16,7 @@ actual fun createLocale(
 
     builder.setLanguage(language.lowercase())
     if (script != null)
-        builder.setScript(script.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() })
+        builder.setScript(script.capitalize())
     if (country != null)
         builder.setRegion(country.uppercase())
     if (variant != null)

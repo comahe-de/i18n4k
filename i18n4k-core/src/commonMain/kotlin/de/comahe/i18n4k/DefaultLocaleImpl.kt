@@ -1,5 +1,6 @@
 package de.comahe.i18n4k
 
+import de.comahe.i18n4k.strings.capitalize
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.persistentMapOf
 
@@ -79,7 +80,7 @@ fun createDefaultLocaleImpl(
 
     return DefaultLocaleImpl(
         language.trim().lowercase(),
-        script?.trim()?.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() } ?: "",
+        script?.trim()?.capitalize() ?: "",
         country?.trim()?.uppercase() ?: "",
         variant?.trim()?.lowercase() ?: "",
         extensionsBuilder.build()
