@@ -1,8 +1,9 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("org.jetbrains.kotlin.plugin.compose")
     // apply the i18n4k plugin
-    id("de.comahe.i18n4k") version "0.8.1"
+    id("de.comahe.i18n4k") version "0.9.0-SNAPSHOT"
 }
 
 android {
@@ -38,12 +39,7 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.3"
-    }
+
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -59,7 +55,7 @@ i18n4k {
 dependencies {
 
     // add the i18n4k dependency
-    implementation("de.comahe.i18n4k:i18n4k-core-jvm:0.8.1")
+    implementation("de.comahe.i18n4k:i18n4k-core-jvm:0.9.0-SNAPSHOT")
 
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
