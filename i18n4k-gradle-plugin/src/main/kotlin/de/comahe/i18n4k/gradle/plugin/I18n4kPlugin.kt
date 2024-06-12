@@ -28,14 +28,19 @@ open class I18n4kPlugin : Plugin<Project> {
             config.generationTargetPlatform = when {
                 project.plugins.hasPlugin("org.jetbrains.kotlin.multiplatform") ->
                     GenerationTargetPlatform.MULTI_PLATFORM
+
                 project.plugins.hasPlugin("org.jetbrains.kotlin.js") ->
                     GenerationTargetPlatform.JS
+
                 project.plugins.hasPlugin("org.jetbrains.kotlin.native") ->
                     GenerationTargetPlatform.NATIVE
+
                 project.plugins.hasPlugin("org.jetbrains.kotlin.jvm") ->
                     GenerationTargetPlatform.JVM
+
                 project.plugins.hasPlugin("org.jetbrains.kotlin.android") ->
                     GenerationTargetPlatform.ANDROID
+
                 else -> throw IllegalStateException(
                     "No of the supported Kotlin-Plugins (multiplatform, js, native, jvm, android) " +
                         "has be applied to the project.\nPlugins: "
@@ -123,9 +128,17 @@ open class I18n4kPlugin : Plugin<Project> {
         // Android resource processing:
         // packageDebugResources, packageReleaseResources, ...
         // mergeDebugResources, mergeReleaseResources, ...
+        // extractDeepLinksDebug, extractDeepLinksRelease, ...
         project.tasks.matching {
-            (it.name.startsWith("package") || it.name.startsWith("merge"))
+            //@formatter:off
+            (
+                (it.name.startsWith("package")
+                    || it.name.startsWith("merge")
+                )
                 && it.name.endsWith("Resources")
+            )
+            || it.name.startsWith("extractDeepLinks")
+            //@formatter:on
         }
             .configureEach { it.dependsOn(GENERATE_I18N_SOURCES_TASK_NAME) }
 
