@@ -35,6 +35,7 @@ _Internationalization for Kotlin_
     + [Optimized message files](#optimized-message-files)
 * [Runtime configuration](#runtime-configuration)
 * [Hints for Android](#hints-for-android)
+* [Hints for Compose-Multiplatform](#hints-for-compose-multiplatform)
 * [Message format](#message-format)
 * [Further dokumentation](#further-dokumentation)
 * [Example](#example)
@@ -68,6 +69,7 @@ It provides
 
 * Java (JVM) & Android
 * JS (IR backend)
+* WASM (JS & WASI)
 * Native:
    * iosArm64
    * iosX64
@@ -154,7 +156,7 @@ By default, the language files of the message bundles are searched in the path `
 (normal projects) respectively `src/commonMain/i18` (for multiplatform projects). See configuration
 for other folder locations.
 
-Any sub folder in this directory will be converted to a package in the Kotlin code.
+Any subfolder in this directory will be converted to a package in the Kotlin code.
 
 ### Inline storing of translations
 
@@ -190,7 +192,7 @@ the `i184k` variable.
 ## Hints for Android
 
 Generated resource files are not added to the "Java resource", but as "raw Android resources".
-As Android does not allow sub-folders or uppercase letters, the resource name is adapted: packages
+As Android does not allow subfolders or uppercase letters, the resource name is adapted: packages
 names are prefixed to the resource name and concatenated by "_". 
 Also, camel case names are converted to sneak-case, 
 e.g. "/x/y/MyMessages_fr.i18n4k.txt" will be changed to "x_y_my_messages_fr_i18n4k".
@@ -207,6 +209,21 @@ Generated raw resources can be loaded in the following way:
         )
     )
 )
+```
+
+## Hints for Compose-Multiplatform
+
+The Compose resources plugin currently does not support multiple directories for one source-set.
+Therefore, the I18n4k-Plugin cannot add the generated folder automatically to the resource source-set!
+To add generated resource files to the Compose-Multiplatform app, 
+set the path of the output directory to be inside the resource folder of "commonMain" source set.
+
+E.g.:
+
+```kts
+i18n4k {
+    languageFilesOutputDirectory = "{projectDir}/src/commonMain/composeResources/files/i18n"
+}
 ```
 
 ## Message format
@@ -226,6 +243,9 @@ where the parameters must be supplied as arguments to get the resulting string.
 
 Other message formatters can be implemented and be configured in 
 [I18n4kConfig](./i18n4k-core/src/commonMain/kotlin/de/comahe/i18n4k/config/I18n4kConfig.kt)`.messageFormatter`
+
+The escape character is `'`.
+See [here](./doc/escaping.adoc) for more information.
 
 ## Further dokumentation
 

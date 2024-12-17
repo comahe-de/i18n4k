@@ -45,6 +45,7 @@ jobs:
         && chmod +x ./examples/example-jvm/gradlew
         && chmod +x ./examples/example-mpp/gradlew
         && chmod +x ./examples/example-android/gradlew
+        && chmod +x ./examples/example-compose/gradlew
     - name: Install to local maven
       run: ./gradlew publishToMavenLocal --stacktrace
     - name: Run tests
@@ -73,6 +74,12 @@ jobs:
       run: | 
         cd ./examples/example-android
         ./gradlew build --stacktrace
+    - name: Build Compose-Multiplatform example
+      # Causes an Out-Of-Memory in Windows???
+      if: runner.os != 'Windows'
+      run: |
+        cd ./examples/example-compose
+        ./gradlew build --stacktrace
     - uses: actions/upload-artifact@v4
       if: ${{ always() }}
       with:
@@ -86,3 +93,4 @@ jobs:
             examples/example-jvm/build/test-results/
             examples/example-mmp/build/test-results/
             examples/example-android/build/test-results/
+            examples/example-compose/build/test-results/

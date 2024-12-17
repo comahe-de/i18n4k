@@ -111,7 +111,7 @@ kotlin {
 // dependencies
 
 repositories {
-    mavenLocal()
+    mavenLocal()  // needed testing local deployments
     mavenCentral()
 }
 

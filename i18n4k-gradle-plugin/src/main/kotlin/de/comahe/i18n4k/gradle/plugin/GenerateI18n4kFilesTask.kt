@@ -70,8 +70,14 @@ open class GenerateI18n4kFilesTask : DefaultTask() {
     fun doIt() {
         var generatedSourcesDirectory = getGeneratedLanguageFilesDirectory()
         val generatedLanguageFilesDirAndroidRawResourceStyle: Boolean
-        if (config.generationTargetPlatform == GenerationTargetPlatform.ANDROID) {
+//        if (config.generationTargetPlatform == GenerationTargetPlatform.COMPOSE_MULTI_PLATFORM) {
+//            generatedLanguageFilesDirAndroidRawResourceStyle = false
+//            // files must be in the "files" subdirectory
+//            generatedSourcesDirectory = File(generatedSourcesDirectory, "files")
+//        } else
+            if (config.generationTargetPlatform == GenerationTargetPlatform.ANDROID) {
             generatedLanguageFilesDirAndroidRawResourceStyle = true
+            // files must be in the "raw" subdirectory
             generatedSourcesDirectory = File(generatedSourcesDirectory, "raw")
         } else {
             generatedLanguageFilesDirAndroidRawResourceStyle = false

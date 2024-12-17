@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    kotlin("jvm") // version from main build.gradle.kts
+    kotlin("jvm")
     `java-gradle-plugin`
     alias(libs.plugins.gradlePluginPublish)
 }
@@ -22,6 +22,7 @@ dependencies {
 
     compileOnly(gradleApi())
     compileOnly(libs.kotlinGradlePlugin)
+    compileOnly(libs.composeGradlePlugin)
     compileOnly(libs.androidGradlePlugin)
 
     testImplementation(libs.junit)

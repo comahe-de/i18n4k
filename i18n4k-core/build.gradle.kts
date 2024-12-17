@@ -46,6 +46,30 @@ kotlin {
 
             }
         }
+        val wasmJsMain by getting {
+            dependencies {
+            }
+        }
+        val wasmJsTest by getting {
+            dependencies {
+                implementation(kotlin("test-wasm-js"))
+                implementation(libs.kotlinxCoroutinesCore)
+                implementation(libs.kotlinxCoroutinesTest)
+
+            }
+        }
+        val wasmWasiMain by getting {
+            dependencies {
+            }
+        }
+        val wasmWasiTest by getting {
+            dependencies {
+                implementation(kotlin("test-wasm-wasi"))
+                implementation(libs.kotlinxCoroutinesCore)
+                implementation(libs.kotlinxCoroutinesTest)
+
+            }
+        }
     }
 
     compilerOptions {

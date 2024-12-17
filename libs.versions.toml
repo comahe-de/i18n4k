@@ -1,15 +1,15 @@
 [versions]
 
 # https://kotlinlang.org/docs/releases.html#release-dbbbetails
-kotlin = "2.0.10"
+kotlin = "2.0.21"
 # https://github.com/Kotlin/kotlinx-atomicfu
-kotlinxAtomicfu = "0.25.0"
+kotlinxAtomicfu = "0.26.1"
 # https://github.com/Kotlin/kotlinx.collections.immutable
-kotlinxCollectionsImmutable = "0.3.7"
+kotlinxCollectionsImmutable = "0.3.8"
 # https://github.com/Kotlin/kotlinx.coroutines
-kotlinxCoroutines = "1.8.1"
+kotlinxCoroutines = "1.9.0"
 # https://github.com/Kotlin/kotlinx.serialization
-kotlinxSerialization = "1.7.1"
+kotlinxSerialization = "1.7.3"
 # https://github.com/square/kotlinpoet
 kotlinPoet = "1.18.1"
 # https://www.slf4j.org/news.html
@@ -23,6 +23,8 @@ junit = "4.13.2"
 
 # https://plugins.gradle.org/plugin/com.gradle.plugin-publish
 gradlePluginPublish = "1.2.1"
+# https://mvnrepository.com/artifact/org.jetbrains.compose/compose-gradle-plugin
+composePlugin = "1.7.3"
 # https://mvnrepository.com/artifact/com.android.tools.build/gradle?repo=google
 androidPlugin = "8.5.1"
 # https://github.com/Kotlin/dokka
@@ -32,6 +34,7 @@ dokkaPlugin = "1.9.20"
 [libraries]
 
 kotlinGradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+composeGradlePlugin = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "composePlugin" }
 androidGradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "androidPlugin" }
 dokkaPlugin = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokkaPlugin" }
 

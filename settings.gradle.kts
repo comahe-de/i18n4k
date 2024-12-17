@@ -8,6 +8,16 @@ dependencyResolutionManagement {
     }
 }
 
+pluginManagement {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        gradlePluginPortal()
+        google()
+    }
+}
+
+
 include("i18n4k-core")
 include("i18n4k-cldr-plural-rules")
 include("i18n4k-generator")

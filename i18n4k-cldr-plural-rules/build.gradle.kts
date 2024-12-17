@@ -40,6 +40,24 @@ kotlin {
                 implementation(kotlin("test-js"))
             }
         }
+        val wasmJsMain by getting {
+            dependencies {
+            }
+        }
+        val wasmJsTest by getting {
+            dependencies {
+                implementation(kotlin("test-wasm-js"))
+            }
+        }
+        val wasmWasiMain by getting {
+            dependencies {
+            }
+        }
+        val wasmWasiTest by getting {
+            dependencies {
+                implementation(kotlin("test-wasm-wasi"))
+            }
+        }
 
     }
 }

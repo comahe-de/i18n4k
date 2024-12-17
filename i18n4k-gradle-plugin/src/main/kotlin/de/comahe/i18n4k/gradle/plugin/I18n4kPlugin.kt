@@ -4,6 +4,7 @@ import de.comahe.i18n4k.generator.GenerationTargetPlatform
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.file.SourceDirectorySet
+import org.gradle.api.plugins.ExtensionAware
 import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.SourceSetContainer
 import org.gradle.api.tasks.compile.JavaCompile
@@ -27,7 +28,14 @@ open class I18n4kPlugin : Plugin<Project> {
         if (config.generationTargetPlatform == null) {
             config.generationTargetPlatform = when {
                 project.plugins.hasPlugin("org.jetbrains.kotlin.multiplatform") ->
-                    GenerationTargetPlatform.MULTI_PLATFORM
+//                    if (project.plugins.hasPlugin("org.jetbrains.kotlin.plugin.compose")
+//                        // resources extension available?
+//                        && (project.extensions.findByName("compose") as? ExtensionAware)
+//                            ?.extensions?.findByName("resources") != null
+//                    )
+//                        GenerationTargetPlatform.COMPOSE_MULTI_PLATFORM
+//                    else
+                        GenerationTargetPlatform.MULTI_PLATFORM
 
                 project.plugins.hasPlugin("org.jetbrains.kotlin.js") ->
                     GenerationTargetPlatform.JS
@@ -126,9 +134,11 @@ open class I18n4kPlugin : Plugin<Project> {
             .configureEach { it.dependsOn(GENERATE_I18N_SOURCES_TASK_NAME) }
 
         // Android resource processing:
-        // packageDebugResources, packageReleaseResources, ...
-        // mergeDebugResources, mergeReleaseResources, ...
-        // extractDeepLinksDebug, extractDeepLinksRelease, ...
+        // - packageDebugResources, packageReleaseResources, ...
+        // - mergeDebugResources, mergeReleaseResources, ...
+        // - extractDeepLinksDebug, extractDeepLinksRelease, ...
+        // Compose resource processing:
+        // - copyNonXmlValueResourcesForCommonMain
         project.tasks.matching {
             //@formatter:off
             (
@@ -138,6 +148,7 @@ open class I18n4kPlugin : Plugin<Project> {
                 && it.name.endsWith("Resources")
             )
             || it.name.startsWith("extractDeepLinks")
+            || (it.name.startsWith("copy") && it.name.contains("Resources"))
             //@formatter:on
         }
             .configureEach { it.dependsOn(GENERATE_I18N_SOURCES_TASK_NAME) }
@@ -156,7 +167,9 @@ open class I18n4kPlugin : Plugin<Project> {
             .getByType(KotlinProjectExtension::class.java).sourceSets
 
         val sourceSet = sourceSets.getByName(
-            if (config.generationTargetPlatform == GenerationTargetPlatform.MULTI_PLATFORM)
+            if (config.generationTargetPlatform == GenerationTargetPlatform.MULTI_PLATFORM
+                // || config.generationTargetPlatform == GenerationTargetPlatform.COMPOSE_MULTI_PLATFORM
+                )
                 "commonMain"
             else
                 "main"
@@ -260,6 +273,9 @@ open class I18n4kPlugin : Plugin<Project> {
                 config.languageFilesOutputDirectory.replace(
                     "{buildDir}",
                     project.layout.buildDirectory.get().asFile.absolutePath
+                ).replace(
+                    "{projectDir}",
+                    project.layout.projectDirectory.asFile.absolutePath
                 )
             )
             dir.mkdirs()

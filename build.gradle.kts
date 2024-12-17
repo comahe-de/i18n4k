@@ -1,6 +1,5 @@
 plugins {
     idea
-    kotlin("jvm")
     `maven-publish`
     signing
 }
@@ -12,7 +11,7 @@ BuildProperties.printProperties()
 // apply common configuration for this project and each sub project
 allprojects {
     group = "de.comahe.i18n4k"
-    version = "0.9.0"
+    version = "0.10.0-SNAPSHOT"
 
     repositories {
         mavenLocal()

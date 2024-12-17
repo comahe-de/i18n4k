@@ -48,6 +48,7 @@ open class I18n4kExtension {
      *
      * Allowed parameters:
      * * {buildDir} - build directory
+     * * {projectDir} - project directory
      *
      * Default value: {buildDir}/generated/resources/i18n4k
      * */

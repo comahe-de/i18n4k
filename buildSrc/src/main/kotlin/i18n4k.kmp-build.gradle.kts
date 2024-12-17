@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -34,6 +35,39 @@ kotlin {
             }
         }
     }
+
+    @OptIn(ExperimentalWasmDsl::class)
+    wasmWasi{
+        // test in a nodeJS environment without browser
+        nodejs {
+            testTask {
+                useMocha {
+                }
+            }
+        }
+    }
+    @OptIn(ExperimentalWasmDsl::class)
+    wasmJs{
+        browser {
+            testTask {
+                useKarma {
+                    useChromeHeadless()
+                    webpackConfig.cssSupport {
+                        enabled.set(true)
+                    }
+                }
+            }
+        }
+        // test in a nodeJS environment without browser
+        nodejs {
+            testTask {
+                useMocha {
+                }
+            }
+        }
+    }
+
+
     // #####  native targets...
     // # out commented targets are not supported by a used library
     // iosArm32() - https://blog.jetbrains.com/kotlin/2023/02/update-regarding-kotlin-native-targets/

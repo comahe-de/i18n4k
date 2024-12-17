@@ -119,6 +119,8 @@ object BuildTools {
             "androidNativeArm32" to OperationSysten.LINUX,
             "androidNativeArm64" to OperationSysten.LINUX,
             "wasm32" to OperationSysten.LINUX,
+            "wasmJs" to OperationSysten.LINUX,
+            "wasmWasi" to OperationSysten.LINUX,
             // MacOS
             "macosX64" to OperationSysten.MACOS,
             "macosArm64" to OperationSysten.MACOS,

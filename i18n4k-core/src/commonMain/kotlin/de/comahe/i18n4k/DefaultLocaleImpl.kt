@@ -53,10 +53,6 @@ class DefaultLocaleImpl(
 
     override fun hashCode(): Int {
         var result = language.hashCode()
-        result = 31 * result + script.hashCode()
-        result = 31 * result + country.hashCode()
-        result = 31 * result + variant.hashCode()
-        result = 31 * result + extensions.hashCode()
         return result
     }
 
