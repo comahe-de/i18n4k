@@ -5,10 +5,16 @@ import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 plugins {
     id("i18n4k.kmp-build")
     id("i18n4k.publish-build")
+    id("com.android.library")
 }
 
 
 kotlin {
+
+    androidTarget {
+        // TODO: configure
+    }
+
     // the sources of all the targets
     @Suppress("UnusedPrivateMember")
     sourceSets {
