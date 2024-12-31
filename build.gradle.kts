@@ -2,8 +2,6 @@ plugins {
     idea
     `maven-publish`
     signing
-    id("com.android.application") version "8.1.4" apply false
-    id("com.android.library") version "8.1.4" apply false
 }
 
 BuildTools.mainProject = project
@@ -18,6 +16,7 @@ allprojects {
     repositories {
         mavenLocal()
         mavenCentral()
+        google()
     }
 }
 

@@ -5,20 +5,13 @@ import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 plugins {
     id("i18n4k.kmp-build")
     id("i18n4k.publish-build")
-    id("com.android.library")
 }
 
 
 kotlin {
-
-    androidTarget {
-        // TODO: configure
-    }
-
     // the sources of all the targets
     @Suppress("UnusedPrivateMember")
     sourceSets {
-
         val commonMain by getting {
             dependencies {
                 implementation(libs.kotlinxAtomicfu)
@@ -31,13 +24,23 @@ kotlin {
                 implementation(kotlin("test-annotations-common"))
             }
         }
+        val jvmAndroidMain by creating {
+            dependsOn(commonMain)
+        }
         val jvmMain by getting {
+            dependsOn(jvmAndroidMain)
             dependencies {
             }
         }
         val jvmTest by getting {
             dependencies {
                 implementation(kotlin("test-junit"))
+            }
+        }
+        val androidMain by getting {
+            dependsOn(jvmAndroidMain)
+            dependencies {
+                implementation(libs.androidxCoreKtx)
             }
         }
         val jsMain by getting {
