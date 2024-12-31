@@ -27,10 +27,10 @@ actual fun createLocale(
     return builder.build()
 }
 
-@Suppress("TYPEALIAS_EXPANSION_DEPRECATION")
+@Suppress("DEPRECATION")
 val jvmSystemLocale: Locale
     get() {
         val userLanguage = System.getProperty("user.language")
             ?: return Locale.getDefault()
-        return Locale(userLanguage)
+        return java.util.Locale(userLanguage)
     }
