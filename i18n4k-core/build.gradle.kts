@@ -12,7 +12,6 @@ kotlin {
     // the sources of all the targets
     @Suppress("UnusedPrivateMember")
     sourceSets {
-
         val commonMain by getting {
             dependencies {
                 implementation(libs.kotlinxAtomicfu)
@@ -25,13 +24,23 @@ kotlin {
                 implementation(kotlin("test-annotations-common"))
             }
         }
+        val jvmAndroidMain by creating {
+            dependsOn(commonMain)
+        }
         val jvmMain by getting {
+            dependsOn(jvmAndroidMain)
             dependencies {
             }
         }
         val jvmTest by getting {
             dependencies {
                 implementation(kotlin("test-junit"))
+            }
+        }
+        val androidMain by getting {
+            dependsOn(jvmAndroidMain)
+            dependencies {
+                implementation(libs.androidxCoreKtx)
             }
         }
         val jsMain by getting {

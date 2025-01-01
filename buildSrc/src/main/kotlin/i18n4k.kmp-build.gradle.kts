@@ -2,12 +2,14 @@ import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
+    id("com.android.library")
     kotlin("multiplatform")
 }
 
 
 
 kotlin {
+    androidTarget()
     jvm {
         compilerOptions {
             jvmTarget = JvmTarget.JVM_1_8
