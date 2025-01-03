@@ -409,6 +409,36 @@ class MessageParserTest {
         )
     }
 
+    @Test()
+    fun testInvalidSingleQuotes() {
+        assertFailsWith(MessageParseException::class) { parse("'") }
+        assertFailsWith(MessageParseException::class) { parse("'''") }
+        assertFailsWith(MessageParseException::class) { parse("'Hi") }
+        assertFailsWith(MessageParseException::class) { parse("H'i") }
+        assertFailsWith(MessageParseException::class) { parse("Hi'") }
+
+        assertFailsWith(MessageParseException::class) { parse("{0, foo, '}") }
+    }
+
+    @Test()
+    fun testInvalidSingleQuotes_ignoreErrors() {
+        i18n4kConfig.ignoreMessageParseErrors = true
+
+        assertEquals(MessagePartText(""), parse("'"))
+        assertEquals(MessagePartText("'"), parse("'''"))
+        assertEquals(MessagePartText("Hi"), parse("'Hi"))
+        assertEquals(MessagePartText("Hi"), parse("H'i"))
+        assertEquals(MessagePartText("Hi"), parse("Hi'"))
+
+        assertEquals(
+            MessagePartParam(
+                "0", "foo",
+                StylePartArgument("}"),
+            ),
+            parse("{0, foo, '}")
+        )
+    }
+
     private fun getParameterNames(message: String): Set<CharSequence> {
         val names = mutableSetOf<CharSequence>()
         parse(message).fillInParameterNames(names)

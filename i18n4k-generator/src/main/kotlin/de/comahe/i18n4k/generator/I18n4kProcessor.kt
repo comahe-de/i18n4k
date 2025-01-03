@@ -1,6 +1,8 @@
 package de.comahe.i18n4k.generator
 
 import de.comahe.i18n4k.Locale
+import de.comahe.i18n4k.config.I18n4kConfigDefault
+import de.comahe.i18n4k.i18n4k
 import de.comahe.i18n4k.messages.formatter.MessageFormatter
 import java.io.File
 
@@ -24,6 +26,9 @@ class I18n4kProcessor(
     /** Starts the generation of the files */
     fun execute() {
         val bundles = MessagesDataBundles(messageFormatter)
+
+        // Activate error messages on parse errors!
+        i18n4k = I18n4kConfigDefault().apply { ignoreMessageParseErrors = false }
 
         // printing config...
 

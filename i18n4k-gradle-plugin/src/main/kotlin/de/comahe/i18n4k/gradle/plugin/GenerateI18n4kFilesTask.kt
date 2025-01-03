@@ -75,7 +75,7 @@ open class GenerateI18n4kFilesTask : DefaultTask() {
 //            // files must be in the "files" subdirectory
 //            generatedSourcesDirectory = File(generatedSourcesDirectory, "files")
 //        } else
-            if (config.generationTargetPlatform == GenerationTargetPlatform.ANDROID) {
+        if (config.generationTargetPlatform == GenerationTargetPlatform.ANDROID) {
             generatedLanguageFilesDirAndroidRawResourceStyle = true
             // files must be in the "raw" subdirectory
             generatedSourcesDirectory = File(generatedSourcesDirectory, "raw")

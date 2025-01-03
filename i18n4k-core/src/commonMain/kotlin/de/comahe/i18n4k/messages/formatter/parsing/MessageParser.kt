@@ -24,7 +24,7 @@ class MessageParser(
         var index = findNextOpenBrace(startIndex, endIndex)
 
         if (!ignoreMessageParseErrors && index == endIndex - 1)
-            throw MessageParseException("Missing closing brace")
+            throwMessageParseException("Missing closing brace")
         if (index >= endIndex - 1)
             return MessagePartText(readText(startIndex, index))
 
@@ -44,7 +44,7 @@ class MessageParser(
             // in braces
             index = findCorrespondingCloseBrace(lastIndex, endIndex)
             if (!ignoreMessageParseErrors && index >= endIndex)
-                throw MessageParseException("Missing closing brace")
+                throwMessageParseException("Missing closing brace")
 
 
             try {
@@ -67,7 +67,7 @@ class MessageParser(
         if (parts.isEmpty()) {
             if (ignoreMessageParseErrors)
                 return MessagePartText("")
-            throw MessageParseException("Missing closing brace")
+            throwMessageParseException("Missing closing brace")
         }
         if (parts.size == 1)
             return parts[0]
@@ -108,7 +108,7 @@ class MessageParser(
         ) {
             if (ignoreMessageParseErrors)
                 return MessagePartText("")
-            throw MessageParseException("Found not escaped braces in parameter name.")
+            throwMessageParseException("Found not escaped braces in parameter name.")
         }
         val parameterIndex = parseParameterName(lastIndex, index)
         if (index >= endIndex)
@@ -123,7 +123,7 @@ class MessageParser(
         ) {
             if (ignoreMessageParseErrors)
                 return MessagePartText("")
-            throw MessageParseException("Found not escaped braces in parameter type.")
+            throwMessageParseException("Found not escaped braces in parameter type.")
         }
         val parameterType = parseTypeName(lastIndex, index)
         if (index >= endIndex)
@@ -133,7 +133,7 @@ class MessageParser(
         lastIndex = index + 1
         index = findNextCorrespondingComma(lastIndex, endIndex)
         if (index < endIndex)
-            throw MessageParseException(
+            throwMessageParseException(
                 "Parameter pattern has more the two commas! Pattern: ${
                     message.subSequence(startIndex, endIndex)
                 } - Message: $message"
@@ -150,7 +150,7 @@ class MessageParser(
     private fun parseParameterName(startIndex: Int, endIndex: Int): CharSequence {
         val name = readText(startIndex, endIndex).trim()
         if (name.isEmpty())
-            throw MessageParseException("Parameter name must not be empty or blank!")
+            throwMessageParseException("Parameter name must not be empty or blank!")
         return name
     }
 
@@ -163,7 +163,7 @@ class MessageParser(
     private fun parseTypeName(startIndex: Int, endIndex: Int): CharSequence {
         val name = readText(startIndex, endIndex).trim()
         if (name.isEmpty())
-            throw MessageParseException("Type name must not be empty or blank!")
+            throwMessageParseException("Type name must not be empty or blank!")
         return name
     }
 
@@ -337,6 +337,17 @@ class MessageParser(
             if (cRead != null && predicate(cRead))
                 return index
         }
+        if ((inQuotes && !oneQuote) || (!inQuotes && oneQuote)) {
+            if (!ignoreMessageParseErrors)
+                throwMessageParseException(
+                    "Missing single quote! \n" +
+                        "Single quotes (') are used to escape reserved characters. \n" +
+                        "There must be a start and end single quote, e.g.: This '{' is a curly brace -> This { is a curly brace \n" +
+                        "Write two single quote to get a single quote, e.g.: Joe''s Bar -> Joe's Bar \n" +
+                        "It’s recommended to use the real apostrophe character ’ (U+2019) for human-readable text \n" +
+                        "and the ASCII apostrophe ' (U+0027) for program syntax (escaping or quoting)."
+                )
+        }
         return endIndex
     }
 
@@ -413,5 +424,9 @@ class MessageParser(
             }
         }
         return buffer.toString()
+    }
+
+    private fun throwMessageParseException(text: String): Nothing {
+        throw MessageParseException("$text \nIncorrect text: $message")
     }
 }
