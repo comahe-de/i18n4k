@@ -27,9 +27,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import compose_example.composeapp.generated.resources.Res
-import compose_example.composeapp.generated.resources.compose_multiplatform
-import compose_example.composeapp.generated.resources.logo
+import example_compose.composeapp.generated.resources.Res
+import example_compose.composeapp.generated.resources.compose_multiplatform
+import example_compose.composeapp.generated.resources.logo
 import de.comahe.i18n4k.config.I18n4kConfigDelegate
 import de.comahe.i18n4k.config.I18n4kConfigImmutable
 import de.comahe.i18n4k.getDisplayNameInLocale

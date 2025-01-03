@@ -9,7 +9,13 @@ plugins {
 
 
 kotlin {
-    androidTarget()
+
+    androidTarget() {
+        compilerOptions {
+            jvmTarget = JvmTarget.JVM_1_8
+        }
+        publishLibraryVariants("release")
+    }
     jvm {
         compilerOptions {
             jvmTarget = JvmTarget.JVM_1_8
@@ -102,4 +108,39 @@ kotlin {
     // https://kotlinlang.org/docs/multiplatform-hierarchy.html#see-the-full-hierarchy-template
     // https://kotlinlang.org/docs/multiplatform-hierarchy.html#creating-additional-source-sets
     applyDefaultHierarchyTemplate()
+
+    sourceSets {
+        // create common sources sets for Android and JVM
+        val commonMain by getting
+        val commonTest by getting
+
+        val jvmAndroidMain by creating {
+            dependsOn(commonMain)
+        }
+        val jvmMain by getting {
+            dependsOn(jvmAndroidMain)
+        }
+        val androidMain by getting {
+            dependsOn(jvmAndroidMain)
+        }
+        val jvmAndroidTest by creating {
+            dependsOn(commonTest)
+        }
+        val jvmTest by getting {
+            dependsOn(jvmAndroidTest)
+        }
+        val androidUnitTest by getting {
+            dependsOn(jvmAndroidTest)
+        }
+    }
+}
+
+android{
+    namespace = "de.comahe.i18n4k"
+    defaultConfig {
+        // Android 5.0 (API-Level 21), 2015
+        minSdk = 21
+        // Android 15 (API level 35), 2024
+        compileSdk = 35
+    }
 }

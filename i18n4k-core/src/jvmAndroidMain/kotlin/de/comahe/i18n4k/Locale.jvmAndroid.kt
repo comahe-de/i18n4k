@@ -27,7 +27,6 @@ actual fun createLocale(
     return builder.build()
 }
 
-@Suppress("DEPRECATION")
 val jvmSystemLocale: Locale
     get() {
         val userLanguage = System.getProperty("user.language")

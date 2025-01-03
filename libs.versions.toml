@@ -28,7 +28,7 @@ gradlePluginPublish = "1.2.1"
 # https://mvnrepository.com/artifact/org.jetbrains.compose/compose-gradle-plugin
 composePlugin = "1.7.3"
 # https://mvnrepository.com/artifact/com.android.tools.build/gradle?repo=google
-androidPlugin = "8.5.1"
+androidPlugin = "8.7.3"
 # https://github.com/Kotlin/dokka
 dokkaPlugin = "1.9.20"
 

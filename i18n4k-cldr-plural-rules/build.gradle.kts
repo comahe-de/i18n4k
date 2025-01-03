@@ -31,6 +31,14 @@ kotlin {
                 implementation(kotlin("test-junit"))
             }
         }
+        val androidMain by getting {
+
+        }
+        val androidUnitTest by getting {
+            dependencies {
+                implementation(kotlin("test-junit"))
+            }
+        }
         val jsMain by getting {
             dependencies {
             }

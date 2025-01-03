@@ -107,6 +107,7 @@ object BuildTools {
             "mingwX64" to OperationSysten.WINDOWS,
             "mingwx86" to OperationSysten.WINDOWS,
             // Linux
+            "androidRelease" to OperationSysten.LINUX,
             "kotlinMultiplatform" to OperationSysten.LINUX,
             "metadata" to OperationSysten.LINUX,
             "jvm" to OperationSysten.LINUX,

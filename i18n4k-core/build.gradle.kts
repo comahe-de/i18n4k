@@ -24,11 +24,7 @@ kotlin {
                 implementation(kotlin("test-annotations-common"))
             }
         }
-        val jvmAndroidMain by creating {
-            dependsOn(commonMain)
-        }
         val jvmMain by getting {
-            dependsOn(jvmAndroidMain)
             dependencies {
             }
         }
@@ -38,9 +34,14 @@ kotlin {
             }
         }
         val androidMain by getting {
-            dependsOn(jvmAndroidMain)
             dependencies {
+                // needed for androidx.core.os.ConfigurationCompat.getLocales()
                 implementation(libs.androidxCoreKtx)
+            }
+        }
+        val androidUnitTest by getting {
+            dependencies {
+                implementation(kotlin("test-junit"))
             }
         }
         val jsMain by getting {

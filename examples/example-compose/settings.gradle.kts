@@ -1,4 +1,4 @@
-rootProject.name = "compose-example"
+rootProject.name = "example-compose"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {

@@ -3,17 +3,17 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.compose")
     // apply the i18n4k plugin
-    id("de.comahe.i18n4k") version "0.9.0"
+    id("de.comahe.i18n4k") version "0.10.0-SNAPSHOT"
 }
 
 android {
     namespace = "examples.android"
-    compileSdk = 33
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "examples.android"
         minSdk = 21
-        targetSdk = 33
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -32,6 +32,13 @@ android {
             )
         }
     }
+
+    //  no lint needed
+    lint {
+        checkOnly.clear()
+        checkOnly.add("nothing")
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -55,7 +62,7 @@ i18n4k {
 dependencies {
 
     // add the i18n4k dependency
-    implementation("de.comahe.i18n4k:i18n4k-core-jvm:0.9.0")
+    implementation("de.comahe.i18n4k:i18n4k-core-android:0.10.0-SNAPSHOT")
 
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
