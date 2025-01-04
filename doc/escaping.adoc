@@ -1,6 +1,5 @@
 == Escaping reserved characters
 
-
 The curly braces characters `{}` and the single quote `'` are reserved characters
 and need to be escaped.
 
@@ -10,6 +9,8 @@ e.g. `These are curly braces: '{ }'` results in `These are curly braces: { }`
 An exception is the single quote. It is escaped using a double singe quote,
 e.g.: `This isn''t a double quote!` result in `This isn't a double quote!`
 
+Recommendation: Use the real apostrophe (single quote) character `’` (U+2019) for human-readable text,
+and use the ASCII apostrophe `'` (U+0027) only in program syntax, like quoting.
 
 '''
 

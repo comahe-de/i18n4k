@@ -18,7 +18,7 @@ _Internationalization for Kotlin_
 
 **Home:** [github.com/comahe-de/i18n4k](https://github.com/comahe-de/i18n4k)
 
-**Lastest release version:** 0.9.0
+**Lastest release version:** 0.10.0
 
 **Table of contents**
 
@@ -36,6 +36,7 @@ _Internationalization for Kotlin_
 * [Runtime configuration](#runtime-configuration)
 * [Hints for Android](#hints-for-android)
 * [Hints for Compose-Multiplatform](#hints-for-compose-multiplatform)
+* [Hints for IntelJ usage](#hints-for-intelj-usage)
 * [Message format](#message-format)
 * [Further dokumentation](#further-dokumentation)
 * [Example](#example)
@@ -67,7 +68,8 @@ It provides
 
 ## Supported platforms
 
-* Java (JVM) & Android
+* Java (JVM)
+* Android (Min. SDK 21)
 * JS (IR backend)
 * WASM (JS & WASI)
 * Native:
@@ -103,7 +105,7 @@ repositories {
 ```kotlin
 val commonMain by getting {
     dependencies {
-        implementation("de.comahe.i18n4k:i18n4k-core:0.9.0")
+        implementation("de.comahe.i18n4k:i18n4k-core:0.10.0")
     }
 }
 ```
@@ -112,7 +114,7 @@ val commonMain by getting {
 
 ```kotlin
 dependencies {
-    implementation("de.comahe.i18n4k:i18n4k-core-js:0.9.0")
+    implementation("de.comahe.i18n4k:i18n4k-core-js:0.10.0")
 }
 ```
 
@@ -120,7 +122,15 @@ dependencies {
 
 ```kotlin
 dependencies {
-    implementation("de.comahe.i18n4k:i18n4k-core-jvm:0.9.0")
+    implementation("de.comahe.i18n4k:i18n4k-core-jvm:0.10.0")
+}
+```
+
+**For Kotlin/Android:** add `de.comahe.i18n4k:i18n4k-core-android:<VERSION>` to the dependencies
+
+```kotlin
+dependencies {
+    implementation("de.comahe.i18n4k:i18n4k-core-android:0.10.0")
 }
 ```
 
@@ -130,7 +140,7 @@ Apply the plugin "de.comahe.i18n4k", e.g:
 
 ```kotlin
 plugins {
-    id("de.comahe.i18n4k") version "0.9.0"
+    id("de.comahe.i18n4k") version "0.10.0"
 }
 ```
 
@@ -226,10 +236,17 @@ i18n4k {
 }
 ```
 
+## Hints for IntelJ usage
+
+IntelJ default settings for properties-files do not handle Unicode characters correctly.
+I18n4k supports properties-files with UTF-8 encoding or ISO-8859-1 encoding with escape sequences for characters outside the 7-bit ASCII character set. 
+See [here](https://github.com/comahe-de/i18n4k/issues/25#issuecomment-1263426934) for more information 
+
 ## Message format
 
 The [default message format](./i18n4k-core/src/commonMain/kotlin/de/comahe/i18n4k/messages/formatter/MessageFormatterDefault.kt)
-is similar to the [Java-MessageFormat](https://docs.oracle.com/javase/8/docs/api/java/text/MessageFormat.html).
+is similar to the [Java-MessageFormat](https://docs.oracle.com/javase/8/docs/api/java/text/MessageFormat.html) 
+or the [ICU-MessageFormat](https://unicode-org.github.io/icu/userguide/format_parse/messages/).
 E.g. the text "Hello, {0}" has one parameter.
 Any string can be used as parameter name.
 
@@ -244,7 +261,9 @@ where the parameters must be supplied as arguments to get the resulting string.
 Other message formatters can be implemented and be configured in 
 [I18n4kConfig](./i18n4k-core/src/commonMain/kotlin/de/comahe/i18n4k/config/I18n4kConfig.kt)`.messageFormatter`
 
-The escape character is `'`.
+The escape character is `'`. 
+It’s recommended to use the real apostrophe character ’ (U+2019) for human-readable text 
+and the ASCII apostrophe `'` (U+0027) for program syntax (escaping or quoting).
 See [here](./doc/escaping.adoc) for more information.
 
 ## Further dokumentation
@@ -383,7 +402,6 @@ Please also check the examples projects in the [examples](./examples) folder!
 
 * Create an issue on [github](https://github.com/comahe-de/i18n4k/issues).
 * Open a Pull requests on [github](https://github.com/comahe-de/i18n4k/pulls).
-* [Trello board](https://trello.com/b/vFwkreA4/i18n4k)
 
 ## Status
 
@@ -410,10 +428,10 @@ very welcome.
 
 [badge-apache2.0]:https://img.shields.io/badge/License-Apache/2.0-blue.svg?style=flat
 
-[badge-version]:https://img.shields.io/badge/version-0.9.0-blueviolet?style=flat
+[badge-version]:https://img.shields.io/badge/version-0.10.0-blueviolet?style=flat
 
 [badge-maven]:https://img.shields.io/badge/Maven-Central-6262EC?style=flat
 
-[badge-kotlin]:https://img.shields.io/badge/Kotlin-2.0.0-orange?style=flat
+[badge-kotlin]:https://img.shields.io/badge/Kotlin-2.0.21-orange?style=flat
 
-[badge-gradle]:https://img.shields.io/badge/Gradle-8.9.0-1DA2BD?style=flat
+[badge-gradle]:https://img.shields.io/badge/Gradle-8.10.2-1DA2BD?style=flat

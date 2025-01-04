@@ -72,8 +72,8 @@ kotlin {
             implementation(compose.desktop.currentOs)
         }
         commonMain.dependencies {
-            implementation("de.comahe.i18n4k:i18n4k-core:0.10.0-SNAPSHOT")
-            implementation("de.comahe.i18n4k:i18n4k-cldr-plural-rules:0.10.0-SNAPSHOT")
+            implementation("de.comahe.i18n4k:i18n4k-core:0.10.0")
+            implementation("de.comahe.i18n4k:i18n4k-cldr-plural-rules:0.10.0")
 
             implementation(compose.runtime)
             implementation(compose.foundation)
