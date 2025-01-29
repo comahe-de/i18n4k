@@ -21,6 +21,7 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.persistentMapOf
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.collections.immutable.toPersistentMap
+import kotlin.jvm.JvmOverloads
 
 /**
  * Base class for bundles of messages.
@@ -31,7 +32,7 @@ import kotlinx.collections.immutable.toPersistentMap
  * Also manages a map of locales to translations ([MessagesProvider])
  */
 @Suppress("MemberVisibilityCanBePrivate", "SameParameterValue")
-open class MessageBundle(
+open class MessageBundle @JvmOverloads constructor(
     /** Name of the bundle. Empty string for none. */
     val messageBundleName: String = "",
     /** Package of the bundle. Empty string for none. */
