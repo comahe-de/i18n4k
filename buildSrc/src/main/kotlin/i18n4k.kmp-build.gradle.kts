@@ -101,7 +101,7 @@ kotlin {
     //mingwX86()// not supported by "atomicfu", "kotlinx-collections-immutable"
     //wasm32() // not supported by "atomicfu"
     //linuxArm32Hfp() // not supported by "atomicfu", "kotlinx-collections-immutable"
-    linuxArm64() // not supported by "atomicfu", "kotlinx-collections-immutable"
+    linuxArm64()
     //linuxMips32() // not supported by "atomicfu", "kotlinx-collections-immutable"
     //linuxMipsel32() // not supported by "atomicfu", "kotlinx-collections-immutable"
 
