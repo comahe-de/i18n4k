@@ -207,7 +207,7 @@ class I18n4kGenerator(
                 || generationTarget == GenerationTargetPlatform.ANDROID
                 || generationTarget == GenerationTargetPlatform.MULTI_PLATFORM
             )
-                property.addAnnotation(JvmStatic::class)
+                property.addAnnotation(JvmField::class)
 
             if (commentLocale != null) {
                 bundle.messageDataMap[commentLocale]?.messages?.get(key)?.let { text ->
