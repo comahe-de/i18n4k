@@ -59,4 +59,7 @@ open class I18n4kExtension {
 
     /** Target platform for generation. Null for automatic detection  */
     var generationTargetPlatform: GenerationTargetPlatform? = null
+
+    /** Generate custom factories, with proper parameters name (and potentially type) */
+    var customFactories: Boolean = false
 }

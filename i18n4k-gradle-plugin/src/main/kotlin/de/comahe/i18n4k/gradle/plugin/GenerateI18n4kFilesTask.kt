@@ -3,6 +3,7 @@ package de.comahe.i18n4k.gradle.plugin
 import de.comahe.i18n4k.forLocaleTag
 import de.comahe.i18n4k.generator.GenerationTargetPlatform
 import de.comahe.i18n4k.generator.I18n4kProcessor
+import de.comahe.i18n4k.generator.Settings
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
 import org.gradle.api.tasks.Input
@@ -83,19 +84,18 @@ open class GenerateI18n4kFilesTask : DefaultTask() {
             generatedLanguageFilesDirAndroidRawResourceStyle = false
         }
 
-        val processor = I18n4kProcessor(
-            inputDirectory = getInputDirectory(),
-            generatedSourcesDirectory = getGeneratedSourcesDirectory(),
-            generatedLanguageFilesDirectory = generatedSourcesDirectory,
-            generatedLanguageFilesDirAndroidRawResourceStyle = generatedLanguageFilesDirAndroidRawResourceStyle,
-            packageName = config.packageName,
-            commentLocale = config.commentLocale?.let { forLocaleTag(it) },
-            sourceCodeLocales = config.sourceCodeLocales?.map { forLocaleTag(it) },
-            messageFormatter = config.messageFormatter,
-            generationTarget = config.generationTargetPlatform!!,
-            logger = logger
-        )
-        processor.execute()
+        val settings = Settings(inputDirectory = getInputDirectory(),
+                                generatedSourcesDirectory = getGeneratedSourcesDirectory(),
+                                generatedLanguageFilesDirectory = generatedSourcesDirectory,
+                                generatedLanguageFilesDirAndroidRawResourceStyle = generatedLanguageFilesDirAndroidRawResourceStyle,
+                                packageName = config.packageName,
+                                commentLocale = config.commentLocale?.let { forLocaleTag(it) },
+                                sourceCodeLocales = config.sourceCodeLocales?.map { forLocaleTag(it) },
+                                messageFormatter = config.messageFormatter,
+                                generationTarget = config.generationTargetPlatform!!,
+                                logger = logger,
+                                customFactories = config.customFactories)
+        I18n4kProcessor(settings).execute()
     }
 
 }
