@@ -62,4 +62,7 @@ open class I18n4kExtension {
 
     /** Generate custom factories, with proper parameters name (and potentially type) */
     var customFactories: Boolean = false
+
+    /** Wheter using a global locale or not, useful on Server/Client scenarios, when each client has its own locale */
+    var globalLocaleAsDefault: Boolean = true
 }

@@ -94,7 +94,8 @@ open class GenerateI18n4kFilesTask : DefaultTask() {
                                 messageFormatter = config.messageFormatter,
                                 generationTarget = config.generationTargetPlatform!!,
                                 logger = logger,
-                                customFactories = config.customFactories)
+                                customFactories = config.customFactories,
+                                globalLocaleAsDefault = config.globalLocaleAsDefault)
         I18n4kProcessor(settings).execute()
     }
 

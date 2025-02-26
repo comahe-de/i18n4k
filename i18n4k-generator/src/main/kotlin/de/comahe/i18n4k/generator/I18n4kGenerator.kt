@@ -191,12 +191,14 @@ class I18n4kGenerator(
                 }
             }
             fun FunSpec.Builder.addLocale(): FunSpec.Builder = apply {
-                addParameter(ParameterSpec
-                                 .builder("locale", Locale::class.asClassName().copy(nullable = true))
-                                 .defaultValue("null")
-                                 .build())
+                val param = ParameterSpec
+                    .builder("locale", Locale::class.asClassName().copy(nullable = settings.globalLocaleAsDefault))
+                if(settings.globalLocaleAsDefault)
+                    param.defaultValue("null")
+                addParameter(param.build())
             }
             fun FunSpec.Builder.returnLocalizedString(): FunSpec.Builder = apply { returns(ClassName("$pkg.strings", "LocalizedString")) }
+            fun FunSpec.Builder.maybeOverload(): FunSpec.Builder = apply { if (settings.globalLocaleAsDefault) addAnnotation(JvmOverloads::class) }
             messageObject.addType(TypeSpec
                                       .classBuilder(className)
                                       .primaryConstructor(FunSpec
@@ -225,7 +227,7 @@ class I18n4kGenerator(
                                                        .build())
                                       .addFunction(FunSpec
                                                        .builder("createString")
-                                                       .addAnnotation(JvmOverloads::class)
+                                                       .maybeOverload()
                                                        .addParams()
                                                        .addLocale()
                                                        .returns(String::class)
@@ -240,7 +242,7 @@ class I18n4kGenerator(
                                                        .build())
                                       .addFunction(FunSpec
                                                        .builder("invoke")
-                                                       .addAnnotation(JvmOverloads::class)
+                                                       .maybeOverload()
                                                        .addModifiers(KModifier.OPERATOR)
                                                        .returns(String::class)
                                                        .addParams()

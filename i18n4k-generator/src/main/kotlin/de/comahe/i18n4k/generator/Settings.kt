@@ -16,4 +16,5 @@ data class Settings(
     val generationTarget: GenerationTargetPlatform,
     val logger: org.slf4j.Logger,
     val customFactories: Boolean,
+    val globalLocaleAsDefault: Boolean,
                    )
