@@ -12,7 +12,7 @@ Il s''agit de {b}!
 ^
 {0, capitalize} est la meilleure!
 ^
-{~, capitalize, {{0} e {1}} sont les meilleurs!
+{~, capitalize, {{0} e {1}}} sont les meilleurs!
 ^
 Salut monde!
 ^
@@ -25,14 +25,14 @@ Fr: A-{0a}, B-{12z}, C-{9zb}, D-{21z}, F-{21a}, D-{9za}
 ^
 Fr: A-{a0}, B-{a12}, C-{a9}, D-{a21}, F-{b1}, D-{b01}
 ^
-J'ai^
+J''ai^
 ^^deux circonflexes
 dans
 le texte 
 ^
 Fr: A-{a}, Z-{z}, ABC-{abc}
 ^
-fr: {0, select, a: {1, select, x: {{4}} other {{5}} } | b: {2, select, y {{6}} other {{7}} } | {3, select, z {{8}} other {{9}} }!
+fr: {0, select, a {{1, select, x {{4}} other {{5}} }} b {{2, select, y {{6}} other {{7}} }} other {{3, select, z {{8}} other {{9}} }} }!
 ^
 ^
 Fr - Paramètre 1 : {0}

@@ -74,7 +74,7 @@ public object Abba : MessageBundle("Abba", "") {
       getLocalizedStringFactory1("format-pattern", 5)
 
   /**
-   * {~, capitalize, {{0} and {1}} are the best!
+   * {~, capitalize, {{0} and {1}}} are the best!
    *
    * Parameters: 
    * * p0: 0
@@ -182,20 +182,23 @@ public object Abba : MessageBundle("Abba", "") {
       getLocalizedStringFactory3("named-parameters", 14, "a", "abc", "z")
 
   /**
-   * En: {0, select, a: {1, select, x: {{4}} other {{5}} } | b: {2, select, y {{6}} other {{7}} } |
-   * {3, select, z {{8}} other {{9}} }!
+   * En: {0, select, a {{1, select, x {{4}} other {{5}} }} b {{2, select, y {{6}} other {{7}} }}
+   * other {{3, select, z {{8}} other {{9}} }} }!
    *
    * Parameters: 
    * * p0: 0
-   * * p1: 4
-   * * p2: 5
-   * * p3: 6
-   * * p4: 7
-   * * p5: 8
-   * * p6: 9
+   * * p1: 1
+   * * p2: 2
+   * * p3: 3
+   * * p4: 4
+   * * p5: 5
+   * * p6: 6
+   * * p7: 7
+   * * p8: 8
+   * * p9: 9
    */
-  public val nested_parameter: MessageBundleLocalizedStringFactory7 =
-      getLocalizedStringFactory7("nested-parameter", 15, "0", "4", "5", "6", "7", "8", "9")
+  public val nested_parameter: MessageBundleLocalizedStringFactory10 =
+      getLocalizedStringFactory10("nested-parameter", 15)
 
   /**
    * Not all have translations
@@ -481,7 +484,7 @@ private object Abba_en : MessagesProvider {
       "It is {a}!",
       "{0} has forgotten {1, select, female {her} other {his} } {3, select, one {bag} other {{2} bags}}.",
       "{0, capitalize} is the best!",
-      "{~, capitalize, {{0} and {1}} are the best!",
+      "{~, capitalize, {{0} and {1}}} are the best!",
       "Hello, World",
       "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Phasellus faucibus molestie nisl. Mauris suscipit, ligula sit amet pharetra semper, nibh ante cursus purus, vel sagittis velit mauris vel metus. Pellentesque ipsum. Integer malesuada. Fusce wisi. Nullam dapibus fermentum ipsum. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Integer rutrum, orci vestibulum ullamcorper ultricies, lacus quam ultricies odio, vitae placerat pede sem sit amet enim. Quisque tincidunt scelerisque libero. Etiam posuere lacus quis dolor. In laoreet, magna id viverra tincidunt, sem odio bibendum justo, vel imperdiet sapien wisi sed libero. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Pellentesque sapien.",
       "3rd value: {2}",
@@ -495,7 +498,7 @@ private object Abba_en : MessagesProvider {
       |in the text
       """.trimMargin(),
       "En: A-{a}, Z-{z}, ABC-{abc}",
-      "En: {0, select, a: {1, select, x: {{4}} other {{5}} } | b: {2, select, y {{6}} other {{7}} } | {3, select, z {{8}} other {{9}} }!",
+      "En: {0, select, a {{1, select, x {{4}} other {{5}} }} b {{2, select, y {{6}} other {{7}} }} other {{3, select, z {{8}} other {{9}} }} }!",
       "Not all have translations",
       "En - Parameter 1: {0}",
       "En - Parameter 2: {0},{1}",
@@ -636,7 +639,7 @@ private object Abba_de : MessagesProvider {
       "Es ist {1}!",
       "{0} hat {1, select, female {ihre} other {seine} } {3, select, one {Tasche} other {{2} Taschen}} vergessen.",
       "{0, capitalize} ist das Beste!",
-      "{~, capitalize, {{0} und {1}} sind das Beste!",
+      "{~, capitalize, {{0} und {1}}} sind das Beste!",
       "Hallo, Welt!",
       null,
       "3. Wert: {2}",
@@ -650,7 +653,7 @@ private object Abba_de : MessagesProvider {
       |im Text
       """.trimMargin(),
       "De: A-{a}, Z-{z}, ABC-{abc}",
-      "De: {0, select, a: {1, select, x: {{4}} other {{5}} } | b: {2, select, y {{6}} other {{7}} } | {3, select, z {{8}} other {{9}} }!",
+      "De: {0, select, a {{1, select, x {{4}} other {{5}} }} b {{2, select, y {{6}} other {{7}} }} other {{3, select, z {{8}} other {{9}} }} }!",
       "",
       "De - Parameter 1: {0}",
       "De - Parameter 2: {0},{1}",

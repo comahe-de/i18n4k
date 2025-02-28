@@ -51,7 +51,7 @@ jobs:
     - name: Install to local maven
       run: ./gradlew publishToMavenLocal --stacktrace
     - name: Run tests
-      run: ./gradlew allTest --stacktrace
+      run: ./gradlew allTest test --stacktrace
     - name: Build JS example
       # Causes an Out-Of-Memory in Windows???
       if: runner.os != 'Windows'
