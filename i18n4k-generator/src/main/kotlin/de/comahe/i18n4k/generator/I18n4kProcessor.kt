@@ -1,15 +1,13 @@
 package de.comahe.i18n4k.generator
 
-import de.comahe.i18n4k.Locale
 import de.comahe.i18n4k.config.I18n4kConfigDefault
 import de.comahe.i18n4k.i18n4k
-import de.comahe.i18n4k.messages.formatter.MessageFormatter
 import java.io.File
 
 /** Reads the source files and generates the i18n4k files
  *
  * See [I18n4kGenerator] for most parameter descriptions */
-class I18n4kProcessor(val settings: Settings) {
+class I18n4kProcessor(val settings: I18n4kGeneratorSettings) {
 
     /** Starts the generation of the files */
     fun execute() {

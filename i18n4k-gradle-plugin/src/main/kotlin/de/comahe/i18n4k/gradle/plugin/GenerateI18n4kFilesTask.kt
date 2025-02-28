@@ -3,7 +3,7 @@ package de.comahe.i18n4k.gradle.plugin
 import de.comahe.i18n4k.forLocaleTag
 import de.comahe.i18n4k.generator.GenerationTargetPlatform
 import de.comahe.i18n4k.generator.I18n4kProcessor
-import de.comahe.i18n4k.generator.Settings
+import de.comahe.i18n4k.generator.I18n4kGeneratorSettings
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
 import org.gradle.api.tasks.Input
@@ -84,18 +84,18 @@ open class GenerateI18n4kFilesTask : DefaultTask() {
             generatedLanguageFilesDirAndroidRawResourceStyle = false
         }
 
-        val settings = Settings(inputDirectory = getInputDirectory(),
-                                generatedSourcesDirectory = getGeneratedSourcesDirectory(),
-                                generatedLanguageFilesDirectory = generatedSourcesDirectory,
-                                generatedLanguageFilesDirAndroidRawResourceStyle = generatedLanguageFilesDirAndroidRawResourceStyle,
-                                packageName = config.packageName,
-                                commentLocale = config.commentLocale?.let { forLocaleTag(it) },
-                                sourceCodeLocales = config.sourceCodeLocales?.map { forLocaleTag(it) },
-                                messageFormatter = config.messageFormatter,
-                                generationTarget = config.generationTargetPlatform!!,
-                                logger = logger,
-                                customFactories = config.customFactories,
-                                globalLocaleAsDefault = config.globalLocaleAsDefault)
+        val settings = I18n4kGeneratorSettings(inputDirectory = getInputDirectory(),
+                                               generatedSourcesDirectory = getGeneratedSourcesDirectory(),
+                                               generatedLanguageFilesDirectory = generatedSourcesDirectory,
+                                               generatedLanguageFilesDirAndroidRawResourceStyle = generatedLanguageFilesDirAndroidRawResourceStyle,
+                                               packageName = config.packageName,
+                                               commentLocale = config.commentLocale?.let { forLocaleTag(it) },
+                                               sourceCodeLocales = config.sourceCodeLocales?.map { forLocaleTag(it) },
+                                               messageFormatter = config.messageFormatter,
+                                               generationTarget = config.generationTargetPlatform!!,
+                                               logger = logger,
+                                               customFactories = config.customFactories,
+                                               globalLocaleAsDefault = config.globalLocaleAsDefault)
         I18n4kProcessor(settings).execute()
     }
 

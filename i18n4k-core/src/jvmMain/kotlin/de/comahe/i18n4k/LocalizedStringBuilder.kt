@@ -1,10 +1,25 @@
 package de.comahe.i18n4k
 
 import de.comahe.i18n4k.strings.LocalizedString
+import de.comahe.i18n4k.strings.asLocalizedString
 
 typealias StringOrLocalizedString = Any
 
-class LocalizedText(vararg strings: StringOrLocalizedString) : LocalizedString {
+/**
+ * A builder class for creating a composite `LocalizedString` by combining multiple strings or
+ * localized strings with customizable formatting options.
+ *
+ * This class implements the `LocalizedString` interface, allowing for locale-dependent string
+ * representations. Strings or localized strings are appended to a mutable list and can be joined
+ * into a single string representation with configurable separators, prefixes, postfixes,
+ * truncation, limits, and transformation functions.
+ *
+ * @constructor
+ * Creates a `LocalizedStringBuilder` instance with an initial set of strings or localized strings.
+ *
+ * @param strings The initial strings or localized strings to include in the builder.
+ */
+class LocalizedStringBuilder(vararg strings: StringOrLocalizedString) : LocalizedString {
 
     var separator = ""
     var prefix = ""
@@ -13,7 +28,7 @@ class LocalizedText(vararg strings: StringOrLocalizedString) : LocalizedString {
     var truncated = "..."
     var transform: (LocalizedString) -> CharSequence = { it() }
     val list = strings.map {
-        if (it is String) it.asLocalizedString
+        if (it is String) it.asLocalizedString()
         else it as LocalizedString
     }.toMutableList()
 
@@ -30,7 +45,7 @@ class LocalizedText(vararg strings: StringOrLocalizedString) : LocalizedString {
     }
 
     operator fun plusAssign(other: String) {
-        list += other.asLocalizedString
+        list += other.asLocalizedString()
     }
 
     override operator fun invoke() = toString()
@@ -47,9 +62,7 @@ class LocalizedText(vararg strings: StringOrLocalizedString) : LocalizedString {
         transform: (LocalizedString) -> CharSequence = this.transform
                     ): String = list.joinToString(separator, prefix, postfix, limit, truncated, transform)
 
-    val isEmpty: Boolean
-        get() = list.isEmpty() || list.all { it().isEmpty() }
+    fun isEmpty(): Boolean = list.isEmpty() || list.all { it().isEmpty() }
 
-    val isNotEmpty: Boolean
-        get() = !isEmpty
+    fun isNotEmpty(): Boolean = !isEmpty()
 }

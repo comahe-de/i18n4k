@@ -1,17 +1,11 @@
 package de.comahe.i18n4k
 
-import de.comahe.i18n4k.config.I18n4kConfig
 import de.comahe.i18n4k.strings.LocalizedString
+import de.comahe.i18n4k.strings.asLocalizedString
 
-
-val String.asLocalizedString: LocalizedString
-    get() = object : LocalizedString {
-        override fun toString(): String = toString(null)
-        override fun toString(locale: Locale?): String = this@asLocalizedString
-    }
 
 val String.toLocalize: LocalizedString
-    get() = asLocalizedString
+    get() = asLocalizedString()
 
 class ToLocalizedString(val string: String, vararg val args: Any) : LocalizedString {
     constructor() : this("")

@@ -47,7 +47,7 @@ import com.squareup.kotlinpoet.TypeSpec.Companion as TypeSpec1
  *  loaded from an external file (see [sourceCodeLocales])
  */
 class I18n4kGenerator(
-    val settings: Settings,
+    val settings: I18n4kGeneratorSettings,
     /** the message bundle the process */
     private val bundle: MessagesDataBundle
 ) {
@@ -57,27 +57,6 @@ class I18n4kGenerator(
      * in the generated Kotlin file
      */
     val fieldNames = sortedMapOf<String, String>(AlphanumComparator.INSTANCE_ENGLISH)
-
-    /**
-     * Directory where the language file with the list of string be
-     * stored
-     */
-    private val languageFilesDir: File = settings.generatedLanguageFilesDirectory
-
-    /**
-     * Locale which message bundle content should be added as comment.
-     * Null for no comments.
-     */
-    private val commentLocale: Locale? = settings.commentLocale
-    /**
-     * for this Locales source code will be generated to have the
-     * translations in the Kotlin code without the need to load external
-     * language file at runtime. null for all languages, empty for no
-     * language.
-     */
-    private var sourceCodeLocales: List<Locale>? = settings.sourceCodeLocales
-    /** The target platform for generation */
-    private val generationTarget: GenerationTargetPlatform = settings.generationTarget
 
     init {
         bundle.messageDataMap.values.forEach { data ->
@@ -125,7 +104,7 @@ class I18n4kGenerator(
     private fun generateLanguageFiles() {
         val fileLanguages =
             bundle.messageDataMap.values.filter {
-                !(sourceCodeLocales?.contains(it.locale) ?: true)
+                !(settings.sourceCodeLocales?.contains(it.locale) ?: true)
             }
         fileLanguages.forEach { generateLocalisationFile(it) }
     }
@@ -133,7 +112,7 @@ class I18n4kGenerator(
     /** generate all Kotlin source code files */
     private fun generateSourceCode() {
         val sourceCodeLanguages =
-            (sourceCodeLocales ?: bundle.messageDataMap.keys)
+            (settings.sourceCodeLocales ?: bundle.messageDataMap.keys)
                 .mapNotNull { bundle.messageDataMap[it] }
 
 
@@ -287,14 +266,13 @@ class I18n4kGenerator(
                         else -> "getLocalizedStringFactoryN(\"$keyEscaped\", $index)"
                     }, NameToIndexMapperNumbersFrom1::class
                 )
-            if (generationTarget == GenerationTargetPlatform.JVM
-                || generationTarget == GenerationTargetPlatform.ANDROID
-                || generationTarget == GenerationTargetPlatform.MULTI_PLATFORM
-            )
+            if (settings.generationTarget in listOf(GenerationTargetPlatform.JVM,
+                                                    GenerationTargetPlatform.ANDROID,
+                                                    GenerationTargetPlatform.MULTI_PLATFORM))
                 property.addAnnotation(JvmField::class)
 
-            if (commentLocale != null) {
-                bundle.messageDataMap[commentLocale]?.messages?.get(key)?.let { text ->
+            settings.commentLocale?.let {
+                bundle.messageDataMap[it]?.messages?.get(key)?.let { text ->
                     property.addKdoc(text.replace("%", "%%") + "\n\n")
                 }
             }
@@ -368,10 +346,9 @@ class I18n4kGenerator(
             ).apply
             {
                 initializer(arrayText.toString(), *arrayParameter.toTypedArray())
-                if (generationTarget == GenerationTargetPlatform.JVM
-                    || generationTarget == GenerationTargetPlatform.ANDROID
-                    || generationTarget == GenerationTargetPlatform.MULTI_PLATFORM
-                )
+                if (settings.generationTarget in listOf(GenerationTargetPlatform.JVM,
+                                                        GenerationTargetPlatform.ANDROID,
+                                                        GenerationTargetPlatform.MULTI_PLATFORM))
                     addAnnotation(JvmStatic::class)
             }.build()
         )
@@ -407,6 +384,7 @@ class I18n4kGenerator(
 
     /** generate a I18nk4 language file to be loaded at runtime of the program */
     private fun generateLocalisationFile(messagesData: MessagesData) {
+        val languageFilesDir = settings.generatedLanguageFilesDirectory
         languageFilesDir.mkdirs()
 
         val file = if (settings.generatedLanguageFilesDirAndroidRawResourceStyle) {

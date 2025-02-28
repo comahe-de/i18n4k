@@ -2,6 +2,7 @@ package de.comahe.i18n4k.generator.tests
 
 import de.comahe.i18n4k.config.I18n4kConfigDefault
 import de.comahe.i18n4k.generator.GenerationTargetPlatform
+import de.comahe.i18n4k.generator.I18n4kGeneratorSettings
 import de.comahe.i18n4k.generator.I18n4kProcessor
 import de.comahe.i18n4k.i18n4k
 import org.slf4j.LoggerFactory
@@ -14,8 +15,8 @@ fun main() {
     i18n4k = i18n4kConfig
 
     for (target in GenerationTargetPlatform.entries) {
-        val processor = I18n4kProcessor(
-            inputDirectory = inputDirectory,
+        val settings = I18n4kGeneratorSettings(
+            inputDirectory,
             generatedSourcesDirectory = File(expectedGeneratedSourcesDirectory, target.name),
             generatedLanguageFilesDirectory = expectedGeneratedLanguageFilesDirectory,
             generatedLanguageFilesDirAndroidRawResourceStyle = false,
@@ -24,9 +25,11 @@ fun main() {
             sourceCodeLocales = sourceCodeLocales,
             messageFormatter = i18n4k.messageFormatter,
             generationTarget = target,
-            logger = LoggerFactory.getLogger("I18n4k-Processor")
-        )
-        processor.execute()
+            logger = LoggerFactory.getLogger("I18n4k-Processor"),
+            customFactories = false,
+            globalLocaleAsDefault = true
+                                              )
+        I18n4kProcessor(settings).execute()
     }
 
 }

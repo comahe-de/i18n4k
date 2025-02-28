@@ -3,6 +3,7 @@ package de.comahe.i18n4k.generator.tests
 import de.comahe.i18n4k.Locale
 import de.comahe.i18n4k.forLocaleTag
 import de.comahe.i18n4k.generator.GenerationTargetPlatform
+import de.comahe.i18n4k.generator.I18n4kGeneratorSettings
 import de.comahe.i18n4k.generator.I18n4kProcessor
 import de.comahe.i18n4k.i18n4k
 import org.junit.Assert.assertEquals
@@ -36,18 +37,19 @@ class GeneratorTest {
     fun compareGeneratedFiles() {
 
         for (target in GenerationTargetPlatform.entries) {
-            val processor = I18n4kProcessor(
-                inputDirectory = inputDirectory,
-                generatedSourcesDirectory = File(actualGeneratedSourcesDirectory, target.name),
-                generatedLanguageFilesDirectory = actualGeneratedLanguageFilesDirectory,
-                generatedLanguageFilesDirAndroidRawResourceStyle = false,
-                packageName = null,
-                commentLocale = commentLocale,
-                sourceCodeLocales = sourceCodeLocales,
-                messageFormatter = i18n4k.messageFormatter,
-                generationTarget = target,
-                logger = LoggerFactory.getLogger("I18n4k-Processor")
-            )
+            val settings = I18n4kGeneratorSettings(inputDirectory,
+                                                   generatedSourcesDirectory = File(actualGeneratedSourcesDirectory, target.name),
+                                                   generatedLanguageFilesDirectory = actualGeneratedLanguageFilesDirectory,
+                                                   generatedLanguageFilesDirAndroidRawResourceStyle = false,
+                                                   packageName = null,
+                                                   commentLocale,
+                                                   sourceCodeLocales,
+                                                   i18n4k.messageFormatter,
+                                                   target,
+                                                   LoggerFactory.getLogger("I18n4k-Processor"),
+                                                   customFactories = false,
+                                                   globalLocaleAsDefault = true)
+            val processor = I18n4kProcessor(settings)
             processor.execute()
 
             val actualGeneratedSources =

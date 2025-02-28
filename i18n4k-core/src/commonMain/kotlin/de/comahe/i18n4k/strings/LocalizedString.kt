@@ -47,3 +47,5 @@ fun Any?.toString(locale: Locale?): String {
         return this.toString(locale)
     return this.toString()
 }
+
+fun String.asLocalizedString(): LocalizedString = SimpleLocalizedString(this)
