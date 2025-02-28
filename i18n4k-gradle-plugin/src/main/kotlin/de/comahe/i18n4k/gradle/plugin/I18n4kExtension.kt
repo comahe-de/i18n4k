@@ -59,4 +59,10 @@ open class I18n4kExtension {
 
     /** Target platform for generation. Null for automatic detection  */
     var generationTargetPlatform: GenerationTargetPlatform? = null
+
+    /** Generate custom factories, with proper parameters name (and potentially type) */
+    var customFactories: Boolean = false
+
+    /** Wheter using a global locale or not, useful on Server/Client scenarios, when each client has its own locale */
+    var globalLocaleAsDefault: Boolean = true
 }

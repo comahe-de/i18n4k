@@ -32,7 +32,7 @@ class MessagesDataBundle(
      *
      * Empty if there are no parameters.
      */
-    fun getMessageParametersNames(key: String): Set<CharSequence> =
+    fun getMessageParametersNames(key: String): Map<String, String?> =
         messageDataMap.values
             .map { it.messages[key] }
             .map { message ->
@@ -41,8 +41,17 @@ class MessagesDataBundle(
                     .map { locale ->
                         messageFormatter.getMessageParametersNames(message, locale)
                     }
-            }.flatten()
-            .fold(mutableSetOf<CharSequence>()) { result, current ->
-                result.addAll(current); result
+            }
+            .flatten()
+            .flatten()
+            .fold(mutableMapOf<String, String?>()) { result, current ->
+                val split = current.split(Regex(":\\s*"))
+                val name = split[0]
+                val type = split.getOrNull(1)
+                if (name in result) {
+                    if (type != null && result[name] == null)
+                        result[name] = type
+                } else result[name] = type
+                result
             }
 }

@@ -28,12 +28,14 @@ import de.comahe.i18n4k.messages.MessageBundleLocalizedStringFactory9
 import de.comahe.i18n4k.messages.MessageBundleLocalizedStringFactoryN
 import de.comahe.i18n4k.messages.NameToIndexMapperNumbersFrom1
 import de.comahe.i18n4k.messages.providers.MessagesProvider
+import de.comahe.i18n4k.strings.capitalize
 import de.comahe.i18n4k.toTag
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStreamWriter
 import java.io.Writer
 import java.nio.charset.StandardCharsets
+import java.util.*
 import kotlin.reflect.KClass
 import com.squareup.kotlinpoet.TypeSpec.Companion as TypeSpec1
 
@@ -45,43 +47,16 @@ import com.squareup.kotlinpoet.TypeSpec.Companion as TypeSpec1
  *  loaded from an external file (see [sourceCodeLocales])
  */
 class I18n4kGenerator(
-    /**
-     * Directory where the generated Kotlin source code file should be
-     * stored
-     */
-    private val sourceDir: File,
-    /**
-     * Directory where the language file with the list of string be
-     * stored
-     */
-    private val languageFilesDir: File,
-    /**
-     * don't use packages but file prefixes, lowercase file names, etc.
-     */
-    private val languageFilesDirAndroidRawResourceStyle: Boolean,
+    val settings: I18n4kGeneratorSettings,
     /** the message bundle the process */
-    private val bundle: MessagesDataBundle,
-    /**
-     * Locale which message bundle content should be added as comment.
-     * Null for no comments.
-     */
-    private val commentLocale: Locale?,
-    /**
-     * for this Locales source code will be generated to have the
-     * translations in the Kotlin code without the need to load external
-     * language file at runtime. null for all languages, empty for no
-     * language.
-     */
-    private var sourceCodeLocales: List<Locale>?,
-    /** The target platform for generation */
-    private val generationTarget: GenerationTargetPlatform
+    private val bundle: MessagesDataBundle
 ) {
 
     /**
      * sorted map key: all keys that are present in the language files value: the name of the field
      * in the generated Kotlin file
      */
-    val fieldNames = sortedMapOf<String, String>(AlphanumComparator.Companion.INSTANCE_ENGLISH)
+    val fieldNames = sortedMapOf<String, String>(AlphanumComparator.INSTANCE_ENGLISH)
 
     init {
         bundle.messageDataMap.values.forEach { data ->
@@ -129,7 +104,7 @@ class I18n4kGenerator(
     private fun generateLanguageFiles() {
         val fileLanguages =
             bundle.messageDataMap.values.filter {
-                !(sourceCodeLocales?.contains(it.locale) ?: true)
+                !(settings.sourceCodeLocales?.contains(it.locale) ?: true)
             }
         fileLanguages.forEach { generateLocalisationFile(it) }
     }
@@ -137,7 +112,7 @@ class I18n4kGenerator(
     /** generate all Kotlin source code files */
     private fun generateSourceCode() {
         val sourceCodeLanguages =
-            (sourceCodeLocales ?: bundle.messageDataMap.keys)
+            (settings.sourceCodeLocales ?: bundle.messageDataMap.keys)
                 .mapNotNull { bundle.messageDataMap[it] }
 
 
@@ -146,7 +121,7 @@ class I18n4kGenerator(
         file.addType(generateMessagesObject(sourceCodeLanguages))
         sourceCodeLanguages.forEach { file.addType(generateLocalisationObject(it)) }
 
-        file.build().writeTo(sourceDir)
+        file.build().writeTo(settings.generatedSourcesDirectory)
     }
 
 
@@ -162,9 +137,8 @@ class I18n4kGenerator(
 
         var index = 0
 
-        val paramCountToClass: (Int) -> KClass<*> = {
+        val getFactoryClass: (Int) -> KClass<*> = {
             when (it) {
-                0 -> MessageBundleLocalizedString::class
                 1 -> MessageBundleLocalizedStringFactory1::class
                 2 -> MessageBundleLocalizedStringFactory2::class
                 3 -> MessageBundleLocalizedStringFactory3::class
@@ -179,44 +153,132 @@ class I18n4kGenerator(
             }
         }
 
+        fun addFactoryClass(className: ClassName, key: String, index: Int, params: Map<String, String?>) {
+            val messageBundle = "messageBundle"
+            val pkg = "de.comahe.i18n4k"
+            val messageBundleType = ClassName("$pkg.messages", messageBundle.capitalize())
+            val reserved = listOf("val", "var", "class", "package", "this", "when", "in", "is")
+            val paramsKeyString = params.keys.joinToString { if (it in reserved) "`$it`" else it }
+            fun FunSpec.Builder.addParams(): FunSpec.Builder = apply {
+                for ((name, type) in params) {
+                    val t = when(type?.lowercase()) {
+                        "string" -> String::class
+                        "int" -> Int::class
+                        else -> Any::class
+                    }.asClassName()
+                    addParameter(name, t)
+                }
+            }
+            fun FunSpec.Builder.addLocale(): FunSpec.Builder = apply {
+                val param = ParameterSpec
+                    .builder("locale", Locale::class.asClassName().copy(nullable = settings.globalLocaleAsDefault))
+                if(settings.globalLocaleAsDefault)
+                    param.defaultValue("null")
+                addParameter(param.build())
+            }
+            fun FunSpec.Builder.returnLocalizedString(): FunSpec.Builder = apply { returns(ClassName("$pkg.strings", "LocalizedString")) }
+            fun FunSpec.Builder.maybeOverload(): FunSpec.Builder = apply { if (settings.globalLocaleAsDefault) addAnnotation(JvmOverloads::class) }
+            messageObject.addType(TypeSpec
+                                      .classBuilder(className)
+                                      .primaryConstructor(FunSpec
+                                                              .constructorBuilder()
+                                                              .addParameter(messageBundle, messageBundleType)
+                                                              .build())
+                                      .addProperty(PropertySpec
+                                                       .builder(messageBundle, messageBundleType)
+                                                       .initializer(messageBundle)
+                                                       .addModifiers(KModifier.OVERRIDE)
+                                                       .build())
+                                      .addSuperinterface(ClassName("$pkg.messages", "MessageBundleEntry"))
+                                      .addProperty(PropertySpec
+                                                       .builder("messageKey", String::class.asClassName())
+                                                       .initializer("%S", key)
+                                                       .addModifiers(KModifier.OVERRIDE)
+                                                       .build())
+                                      .addProperty(PropertySpec
+                                                       .builder("messageIndex", Int::class.asClassName())
+                                                       .initializer("%L", index)
+                                                       .addModifiers(KModifier.OVERRIDE)
+                                                       .build())
+                                      .addProperty(PropertySpec
+                                                       .builder("nameMapper", ClassName("$pkg.messages", "NameToIndexMapperList"))
+                                                       .initializer("NameToIndexMapperList(${params.keys.joinToString { "\"$it\"" }})")
+                                                       .build())
+                                      .addFunction(FunSpec
+                                                       .builder("createString")
+                                                       .maybeOverload()
+                                                       .addParams()
+                                                       .addLocale()
+                                                       .returns(String::class)
+                                                       .addStatement("return getStringN(messageIndex, %T(listOf($paramsKeyString), nameMapper), locale)",
+                                                                     ClassName("$pkg.messages.formatter", "MessageParametersList"))
+                                                       .build())
+                                      .addFunction(FunSpec
+                                                       .builder("createLocalizedString")
+                                                       .addParams()
+                                                       .returnLocalizedString()
+                                                       .addStatement("return getLocalizedString${params.size}(messageKey, messageIndex, $paramsKeyString, nameMapper)")
+                                                       .build())
+                                      .addFunction(FunSpec
+                                                       .builder("invoke")
+                                                       .maybeOverload()
+                                                       .addModifiers(KModifier.OPERATOR)
+                                                       .returns(String::class)
+                                                       .addParams()
+                                                       .addLocale()
+                                                       .addStatement("return createString($paramsKeyString, locale)")
+                                                       .build())
+                                      .addFunction(FunSpec
+                                                       .builder("get")
+                                                       .addModifiers(KModifier.OPERATOR)
+                                                       .addParams()
+                                                       .returnLocalizedString()
+                                                       .addStatement("return createLocalizedString($paramsKeyString)")
+                                                       .build())
+                                      .build())
+        }
+
         fieldNames.forEach { (key, fieldName) ->
             val params = bundle.getMessageParametersNames(key)
-                .filter { it != "~" }// remove the null token
-                .map { it.toString() }
-                .sortedWith(AlphanumComparator.INSTANCE_ENGLISH)
+                .filter { it.key != "~" }// remove the null token
+//                .toSortedMap(AlphanumComparator.INSTANCE_ENGLISH)
 
             val paramCount = params.size
-            val keyEscaped = key.replace("%", "%%");
-            val property = PropertySpec.builder(fieldName, paramCountToClass(paramCount))
+            val keyEscaped = key.replace("%", "%%")
+            val className = when {
+                paramCount == 0 -> MessageBundleLocalizedString::class.asClassName()
+                settings.customFactories -> ClassName(bundle.name.packageName, bundle.name.name, fieldName.capitalize() + "Factory").also {
+                    addFactoryClass(it, keyEscaped, index, params)
+                }
+                else -> getFactoryClass(paramCount).asClassName()
+            }
+            val property = PropertySpec.builder(fieldName, className)
                 .initializer(
-                    when (paramCount) {
-                        0 -> "getLocalizedString0(\"$keyEscaped\", $index)"
-                        in 1..MAX_PARAMETER_LIST_COUNT ->
-                            "getLocalizedStringFactory$paramCount(\"$keyEscaped\", $index" + (
-                                if (isOnlySortedDigitsStartingAt0(params))
-                                    ")"
-                                else if (isOnlySortedDigitsStartingAt1(params))
-                                    ", %T)"
-                                else
-                                    ", ${params.joinToString(", ") { "\"$it\"" }})"
-                                )
+                    when {
+                        paramCount == 0 -> "getLocalizedString0(\"$keyEscaped\", $index)"
+                        settings.customFactories -> fieldName.capitalize() + "Factory(this)"
+                        paramCount in 1..MAX_PARAMETER_LIST_COUNT ->
+                            "getLocalizedStringFactory$paramCount(\"$keyEscaped\", $index" + (when {
+                                isOnlySortedDigitsStartingAt0(params.keys) -> ")"
+                                isOnlySortedDigitsStartingAt1(params.keys) -> ", %T)"
+                                else -> ", ${params.keys.joinToString(", ") { "\"$it\"" }})"
+                            })
                         else -> "getLocalizedStringFactoryN(\"$keyEscaped\", $index)"
                     }, NameToIndexMapperNumbersFrom1::class
                 )
-            if (generationTarget == GenerationTargetPlatform.JVM
-                || generationTarget == GenerationTargetPlatform.ANDROID
-                || generationTarget == GenerationTargetPlatform.MULTI_PLATFORM
-            )
-                property.addAnnotation(JvmStatic::class)
+            if (settings.generationTarget in listOf(GenerationTargetPlatform.JVM,
+                                                    GenerationTargetPlatform.ANDROID,
+                                                    GenerationTargetPlatform.MULTI_PLATFORM))
+                property.addAnnotation(JvmField::class)
 
-            if (commentLocale != null) {
-                bundle.messageDataMap[commentLocale]?.messages?.get(key)?.let { text ->
+            settings.commentLocale?.let {
+                bundle.messageDataMap[it]?.messages?.get(key)?.let { text ->
                     property.addKdoc(text.replace("%", "%%") + "\n\n")
                 }
             }
             if (params.isNotEmpty()) {
                 property.addKdoc("Parameters: \n")
-                for ((paramIndex, param) in params.withIndex())
+                for ((paramIndex, param) in params.keys.withIndex())
                     property.addKdoc("* p$paramIndex: $param\n")
             }
 
@@ -284,10 +346,9 @@ class I18n4kGenerator(
             ).apply
             {
                 initializer(arrayText.toString(), *arrayParameter.toTypedArray())
-                if (generationTarget == GenerationTargetPlatform.JVM
-                    || generationTarget == GenerationTargetPlatform.ANDROID
-                    || generationTarget == GenerationTargetPlatform.MULTI_PLATFORM
-                )
+                if (settings.generationTarget in listOf(GenerationTargetPlatform.JVM,
+                                                        GenerationTargetPlatform.ANDROID,
+                                                        GenerationTargetPlatform.MULTI_PLATFORM))
                     addAnnotation(JvmStatic::class)
             }.build()
         )
@@ -323,9 +384,10 @@ class I18n4kGenerator(
 
     /** generate a I18nk4 language file to be loaded at runtime of the program */
     private fun generateLocalisationFile(messagesData: MessagesData) {
+        val languageFilesDir = settings.generatedLanguageFilesDirectory
         languageFilesDir.mkdirs()
 
-        val file = if (languageFilesDirAndroidRawResourceStyle) {
+        val file = if (settings.generatedLanguageFilesDirAndroidRawResourceStyle) {
             File(
                 languageFilesDir, convertCamelToSnakeCase(
                     bundle.name.packageName.replace(".", "_") + "_" +
@@ -385,7 +447,7 @@ class I18n4kGenerator(
          */
         const val MAX_PARAMETER_LIST_COUNT = 10
 
-        private fun isOnlySortedDigitsStartingAt0(parameters: List<String>): Boolean {
+        private fun isOnlySortedDigitsStartingAt0(parameters: Set<String>): Boolean {
             if (parameters.size > MAX_PARAMETER_LIST_COUNT)
                 return false
 
@@ -401,7 +463,7 @@ class I18n4kGenerator(
             return true
         }
 
-        private fun isOnlySortedDigitsStartingAt1(parameters: List<String>): Boolean {
+        private fun isOnlySortedDigitsStartingAt1(parameters: Set<String>): Boolean {
             if (parameters.size > MAX_PARAMETER_LIST_COUNT)
                 return false
 
