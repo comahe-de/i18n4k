@@ -72,7 +72,7 @@ class GeneratorTest {
         val files = mutableMapOf<String, String>()
         directory.walk().forEach { file ->
             if (file.isFile) {
-                files[file.relativeTo(directory).path] = file.readText()
+                files[file.relativeTo(directory).path] = file.readText().replace("\r\n", "\n")
             }
         }
         return files

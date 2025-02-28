@@ -12,7 +12,7 @@ Het is {2}!
 ^
 {0, capitalize } is das Beste!
 ^
-{~, capitalize, {{0} and {1}} zijn de beste!
+{~, capitalize, {{0} and {1}}} zijn de beste!
 ^
 Hallo, wereld!
 ^
@@ -32,7 +32,7 @@ de tekst
 ^
 Nl: A-{a}, Z-{z}, ABC-{abc}
 ^
-Nl: {0, select, a: {1, select, x: {4} | {5} } | b: {2, select, y: {6} | {7} } | {3, select, z: {8} | {9} }!
+Nl: {0, select, a {{1, select, x {{4}} other {{5}} }} b {{2, select, y {{6}} other {{7}} }} other {{3, select, z {{8}} other {{9}} }} }!
 ^
 Niet alle hebben vertalingen
 ^
