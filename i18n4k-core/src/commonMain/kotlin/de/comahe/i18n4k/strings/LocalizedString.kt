@@ -37,13 +37,43 @@ interface LocalizedString {
 /**
  * Return the string value based on the given [Locale].
  *
- * If this is not a [LocalizedString] the notmal [toString] will be called.
+ * If this is not a [LocalizedString] the normal [toString] will be called.
  *
  * @param locale the [Locale] to be use. If null the current setting in [i18n4k]
- *     ([I18n4kConfig.locale]) will be used.
+ *    ([I18n4kConfig.locale]) will be used.
  */
 fun Any?.toString(locale: Locale?): String {
     if (this is LocalizedString)
         return this.toString(locale)
     return this.toString()
+}
+
+/**
+ * Return the [CharSequence] value based on the given [Locale].
+ *
+ * If this is already a [CharSequence] this will be returned.
+ *
+ * If this is not a [LocalizedString] the normal [toString] will be called.
+ *
+ * @param locale the [Locale] to be used. If null the current setting in [i18n4k]
+ *    ([I18n4kConfig.locale]) will be used.
+ */
+fun Any?.toCharSequence(locale: Locale?): CharSequence {
+    if (this is LocalizedString)
+        return this.toString(locale)
+    if (this is CharSequence)
+        return this
+    return this.toString()
+}
+
+
+/**
+ * Creates a LocalizedString out of the [Any.toString] value of the object.
+ *
+ * If the object is already a [LocalizedString], this is returned.
+ */
+fun Any.asLocalizedString(): LocalizedString {
+    if (this is LocalizedString)
+        return this
+    return SimpleLocalizedString(toString())
 }
