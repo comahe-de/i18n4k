@@ -281,12 +281,27 @@ open class MessageBundle @JvmOverloads constructor(
     ): MessageBundleLocalizedStringFactory1 =
         LocalizedStringFactory1Bundled(this, key, index, nameMapper)
 
+    protected fun <T0 : Any> getLocalizedStringFactory1Typed(
+        key: String,
+        index: Int,
+        nameMapper: NameToIndexMapper = NameToIndexMapperNumbersFrom0,
+    ): MessageBundleLocalizedStringFactory1Typed<T0> =
+        LocalizedStringFactory1TypedBundled(this, key, index, nameMapper)
+
     protected fun getLocalizedStringFactory1(
         key: String,
         index: Int,
         name0: CharSequence,
     ): MessageBundleLocalizedStringFactory1 =
         getLocalizedStringFactory1(key, index, NameToIndexMapperList(name0))
+
+
+    protected fun <T0 : Any> getLocalizedStringFactory1Typed(
+        key: String,
+        index: Int,
+        name0: CharSequence,
+    ): MessageBundleLocalizedStringFactory1Typed<T0> =
+        getLocalizedStringFactory1Typed(key, index, NameToIndexMapperList(name0))
 
     /** See [getLocalizedStringFactory1], but with 2 parameters. */
     protected fun getLocalizedStringFactory2(
@@ -296,6 +311,14 @@ open class MessageBundle @JvmOverloads constructor(
     ): MessageBundleLocalizedStringFactory2 =
         LocalizedStringFactory2Bundled(this, key, index, nameMapper)
 
+    protected fun <T0 : Any, T1 : Any> getLocalizedStringFactory2Typed(
+        key: String,
+        index: Int,
+        nameMapper: NameToIndexMapper = NameToIndexMapperNumbersFrom0,
+    ): MessageBundleLocalizedStringFactory2Typed<T0, T1> =
+        LocalizedStringFactory2TypedBundled(this, key, index, nameMapper)
+
+
     protected fun getLocalizedStringFactory2(
         key: String,
         index: Int,
@@ -303,6 +326,15 @@ open class MessageBundle @JvmOverloads constructor(
         name1: CharSequence,
     ): MessageBundleLocalizedStringFactory2 =
         getLocalizedStringFactory2(key, index, NameToIndexMapperList(name0, name1))
+
+
+    protected fun <T0 : Any, T1 : Any> getLocalizedStringFactory2Typed(
+        key: String,
+        index: Int,
+        name0: CharSequence,
+        name1: CharSequence,
+    ): MessageBundleLocalizedStringFactory2Typed<T0, T1> =
+        getLocalizedStringFactory2Typed(key, index, NameToIndexMapperList(name0, name1))
 
     /** See [getLocalizedStringFactory1], but with 3 parameters. */
     protected fun getLocalizedStringFactory3(
@@ -312,6 +344,13 @@ open class MessageBundle @JvmOverloads constructor(
     ): MessageBundleLocalizedStringFactory3 =
         LocalizedStringFactory3Bundled(this, key, index, nameMapper)
 
+    protected fun <T0 : Any, T1 : Any, T2 : Any> getLocalizedStringFactory3Typed(
+        key: String,
+        index: Int,
+        nameMapper: NameToIndexMapper = NameToIndexMapperNumbersFrom0,
+    ): MessageBundleLocalizedStringFactory3Typed<T0, T1, T2> =
+        LocalizedStringFactory3TypedBundled(this, key, index, nameMapper)
+
     protected fun getLocalizedStringFactory3(
         key: String,
         index: Int,
@@ -319,11 +358,16 @@ open class MessageBundle @JvmOverloads constructor(
         name1: CharSequence,
         name2: CharSequence,
     ): MessageBundleLocalizedStringFactory3 =
-        getLocalizedStringFactory3(
-            key, index, NameToIndexMapperList(
-                name0, name1, name2
-            )
-        )
+        getLocalizedStringFactory3(key, index, NameToIndexMapperList(name0, name1, name2))
+
+    protected fun <T0 : Any, T1 : Any, T2 : Any> getLocalizedStringFactory3Typed(
+        key: String,
+        index: Int,
+        name0: CharSequence,
+        name1: CharSequence,
+        name2: CharSequence,
+    ): MessageBundleLocalizedStringFactory3Typed<T0, T1, T2> =
+        getLocalizedStringFactory3Typed(key, index, NameToIndexMapperList(name0, name1, name2))
 
     /** See [getLocalizedStringFactory1], but with 4 parameters. */
     protected fun getLocalizedStringFactory4(
@@ -333,6 +377,13 @@ open class MessageBundle @JvmOverloads constructor(
     ): MessageBundleLocalizedStringFactory4 =
         LocalizedStringFactory4Bundled(this, key, index, nameMapper)
 
+    protected fun <T0 : Any, T1 : Any, T2 : Any, T3 : Any> getLocalizedStringFactory4Typed(
+        key: String,
+        index: Int,
+        nameMapper: NameToIndexMapper = NameToIndexMapperNumbersFrom0,
+    ): MessageBundleLocalizedStringFactory4Typed<T0, T1, T2, T3> =
+        LocalizedStringFactory4TypedBundled(this, key, index, nameMapper)
+
     protected fun getLocalizedStringFactory4(
         key: String,
         index: Int,
@@ -341,11 +392,17 @@ open class MessageBundle @JvmOverloads constructor(
         name2: CharSequence,
         name3: CharSequence,
     ): MessageBundleLocalizedStringFactory4 =
-        getLocalizedStringFactory4(
-            key, index, NameToIndexMapperList(
-                name0, name1, name2, name3
-            )
-        )
+        getLocalizedStringFactory4(key, index, NameToIndexMapperList(name0, name1, name2, name3))
+
+    protected fun <T0 : Any, T1 : Any, T2 : Any, T3 : Any> getLocalizedStringFactory4Typed(
+        key: String,
+        index: Int,
+        name0: CharSequence,
+        name1: CharSequence,
+        name2: CharSequence,
+        name3: CharSequence,
+    ): MessageBundleLocalizedStringFactory4Typed<T0, T1, T2, T3> =
+        getLocalizedStringFactory4Typed(key, index, NameToIndexMapperList(name0, name1, name2, name3))
 
     /** See [getLocalizedStringFactory1], but with 5 parameters. */
     protected fun getLocalizedStringFactory5(
@@ -354,6 +411,13 @@ open class MessageBundle @JvmOverloads constructor(
         nameMapper: NameToIndexMapper = NameToIndexMapperNumbersFrom0,
     ): MessageBundleLocalizedStringFactory5 =
         LocalizedStringFactory5Bundled(this, key, index, nameMapper)
+
+    protected fun <T0 : Any, T1 : Any, T2 : Any, T3 : Any, T4 : Any> getLocalizedStringFactory5Typed(
+        key: String,
+        index: Int,
+        nameMapper: NameToIndexMapper = NameToIndexMapperNumbersFrom0,
+    ): MessageBundleLocalizedStringFactory5Typed<T0, T1, T2, T3, T4> =
+        LocalizedStringFactory5TypedBundled(this, key, index, nameMapper)
 
     protected fun getLocalizedStringFactory5(
         key: String,
@@ -364,11 +428,18 @@ open class MessageBundle @JvmOverloads constructor(
         name3: CharSequence,
         name4: CharSequence,
     ): MessageBundleLocalizedStringFactory5 =
-        getLocalizedStringFactory5(
-            key, index, NameToIndexMapperList(
-                name0, name1, name2, name3, name4
-            )
-        )
+        getLocalizedStringFactory5(key, index, NameToIndexMapperList(name0, name1, name2, name3, name4))
+
+    protected fun <T0 : Any, T1 : Any, T2 : Any, T3 : Any, T4 : Any> getLocalizedStringFactory5Typed(
+        key: String,
+        index: Int,
+        name0: CharSequence,
+        name1: CharSequence,
+        name2: CharSequence,
+        name3: CharSequence,
+        name4: CharSequence,
+    ): MessageBundleLocalizedStringFactory5Typed<T0, T1, T2, T3, T4> =
+        getLocalizedStringFactory5Typed(key, index, NameToIndexMapperList(name0, name1, name2, name3, name4))
 
     /** See [getLocalizedStringFactory1], but with 6 parameters. */
     protected fun getLocalizedStringFactory6(
@@ -377,6 +448,13 @@ open class MessageBundle @JvmOverloads constructor(
         nameMapper: NameToIndexMapper = NameToIndexMapperNumbersFrom0,
     ): MessageBundleLocalizedStringFactory6 =
         LocalizedStringFactory6Bundled(this, key, index, nameMapper)
+
+    protected fun <T0 : Any, T1 : Any, T2 : Any, T3 : Any, T4 : Any, T5 : Any> getLocalizedStringFactory6Typed(
+        key: String,
+        index: Int,
+        nameMapper: NameToIndexMapper = NameToIndexMapperNumbersFrom0,
+    ): MessageBundleLocalizedStringFactory6Typed<T0, T1, T2, T3, T4, T5> =
+        LocalizedStringFactory6TypedBundled(this, key, index, nameMapper)
 
     protected fun getLocalizedStringFactory6(
         key: String,
@@ -388,11 +466,19 @@ open class MessageBundle @JvmOverloads constructor(
         name4: CharSequence,
         name5: CharSequence,
     ): MessageBundleLocalizedStringFactory6 =
-        getLocalizedStringFactory6(
-            key, index, NameToIndexMapperList(
-                name0, name1, name2, name3, name4, name5,
-            )
-        )
+        getLocalizedStringFactory6(key, index, NameToIndexMapperList(name0, name1, name2, name3, name4, name5))
+
+    protected fun <T0 : Any, T1 : Any, T2 : Any, T3 : Any, T4 : Any, T5 : Any> getLocalizedStringFactory6Typed(
+        key: String,
+        index: Int,
+        name0: CharSequence,
+        name1: CharSequence,
+        name2: CharSequence,
+        name3: CharSequence,
+        name4: CharSequence,
+        name5: CharSequence,
+    ): MessageBundleLocalizedStringFactory6Typed<T0, T1, T2, T3, T4, T5> =
+        getLocalizedStringFactory6Typed(key, index, NameToIndexMapperList(name0, name1, name2, name3, name4, name5))
 
     /** See [getLocalizedStringFactory1], but with 7 parameters. */
     protected fun getLocalizedStringFactory7(
@@ -401,6 +487,13 @@ open class MessageBundle @JvmOverloads constructor(
         nameMapper: NameToIndexMapper = NameToIndexMapperNumbersFrom0,
     ): MessageBundleLocalizedStringFactory7 =
         LocalizedStringFactory7Bundled(this, key, index, nameMapper)
+
+    protected fun <T0 : Any, T1 : Any, T2 : Any, T3 : Any, T4 : Any, T5 : Any, T6 : Any> getLocalizedStringFactory7Typed(
+        key: String,
+        index: Int,
+        nameMapper: NameToIndexMapper = NameToIndexMapperNumbersFrom0,
+    ): MessageBundleLocalizedStringFactory7Typed<T0, T1, T2, T3, T4, T5, T6> =
+        LocalizedStringFactory7TypedBundled(this, key, index, nameMapper)
 
     protected fun getLocalizedStringFactory7(
         key: String,
@@ -418,6 +511,22 @@ open class MessageBundle @JvmOverloads constructor(
                 name0, name1, name2, name3, name4, name5, name6
             )
         )
+    protected fun <T0 : Any, T1 : Any, T2 : Any, T3 : Any, T4 : Any, T5 : Any, T6 : Any> getLocalizedStringFactory7Typed(
+        key: String,
+        index: Int,
+        name0: CharSequence,
+        name1: CharSequence,
+        name2: CharSequence,
+        name3: CharSequence,
+        name4: CharSequence,
+        name5: CharSequence,
+        name6: CharSequence,
+    ): MessageBundleLocalizedStringFactory7Typed<T0, T1, T2, T3, T4, T5, T6> =
+        getLocalizedStringFactory7Typed(
+            key, index, NameToIndexMapperList(
+                name0, name1, name2, name3, name4, name5, name6
+            )
+        )
 
     /** See [getLocalizedStringFactory1], but with 8 parameters. */
     protected fun getLocalizedStringFactory8(
@@ -426,6 +535,13 @@ open class MessageBundle @JvmOverloads constructor(
         nameMapper: NameToIndexMapper = NameToIndexMapperNumbersFrom0,
     ): MessageBundleLocalizedStringFactory8 =
         LocalizedStringFactory8Bundled(this, key, index, nameMapper)
+
+    protected fun <T0 : Any, T1 : Any, T2 : Any, T3 : Any, T4 : Any, T5 : Any, T6 : Any, T7 : Any> getLocalizedStringFactory8Typed(
+        key: String,
+        index: Int,
+        nameMapper: NameToIndexMapper = NameToIndexMapperNumbersFrom0,
+    ): MessageBundleLocalizedStringFactory8Typed<T0, T1, T2, T3, T4, T5, T6, T7> =
+        LocalizedStringFactory8TypedBundled(this, key, index, nameMapper)
 
     protected fun getLocalizedStringFactory8(
         key: String,
@@ -445,6 +561,24 @@ open class MessageBundle @JvmOverloads constructor(
             )
         )
 
+    protected fun <T0 : Any, T1 : Any, T2 : Any, T3 : Any, T4 : Any, T5 : Any, T6 : Any, T7 : Any> getLocalizedStringFactory8Typed(
+        key: String,
+        index: Int,
+        name0: CharSequence,
+        name1: CharSequence,
+        name2: CharSequence,
+        name3: CharSequence,
+        name4: CharSequence,
+        name5: CharSequence,
+        name6: CharSequence,
+        name7: CharSequence,
+    ): MessageBundleLocalizedStringFactory8Typed<T0, T1, T2, T3, T4, T5, T6, T7> =
+        getLocalizedStringFactory8Typed(
+            key, index, NameToIndexMapperList(
+                name0, name1, name2, name3, name4, name5, name6, name7
+            )
+        )
+
     /** See [getLocalizedStringFactory1], but with 9 parameters. */
     protected fun getLocalizedStringFactory9(
         key: String,
@@ -452,6 +586,13 @@ open class MessageBundle @JvmOverloads constructor(
         nameMapper: NameToIndexMapper = NameToIndexMapperNumbersFrom0,
     ): MessageBundleLocalizedStringFactory9 =
         LocalizedStringFactory9Bundled(this, key, index, nameMapper)
+
+    protected fun <T0 : Any, T1 : Any, T2 : Any, T3 : Any, T4 : Any, T5 : Any, T6 : Any, T7 : Any, T8 : Any> getLocalizedStringFactory9Typed(
+        key: String,
+        index: Int,
+        nameMapper: NameToIndexMapper = NameToIndexMapperNumbersFrom0,
+    ): MessageBundleLocalizedStringFactory9Typed<T0, T1, T2, T3, T4, T5, T6, T7, T8> =
+        LocalizedStringFactory9TypedBundled(this, key, index, nameMapper)
 
     protected fun getLocalizedStringFactory9(
         key: String,
@@ -472,6 +613,25 @@ open class MessageBundle @JvmOverloads constructor(
             )
         )
 
+    protected fun <T0 : Any, T1 : Any, T2 : Any, T3 : Any, T4 : Any, T5 : Any, T6 : Any, T7 : Any, T8 : Any> getLocalizedStringFactory9Typed(
+        key: String,
+        index: Int,
+        name0: CharSequence,
+        name1: CharSequence,
+        name2: CharSequence,
+        name3: CharSequence,
+        name4: CharSequence,
+        name5: CharSequence,
+        name6: CharSequence,
+        name7: CharSequence,
+        name8: CharSequence,
+    ): MessageBundleLocalizedStringFactory9Typed<T0, T1, T2, T3, T4, T5, T6, T7, T8> =
+        getLocalizedStringFactory9Typed(
+            key, index, NameToIndexMapperList(
+                name0, name1, name2, name3, name4, name5, name6, name7, name8
+            )
+        )
+
     /** See [getLocalizedStringFactory1], but with 10 parameters. */
     protected fun getLocalizedStringFactory10(
         key: String,
@@ -479,6 +639,13 @@ open class MessageBundle @JvmOverloads constructor(
         nameMapper: NameToIndexMapper = NameToIndexMapperNumbersFrom0,
     ): MessageBundleLocalizedStringFactory10 =
         LocalizedStringFactory10Bundled(this, key, index, nameMapper)
+
+    protected fun <T0 : Any, T1 : Any, T2 : Any, T3 : Any, T4 : Any, T5 : Any, T6 : Any, T7 : Any, T8 : Any, T9 : Any> getLocalizedStringFactory10Typed(
+        key: String,
+        index: Int,
+        nameMapper: NameToIndexMapper = NameToIndexMapperNumbersFrom0,
+    ): MessageBundleLocalizedStringFactory10Typed<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9> =
+        LocalizedStringFactory10TypedBundled(this, key, index, nameMapper)
 
     protected fun getLocalizedStringFactory10(
         key: String,
@@ -495,6 +662,26 @@ open class MessageBundle @JvmOverloads constructor(
         name9: CharSequence,
     ): MessageBundleLocalizedStringFactory10 =
         getLocalizedStringFactory10(
+            key, index, NameToIndexMapperList(
+                name0, name1, name2, name3, name4, name5, name6, name7, name8, name9
+            )
+        )
+
+    protected fun <T0 : Any, T1 : Any, T2 : Any, T3 : Any, T4 : Any, T5 : Any, T6 : Any, T7 : Any, T8 : Any, T9 : Any> getLocalizedStringFactory10Typed(
+        key: String,
+        index: Int,
+        name0: CharSequence,
+        name1: CharSequence,
+        name2: CharSequence,
+        name3: CharSequence,
+        name4: CharSequence,
+        name5: CharSequence,
+        name6: CharSequence,
+        name7: CharSequence,
+        name8: CharSequence,
+        name9: CharSequence,
+    ): MessageBundleLocalizedStringFactory10Typed<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9> =
+        getLocalizedStringFactory10Typed(
             key, index, NameToIndexMapperList(
                 name0, name1, name2, name3, name4, name5, name6, name7, name8, name9
             )
@@ -648,173 +835,284 @@ open class MessageBundle @JvmOverloads constructor(
 
     }
 
-    private class LocalizedStringFactory1Bundled(
+    private open class LocalizedStringFactory1TypedBundled<T0 : Any>(
         messageBundle: MessageBundle,
         messageKey: String,
         messageIndex: Int,
         val nameMapper: NameToIndexMapper,
     ) : LocalizedStringFactoryNBundled(messageBundle, messageKey, messageIndex),
-        MessageBundleLocalizedStringFactory1 {
+        MessageBundleLocalizedStringFactory1Typed<T0> {
 
         // @formatter:off
-        override fun createString(p0: Any, locale: Locale?) =
+        override fun createString(p0: T0, locale: Locale?) =
             messageBundle.getStringN(messageIndex, MessageParametersList(listOf(p0), nameMapper), locale)
 
-        override fun createLocalizedString(p0: Any) =
+        override fun createLocalizedString(p0: T0) =
             messageBundle.getLocalizedString1(messageKey, messageIndex, p0, nameMapper)
         // @formatter:on
     }
 
-    private class LocalizedStringFactory2Bundled(
+    private open class LocalizedStringFactory1Bundled(
+        messageBundle: MessageBundle,
+        messageKey: String,
+        messageIndex: Int,
+        nameMapper: NameToIndexMapper,
+    ) : LocalizedStringFactory1TypedBundled<Any>(messageBundle, messageKey, messageIndex, nameMapper),
+        MessageBundleLocalizedStringFactory1
+
+    private open class LocalizedStringFactory2TypedBundled<T0 : Any, T1 : Any>(
         messageBundle: MessageBundle,
         messageKey: String,
         messageIndex: Int,
         val nameMapper: NameToIndexMapper,
     ) : LocalizedStringFactoryNBundled(messageBundle, messageKey, messageIndex),
-        MessageBundleLocalizedStringFactory2 {
+        MessageBundleLocalizedStringFactory2Typed<T0, T1> {
 
         // @formatter:off
-        override fun createString(p0: Any, p1: Any, locale: Locale?) =
+        override fun createString(p0: T0, p1: T1, locale: Locale?) =
             messageBundle.getStringN(messageIndex,MessageParametersList( listOf(p0, p1), nameMapper), locale)
 
-        override fun createLocalizedString(p0: Any, p1: Any) =
+        override fun createLocalizedString(p0: T0, p1: T1) =
             messageBundle.getLocalizedString2(messageKey, messageIndex, p0, p1, nameMapper)
         // @formatter:on
     }
 
-    private class LocalizedStringFactory3Bundled(
+    private open class LocalizedStringFactory2Bundled(
+        messageBundle: MessageBundle,
+        messageKey: String,
+        messageIndex: Int,
+        nameMapper: NameToIndexMapper,
+    ) : LocalizedStringFactory2TypedBundled<Any, Any>(messageBundle, messageKey, messageIndex, nameMapper),
+        MessageBundleLocalizedStringFactory2
+
+    private open class LocalizedStringFactory3TypedBundled<T0 : Any, T1 : Any, T2 : Any>(
         messageBundle: MessageBundle,
         messageKey: String,
         messageIndex: Int,
         val nameMapper: NameToIndexMapper,
     ) : LocalizedStringFactoryNBundled(messageBundle, messageKey, messageIndex),
-        MessageBundleLocalizedStringFactory3 {
+        MessageBundleLocalizedStringFactory3Typed<T0, T1, T2> {
 
         // @formatter:off
-        override fun createString(p0: Any, p1: Any, p2: Any, locale: Locale?) =
+        override fun createString(p0: T0, p1: T1, p2: T2, locale: Locale?) =
             messageBundle.getStringN(messageIndex, MessageParametersList(listOf(p0, p1, p2), nameMapper), locale)
 
-        override fun createLocalizedString(p0: Any, p1: Any, p2: Any) =
+        override fun createLocalizedString(p0: T0, p1: T1, p2: T2) =
             messageBundle.getLocalizedString3(messageKey, messageIndex, p0, p1, p2, nameMapper)
         // @formatter:on
     }
 
-    private class LocalizedStringFactory4Bundled(
+    private open class LocalizedStringFactory3Bundled(
+        messageBundle: MessageBundle,
+        messageKey: String,
+        messageIndex: Int,
+        nameMapper: NameToIndexMapper,
+    ) : LocalizedStringFactory3TypedBundled<Any, Any, Any>(messageBundle, messageKey, messageIndex, nameMapper),
+        MessageBundleLocalizedStringFactory3
+
+    private open class LocalizedStringFactory4TypedBundled<T0 : Any, T1 : Any, T2 : Any, T3 : Any>(
         messageBundle: MessageBundle,
         messageKey: String,
         messageIndex: Int,
         val nameMapper: NameToIndexMapper,
     ) : LocalizedStringFactoryNBundled(messageBundle, messageKey, messageIndex),
-        MessageBundleLocalizedStringFactory4 {
+        MessageBundleLocalizedStringFactory4Typed<T0, T1, T2, T3> {
 
         // @formatter:off
-        override fun createString(p0: Any, p1: Any, p2: Any, p3: Any, locale: Locale?) =
+        override fun createString(p0: T0, p1: T1, p2: T2, p3: T3, locale: Locale?) =
             messageBundle.getStringN(messageIndex,MessageParametersList( listOf(p0, p1, p2, p3), nameMapper), locale)
 
-        override fun createLocalizedString(p0: Any, p1: Any, p2: Any, p3: Any) =
+        override fun createLocalizedString(p0: T0, p1: T1, p2: T2, p3: T3) =
             messageBundle.getLocalizedString4(messageKey, messageIndex, p0, p1, p2, p3, nameMapper)
         // @formatter:on
     }
 
-    private class LocalizedStringFactory5Bundled(
+    private open class LocalizedStringFactory4Bundled(
+        messageBundle: MessageBundle,
+        messageKey: String,
+        messageIndex: Int,
+        nameMapper: NameToIndexMapper,
+    ) : LocalizedStringFactory4TypedBundled<Any, Any, Any, Any>(messageBundle, messageKey, messageIndex, nameMapper),
+        MessageBundleLocalizedStringFactory4
+
+    private open class LocalizedStringFactory5TypedBundled<T0 : Any, T1 : Any, T2 : Any, T3 : Any, T4 : Any>(
         messageBundle: MessageBundle,
         messageKey: String,
         messageIndex: Int,
         val nameMapper: NameToIndexMapper,
     ) : LocalizedStringFactoryNBundled(messageBundle, messageKey, messageIndex),
-        MessageBundleLocalizedStringFactory5 {
+        MessageBundleLocalizedStringFactory5Typed<T0, T1, T2, T3, T4> {
 
         // @formatter:off
-        override fun createString(p0: Any, p1: Any, p2: Any, p3: Any, p4: Any, locale: Locale?) =
+        override fun createString(p0: T0, p1: T1, p2: T2, p3: T3, p4: T4, locale: Locale?) =
             messageBundle.getStringN(messageIndex, MessageParametersList(listOf(p0, p1, p2, p3, p4), nameMapper), locale)
 
-        override fun createLocalizedString(p0: Any, p1: Any, p2: Any, p3: Any, p4: Any) =
+        override fun createLocalizedString(p0: T0, p1: T1, p2: T2, p3: T3, p4: T4) =
             messageBundle.getLocalizedString5(messageKey, messageIndex, p0, p1, p2, p3, p4, nameMapper)
         // @formatter:on
     }
 
-    private class LocalizedStringFactory6Bundled(
+    private open class LocalizedStringFactory5Bundled(
+        messageBundle: MessageBundle,
+        messageKey: String,
+        messageIndex: Int,
+        nameMapper: NameToIndexMapper,
+    ) : LocalizedStringFactory5TypedBundled<Any, Any, Any, Any, Any>(
+        messageBundle,
+        messageKey,
+        messageIndex,
+        nameMapper
+    ),
+        MessageBundleLocalizedStringFactory5
+
+    private open class LocalizedStringFactory6TypedBundled<T0 : Any, T1 : Any, T2 : Any, T3 : Any, T4 : Any, T5 : Any>(
         messageBundle: MessageBundle,
         messageKey: String,
         messageIndex: Int,
         val nameMapper: NameToIndexMapper,
     ) : LocalizedStringFactoryNBundled(messageBundle, messageKey, messageIndex),
-        MessageBundleLocalizedStringFactory6 {
+        MessageBundleLocalizedStringFactory6Typed<T0, T1, T2, T3, T4, T5> {
 
         // @formatter:off
-        override fun createString(p0: Any, p1: Any, p2: Any, p3: Any, p4: Any, p5: Any, locale: Locale?) =
+        override fun createString(p0: T0, p1: T1, p2: T2, p3: T3, p4: T4, p5: T5, locale: Locale?) =
             messageBundle.getStringN(messageIndex, MessageParametersList(listOf(p0, p1, p2, p3, p4, p5), nameMapper), locale)
 
-        override fun createLocalizedString(p0: Any, p1: Any, p2: Any, p3: Any, p4: Any, p5: Any) =
+        override fun createLocalizedString(p0: T0, p1: T1, p2: T2, p3: T3, p4: T4, p5: T5) =
             messageBundle.getLocalizedString6(messageKey, messageIndex, p0, p1, p2, p3, p4, p5, nameMapper)
         // @formatter:on
     }
 
-    private class LocalizedStringFactory7Bundled(
+    private open class LocalizedStringFactory6Bundled(
+        messageBundle: MessageBundle,
+        messageKey: String,
+        messageIndex: Int,
+        nameMapper: NameToIndexMapper,
+    ) : LocalizedStringFactory6TypedBundled<Any, Any, Any, Any, Any, Any>(
+        messageBundle,
+        messageKey,
+        messageIndex,
+        nameMapper
+    ),
+        MessageBundleLocalizedStringFactory6
+
+    private open class LocalizedStringFactory7TypedBundled<T0 : Any, T1 : Any, T2 : Any, T3 : Any, T4 : Any, T5 : Any, T6 : Any>(
         messageBundle: MessageBundle,
         messageKey: String,
         messageIndex: Int,
         val nameMapper: NameToIndexMapper,
     ) : LocalizedStringFactoryNBundled(messageBundle, messageKey, messageIndex),
-        MessageBundleLocalizedStringFactory7 {
+        MessageBundleLocalizedStringFactory7Typed<T0, T1, T2, T3, T4, T5, T6> {
 
         // @formatter:off
-        override fun createString(p0: Any, p1: Any, p2: Any, p3: Any, p4: Any, p5: Any, p6: Any, locale: Locale?) =
+        override fun createString(p0: T0, p1: T1, p2: T2, p3: T3, p4: T4, p5: T5, p6: T6, locale: Locale?) =
             messageBundle.getStringN(messageIndex, MessageParametersList(listOf(p0, p1, p2, p3, p4, p5, p6), nameMapper), locale)
 
-        override fun createLocalizedString(p0: Any, p1: Any, p2: Any, p3: Any, p4: Any, p5: Any, p6: Any) =
+        override fun createLocalizedString(p0: T0, p1: T1, p2: T2, p3: T3, p4: T4, p5: T5, p6: T6) =
             messageBundle.getLocalizedString7(messageKey, messageIndex, p0, p1, p2, p3, p4, p5, p6, nameMapper)
         // @formatter:on
     }
 
-    private class LocalizedStringFactory8Bundled(
+    private open class LocalizedStringFactory7Bundled(
+        messageBundle: MessageBundle,
+        messageKey: String,
+        messageIndex: Int,
+        nameMapper: NameToIndexMapper,
+    ) : LocalizedStringFactory7TypedBundled<Any, Any, Any, Any, Any, Any, Any>(
+        messageBundle,
+        messageKey,
+        messageIndex,
+        nameMapper
+    ),
+        MessageBundleLocalizedStringFactory7
+
+    private open class LocalizedStringFactory8TypedBundled<T0 : Any, T1 : Any, T2 : Any, T3 : Any, T4 : Any, T5 : Any, T6 : Any, T7 : Any>(
         messageBundle: MessageBundle,
         messageKey: String,
         messageIndex: Int,
         val nameMapper: NameToIndexMapper,
     ) : LocalizedStringFactoryNBundled(messageBundle, messageKey, messageIndex),
-        MessageBundleLocalizedStringFactory8 {
+        MessageBundleLocalizedStringFactory8Typed<T0, T1, T2, T3, T4, T5, T6, T7> {
 
         // @formatter:off
-        override fun createString(p0: Any, p1: Any, p2: Any, p3: Any, p4: Any, p5: Any, p6: Any, p7: Any, locale: Locale?) =
+        override fun createString(p0: T0, p1: T1, p2: T2, p3: T3, p4: T4, p5: T5, p6: T6, p7: T7, locale: Locale?) =
             messageBundle.getStringN(messageIndex, MessageParametersList(listOf(p0, p1, p2, p3, p4, p5, p6, p7), nameMapper), locale)
 
-        override fun createLocalizedString(p0: Any, p1: Any, p2: Any, p3: Any, p4: Any, p5: Any, p6: Any, p7: Any) =
+        override fun createLocalizedString(p0: T0, p1: T1, p2: T2, p3: T3, p4: T4, p5: T5, p6: T6, p7: T7) =
             messageBundle.getLocalizedString8(messageKey, messageIndex, p0, p1, p2, p3, p4, p5, p6, p7, nameMapper)
         // @formatter:on
     }
 
-    private class LocalizedStringFactory9Bundled(
+    private open class LocalizedStringFactory8Bundled(
+        messageBundle: MessageBundle,
+        messageKey: String,
+        messageIndex: Int,
+        nameMapper: NameToIndexMapper,
+    ) : LocalizedStringFactory8TypedBundled<Any, Any, Any, Any, Any, Any, Any, Any>(
+        messageBundle,
+        messageKey,
+        messageIndex,
+        nameMapper
+    ),
+        MessageBundleLocalizedStringFactory8
+
+
+    private open class LocalizedStringFactory9TypedBundled<T0 : Any, T1 : Any, T2 : Any, T3 : Any, T4 : Any, T5 : Any, T6 : Any, T7 : Any, T8 : Any>(
         messageBundle: MessageBundle,
         messageKey: String,
         messageIndex: Int,
         val nameMapper: NameToIndexMapper,
     ) : LocalizedStringFactoryNBundled(messageBundle, messageKey, messageIndex),
-        MessageBundleLocalizedStringFactory9 {
+        MessageBundleLocalizedStringFactory9Typed<T0, T1, T2, T3, T4, T5, T6, T7, T8> {
 
         // @formatter:off
-        override fun createString(p0: Any, p1: Any, p2: Any, p3: Any, p4: Any, p5: Any, p6: Any, p7: Any, p8: Any, locale: Locale?) =
+        override fun createString(p0: T0, p1: T1, p2: T2, p3: T3, p4: T4, p5: T5, p6: T6, p7: T7, p8: T8, locale: Locale?) =
             messageBundle.getStringN(messageIndex,MessageParametersList( listOf(p0, p1, p2, p3, p4, p5, p6, p7, p8), nameMapper), locale)
 
-        override fun createLocalizedString(p0: Any, p1: Any, p2: Any, p3: Any, p4: Any, p5: Any, p6: Any, p7: Any, p8: Any) =
+        override fun createLocalizedString(p0: T0, p1: T1, p2: T2, p3: T3, p4: T4, p5: T5, p6: T6, p7: T7, p8: T8) =
             messageBundle.getLocalizedString9(messageKey, messageIndex, p0, p1, p2, p3, p4, p5, p6, p7, p8, nameMapper)
         // @formatter:on
     }
 
-    private class LocalizedStringFactory10Bundled(
+    private open class LocalizedStringFactory9Bundled(
+        messageBundle: MessageBundle,
+        messageKey: String,
+        messageIndex: Int,
+        nameMapper: NameToIndexMapper,
+    ) : LocalizedStringFactory9TypedBundled<Any, Any, Any, Any, Any, Any, Any, Any, Any>(
+        messageBundle,
+        messageKey,
+        messageIndex,
+        nameMapper
+    ),
+        MessageBundleLocalizedStringFactory9
+
+    private open class LocalizedStringFactory10TypedBundled<T0 : Any, T1 : Any, T2 : Any, T3 : Any, T4 : Any, T5 : Any, T6 : Any, T7 : Any, T8 : Any, T9 : Any>(
         messageBundle: MessageBundle,
         messageKey: String,
         messageIndex: Int,
         val nameMapper: NameToIndexMapper,
     ) : LocalizedStringFactoryNBundled(messageBundle, messageKey, messageIndex),
-        MessageBundleLocalizedStringFactory10 {
+        MessageBundleLocalizedStringFactory10Typed<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9> {
 
         // @formatter:off
-        override fun createString(p0: Any, p1: Any, p2: Any, p3: Any, p4: Any, p5: Any, p6: Any, p7: Any, p8: Any, p9: Any, locale: Locale?) =
+        override fun createString(p0: T0, p1: T1, p2: T2, p3: T3, p4: T4, p5: T5, p6: T6, p7: T7, p8: T8, p9: T9, locale: Locale?) =
             messageBundle.getStringN(messageIndex, MessageParametersList(listOf(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9), nameMapper), locale)
 
-        override fun createLocalizedString(p0: Any, p1: Any, p2: Any, p3: Any, p4: Any, p5: Any, p6: Any, p7: Any, p8: Any, p9: Any) =
+        override fun createLocalizedString(p0: T0, p1: T1, p2: T2, p3: T3, p4: T4, p5: T5, p6: T6, p7: T7, p8: T8, p9: T9) =
             messageBundle.getLocalizedString10(messageKey, messageIndex, p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, nameMapper)
         // @formatter:on
     }
+
+    private open class LocalizedStringFactory10Bundled(
+        messageBundle: MessageBundle,
+        messageKey: String,
+        messageIndex: Int,
+        nameMapper: NameToIndexMapper,
+    ) : LocalizedStringFactory10TypedBundled<Any, Any, Any, Any, Any, Any, Any, Any, Any, Any>(
+        messageBundle,
+        messageKey,
+        messageIndex,
+        nameMapper
+    ),
+        MessageBundleLocalizedStringFactory10
 }
