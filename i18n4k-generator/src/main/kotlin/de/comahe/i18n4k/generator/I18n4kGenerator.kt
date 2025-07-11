@@ -284,11 +284,6 @@ class I18n4kGenerator(
             ).apply
             {
                 initializer(arrayText.toString(), *arrayParameter.toTypedArray())
-                if (generationTarget == GenerationTargetPlatform.JVM
-                    || generationTarget == GenerationTargetPlatform.ANDROID
-                    || generationTarget == GenerationTargetPlatform.MULTI_PLATFORM
-                )
-                    addAnnotation(JvmStatic::class)
             }.build()
         )
 
