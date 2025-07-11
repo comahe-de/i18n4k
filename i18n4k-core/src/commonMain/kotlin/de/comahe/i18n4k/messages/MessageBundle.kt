@@ -267,6 +267,12 @@ open class MessageBundle @JvmOverloads constructor(
 
     // @formatter:on
 
+    protected fun getLocalizedStringFactoryN(
+        key: String,
+        index: Int,
+    ): MessageBundleLocalizedStringFactoryN =
+        LocalizedStringFactoryNBundled(this, key, index)
+
     /**
      * Create a factory for [LocalizedString] for the given index.
      *

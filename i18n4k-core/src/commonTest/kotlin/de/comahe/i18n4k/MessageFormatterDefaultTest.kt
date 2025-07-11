@@ -2,6 +2,7 @@ package de.comahe.i18n4k
 
 import de.comahe.i18n4k.config.I18n4kConfigDefault
 import de.comahe.i18n4k.messages.formatter.MessageFormatterDefault.format
+import de.comahe.i18n4k.messages.formatter.MessageFormatterDefault.getMessageParametersNames
 import de.comahe.i18n4k.messages.formatter.MessageParametersMap
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -174,5 +175,35 @@ class MessageFormatterDefaultTest {
             format("{c, select, 1 {{b}!} 2 {{c}?} other {{d}#}} !", params, locale)
         )
 
+    }
+
+
+    @Test
+    fun testGetParameterNames() {
+        val locale = Locales.ENGLISH
+        assertEquals(
+            listOf("a" to null),
+            getMessageParametersNames("{a}", locale)
+        )
+        assertEquals(
+            listOf("a" to null, "b" to null),
+            getMessageParametersNames("{a} {b}", locale)
+        )
+        assertEquals(
+            listOf("a" to null, "b" to null, "c" to null, "d" to null),
+            getMessageParametersNames("{a, select, 1 {{b}} 2 {{c}} } {d}", locale)
+        )
+        assertEquals(
+            listOf("a" to "Int"),
+            getMessageParametersNames("{a:Int}", locale)
+        )
+        assertEquals(
+            listOf("a" to "Int", "b" to "Bool"),
+            getMessageParametersNames("{a:Int} {b:Bool }", locale)
+        )
+        assertEquals(
+            listOf("a" to "Int", "b" to "Bool", "c" to "Long", "d" to "Double"),
+            getMessageParametersNames("{a:Int, select, 1 {{b:Bool} one } 2 {{c: Long} two}} {d: Double }", locale)
+        )
     }
 }

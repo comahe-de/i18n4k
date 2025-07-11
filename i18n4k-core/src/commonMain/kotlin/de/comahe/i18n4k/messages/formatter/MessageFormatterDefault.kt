@@ -100,8 +100,8 @@ object MessageFormatterDefault : MessageFormatter {
             .toString()
     }
 
-    override fun getMessageParametersNames(message: String, locale: Locale): Set<CharSequence> {
-        val parameterNames = mutableSetOf<CharSequence>()
+    override fun getMessageParametersNames(message: String, locale: Locale): List<Pair<CharSequence, CharSequence?>> {
+        val parameterNames = mutableListOf<Pair<CharSequence, CharSequence?>>()
         getMessagePartFor(message).fillInParameterNames(parameterNames)
         return parameterNames
     }

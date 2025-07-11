@@ -92,7 +92,7 @@ class MessageParser(
     }
 
     /**
-     * Parses the parameter pattern, e.g. "{0, type, style}"
+     * Parses the parameter pattern, e.g. "{0:Int, type, style}"
      *
      * @param startIndex - the start index, inclusive.
      * @param endIndex - the end index, exclusive.
@@ -110,9 +110,10 @@ class MessageParser(
                 return MessagePartText("")
             throwMessageParseException("Found not escaped braces in parameter name.")
         }
-        val parameterIndex = parseParameterName(lastIndex, index)
+        val (parameterName, parameterValueType) = parseParameterNameAndValueType(lastIndex, index)
+
         if (index >= endIndex)
-            return MessagePartParam(parameterIndex, null, null)
+            return MessagePartParam(parameterName, parameterValueType, null, null)
 
         // read type
         lastIndex = index + 1
@@ -127,7 +128,7 @@ class MessageParser(
         }
         val parameterType = parseTypeName(lastIndex, index)
         if (index >= endIndex)
-            return MessagePartParam(parameterIndex, parameterType, null)
+            return MessagePartParam(parameterName, parameterValueType, parameterType, null)
 
         // read style
         lastIndex = index + 1
@@ -138,20 +139,28 @@ class MessageParser(
                     message.subSequence(startIndex, endIndex)
                 } - Message: $message"
             )
-        return MessagePartParam(parameterIndex, parameterType, parseStyle(lastIndex, index))
+        return MessagePartParam(parameterName, parameterValueType, parameterType, parseStyle(lastIndex, index))
     }
 
     /**
-     * Parses the name of the parameter
+     * Parses the name and optional value class of the parameter
      *
      * @param startIndex - the start index, inclusive.
      * @param endIndex - the end index, exclusive.
      */
-    private fun parseParameterName(startIndex: Int, endIndex: Int): CharSequence {
-        val name = readText(startIndex, endIndex).trim()
+    private fun parseParameterNameAndValueType(startIndex: Int, endIndex: Int): Pair<CharSequence, CharSequence?> {
+        val valueClassIndex = findNext(startIndex, endIndex, ':')
+        val name = readText(startIndex, valueClassIndex).trim()
         if (name.isEmpty())
             throwMessageParseException("Parameter name must not be empty or blank!")
-        return name
+        var valueType: CharSequence? = null
+
+        if (valueClassIndex < endIndex) {
+            valueType = readText(valueClassIndex+1, endIndex).trim()
+            if (valueType.isEmpty())
+                valueType = null
+        }
+        return name to valueType
     }
 
     /**

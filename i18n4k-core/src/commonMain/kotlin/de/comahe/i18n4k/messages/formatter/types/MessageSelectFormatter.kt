@@ -40,7 +40,7 @@ import kotlinx.collections.immutable.persistentMapOf
  *
  * Example:
  *
- *     {0} has forgotten {1, select, female: her | his } {3, select, one: bag | {2} bags}.
+ *     {0} has forgotten {1, select, female {her} other {his} } {3, select, one {bag} other {{2} bags}}.
  *
  * Usage:
  *

@@ -29,13 +29,17 @@ interface MessageFormatter {
         format(message, MessageParametersList(parameters, NameToIndexMapperNumbersFrom0), locale)
 
 
-
-    /** returns the max used parameter index in the string. "-1" if there is no parameter */
-    fun getMessageParametersNames(message: String, locale: Locale): Set<CharSequence> {
-        val parameterNames = mutableSetOf<CharSequence>()
+    /**
+     * Returns the all used parameter names ([Pair.first]) with they optional value types
+     * ([Pair.second]) in the string.
+     *
+     * Empty if there is no parameter.
+     */
+    fun getMessageParametersNames(message: String, locale: Locale): List<Pair<CharSequence, CharSequence?>> {
+        val parameterNames = mutableListOf<Pair<CharSequence, CharSequence?>>()
         val parameters = object : MessageParameters {
             override fun get(name: CharSequence): Any? {
-                parameterNames += name
+                parameterNames.add(name to null)
                 return null
             }
         }

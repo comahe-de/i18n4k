@@ -7,13 +7,14 @@ import de.comahe.i18n4k.strings.toString
 
 data class MessagePartParam(
     val name: CharSequence,
+    val valueType: CharSequence? = null,
     val type: CharSequence? = null,
     var style: StylePart? = null
 ) :
     MessagePart {
 
-    override fun fillInParameterNames(names: MutableSet<CharSequence>) {
-       names += name
+    override fun fillInParameterNames(names: MutableList<Pair<CharSequence, CharSequence?>>) {
+        names += name to valueType
         style?.fillInParameterNames(names)
     }
 

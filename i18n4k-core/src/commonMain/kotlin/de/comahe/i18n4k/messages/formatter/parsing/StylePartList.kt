@@ -9,7 +9,7 @@ data class StylePartList(val list: ImmutableList<StylePart>) : StylePart {
     constructor(part: StylePart) : this(persistentListOf(part))
     constructor(vararg parts: StylePart) : this(persistentListOf(*parts))
 
-    override fun fillInParameterNames(names: MutableSet<CharSequence>) {
+    override fun fillInParameterNames(names: MutableList<Pair<CharSequence, CharSequence?>>) {
         for (part in list)
             part.fillInParameterNames(names)
     }

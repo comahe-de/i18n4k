@@ -11,7 +11,7 @@ data class MessagePartList(val list: ImmutableList<MessagePart>) : MessagePart {
     constructor(part: MessagePart) : this(persistentListOf(part))
     constructor(vararg parts: MessagePart) : this(persistentListOf(*parts))
 
-    override fun fillInParameterNames(names: MutableSet<CharSequence>) {
+    override fun fillInParameterNames(names: MutableList<Pair<CharSequence, CharSequence?>>) {
         for (part in list)
             part.fillInParameterNames(names)
     }

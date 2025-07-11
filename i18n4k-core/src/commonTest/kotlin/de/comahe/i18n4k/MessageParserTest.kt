@@ -47,23 +47,23 @@ class MessageParserTest {
     @Test
     fun testParameterSimple() {
         assertEquals(
-            MessagePartParam("0", null, null),
+            MessagePartParam("0", null, null, null),
             parse("{0}"),
         )
 
         assertEquals(
-            MessagePartParam("1", "foo", null),
+            MessagePartParam("1", null, "foo", null),
             parse("{1, foo }"),
         )
 
         assertEquals(
-            MessagePartParam("2", "foo", StylePartArgument("bar")),
+            MessagePartParam("2", null, "foo", StylePartArgument("bar")),
             parse("{2, foo , bar }"),
         )
 
         assertEquals(
             MessagePartParam(
-                "~",
+                "~", null,
                 "foobar",
                 StylePartList(StylePartArgument("bar"), StylePartArgument("foo"))
             ),
@@ -74,11 +74,11 @@ class MessageParserTest {
     @Test
     fun testParameterNameWhitespaces() {
         assertEquals(
-            MessagePartParam("a b c", null, null),
+            MessagePartParam("a b c", null, null, null),
             parse("{ a b c }"),
         )
         assertEquals(
-            MessagePartParam("a b c", "e d f", null),
+            MessagePartParam("a b c", null, "e d f", null),
             parse("{ a b c , e d f }"),
         )
     }
@@ -86,11 +86,11 @@ class MessageParserTest {
     @Test
     fun testParameterNameQotes() {
         assertEquals(
-            MessagePartParam("a' b' c", "d' e' f", null),
+            MessagePartParam("a' b' c", null, "d' e' f", null),
             parse("{ a'' b'' c ,  d'' e'' f }"),
         )
         assertEquals(
-            MessagePartParam("a{} b c", "e d{} f", null),
+            MessagePartParam("a{} b c", null, "e d{} f", null),
             parse("{ a'{} b' c , e 'd{} 'f }"),
         )
     }
@@ -99,13 +99,13 @@ class MessageParserTest {
     fun testParameterQuotes() {
 
         assertEquals(
-            MessagePartParam("2", "foo", StylePartArgument("bar")),
+            MessagePartParam("2", null, "foo", StylePartArgument("bar")),
             parse("{2, foo , 'bar' }"),
         )
 
         assertEquals(
             MessagePartParam(
-                "~",
+                "~", null,
                 "foobar",
                 StylePartList(StylePartArgument("bar"), StylePartArgument("foo"))
             ),
@@ -114,7 +114,7 @@ class MessageParserTest {
 
         assertEquals(
             MessagePartParam(
-                "~",
+                "~", null,
                 "foobar",
                 StylePartList(StylePartArgument(" bar "), StylePartArgument(" foo "))
             ),
@@ -123,7 +123,7 @@ class MessageParserTest {
 
         assertEquals(
             MessagePartParam(
-                "~",
+                "~", null,
                 "foobar",
                 StylePartArgument("bar foo")
             ),
@@ -132,7 +132,7 @@ class MessageParserTest {
 
         assertEquals(
             MessagePartParam(
-                "~",
+                "~", null,
                 "foobar",
                 StylePartList(
                     StylePartArgument(" "),
@@ -145,7 +145,7 @@ class MessageParserTest {
 
         assertEquals(
             MessagePartParam(
-                "~",
+                "~", null,
                 "foobar",
                 StylePartList(
                     StylePartArgument(" "),
@@ -160,7 +160,7 @@ class MessageParserTest {
 
         assertEquals(
             MessagePartParam(
-                "~",
+                "~", null,
                 "foobar",
                 StylePartList(
                     StylePartArgument("'"),
@@ -178,11 +178,11 @@ class MessageParserTest {
     fun testParameterLists() {
         assertEquals(
             MessagePartList(
-                MessagePartParam("0", null, null),
-                MessagePartParam("1", "foo", null),
-                MessagePartParam("2", "foo", StylePartArgument("bar")),
+                MessagePartParam("0", null, null, null),
+                MessagePartParam("1", null, "foo", null),
+                MessagePartParam("2", null, "foo", StylePartArgument("bar")),
                 MessagePartParam(
-                    "~",
+                    "~", null,
                     "foobar",
                     StylePartList(StylePartArgument("bar"), StylePartArgument("foo"))
                 ),
@@ -195,13 +195,13 @@ class MessageParserTest {
     fun testParameterListsInStyle() {
         assertEquals(
             MessagePartParam(
-                "0", "xyz",
+                "0", null, "xyz",
                 StylePartMessage(
                     MessagePartList(
-                        MessagePartParam("1", "foo", null),
-                        MessagePartParam("2", "foo", StylePartArgument("bar")),
+                        MessagePartParam("1", null, "foo", null),
+                        MessagePartParam("2", null, "foo", StylePartArgument("bar")),
                         MessagePartParam(
-                            "~",
+                            "~", null,
                             "foobar",
                             StylePartList(StylePartArgument("bar"), StylePartArgument("foo"))
                         )
@@ -217,14 +217,14 @@ class MessageParserTest {
         assertEquals(
             MessagePartList(
                 MessagePartText("A "),
-                MessagePartParam("0", null, null),
+                MessagePartParam("0", null, null, null),
                 MessagePartText(" b "),
-                MessagePartParam("1", "foo", null),
+                MessagePartParam("1", null, "foo", null),
                 MessagePartText(" c "),
-                MessagePartParam("2", "foo", StylePartArgument("bar")),
+                MessagePartParam("2", null, "foo", StylePartArgument("bar")),
                 MessagePartText(" "),
                 MessagePartParam(
-                    "~",
+                    "~", null,
                     "foobar",
                     StylePartList(StylePartArgument("bar"), StylePartArgument("foo"))
                 ),
@@ -240,17 +240,17 @@ class MessageParserTest {
             MessagePartList(
                 MessagePartText("A "),
                 MessagePartParam(
-                    "0", "xyz",
+                    "0", null, "xyz",
                     StylePartList(
                         StylePartArgument("b"),
                         StylePartMessage(MessagePartText(" foo ")),
                         StylePartArgument("c"),
                         StylePartMessage(
                             MessagePartList(
-                                MessagePartParam("2", "foo", StylePartArgument("bar")),
+                                MessagePartParam("2", null, "foo", StylePartArgument("bar")),
                                 MessagePartText(" "),
                                 MessagePartParam(
-                                    "~", "foobar", StylePartList(
+                                    "~", null, "foobar", StylePartList(
                                         StylePartArgument("bar"),
                                         StylePartArgument("foo"),
                                     )
@@ -272,13 +272,13 @@ class MessageParserTest {
     fun testStyleNested() {
         assertEquals(
             MessagePartParam(
-                "0", "foo",
+                "0", null, "foo",
                 StylePartMessage(
                     MessagePartParam(
-                        "1", "bar",
+                        "1", null, "bar",
                         StylePartMessage(
                             MessagePartParam(
-                                "2", "foobar",
+                                "2", null, "foobar",
                                 StylePartArgument("hi!"),
                             )
                         ),
@@ -292,7 +292,16 @@ class MessageParserTest {
     @Test()
     fun testParameterName() {
         assertEquals(
-            setOf<CharSequence>("a b", "c", "e", "f", "'", "g", "{", "}"),
+            mapOf<CharSequence, CharSequence?>(
+                "a b" to null,
+                "c" to null,
+                "e" to null,
+                "f" to null,
+                "'" to null,
+                "g" to null,
+                "{" to null,
+                "}" to null
+            ),
             getParameterNames("{ a b } { c , d } { e' '} { ' 'f} {''} {' g '} {'{'} {'}'}")
         )
     }
@@ -300,8 +309,49 @@ class MessageParserTest {
     @Test()
     fun testParameterNameComplex() {
         assertEquals(
-            setOf<CharSequence>("0", "1", "2", "3", "4", "5", "6"),
+            mapOf<CharSequence, CharSequence?>(
+                "0" to null,
+                "1" to null,
+                "2" to null,
+                "3" to null,
+                "4" to null,
+                "5" to null,
+                "6" to null
+            ),
             getParameterNames("{0,foo, op1 {{1, bar, {{2, foobar, {{3, zu , {{4}} }} }}  }} op2 {{5, bar3} - {6, foobar3, ' III ' }} }")
+        )
+    }
+
+    @Test()
+    fun testParameterNameWithValueType() {
+        assertEquals(
+            mapOf<CharSequence, CharSequence?>(
+                "a b" to "A B",
+                "c" to "C",
+                "e" to "E",
+                "f" to "F",
+                "'" to "'",
+                "g:G" to "G:g",
+                "{" to "}",
+                "}" to "{"
+            ),
+            getParameterNames("{ a b : A B} { c : C , d : D } { e' ': E' '} { ' 'f: ' 'F} {'':''} {' g:G ': ' G:g '} {'{':'}'} {'}':'{'}")
+        )
+    }
+
+    @Test()
+    fun testParameterNameComplexWithValueClass() {
+        assertEquals(
+            mapOf<CharSequence, CharSequence?>(
+                "0" to "A",
+                "1" to "B",
+                "2" to "C",
+                "3" to "D",
+                "4" to "E",
+                "5" to "F",
+                "6" to "G"
+            ),
+            getParameterNames("{0 :A ,foo, op1 {{1:B, bar, {{2:C, foobar, {{3:D, zu , {{4:E}} }} }}  }} op2 {{5:F, bar3} - {6:G, foobar3, ' III ' }} }")
         )
     }
 
@@ -360,7 +410,7 @@ class MessageParserTest {
             MessagePartList(
                 MessagePartText(" "),
                 MessagePartParam(
-                    "0", "foo",
+                    "0", null, "foo",
                     StylePartArgument(""),
                 )
             ),
@@ -370,7 +420,7 @@ class MessageParserTest {
             MessagePartList(
                 MessagePartText(" "),
                 MessagePartParam(
-                    "0", "foo",
+                    "0", null, "foo",
                     StylePartMessage(MessagePartText("")),
                 )
             ),
@@ -380,7 +430,7 @@ class MessageParserTest {
             MessagePartList(
                 MessagePartText(" "),
                 MessagePartParam(
-                    "0", "foo",
+                    "0", null, "foo",
                     StylePartMessage(MessagePartText(" ")),
                 )
             ),
@@ -390,7 +440,7 @@ class MessageParserTest {
             MessagePartList(
                 MessagePartText(" "),
                 MessagePartParam(
-                    "0", "foo",
+                    "0", null, "foo",
                     StylePartMessage(MessagePartParam("1")),
                 )
             ),
@@ -401,7 +451,7 @@ class MessageParserTest {
             MessagePartList(
                 MessagePartText(" "),
                 MessagePartParam(
-                    "0", "foo",
+                    "0", null, "foo",
                     StylePartMessage(MessagePartParam("1")),
                 )
             ),
@@ -432,17 +482,71 @@ class MessageParserTest {
 
         assertEquals(
             MessagePartParam(
-                "0", "foo",
+                "0", null, "foo",
                 StylePartArgument("}"),
             ),
             parse("{0, foo, '}")
         )
     }
 
-    private fun getParameterNames(message: String): Set<CharSequence> {
-        val names = mutableSetOf<CharSequence>()
+    @Test
+    fun testValueTypesSimple() {
+        assertEquals(
+            MessagePartParam("0", "Int", null, null),
+            parse("{0:Int}"),
+        )
+
+        assertEquals(
+            MessagePartParam("0", null, null, null),
+            parse("{0: }"),
+        )
+
+
+        assertEquals(
+            MessagePartParam("1", "Bool", "foo", null),
+            parse("{1 : Bool, foo }"),
+        )
+
+        assertEquals(
+            MessagePartParam("2", "Short", "foo", StylePartArgument("bar")),
+            parse("{ 2: Short, foo , bar }"),
+        )
+
+        assertEquals(
+            MessagePartParam(
+                "~", "String",
+                "foobar",
+                StylePartList(StylePartArgument("bar"), StylePartArgument("foo"))
+            ),
+            parse("{~ : String , foobar , bar foo }"),
+        )
+    }
+
+    @Test
+    fun testStyleNestedWithTypesClass() {
+        assertEquals(
+            MessagePartParam(
+                "0", "Int", "foo",
+                StylePartMessage(
+                    MessagePartParam(
+                        "1", "Bool", "bar",
+                        StylePartMessage(
+                            MessagePartParam(
+                                "2", "Short", "foobar",
+                                StylePartArgument("hi!"),
+                            )
+                        ),
+                    )
+                ),
+            ),
+            parse("{0:Int,foo, {{1: Bool , bar, {{2 : Short, foobar, hi! }}}} }"),
+        )
+    }
+
+    private fun getParameterNames(message: String): Map<CharSequence, CharSequence?> {
+        val names = mutableListOf<Pair<CharSequence, CharSequence?>>()
         parse(message).fillInParameterNames(names)
-        return names
+        return names.associateBy({ it.first }, { it.second })
     }
 
     private fun parse(message: String): MessagePart {

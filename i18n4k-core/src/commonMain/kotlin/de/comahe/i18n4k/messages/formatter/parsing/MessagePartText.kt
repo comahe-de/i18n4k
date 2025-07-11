@@ -6,7 +6,7 @@ import de.comahe.i18n4k.messages.formatter.MessageParameters
 
 data class MessagePartText(val text: CharSequence) : MessagePart {
 
-    override fun fillInParameterNames(names: MutableSet<CharSequence>) {
+    override fun fillInParameterNames(names: MutableList<Pair<CharSequence, CharSequence?>>) {
     }
 
     override fun format(
