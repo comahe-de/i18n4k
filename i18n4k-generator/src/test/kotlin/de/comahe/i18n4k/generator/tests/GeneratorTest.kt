@@ -28,6 +28,10 @@ internal val expectedGeneratedLanguageFilesDirectory = File("src/test/files/gene
 internal val actualGeneratedSourcesDirectory = File("temp/generated_code")
 internal val actualGeneratedLanguageFilesDirectory = File("temp/generated_text")
 
+internal val valueTypeMapping = mapOf(
+    "AC" to "kotlin.AutoCloseable",
+    "Locale" to "de.comahe.i18n4k.Locale",
+)
 
 class GeneratorTest {
 
@@ -46,6 +50,8 @@ class GeneratorTest {
                 sourceCodeLocales = sourceCodeLocales,
                 messageFormatter = i18n4k.messageFormatter,
                 generationTarget = target,
+                valueTypesEnabled = true,
+                valueTypeMapping = valueTypeMapping,
                 logger = LoggerFactory.getLogger("I18n4k-Processor")
             )
             processor.execute()

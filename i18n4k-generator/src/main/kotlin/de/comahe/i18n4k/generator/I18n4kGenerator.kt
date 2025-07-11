@@ -9,6 +9,8 @@ import com.squareup.kotlinpoet.MemberName
 import com.squareup.kotlinpoet.ParameterSpec
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.PropertySpec
+import com.squareup.kotlinpoet.STAR
+import com.squareup.kotlinpoet.TypeName
 import com.squareup.kotlinpoet.TypeSpec
 import com.squareup.kotlinpoet.asClassName
 import com.squareup.kotlinpoet.asTypeName
@@ -17,24 +19,35 @@ import de.comahe.i18n4k.messages.MessageBundle
 import de.comahe.i18n4k.messages.MessageBundleLocalizedString
 import de.comahe.i18n4k.messages.MessageBundleLocalizedStringFactory1
 import de.comahe.i18n4k.messages.MessageBundleLocalizedStringFactory10
+import de.comahe.i18n4k.messages.MessageBundleLocalizedStringFactory10Typed
+import de.comahe.i18n4k.messages.MessageBundleLocalizedStringFactory1Typed
 import de.comahe.i18n4k.messages.MessageBundleLocalizedStringFactory2
+import de.comahe.i18n4k.messages.MessageBundleLocalizedStringFactory2Typed
 import de.comahe.i18n4k.messages.MessageBundleLocalizedStringFactory3
+import de.comahe.i18n4k.messages.MessageBundleLocalizedStringFactory3Typed
 import de.comahe.i18n4k.messages.MessageBundleLocalizedStringFactory4
+import de.comahe.i18n4k.messages.MessageBundleLocalizedStringFactory4Typed
 import de.comahe.i18n4k.messages.MessageBundleLocalizedStringFactory5
+import de.comahe.i18n4k.messages.MessageBundleLocalizedStringFactory5Typed
 import de.comahe.i18n4k.messages.MessageBundleLocalizedStringFactory6
+import de.comahe.i18n4k.messages.MessageBundleLocalizedStringFactory6Typed
 import de.comahe.i18n4k.messages.MessageBundleLocalizedStringFactory7
+import de.comahe.i18n4k.messages.MessageBundleLocalizedStringFactory7Typed
 import de.comahe.i18n4k.messages.MessageBundleLocalizedStringFactory8
+import de.comahe.i18n4k.messages.MessageBundleLocalizedStringFactory8Typed
 import de.comahe.i18n4k.messages.MessageBundleLocalizedStringFactory9
+import de.comahe.i18n4k.messages.MessageBundleLocalizedStringFactory9Typed
 import de.comahe.i18n4k.messages.MessageBundleLocalizedStringFactoryN
 import de.comahe.i18n4k.messages.NameToIndexMapperNumbersFrom1
 import de.comahe.i18n4k.messages.providers.MessagesProvider
+import de.comahe.i18n4k.strings.LocalizedAttributable
+import de.comahe.i18n4k.strings.LocalizedString
 import de.comahe.i18n4k.toTag
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStreamWriter
 import java.io.Writer
 import java.nio.charset.StandardCharsets
-import kotlin.reflect.KClass
 import com.squareup.kotlinpoet.TypeSpec.Companion as TypeSpec1
 
 /**
@@ -74,7 +87,22 @@ class I18n4kGenerator(
      */
     private var sourceCodeLocales: List<Locale>?,
     /** The target platform for generation */
-    private val generationTarget: GenerationTargetPlatform
+    private val generationTarget: GenerationTargetPlatform,
+
+    /**
+     * Enable usage of generic LocalizedString factories, if the text files contain messages with
+     * parameters with value type declaration.
+     */
+    private var valueTypesEnabled: Boolean,
+
+    /**
+     * Mapping of value type names to fully qualified class names of real classes.
+     *
+     * If null (default), only the default value classes will be applied.
+     *
+     * Only evaluated if [valueTypesEnabled] is true
+     */
+    private var valueTypesMapping: Map<String, String>,
 ) {
 
     /**
@@ -162,47 +190,85 @@ class I18n4kGenerator(
 
         var index = 0
 
-        val paramCountToClass: (Int) -> KClass<*> = {
-            when (it) {
-                0 -> MessageBundleLocalizedString::class
-                1 -> MessageBundleLocalizedStringFactory1::class
-                2 -> MessageBundleLocalizedStringFactory2::class
-                3 -> MessageBundleLocalizedStringFactory3::class
-                4 -> MessageBundleLocalizedStringFactory4::class
-                5 -> MessageBundleLocalizedStringFactory5::class
-                6 -> MessageBundleLocalizedStringFactory6::class
-                7 -> MessageBundleLocalizedStringFactory7::class
-                8 -> MessageBundleLocalizedStringFactory8::class
-                9 -> MessageBundleLocalizedStringFactory9::class
-                10 -> MessageBundleLocalizedStringFactory10::class
-                else -> MessageBundleLocalizedStringFactoryN::class
+        val paramCountToClass: (Int, List<TypeName>) -> TypeName = { paramsCount, paramsTypeNames ->
+            if (paramsCount < 1)
+                MessageBundleLocalizedString::class.asTypeName()
+            else if (paramsCount > 10)
+                MessageBundleLocalizedStringFactoryN::class.asTypeName()
+            else if (paramsTypeNames.isEmpty()) {
+                when (paramsCount) {
+                    1 -> MessageBundleLocalizedStringFactory1::class
+                    2 -> MessageBundleLocalizedStringFactory2::class
+                    3 -> MessageBundleLocalizedStringFactory3::class
+                    4 -> MessageBundleLocalizedStringFactory4::class
+                    5 -> MessageBundleLocalizedStringFactory5::class
+                    6 -> MessageBundleLocalizedStringFactory6::class
+                    7 -> MessageBundleLocalizedStringFactory7::class
+                    8 -> MessageBundleLocalizedStringFactory8::class
+                    9 -> MessageBundleLocalizedStringFactory9::class
+                    10 -> MessageBundleLocalizedStringFactory10::class
+                    else -> throw IllegalStateException()
+                }.asTypeName()
+            } else {
+                when (paramsCount) {
+                    1 -> MessageBundleLocalizedStringFactory1Typed::class
+                    2 -> MessageBundleLocalizedStringFactory2Typed::class
+                    3 -> MessageBundleLocalizedStringFactory3Typed::class
+                    4 -> MessageBundleLocalizedStringFactory4Typed::class
+                    5 -> MessageBundleLocalizedStringFactory5Typed::class
+                    6 -> MessageBundleLocalizedStringFactory6Typed::class
+                    7 -> MessageBundleLocalizedStringFactory7Typed::class
+                    8 -> MessageBundleLocalizedStringFactory8Typed::class
+                    9 -> MessageBundleLocalizedStringFactory9Typed::class
+                    10 -> MessageBundleLocalizedStringFactory10Typed::class
+                    else -> throw IllegalStateException()
+                }.asTypeName().parameterizedBy(paramsTypeNames)
             }
         }
 
         fieldNames.forEach { (key, fieldName) ->
             val params = bundle.getMessageParametersNames(key)
-                .filter { it != "~" }// remove the null token
-                .map { it.toString() }
-                .sortedWith(AlphanumComparator.INSTANCE_ENGLISH)
+                .filter { it.key != "~" }// remove the null token
+                .mapKeys { it.key.toString() }
+                .toSortedMap(AlphanumComparator.INSTANCE_ENGLISH)
+
+            val paramNames = params.keys.toList()
+            // value type. empty for no value types.
+            var paramsTypeNames = listOf<TypeName>()
+            if (valueTypesEnabled) {
+                paramsTypeNames = convertValueTypeToTypeNames(params.values.toList())
+                if (allTypeNamesAreAny(paramsTypeNames))
+                    paramsTypeNames = listOf()
+            }
 
             val paramCount = params.size
             val keyEscaped = key.replace("%", "%%");
-            val property = PropertySpec.builder(fieldName, paramCountToClass(paramCount))
-                .initializer(
-                    when (paramCount) {
-                        0 -> "getLocalizedString0(\"$keyEscaped\", $index)"
-                        in 1..MAX_PARAMETER_LIST_COUNT ->
-                            "getLocalizedStringFactory$paramCount(\"$keyEscaped\", $index" + (
-                                if (isOnlySortedDigitsStartingAt0(params))
-                                    ")"
-                                else if (isOnlySortedDigitsStartingAt1(params))
-                                    ", %T)"
-                                else
-                                    ", ${params.joinToString(", ") { "\"$it\"" }})"
-                                )
-                        else -> "getLocalizedStringFactoryN(\"$keyEscaped\", $index)"
-                    }, NameToIndexMapperNumbersFrom1::class
-                )
+            val property = PropertySpec.builder(fieldName, paramCountToClass(paramCount, paramsTypeNames))
+
+            val initializerArguments = mutableListOf<Any>()
+
+            var genericArgumentsSuffix = ""
+            if (paramsTypeNames.isNotEmpty())
+                genericArgumentsSuffix = "Typed"
+
+            property.initializer(
+                when (paramCount) {
+                    0 -> "getLocalizedString0(\"$keyEscaped\", $index)"
+                    in 1..MAX_PARAMETER_LIST_COUNT ->
+                        "getLocalizedStringFactory$paramCount$genericArgumentsSuffix(\"$keyEscaped\", $index" + (
+                            if (isOnlySortedDigitsStartingAt0(paramNames))
+                                ")"
+                            else if (isOnlySortedDigitsStartingAt1(paramNames)) {
+                                initializerArguments.add(NameToIndexMapperNumbersFrom1::class);
+                                ", %T)"
+                            } else
+                                ", ${paramNames.joinToString(", ") { "\"$it\"" }})"
+
+                            )
+
+                    else -> "getLocalizedStringFactoryN(\"$keyEscaped\", $index)"
+                }, *initializerArguments.toTypedArray()
+            )
             if (generationTarget == GenerationTargetPlatform.JVM
                 || generationTarget == GenerationTargetPlatform.ANDROID
                 || generationTarget == GenerationTargetPlatform.MULTI_PLATFORM
@@ -216,8 +282,14 @@ class I18n4kGenerator(
             }
             if (params.isNotEmpty()) {
                 property.addKdoc("Parameters: \n")
-                for ((paramIndex, param) in params.withIndex())
-                    property.addKdoc("* p$paramIndex: $param\n")
+                for ((paramIndex, param) in params.entries.withIndex()) {
+                    property.addKdoc("* p$paramIndex: ${param.key}")
+                    if (!param.value.isNullOrBlank())
+                        property.addKdoc(" : ${param.value}")
+
+                    property.addKdoc("\n")
+                }
+
             }
 
             messageObject.addProperty(property.build())
@@ -371,6 +443,60 @@ class I18n4kGenerator(
             prevCharacter = character
         }
         return snakeCase.toString()
+    }
+
+    /** Converts the given value type names to [TypeName] */
+    private fun convertValueTypeToTypeNames(valueClassNames: List<CharSequence?>): List<TypeName> {
+        val result = mutableListOf<TypeName>()
+        for (valueTypeName in valueClassNames) {
+            if (valueTypeName == null) {
+                result.add(Any::class.asTypeName())
+                continue
+            }
+            @Suppress("NAME_SHADOWING")
+            var valueTypeName = valueTypeName.toString()
+            valueTypesMapping[valueTypeName]
+                ?.let { valueTypeName = it }
+
+            result.add(
+                when (valueTypeName) {
+                    "bool", "boolean", "Bool", "Boolean" -> Boolean::class.asTypeName()
+                    "byte", "Byte" -> Byte::class.asTypeName()
+                    "short", "Short" -> Short::class.asTypeName()
+                    "int", "Int" -> Int::class.asTypeName()
+                    "long", "Long" -> Long::class.asTypeName()
+                    "float", "Float" -> Float::class.asTypeName()
+                    "double", "Double" -> Double::class.asTypeName()
+                    "number", "Number" -> Number::class.asTypeName()
+                    "char", "Char" -> Char::class.asTypeName()
+                    "string", "String" -> String::class.asTypeName()
+                    "enum", "Enum" -> Enum::class.asTypeName().parameterizedBy(STAR)
+                    "LocalizedAttributable" -> LocalizedAttributable::class.asTypeName()
+                    "LocalizedString" -> LocalizedString::class.asTypeName()
+                    else -> run {
+                        val index = valueTypeName.lastIndexOf(".")
+
+                        if (index > 0)
+                            ClassName(valueTypeName.substring(0, index), valueTypeName.substring(index + 1))
+                        else if (valueTypeName.isNotBlank())
+                            ClassName("", valueTypeName)
+                        else
+                            Any::class.asTypeName()
+                    }
+                }
+            )
+        }
+        return result
+    }
+
+    /** Check if all TypeNames are of type Any. True for empty collections. */
+    private fun allTypeNamesAreAny(typeNames: Collection<TypeName>): Boolean {
+        val anyTypeName = Any::class.asTypeName()
+        for (typeName in typeNames) {
+            if (typeName != anyTypeName)
+                return false
+        }
+        return true
     }
 
     companion object {

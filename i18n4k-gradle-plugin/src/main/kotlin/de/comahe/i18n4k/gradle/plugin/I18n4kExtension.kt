@@ -59,4 +59,20 @@ open class I18n4kExtension {
 
     /** Target platform for generation. Null for automatic detection  */
     var generationTargetPlatform: GenerationTargetPlatform? = null
+
+
+    /**
+     * Enable usage of generic LocalizedString factories, if the text files contain messages with
+     * parameters with value type declaration.
+     */
+    var valueTypesEnabled = true
+
+    /**
+     * Mapping of value type names to fully qualified class/type names of real classes.
+     *
+     * If null (default), only the default value classes will be applied.
+     *
+     * Only evaluated if [valueTypesEnabled] is true
+     */
+    var valueTypeMapping: Map<String, String>? = null
 }

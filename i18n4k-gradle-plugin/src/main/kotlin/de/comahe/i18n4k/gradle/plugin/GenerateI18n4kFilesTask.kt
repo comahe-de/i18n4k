@@ -19,6 +19,7 @@ open class GenerateI18n4kFilesTask : DefaultTask() {
     @Internal
     lateinit var config: I18n4kExtension
 
+    ////////////////////////////////////////////////////////////////////
     // Input parameter from [config] for "UP-TO-DATE" checks
 
     val packageName : String
@@ -40,6 +41,18 @@ open class GenerateI18n4kFilesTask : DefaultTask() {
     val generationTarget  : String
         @Input
         get() = config.generationTargetPlatform?.name ?: "<null>"
+
+    val valueTypesEnabled: Boolean
+        @Input
+        get() = config.valueTypesEnabled
+
+    val valueTypeMapping: Map<String, String>
+        @Input
+        get() = config.valueTypeMapping ?: mapOf("<null>" to "<null>")
+
+
+    // END: Input parameter from [config] for "UP-TO-DATE" checks
+    ////////////////////////////////////////////////////////////////////
 
 
     @InputDirectory

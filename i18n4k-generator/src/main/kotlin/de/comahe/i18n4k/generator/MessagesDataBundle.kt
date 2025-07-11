@@ -42,7 +42,24 @@ class MessagesDataBundle(
                         messageFormatter.getMessageParametersNames(message, locale)
                     }
             }.flatten()
-            .fold(mutableMapOf<CharSequence, CharSequence?>()) { result, current ->
-                result.putAll(current); result
+            .fold(mutableMapOf()) { result, current ->
+                // check if value class is same or null
+                run {
+                    for (pair in current) {
+                        val otherValue = result[pair.first]
+                        if (otherValue != null
+                            && pair.second != null
+                            && otherValue != pair.second
+                        )
+                            throw IllegalStateException(
+                                "Parameters have declared different value types" +
+                                    " - Bundle: $name - Key: $key - Parameter: ${pair.first}" +
+                                    " - Value type 1: $otherValue" +
+                                    " - Value type 2: ${pair.second}"
+                            )
+                        (pair.second ?: otherValue).let { result[pair.first] = it }
+                    }
+                }
+                result
             }
 }

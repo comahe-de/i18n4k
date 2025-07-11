@@ -24,6 +24,8 @@ fun main() {
             sourceCodeLocales = sourceCodeLocales,
             messageFormatter = i18n4k.messageFormatter,
             generationTarget = target,
+            valueTypesEnabled = true,
+            valueTypeMapping = valueTypeMapping,
             logger = LoggerFactory.getLogger("I18n4k-Processor")
         )
         processor.execute()

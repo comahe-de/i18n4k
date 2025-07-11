@@ -19,6 +19,8 @@ class I18n4kProcessor(
     private val sourceCodeLocales: List<Locale>?,
     private val messageFormatter: MessageFormatter,
     private val generationTarget: GenerationTargetPlatform,
+    private var valueTypesEnabled: Boolean,
+    private var valueTypeMapping: Map<String, String>,
     private val logger: org.slf4j.Logger
 
 ) {
@@ -69,7 +71,9 @@ class I18n4kProcessor(
                 bundle = data,
                 commentLocale = commentLocale,
                 sourceCodeLocales = sourceCodeLocales,
-                generationTarget = generationTarget
+                generationTarget = generationTarget,
+                valueTypesEnabled = valueTypesEnabled,
+                valueTypesMapping = valueTypeMapping,
             ).run()
         }
         logger.info("I18n4k - Finished!")

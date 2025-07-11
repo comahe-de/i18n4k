@@ -6,4 +6,10 @@ data class BundleName(
     val packageName: String,
     /** name of the file */
     val name: String
-)
+) {
+    override fun toString(): String {
+        if (packageName.isEmpty())
+            return name
+        return "$packageName.$name"
+    }
+}
