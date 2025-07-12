@@ -1,6 +1,5 @@
 package de.comahe.i18n4k.generator
 
-import de.comahe.i18n4k.Locale
 import de.comahe.i18n4k.config.I18n4kConfigDefault
 import de.comahe.i18n4k.i18n4k
 import de.comahe.i18n4k.messages.formatter.MessageFormatter
@@ -11,16 +10,10 @@ import java.io.File
  * See [I18n4kGenerator] for most parameter descriptions */
 class I18n4kProcessor(
     private val inputDirectory: File,
-    private val generatedSourcesDirectory: File,
-    private val generatedLanguageFilesDirectory: File,
-    private val generatedLanguageFilesDirAndroidRawResourceStyle: Boolean,
     private val packageName: String?,
-    private val commentLocale: Locale?,
-    private val sourceCodeLocales: List<Locale>?,
     private val messageFormatter: MessageFormatter,
-    private val generationTarget: GenerationTargetPlatform,
-    private var valueTypesEnabled: Boolean,
-    private var valueTypeMapping: Map<String, String>,
+    /** General setting for code/file generation */
+    private val generatorSetting: I18n4kGeneratorSettings,
     private val logger: org.slf4j.Logger
 
 ) {
@@ -39,23 +32,23 @@ class I18n4kProcessor(
         logger.info("I18n4k - inputDirectory dir is: {}", inputDirectory.absolutePath)
         logger.info(
             "I18n4k - generatedSourcesDirectory dir is: {}",
-            generatedSourcesDirectory.absolutePath
+            generatorSetting.generatedSourceDir.absolutePath
         )
         logger.info(
             "I18n4k - generatedLanguageFilesDirectory dir is: {}",
-            generatedLanguageFilesDirectory.absolutePath
+            generatorSetting.generatedLanguageFilesDir.absolutePath
         )
         logger.info("I18n4k - packageName is: {}", packageName)
-        logger.info("I18n4k - commentLocale is: {}", commentLocale)
-        logger.info("I18n4k - sourceCodeLocales is: {}", sourceCodeLocales)
-        logger.info("I18n4k - generationTarget is: {}", generationTarget)
+        logger.info("I18n4k - commentLocale is: {}", generatorSetting.commentLocale)
+        logger.info("I18n4k - sourceCodeLocales is: {}", generatorSetting.sourceCodeLocales)
+        logger.info("I18n4k - generationTarget is: {}", generatorSetting.generationTarget)
 
 
         logger.info("I18n4k - Clearing generatedSourcesDirectory...")
-        generatedSourcesDirectory.deleteRecursively()
+        generatorSetting.generatedSourceDir.deleteRecursively()
 
         logger.info("I18n4k - Clearing generatedLanguageFilesDirectory...")
-        generatedLanguageFilesDirectory.deleteRecursively()
+        generatorSetting.generatedLanguageFilesDir.deleteRecursively()
 
         // running...
 
@@ -65,15 +58,8 @@ class I18n4kProcessor(
         bundles.bundles.values.forEach { data ->
             logger.info("I18n4k - Generating code for language bundle: ${data.name}")
             I18n4kGenerator(
-                sourceDir = generatedSourcesDirectory,
-                languageFilesDir = generatedLanguageFilesDirectory,
-                languageFilesDirAndroidRawResourceStyle = generatedLanguageFilesDirAndroidRawResourceStyle,
+                settings = generatorSetting,
                 bundle = data,
-                commentLocale = commentLocale,
-                sourceCodeLocales = sourceCodeLocales,
-                generationTarget = generationTarget,
-                valueTypesEnabled = valueTypesEnabled,
-                valueTypesMapping = valueTypeMapping,
             ).run()
         }
         logger.info("I18n4k - Finished!")

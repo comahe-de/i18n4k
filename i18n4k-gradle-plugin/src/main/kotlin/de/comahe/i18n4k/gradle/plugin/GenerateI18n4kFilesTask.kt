@@ -2,6 +2,7 @@ package de.comahe.i18n4k.gradle.plugin
 
 import de.comahe.i18n4k.forLocaleTag
 import de.comahe.i18n4k.generator.GenerationTargetPlatform
+import de.comahe.i18n4k.generator.I18n4kGeneratorSettings
 import de.comahe.i18n4k.generator.I18n4kProcessor
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
@@ -81,6 +82,9 @@ open class GenerateI18n4kFilesTask : DefaultTask() {
 
     @TaskAction
     fun doIt() {
+        // Should have been initialized in `I18n4kPlugin.apply()`
+        check(config.generationTargetPlatform != null)
+
         var generatedSourcesDirectory = getGeneratedLanguageFilesDirectory()
         val generatedLanguageFilesDirAndroidRawResourceStyle: Boolean
 //        if (config.generationTargetPlatform == GenerationTargetPlatform.COMPOSE_MULTI_PLATFORM) {
@@ -98,14 +102,18 @@ open class GenerateI18n4kFilesTask : DefaultTask() {
 
         val processor = I18n4kProcessor(
             inputDirectory = getInputDirectory(),
-            generatedSourcesDirectory = getGeneratedSourcesDirectory(),
-            generatedLanguageFilesDirectory = generatedSourcesDirectory,
-            generatedLanguageFilesDirAndroidRawResourceStyle = generatedLanguageFilesDirAndroidRawResourceStyle,
             packageName = config.packageName,
-            commentLocale = config.commentLocale?.let { forLocaleTag(it) },
-            sourceCodeLocales = config.sourceCodeLocales?.map { forLocaleTag(it) },
             messageFormatter = config.messageFormatter,
-            generationTarget = config.generationTargetPlatform!!,
+            generatorSetting = I18n4kGeneratorSettings(
+                generatedSourceDir = getGeneratedSourcesDirectory(),
+                generatedLanguageFilesDir = generatedSourcesDirectory,
+                languageFilesDirAndroidRawResourceStyle = generatedLanguageFilesDirAndroidRawResourceStyle,
+                commentLocale = config.commentLocale?.let { forLocaleTag(it) },
+                sourceCodeLocales = config.sourceCodeLocales?.map { forLocaleTag(it) },
+                generationTarget = config.generationTargetPlatform!!,
+                valueTypesEnabled = config.valueTypesEnabled,
+                valueTypesMapping = config.valueTypeMapping ?: mapOf()
+            ),
             logger = logger
         )
         processor.execute()

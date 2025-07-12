@@ -16,16 +16,14 @@ fun main() {
     for (target in GenerationTargetPlatform.entries) {
         val processor = I18n4kProcessor(
             inputDirectory = inputDirectory,
-            generatedSourcesDirectory = File(expectedGeneratedSourcesDirectory, target.name),
-            generatedLanguageFilesDirectory = expectedGeneratedLanguageFilesDirectory,
-            generatedLanguageFilesDirAndroidRawResourceStyle = false,
             packageName = packageName,
-            commentLocale = commentLocale,
-            sourceCodeLocales = sourceCodeLocales,
             messageFormatter = i18n4k.messageFormatter,
-            generationTarget = target,
-            valueTypesEnabled = true,
-            valueTypeMapping = valueTypeMapping,
+            generatorSetting = generatorSetting.copy(
+                generationTarget = target,
+                generatedSourceDir = File(expectedGeneratedSourcesBaseDirectory, target.name),
+                generatedLanguageFilesDir =  expectedGeneratedLanguageFilesDirectory,
+
+                ),
             logger = LoggerFactory.getLogger("I18n4k-Processor")
         )
         processor.execute()

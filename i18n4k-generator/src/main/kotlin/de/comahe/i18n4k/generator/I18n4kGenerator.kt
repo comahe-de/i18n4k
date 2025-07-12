@@ -14,7 +14,6 @@ import com.squareup.kotlinpoet.TypeName
 import com.squareup.kotlinpoet.TypeSpec
 import com.squareup.kotlinpoet.asClassName
 import com.squareup.kotlinpoet.asTypeName
-import de.comahe.i18n4k.Locale
 import de.comahe.i18n4k.messages.MessageBundle
 import de.comahe.i18n4k.messages.MessageBundleLocalizedString
 import de.comahe.i18n4k.messages.MessageBundleLocalizedStringFactory1
@@ -59,50 +58,12 @@ import com.squareup.kotlinpoet.TypeSpec.Companion as TypeSpec1
  */
 class I18n4kGenerator(
     /**
-     * Directory where the generated Kotlin source code file should be
-     * stored
+     * General setting for code/file generation
      */
-    private val sourceDir: File,
-    /**
-     * Directory where the language file with the list of string be
-     * stored
-     */
-    private val languageFilesDir: File,
-    /**
-     * don't use packages but file prefixes, lowercase file names, etc.
-     */
-    private val languageFilesDirAndroidRawResourceStyle: Boolean,
+    private val settings: I18n4kGeneratorSettings,
+
     /** the message bundle the process */
     private val bundle: MessagesDataBundle,
-    /**
-     * Locale which message bundle content should be added as comment.
-     * Null for no comments.
-     */
-    private val commentLocale: Locale?,
-    /**
-     * for this Locales source code will be generated to have the
-     * translations in the Kotlin code without the need to load external
-     * language file at runtime. null for all languages, empty for no
-     * language.
-     */
-    private var sourceCodeLocales: List<Locale>?,
-    /** The target platform for generation */
-    private val generationTarget: GenerationTargetPlatform,
-
-    /**
-     * Enable usage of generic LocalizedString factories, if the text files contain messages with
-     * parameters with value type declaration.
-     */
-    private var valueTypesEnabled: Boolean,
-
-    /**
-     * Mapping of value type names to fully qualified class names of real classes.
-     *
-     * If null (default), only the default value classes will be applied.
-     *
-     * Only evaluated if [valueTypesEnabled] is true
-     */
-    private var valueTypesMapping: Map<String, String>,
 ) {
 
     /**
@@ -157,7 +118,7 @@ class I18n4kGenerator(
     private fun generateLanguageFiles() {
         val fileLanguages =
             bundle.messageDataMap.values.filter {
-                !(sourceCodeLocales?.contains(it.locale) ?: true)
+                !(settings.sourceCodeLocales?.contains(it.locale) ?: true)
             }
         fileLanguages.forEach { generateLocalisationFile(it) }
     }
@@ -165,7 +126,7 @@ class I18n4kGenerator(
     /** generate all Kotlin source code files */
     private fun generateSourceCode() {
         val sourceCodeLanguages =
-            (sourceCodeLocales ?: bundle.messageDataMap.keys)
+            (settings.sourceCodeLocales ?: bundle.messageDataMap.keys)
                 .mapNotNull { bundle.messageDataMap[it] }
 
 
@@ -174,7 +135,7 @@ class I18n4kGenerator(
         file.addType(generateMessagesObject(sourceCodeLanguages))
         sourceCodeLanguages.forEach { file.addType(generateLocalisationObject(it)) }
 
-        file.build().writeTo(sourceDir)
+        file.build().writeTo(settings.generatedSourceDir)
     }
 
 
@@ -235,7 +196,7 @@ class I18n4kGenerator(
             val paramNames = params.keys.toList()
             // value type. empty for no value types.
             var paramsTypeNames = listOf<TypeName>()
-            if (valueTypesEnabled) {
+            if (settings.valueTypesEnabled) {
                 paramsTypeNames = convertValueTypeToTypeNames(params.values.toList())
                 if (allTypeNamesAreAny(paramsTypeNames))
                     paramsTypeNames = listOf()
@@ -269,14 +230,14 @@ class I18n4kGenerator(
                     else -> "getLocalizedStringFactoryN(\"$keyEscaped\", $index)"
                 }, *initializerArguments.toTypedArray()
             )
-            if (generationTarget == GenerationTargetPlatform.JVM
-                || generationTarget == GenerationTargetPlatform.ANDROID
-                || generationTarget == GenerationTargetPlatform.MULTI_PLATFORM
+            if (settings.generationTarget == GenerationTargetPlatform.JVM
+                || settings.generationTarget == GenerationTargetPlatform.ANDROID
+                || settings.generationTarget == GenerationTargetPlatform.MULTI_PLATFORM
             )
                 property.addAnnotation(JvmField::class)
 
-            if (commentLocale != null) {
-                bundle.messageDataMap[commentLocale]?.messages?.get(key)?.let { text ->
+            if (settings.commentLocale != null) {
+                bundle.messageDataMap[settings.commentLocale]?.messages?.get(key)?.let { text ->
                     property.addKdoc(text.replace("%", "%%") + "\n\n")
                 }
             }
@@ -390,17 +351,17 @@ class I18n4kGenerator(
 
     /** generate a I18nk4 language file to be loaded at runtime of the program */
     private fun generateLocalisationFile(messagesData: MessagesData) {
-        languageFilesDir.mkdirs()
+        settings.generatedLanguageFilesDir.mkdirs()
 
-        val file = if (languageFilesDirAndroidRawResourceStyle) {
+        val file = if (settings.languageFilesDirAndroidRawResourceStyle) {
             File(
-                languageFilesDir, convertCamelToSnakeCase(
+                settings.generatedLanguageFilesDir, convertCamelToSnakeCase(
                     bundle.name.packageName.replace(".", "_") + "_" +
                         bundle.name.name + "_" + messagesData.locale.toTag() + "_i18n4k.txt"
                 )
             )
         } else {
-            val dir = File(languageFilesDir, bundle.name.packageName.replace(".", "/"))
+            val dir = File(settings.generatedLanguageFilesDir, bundle.name.packageName.replace(".", "/"))
             dir.mkdirs()
             File(dir, bundle.name.name + "_" + messagesData.locale.toTag() + ".i18n4k.txt")
         }
@@ -455,7 +416,7 @@ class I18n4kGenerator(
             }
             @Suppress("NAME_SHADOWING")
             var valueTypeName = valueTypeName.toString()
-            valueTypesMapping[valueTypeName]
+            settings.valueTypesMapping[valueTypeName]
                 ?.let { valueTypeName = it }
 
             result.add(

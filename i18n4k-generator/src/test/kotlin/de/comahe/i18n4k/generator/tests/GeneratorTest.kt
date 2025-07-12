@@ -3,6 +3,7 @@ package de.comahe.i18n4k.generator.tests
 import de.comahe.i18n4k.Locale
 import de.comahe.i18n4k.forLocaleTag
 import de.comahe.i18n4k.generator.GenerationTargetPlatform
+import de.comahe.i18n4k.generator.I18n4kGeneratorSettings
 import de.comahe.i18n4k.generator.I18n4kProcessor
 import de.comahe.i18n4k.i18n4k
 import org.junit.Assert.assertEquals
@@ -10,27 +11,32 @@ import org.junit.Test
 import org.slf4j.LoggerFactory
 import java.io.File
 
-internal val packageName = null
-internal val commentLocale = Locale("en")
-internal val sourceCodeLocales = listOf(
-    forLocaleTag("en"),
-    forLocaleTag("en_x_attrib_gender"),
-    forLocaleTag("en_US"),
-    forLocaleTag("en_US_texas"),
-    forLocaleTag("de"),
-    forLocaleTag("de_x_attrib_gender"),)
-
 internal val inputDirectory = File("src/test/files/source_text")
-
-internal val expectedGeneratedSourcesDirectory = File("src/test/files/generated_code")
+internal val expectedGeneratedSourcesBaseDirectory = File("src/test/files/generated_code")
 internal val expectedGeneratedLanguageFilesDirectory = File("src/test/files/generated_text")
+internal val generatedSourceBaseDir = File("temp/generated_code")
 
-internal val actualGeneratedSourcesDirectory = File("temp/generated_code")
-internal val actualGeneratedLanguageFilesDirectory = File("temp/generated_text")
+internal val packageName = null
 
-internal val valueTypeMapping = mapOf(
-    "AC" to "kotlin.AutoCloseable",
-    "Locale" to "de.comahe.i18n4k.Locale",
+internal val generatorSetting = I18n4kGeneratorSettings(
+    commentLocale = Locale("en"),
+    sourceCodeLocales = listOf(
+        forLocaleTag("en"),
+        forLocaleTag("en_x_attrib_gender"),
+        forLocaleTag("en_US"),
+        forLocaleTag("en_US_texas"),
+        forLocaleTag("de"),
+        forLocaleTag("de_x_attrib_gender"),
+    ),
+    generatedSourceDir = generatedSourceBaseDir,
+    generatedLanguageFilesDir = File("temp/generated_text"),
+    valueTypesEnabled = true,
+    valueTypesMapping = mapOf(
+        "AC" to "kotlin.AutoCloseable",
+        "Locale" to "de.comahe.i18n4k.Locale",
+    ),
+    languageFilesDirAndroidRawResourceStyle = false,
+    generationTarget = GenerationTargetPlatform.MULTI_PLATFORM,
 )
 
 class GeneratorTest {
@@ -42,27 +48,23 @@ class GeneratorTest {
         for (target in GenerationTargetPlatform.entries) {
             val processor = I18n4kProcessor(
                 inputDirectory = inputDirectory,
-                generatedSourcesDirectory = File(actualGeneratedSourcesDirectory, target.name),
-                generatedLanguageFilesDirectory = actualGeneratedLanguageFilesDirectory,
-                generatedLanguageFilesDirAndroidRawResourceStyle = false,
                 packageName = null,
-                commentLocale = commentLocale,
-                sourceCodeLocales = sourceCodeLocales,
                 messageFormatter = i18n4k.messageFormatter,
-                generationTarget = target,
-                valueTypesEnabled = true,
-                valueTypeMapping = valueTypeMapping,
+                generatorSetting = generatorSetting.copy(
+                    generationTarget = target,
+                    generatedSourceDir = File(generatedSourceBaseDir, target.name)
+                ),
                 logger = LoggerFactory.getLogger("I18n4k-Processor")
             )
             processor.execute()
 
             val actualGeneratedSources =
-                readDirectoryFiles(File(actualGeneratedSourcesDirectory, target.name))
+                readDirectoryFiles(File(generatorSetting.generatedSourceDir, target.name))
             val expectedGeneratedSources =
-                readDirectoryFiles(File(expectedGeneratedSourcesDirectory, target.name))
+                readDirectoryFiles(File(expectedGeneratedSourcesBaseDirectory, target.name))
 
             val actualGeneratedLanguageFiles =
-                readDirectoryFiles(actualGeneratedLanguageFilesDirectory)
+                readDirectoryFiles(generatorSetting.generatedLanguageFilesDir)
             val expectedGeneratedLanguageFiles =
                 readDirectoryFiles(expectedGeneratedLanguageFilesDirectory)
 
