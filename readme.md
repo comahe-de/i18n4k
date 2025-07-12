@@ -247,16 +247,27 @@ See [here](https://github.com/comahe-de/i18n4k/issues/25#issuecomment-1263426934
 The [default message format](./i18n4k-core/src/commonMain/kotlin/de/comahe/i18n4k/messages/formatter/MessageFormatterDefault.kt)
 is similar to the [Java-MessageFormat](https://docs.oracle.com/javase/8/docs/api/java/text/MessageFormat.html) 
 or the [ICU-MessageFormat](https://unicode-org.github.io/icu/userguide/format_parse/messages/).
-E.g. the text "Hello, {0}" has one parameter.
-Any string can be used as parameter name.
+E.g. the text `Hello, {0}` has one parameter.
+Any string can be used as a parameter name.
+This means, meaningfully names can be used instead of numbers,
+e.g. `Hello {name}! Welcome to {location}`
 
 The parameter values can also be formatted,
-e.g. "{0,number, %.2}" formats parameter 0 as number with max. 2 fraction digits.
+e.g. `{0,number, %.2}` formats parameter `0` as number with max. 2 fraction digits.
+Or e.g. `There {count, plural, one {is} other {are} } {count} {count, plural, one {bag} other {bags}}.`
+formats the message with the correct plural case based on the given count.  
 See [Formatters](./doc/formatters/index.adoc) for more information.
 
 For messages with parameters, the generator plugin 
 creates special [LocalizedStringFactories](./i18n4k-core/src/commonMain/kotlin/de/comahe/i18n4k/strings/LocalizedStringFactories.kt)
 where the parameters must be supplied as arguments to get the resulting string.
+
+Parameters may also have a value type declaration,
+e.g. `You have {0:int} unread messages`
+If a type is declared, a generically typed LocalizedStringFactory will be used by the code generator,
+which increases the type-safety. 
+
+See [Parameters](./doc/parameters.adoc) for more information about parameters.
 
 Other message formatters can be implemented and be configured in 
 [I18n4kConfig](./i18n4k-core/src/commonMain/kotlin/de/comahe/i18n4k/config/I18n4kConfig.kt)`.messageFormatter`

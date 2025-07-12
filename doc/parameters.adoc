@@ -8,7 +8,7 @@ where `{0}`  and `{1}` are the parameters in the message.
 
 Each parameter is enclosed in curly braces.
 The text inside the curly braces is the name of the parameter.
-The name may contain any character,
+The name may contain any character (not just numbers),
 but reserved characters in the name need to be xref:escaping.adoc[escaped].
 Leading and tailing whitespaces of the name are trimmed.
 Inside the curly braces, xref:formatters/index.adoc[additional formatting options] can be specified.
@@ -19,15 +19,53 @@ where the string value of the specified locale will be used.
 A parameter may be used several times inside the message string,
 e.g. `This is {name}. I like {name}!`
 
-=== LocalizedStringFactory* for paramters
+=== LocalizedStringFactory* for parameters
 
 Depending on the count of different parameters of a message,
-the source code generator generates a `LocalizedStringFactory*`  for the message
+the source code generator uses a `LocalizedStringFactory*`  for the message
 with the corresponding count of parameters.
-This works with up to 10 parameters,
+
+The generated code contains documentation, which parameter name in the message
+refers to which parameter of the LocalizedStringFactory.
+
+Parameters may also have a value type declaration,
+e.g. `You have {0:int} unread messages`
+If a type is declared,
+a generic `LocalizedStringFactory*Typed`  will be used by the code generator.
+The following types are supported by default:
+
+* "bool", "boolean", "Bool", "Boolean" -> Boolean
+* "byte", "Byte" -> Byte
+* "short", "Short" -> Short
+* "int", "Int" -> Int
+* "long", "Long" -> Long
+* "float", "Float" -> Float
+* "double", "Double" -> Double
+* "number", "Number" -> Number
+* "char", "Char" -> Char
+* "string", "String" -> String
+* "enum", "Enum" -> Enum.parameterizedBy(STAR)
+* "LocalizedAttributable" -> de.comahe.i18n4k.strings.LocalizedAttributable
+* "LocalizedString" -> de.comahe.i18n4k.strings.LocalizedString
+
+The fully qualified type name can also be used are type declaration,
+e.g. `This {0:org.example.MyType} is super`.
+
+Shortcuts to user defined types can be declared in the generator plugin configuration:
+
+[source, kotlin]
+----
+i18n4k {
+    valueTypeMapping = mapof("mt" to "org.example.MyType", "mc" to "org.example.MyClass")
+}
+----
+
+… and then it can be used like this: `This {0:mt} is super`.
+
+All this above works with up to 10 parameters,
 e.g. `LocalizedStringFactory1`, `LocalizedStringFactory2` and so on.
 
-The `String` or `LocalizedString` can than be retrieved
+The `String` or `LocalizedString` can then be retrieved
 using the `invoke` or the `get` operator function.
 The code generator also generates a comment
 where the name of the message parameter is mapped to the corresponding function parameter.
@@ -37,7 +75,7 @@ E.g.
 [source, kotlin]
 ----
 val myString : String =
-    MyMessageBundle.myMessage("abc", "def)
+    MyMessageBundle.myMessage("abc", "def")
 val myLocalizedString : LocalizedString =
     MyMessageBundle.myMessage["abc", "def"]
 ----
