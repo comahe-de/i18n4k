@@ -3,7 +3,7 @@ version = "1.0.0-SNAPSHOT"
 
 plugins {
     kotlin("jvm") version "2.0.21"
-    id("de.comahe.i18n4k") version "0.10.0"
+    id("de.comahe.i18n4k") version "0.11.0-SNAPSHOT"
 }
 
 // ####################################
@@ -35,8 +35,8 @@ repositories {
 }
 
 dependencies {
-    implementation("de.comahe.i18n4k:i18n4k-core-jvm:0.10.0")
-    implementation("de.comahe.i18n4k:i18n4k-cldr-plural-rules:0.10.0")
+    implementation("de.comahe.i18n4k:i18n4k-core-jvm:0.11.0-SNAPSHOT")
+    implementation("de.comahe.i18n4k:i18n4k-cldr-plural-rules:0.11.0-SNAPSHOT")
 
     implementation("com.miglayout:miglayout-swing:5.2")
     implementation(kotlin("stdlib-jdk8"))

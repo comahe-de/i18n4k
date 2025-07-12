@@ -6,5 +6,5 @@ plugins {
     alias(libs.plugins.androidLibrary) apply false
     alias(libs.plugins.kotlinMultiplatform) apply false
     alias(libs.plugins.pluginCompose) apply false
-    id("de.comahe.i18n4k") version "0.10.0" apply false
+    id("de.comahe.i18n4k") version "0.11.0-SNAPSHOT" apply false
 }
