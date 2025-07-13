@@ -15,6 +15,7 @@ dependencies {
 
     testImplementation(libs.logbackClassic)
     testImplementation(libs.junit)
+    testImplementation(libs.kotlinCompileTesting)
 }
 
 java {

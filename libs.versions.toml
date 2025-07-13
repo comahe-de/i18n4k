@@ -18,6 +18,9 @@ slf4j = "1.7.36"
 logback = "1.2.11"
 # https://junit.org/junit4/
 junit = "4.13.2"
+# https://github.com/ZacSweers/kotlin-compile-testing
+# TODO: update to 0.8.0
+kotlinCompileTesting = "0.6.0"
 #https://developer.android.com/jetpack/androidx/releases/core
 androidXcore = "1.15.0"
 
@@ -50,7 +53,7 @@ slf4jApi = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
 logbackClassic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 junit = { module = "junit:junit", version.ref = "junit" }
 androidxCoreKtx = { module = "androidx.core:core-ktx", version.ref = "androidXcore" }
-
+kotlinCompileTesting = { module = "dev.zacsweers.kctfork:core", version.ref = "kotlinCompileTesting" }
 
 [plugins]
 
