@@ -1,5 +1,6 @@
 [versions]
-compose = "1.7.0"
+# https://github.com/JetBrains/compose-multiplatform/releases
+compose = "1.8.2"
 agp = "8.7.3"
 android-minSdk = "24"
 android-compileSdk = "35"
@@ -11,7 +12,7 @@ androidx-material = "1.10.0"
 androidx-constraintlayout = "2.1.4"
 androidx-test-junit = "1.1.5"
 androidx-espresso-core = "3.5.1"
-kotlin = "2.0.21"
+kotlin = "2.2.0"
 junit = "4.13.2"
 
 [libraries]

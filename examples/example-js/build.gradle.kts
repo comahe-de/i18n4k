@@ -2,7 +2,7 @@ group = "examples"
 version = "1.0.0-SNAPSHOT"
 
 plugins {
-    kotlin("js") version "2.0.21"
+    kotlin("js") version "2.2.0"
     id("de.comahe.i18n4k") version "0.11.0-SNAPSHOT"
 }
 

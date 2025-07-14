@@ -4,7 +4,6 @@ import de.comahe.i18n4k.generator.GenerationTargetPlatform
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.file.SourceDirectorySet
-import org.gradle.api.plugins.ExtensionAware
 import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.SourceSetContainer
 import org.gradle.api.tasks.compile.JavaCompile
@@ -87,7 +86,7 @@ open class I18n4kPlugin : Plugin<Project> {
     /** defines the task for this plugin */
     private fun defineTasks(project: Project) {
         // generateI18nSources task
-        project.tasks.create(
+        project.tasks.register(
             GENERATE_I18N_SOURCES_TASK_NAME,
             GenerateI18n4kFilesTask::class.java
         )
@@ -98,7 +97,7 @@ open class I18n4kPlugin : Plugin<Project> {
         }
 
         // clearI18nSources task
-        project.tasks.create(
+        project.tasks.register(
             CLEAR_I18N_SOURCES_TASK_NAME,
             ClearI18n4kFilesTask::class.java
         )
@@ -123,7 +122,6 @@ open class I18n4kPlugin : Plugin<Project> {
             .configureEach { it.dependsOn(GENERATE_I18N_SOURCES_TASK_NAME) }
 
         // Resource processing for normal projects
-        @Suppress("UnstableApiUsage")
         project.tasks.withType(ProcessResources::class.java)
             .configureEach { it.dependsOn(GENERATE_I18N_SOURCES_TASK_NAME) }
 

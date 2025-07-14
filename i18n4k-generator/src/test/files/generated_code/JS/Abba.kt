@@ -68,8 +68,7 @@ public object Abba : MessageBundle("Abba", "") {
       getLocalizedStringFactory4("different-names", 3, "1", "2", "a", "b")
 
   /**
-   * {0} has forgotten {1, select, female {her} other {his} } {3, select, one {bag} other {{2}
-   * bags}}.
+   * {0} has forgotten {1, select, female {her} other {his} } {3, select, one {bag} other {{2} bags}}.
    *
    * Parameters: 
    * * p0: 0
@@ -105,19 +104,10 @@ public object Abba : MessageBundle("Abba", "") {
   public val Hello_World_: MessageBundleLocalizedString = getLocalizedString0("Hello World!", 7)
 
   /**
-   * Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Phasellus faucibus molestie nisl.
-   * Mauris suscipit, ligula sit amet pharetra semper, nibh ante cursus purus, vel sagittis velit
-   * mauris vel metus. Pellentesque ipsum. Integer malesuada. Fusce wisi. Nullam dapibus fermentum
-   * ipsum. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-   * commodo consequat. Integer rutrum, orci vestibulum ullamcorper ultricies, lacus quam ultricies
-   * odio, vitae placerat pede sem sit amet enim. Quisque tincidunt scelerisque libero. Etiam posuere
-   * lacus quis dolor. In laoreet, magna id viverra tincidunt, sem odio bibendum justo, vel imperdiet
-   * sapien wisi sed libero. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet,
-   * consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore
-   * magnam aliquam quaerat voluptatem. Pellentesque sapien.
+   * Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Phasellus faucibus molestie nisl. Mauris suscipit, ligula sit amet pharetra semper, nibh ante cursus purus, vel sagittis velit mauris vel metus. Pellentesque ipsum. Integer malesuada. Fusce wisi. Nullam dapibus fermentum ipsum. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Integer rutrum, orci vestibulum ullamcorper ultricies, lacus quam ultricies odio, vitae placerat pede sem sit amet enim. Quisque tincidunt scelerisque libero. Etiam posuere lacus quis dolor. In laoreet, magna id viverra tincidunt, sem odio bibendum justo, vel imperdiet sapien wisi sed libero. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Pellentesque sapien.
    */
-  public val longTextExample: MessageBundleLocalizedString = getLocalizedString0("longTextExample",
-      8)
+  public val longTextExample: MessageBundleLocalizedString =
+      getLocalizedString0("longTextExample", 8)
 
   /**
    * 3rd value: {2}
@@ -144,8 +134,7 @@ public object Abba : MessageBundle("Abba", "") {
    * * p9: b
    */
   public val mixed_named_parameters: MessageBundleLocalizedStringFactory10 =
-      getLocalizedStringFactory10("mixed-named-parameters", 10, "0", "0a", "0z", "1", "1abc", "a",
-      "a1", "a9", "a10", "b")
+      getLocalizedStringFactory10("mixed-named-parameters", 10, "0", "0a", "0z", "1", "1abc", "a", "a1", "a9", "a10", "b")
 
   /**
    * En: A-{0a}, B-{12z}, C-{9zb}, D-{21z}, F-{21a}, D-{9za}
@@ -159,8 +148,7 @@ public object Abba : MessageBundle("Abba", "") {
    * * p5: 21z
    */
   public val mixed_named_parameters2: MessageBundleLocalizedStringFactory6 =
-      getLocalizedStringFactory6("mixed-named-parameters2", 11, "0a", "9za", "9zb", "12z", "21a",
-      "21z")
+      getLocalizedStringFactory6("mixed-named-parameters2", 11, "0a", "9za", "9zb", "12z", "21a", "21z")
 
   /**
    * En: A-{a0}, B-{a12}, C-{a9}, D-{a21}, F-{b1}, D-{b01}
@@ -174,8 +162,7 @@ public object Abba : MessageBundle("Abba", "") {
    * * p5: b01
    */
   public val mixed_named_parameters3: MessageBundleLocalizedStringFactory6 =
-      getLocalizedStringFactory6("mixed-named-parameters3", 12, "a0", "a9", "a12", "a21", "b1",
-      "b01")
+      getLocalizedStringFactory6("mixed-named-parameters3", 12, "a0", "a9", "a12", "a21", "b1", "b01")
 
   /**
    * I ^
@@ -198,8 +185,7 @@ public object Abba : MessageBundle("Abba", "") {
       getLocalizedStringFactory3("named-parameters", 14, "a", "abc", "z")
 
   /**
-   * En: {0, select, a {{1, select, x {{4}} other {{5}} }} b {{2, select, y {{6}} other {{7}} }}
-   * other {{3, select, z {{8}} other {{9}} }} }!
+   * En: {0, select, a {{1, select, x {{4}} other {{5}} }} b {{2, select, y {{6}} other {{7}} }} other {{3, select, z {{8}} other {{9}} }} }!
    *
    * Parameters: 
    * * p0: 0
@@ -228,8 +214,8 @@ public object Abba : MessageBundle("Abba", "") {
    * Parameters: 
    * * p0: 0
    */
-  public val param_1: MessageBundleLocalizedStringFactory1 = getLocalizedStringFactory1("param_1",
-      17)
+  public val param_1: MessageBundleLocalizedStringFactory1 =
+      getLocalizedStringFactory1("param_1", 17)
 
   /**
    * En - Parameter 2: {0},{1}
@@ -238,8 +224,8 @@ public object Abba : MessageBundle("Abba", "") {
    * * p0: 0
    * * p1: 1
    */
-  public val param_2: MessageBundleLocalizedStringFactory2 = getLocalizedStringFactory2("param_2",
-      18)
+  public val param_2: MessageBundleLocalizedStringFactory2 =
+      getLocalizedStringFactory2("param_2", 18)
 
   /**
    * En - Parameter 3: {0},{1},{2}
@@ -249,8 +235,8 @@ public object Abba : MessageBundle("Abba", "") {
    * * p1: 1
    * * p2: 2
    */
-  public val param_3: MessageBundleLocalizedStringFactory3 = getLocalizedStringFactory3("param_3",
-      19)
+  public val param_3: MessageBundleLocalizedStringFactory3 =
+      getLocalizedStringFactory3("param_3", 19)
 
   /**
    * En - Parameter 4: {0},{1},{2},{3}
@@ -261,8 +247,8 @@ public object Abba : MessageBundle("Abba", "") {
    * * p2: 2
    * * p3: 3
    */
-  public val param_4: MessageBundleLocalizedStringFactory4 = getLocalizedStringFactory4("param_4",
-      20)
+  public val param_4: MessageBundleLocalizedStringFactory4 =
+      getLocalizedStringFactory4("param_4", 20)
 
   /**
    * En - Parameter {1},{2},{3},{4}
@@ -298,8 +284,8 @@ public object Abba : MessageBundle("Abba", "") {
    * * p3: 3
    * * p4: 4
    */
-  public val param_5: MessageBundleLocalizedStringFactory5 = getLocalizedStringFactory5("param_5",
-      23)
+  public val param_5: MessageBundleLocalizedStringFactory5 =
+      getLocalizedStringFactory5("param_5", 23)
 
   /**
    * En - Parameter 6: {0},{1},{2},{3},{4},{5}
@@ -312,8 +298,8 @@ public object Abba : MessageBundle("Abba", "") {
    * * p4: 4
    * * p5: 5
    */
-  public val param_6: MessageBundleLocalizedStringFactory6 = getLocalizedStringFactory6("param_6",
-      24)
+  public val param_6: MessageBundleLocalizedStringFactory6 =
+      getLocalizedStringFactory6("param_6", 24)
 
   /**
    * En - Parameter 7: {0},{1},{2},{3},{4},{5},{6}
@@ -327,8 +313,8 @@ public object Abba : MessageBundle("Abba", "") {
    * * p5: 5
    * * p6: 6
    */
-  public val param_7: MessageBundleLocalizedStringFactory7 = getLocalizedStringFactory7("param_7",
-      25)
+  public val param_7: MessageBundleLocalizedStringFactory7 =
+      getLocalizedStringFactory7("param_7", 25)
 
   /**
    * En - Parameter 8: {0},{1},{2},{3},{4},{5},{6},{7}
@@ -343,8 +329,8 @@ public object Abba : MessageBundle("Abba", "") {
    * * p6: 6
    * * p7: 7
    */
-  public val param_8: MessageBundleLocalizedStringFactory8 = getLocalizedStringFactory8("param_8",
-      26)
+  public val param_8: MessageBundleLocalizedStringFactory8 =
+      getLocalizedStringFactory8("param_8", 26)
 
   /**
    * En - Parameter 9: {0},{1},{2},{3},{4},{5},{6},{7},{8}
@@ -360,8 +346,8 @@ public object Abba : MessageBundle("Abba", "") {
    * * p7: 7
    * * p8: 8
    */
-  public val param_9: MessageBundleLocalizedStringFactory9 = getLocalizedStringFactory9("param_9",
-      27)
+  public val param_9: MessageBundleLocalizedStringFactory9 =
+      getLocalizedStringFactory9("param_9", 27)
 
   /**
    * En - Parameter 10: {0},{1},{2},{3},{4},{5},{6},{7},{8},{9}
@@ -415,8 +401,7 @@ public object Abba : MessageBundle("Abba", "") {
    * * p9: 12
    */
   public val param_10_startAt3: MessageBundleLocalizedStringFactory10 =
-      getLocalizedStringFactory10("param_10_startAt3", 30, "3", "4", "5", "6", "7", "8", "9", "10",
-      "11", "12")
+      getLocalizedStringFactory10("param_10_startAt3", 30, "3", "4", "5", "6", "7", "8", "9", "10", "11", "12")
 
   /**
    * En - Parameter 11: {0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10}
@@ -434,8 +419,8 @@ public object Abba : MessageBundle("Abba", "") {
    * * p9: 9
    * * p10: 10
    */
-  public val param_11: MessageBundleLocalizedStringFactoryN = getLocalizedStringFactoryN("param_11",
-      31)
+  public val param_11: MessageBundleLocalizedStringFactoryN =
+      getLocalizedStringFactoryN("param_11", 31)
 
   /**
    * En - Parameter 12: {0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11}
@@ -454,12 +439,11 @@ public object Abba : MessageBundle("Abba", "") {
    * * p10: 10
    * * p11: 11
    */
-  public val param_12: MessageBundleLocalizedStringFactoryN = getLocalizedStringFactoryN("param_12",
-      32)
+  public val param_12: MessageBundleLocalizedStringFactoryN =
+      getLocalizedStringFactoryN("param_12", 32)
 
   /**
-   * En - Value types (1): {0:bool}, {1: boolean}, {2:byte}, {3 : short}, { 4 :int}, {5:long},
-   * {6:float}, {7:double}, {8:char}, {9:string}
+   * En - Value types (1): {0:bool}, {1: boolean}, {2:byte}, {3 : short}, { 4 :int}, {5:long}, {6:float}, {7:double}, {8:char}, {9:string}
    *
    * Parameters: 
    * * p0: 0 : bool
@@ -478,8 +462,7 @@ public object Abba : MessageBundle("Abba", "") {
       = getLocalizedStringFactory10Typed("param_with_value_types_1", 33)
 
   /**
-   * En - Value types (2): {A:number}, {B: enum}, {C:kotlin.text.StringBuilder}, {D:
-   * LocalizedAttributable}, {E:LocalizedString}, {F:Locale}, {G:AC}, {H}
+   * En - Value types (2): {A:number}, {B: enum}, {C:kotlin.text.StringBuilder}, {D: LocalizedAttributable}, {E:LocalizedString}, {F:Locale}, {G:AC}, {H}
    *
    * Parameters: 
    * * p0: A : number
@@ -493,8 +476,8 @@ public object Abba : MessageBundle("Abba", "") {
    */
   public val param_with_value_types_2:
       MessageBundleLocalizedStringFactory8Typed<Number, Enum<*>, StringBuilder, LocalizedAttributable, LocalizedString, Locale, AutoCloseable, Any>
-      = getLocalizedStringFactory8Typed("param_with_value_types_2", 34, "A", "B", "C", "D", "E",
-      "F", "G", "H")
+      =
+      getLocalizedStringFactory8Typed("param_with_value_types_2", 34, "A", "B", "C", "D", "E", "F", "G", "H")
 
   /**
    * This '{0}' is not a parameter because of the '' characters around it.
@@ -518,14 +501,7 @@ public object Abba : MessageBundle("Abba", "") {
     registerTranslation(Abba_de)
   }
   init {
-    registerMessageBundleEntries(_Special_Key_, _Special__S_P_T_M_N_L_Key2_, _1_number_key,
-        different_names, forgotten_bags, format_pattern, format_pattern2, Hello_World_,
-        longTextExample, max_param_3, mixed_named_parameters, mixed_named_parameters2,
-        mixed_named_parameters3, Multi_Line_Value, named_parameters, nested_parameter,
-        no_all_have_translations, param_1, param_2, param_3, param_4, param_4_startAt1,
-        param_4_startAt3, param_5, param_6, param_7, param_8, param_9, param_10, param_10_startAt1,
-        param_10_startAt3, param_11, param_12, param_with_value_types_1, param_with_value_types_2,
-        single_quotes, special_value, utf_8_value)
+    registerMessageBundleEntries(_Special_Key_, _Special__S_P_T_M_N_L_Key2_, _1_number_key, different_names, forgotten_bags, format_pattern, format_pattern2, Hello_World_, longTextExample, max_param_3, mixed_named_parameters, mixed_named_parameters2, mixed_named_parameters3, Multi_Line_Value, named_parameters, nested_parameter, no_all_have_translations, param_1, param_2, param_3, param_4, param_4_startAt1, param_4_startAt3, param_5, param_6, param_7, param_8, param_9, param_10, param_10_startAt1, param_10_startAt3, param_11, param_12, param_with_value_types_1, param_with_value_types_2, single_quotes, special_value, utf_8_value)
   }
 }
 

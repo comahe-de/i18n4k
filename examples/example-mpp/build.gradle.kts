@@ -1,9 +1,11 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 group = "examples"
 version = "1.0.0-SNAPSHOT"
 
 
 plugins {
-    kotlin("multiplatform") version "2.0.21"
+    kotlin("multiplatform") version "2.2.0"
     id("de.comahe.i18n4k") version "0.11.0-SNAPSHOT"
 }
 
@@ -19,9 +21,10 @@ i18n4k {
 
 kotlin {
     jvm {
-        compilations.all {
-            kotlinOptions.jvmTarget = "1.8"
+        compilerOptions {
+            jvmTarget = JvmTarget.JVM_1_8
         }
+
         testRuns["test"].executionTask.configure {
             useJUnit()
         }
