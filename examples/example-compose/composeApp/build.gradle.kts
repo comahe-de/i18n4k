@@ -13,6 +13,8 @@ plugins {
 i18n4k {
     sourceCodeLocales =
         listOf("en", "en_US", "de", "de_x_attr_gender", "de_x_attr_decl_genitive", "en_x_attr_gender", "x_attr_emoji")
+    // Add "LS" as shortcut for LocalizedString class
+    valueTypeMapping = mapOf("LS" to "de.comahe.i18n4k.strings.LocalizedString")
     // Create the resource files inside the compose resources folder for files
     // Hint: Compose resources plugin currently does not support multiple directories for one source-set.
     //       Therefore, the I18n4k-Plugin cannot add generated folder to the resources!

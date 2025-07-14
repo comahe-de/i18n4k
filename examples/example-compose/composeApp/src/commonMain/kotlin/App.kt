@@ -171,8 +171,8 @@ fun AppContent() {
         }
 
         Text(Actions.change_shape(selectedThing))
-        Text(Actions.shape_count(countOfShapes, selectedThing))
-        Text(Actions.shape_order(ordinalOfShape, selectedThing))
+        Text(Actions.shape_count(countOfShapes.toIntOrNull() ?: 0, selectedThing))
+        Text(Actions.shape_order(ordinalOfShape.toIntOrNull() ?: 0, selectedThing))
         Text(Actions.attr_value(selectedThing))
         Text(Actions.attr_select(selectedThing))
 
