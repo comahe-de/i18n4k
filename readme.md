@@ -18,7 +18,7 @@ _Internationalization for Kotlin_
 
 **Home:** [github.com/comahe-de/i18n4k](https://github.com/comahe-de/i18n4k)
 
-**Lastest release version:** 0.10.0
+**Lastest release version:** 0.11.0
 
 **Table of contents**
 
@@ -105,7 +105,7 @@ repositories {
 ```kotlin
 val commonMain by getting {
     dependencies {
-        implementation("de.comahe.i18n4k:i18n4k-core:0.10.0")
+        implementation("de.comahe.i18n4k:i18n4k-core:0.11.0")
     }
 }
 ```
@@ -114,7 +114,7 @@ val commonMain by getting {
 
 ```kotlin
 dependencies {
-    implementation("de.comahe.i18n4k:i18n4k-core-js:0.10.0")
+    implementation("de.comahe.i18n4k:i18n4k-core-js:0.11.0")
 }
 ```
 
@@ -122,7 +122,7 @@ dependencies {
 
 ```kotlin
 dependencies {
-    implementation("de.comahe.i18n4k:i18n4k-core-jvm:0.10.0")
+    implementation("de.comahe.i18n4k:i18n4k-core-jvm:0.11.0")
 }
 ```
 
@@ -130,7 +130,7 @@ dependencies {
 
 ```kotlin
 dependencies {
-    implementation("de.comahe.i18n4k:i18n4k-core-android:0.10.0")
+    implementation("de.comahe.i18n4k:i18n4k-core-android:0.11.0")
 }
 ```
 
@@ -140,7 +140,7 @@ Apply the plugin "de.comahe.i18n4k", e.g:
 
 ```kotlin
 plugins {
-    id("de.comahe.i18n4k") version "0.10.0"
+    id("de.comahe.i18n4k") version "0.11.0"
 }
 ```
 
@@ -263,7 +263,7 @@ creates special [LocalizedStringFactories](./i18n4k-core/src/commonMain/kotlin/d
 where the parameters must be supplied as arguments to get the resulting string.
 
 Parameters may also have a value type declaration,
-e.g. `You have {0:int} unread messages`
+e.g. `You have {0:int} unread messages`.
 If a type is declared, a generically typed LocalizedStringFactory will be used by the code generator,
 which increases the type-safety. 
 
@@ -273,7 +273,7 @@ Other message formatters can be implemented and be configured in
 [I18n4kConfig](./i18n4k-core/src/commonMain/kotlin/de/comahe/i18n4k/config/I18n4kConfig.kt)`.messageFormatter`
 
 The escape character is `'`. 
-It’s recommended to use the real apostrophe character ’ (U+2019) for human-readable text 
+It’s recommended to use the real apostrophe character `’` (U+2019) for human-readable text 
 and the ASCII apostrophe `'` (U+0027) for program syntax (escaping or quoting).
 See [here](./doc/escaping.adoc) for more information.
 
@@ -399,7 +399,7 @@ i18n4k = i18n4kConfig
 i18n4kConfig.locale = Locale("de")
 ```
 
-Afterwards the expression from above prints
+Afterward, the expression from above prints
 
 ```
 Hallo, i18n4k!
@@ -439,10 +439,11 @@ very welcome.
 
 [badge-apache2.0]:https://img.shields.io/badge/License-Apache/2.0-blue.svg?style=flat
 
-[badge-version]:https://img.shields.io/badge/version-0.10.0-blueviolet?style=flat
+[badge-version]:https://img.shields.io/badge/version-0.11.0-blueviolet?style=flat
 
 [badge-maven]:https://img.shields.io/badge/Maven-Central-6262EC?style=flat
 
-[badge-kotlin]:https://img.shields.io/badge/Kotlin-2.0.21-orange?style=flat
+[badge-kotlin]:https://img.shields.io/badge/Kotlin-2.2.0-orange?style=flat
 
-[badge-gradle]:https://img.shields.io/badge/Gradle-8.10.2-1DA2BD?style=flat
+[badge-gradle]:https://img.shields.io/badge/Gradle-8.14.3-1DA2BD?style=flat
+
