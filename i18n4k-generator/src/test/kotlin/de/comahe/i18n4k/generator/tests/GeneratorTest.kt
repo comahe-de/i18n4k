@@ -37,6 +37,7 @@ internal val generatorSetting = I18n4kGeneratorSettings(
     ),
     languageFilesDirAndroidRawResourceStyle = false,
     generationTarget = GenerationTargetPlatform.MULTI_PLATFORM,
+    enableJsExportAnnotation = false,
 )
 
 class GeneratorTest {

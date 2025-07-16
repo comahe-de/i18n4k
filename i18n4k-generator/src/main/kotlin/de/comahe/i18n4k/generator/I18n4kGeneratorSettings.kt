@@ -26,7 +26,7 @@ data class I18n4kGeneratorSettings(
      * without the need to load external language file at runtime. null for all languages, empty for
      * no language.
      */
-    var sourceCodeLocales: List<Locale>?,
+    val sourceCodeLocales: List<Locale>?,
 
     /** The target platform for generation */
     val generationTarget: GenerationTargetPlatform,
@@ -35,7 +35,7 @@ data class I18n4kGeneratorSettings(
      * Enable usage of generic LocalizedString factories, if the text files contain messages with
      * parameters with value type declaration.
      */
-    var valueTypesEnabled: Boolean,
+    val valueTypesEnabled: Boolean,
 
     /**
      * Mapping of value type names to fully qualified class names of real classes.
@@ -44,5 +44,8 @@ data class I18n4kGeneratorSettings(
      *
      * Only evaluated if [valueTypesEnabled] is true
      */
-    var valueTypesMapping: Map<String, String>,
+    val valueTypesMapping: Map<String, String>,
+
+    /** Add the `JsExport` annotation to the generated classes */
+    val enableJsExportAnnotation: Boolean,
 )
