@@ -11,6 +11,7 @@ plugins {
 
 i18n4k {
     sourceCodeLocales = listOf("en", "en_US", "de")
+    enableJsExportAnnotation = true
 }
 
 

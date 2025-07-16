@@ -112,7 +112,8 @@ open class GenerateI18n4kFilesTask : DefaultTask() {
                 sourceCodeLocales = config.sourceCodeLocales?.map { forLocaleTag(it) },
                 generationTarget = config.generationTargetPlatform!!,
                 valueTypesEnabled = config.valueTypesEnabled,
-                valueTypesMapping = config.valueTypeMapping ?: mapOf()
+                valueTypesMapping = config.valueTypeMapping ?: mapOf(),
+                enableJsExportAnnotation = config.enableJsExportAnnotation,
             ),
             logger = logger
         )

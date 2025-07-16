@@ -75,4 +75,7 @@ open class I18n4kExtension {
      * Only evaluated if [valueTypesEnabled] is true
      */
     var valueTypeMapping: Map<String, String>? = null
+
+    /** !EXPERIMENTAL! Add the `JsExport` annotation to the generated classes */
+    var enableJsExportAnnotation: Boolean = false
 }
