@@ -117,6 +117,8 @@ object BuildTools {
             "linuxX64" to OperationSysten.LINUX,
             "linuxMips32" to OperationSysten.LINUX,
             "linuxMipsel32" to OperationSysten.LINUX,
+            "androidNativeX86" to OperationSysten.LINUX,
+            "androidNativeX64" to OperationSysten.LINUX,
             "androidNativeArm32" to OperationSysten.LINUX,
             "androidNativeArm64" to OperationSysten.LINUX,
             "wasm32" to OperationSysten.LINUX,
