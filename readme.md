@@ -80,6 +80,11 @@ It provides
    * macosArm64
    * mingwX64
    * linuxX64
+   * linuxArm64
+   * androidNativeX86
+   * androidNativeX64
+   * androidNativeArm32
+   * androidNativeArm64
    * tvosArm64
    * tvosX64
    * tvosSimulatorArm64
