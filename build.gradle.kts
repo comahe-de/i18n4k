@@ -6,7 +6,7 @@ plugins {
 
 BuildTools.mainProject = project
 BuildProperties.printProperties()
-
+loadSecretProperties(project)
 
 // apply common configuration for this project and each sub project
 allprojects {
@@ -27,7 +27,7 @@ subprojects {
 
     val isSnapshot = version.toString().contains("SNAPSHOT");
 
-    if (loadSecretProperties(this)
+    if (secretPropertiesLoaded
         && ((isSnapshot && BuildProperties.publishSnapshots) || (!isSnapshot && BuildProperties.publishReleases))
     ) {
         apply<SigningPlugin>()
@@ -46,20 +46,11 @@ subprojects {
 
                 // publishing artifacts, see buildSrc/readme.md
                 publishing {
-                    // Set Maven-Central repository
+                    // use local staging repo for later upload to Maven Central.
+                    // See [BuildTools.uploadStagingRepositoryToMavenCentral]
                     repositories {
                         maven {
-                            url = uri(
-                                if (isSnapshot)
-                                    "https://oss.sonatype.org/content/repositories/snapshots/"
-                                else
-                                    "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
-                            )
-                            println("###> Publishing to Maven repository: $url")
-                            credentials {
-                                username = project.property("sonatype.username").toString()
-                                password = project.property("sonatype.password").toString()
-                            }
+                            url = parent!!.layout.buildDirectory.dir("staging-deploy").get().asFile.toURI()
                         }
                     }
                     // Update POM of all MavenPublication
@@ -103,5 +94,15 @@ subprojects {
                 }
             }
         }
+    }
+}
+
+tasks.register("publishToMavenCentral") {
+    group = "publishing"
+    dependsOn(tasks.getByName("publish"))
+    doLast {
+        if (!secretPropertiesLoaded)
+            throw GradleException("Secret properties not loaded!")
+        BuildTools.uploadStagingRepositoryToMavenCentral()
     }
 }

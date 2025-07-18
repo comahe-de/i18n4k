@@ -7,7 +7,7 @@ plugins {
 
 // from https://stackoverflow.com/a/66352905/2611134
 tasks {
-    create<Jar>("javadocJar") {
+    register<Jar>("javadocJar") {
         // we cannot use `dokkaJavadoc`, as it does not support multiplatform projects
         // https://slack-chats.kotlinlang.org/t/484606/is-there-a-workaround-for-getting-the-dokka-javadoc-plugin-t
         dependsOn(dokkaHtml)

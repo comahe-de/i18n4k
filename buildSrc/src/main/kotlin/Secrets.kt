@@ -7,9 +7,11 @@ import java.io.FileOutputStream
 import java.util.Base64
 import java.util.Properties
 
-
+/** true, if [loadSecretProperties] was executed successfully. */
+var secretPropertiesLoaded = false
 /**
- * Loads secret system properties needed for signing and publishing to Maven Central and Gradle Plugin Portal
+ * Loads secret system properties needed for signing and publishing to Maven Central and Gradle
+ * Plugin Portal
  *
  * The loaded "/secret.properties" file is in ".gitignore"!!!
  */
@@ -32,9 +34,11 @@ fun loadSecretProperties(project: Project) :Boolean {
             }
         }
         project.extra["signing.secretKeyRingFile"] = secretKeyRingFile.value.absolutePath
+        secretPropertiesLoaded = true
         return true
     } catch (ex: Exception) {
         project.logger.warn("Could not load secrets for signing and publishing: " + ex.message)
+        secretPropertiesLoaded = false
         return false
     }
 }

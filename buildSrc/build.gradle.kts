@@ -14,4 +14,5 @@ dependencies {
    implementation(libs.kotlinGradlePlugin)
    implementation(libs.dokkaPlugin)
    implementation(libs.androidGradlePlugin)
+   implementation(libs.jreleaserMavencentral)
 }

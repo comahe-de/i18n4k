@@ -1,6 +1,15 @@
+import org.gradle.api.GradleException
 import org.gradle.api.Project
 import org.gradle.api.publish.Publication
 import org.gradle.api.publish.maven.tasks.AbstractPublishToMaven
+import org.gradle.kotlin.dsl.extra
+import org.jreleaser.sdk.mavencentral.MavenCentral
+import java.io.File
+import java.io.IOException
+import java.util.zip.ZipEntry
+import java.util.zip.ZipOutputStream
+import kotlin.system.measureTimeMillis
+
 
 @Suppress("MemberVisibilityCanBePrivate")
 object BuildTools {
@@ -101,44 +110,44 @@ object BuildTools {
      *  ```
      */
 
-    val multiPlatformPublicationsToAllow: Map<String, OperationSysten> =
+    val multiPlatformPublicationsToAllow: Map<String, OperationSystem> =
         mapOf(
             // Windows
-            "mingwX64" to OperationSysten.WINDOWS,
-            "mingwx86" to OperationSysten.WINDOWS,
+            "mingwX64" to OperationSystem.WINDOWS,
+            "mingwx86" to OperationSystem.WINDOWS,
             // Linux
-            "androidRelease" to OperationSysten.LINUX,
-            "kotlinMultiplatform" to OperationSysten.LINUX,
-            "metadata" to OperationSysten.LINUX,
-            "jvm" to OperationSysten.LINUX,
-            "js" to OperationSysten.LINUX,
-            "linuxArm32Hfp" to OperationSysten.LINUX,
-            "linuxArm64" to OperationSysten.LINUX,
-            "linuxX64" to OperationSysten.LINUX,
-            "linuxMips32" to OperationSysten.LINUX,
-            "linuxMipsel32" to OperationSysten.LINUX,
-            "androidNativeX86" to OperationSysten.LINUX,
-            "androidNativeX64" to OperationSysten.LINUX,
-            "androidNativeArm32" to OperationSysten.LINUX,
-            "androidNativeArm64" to OperationSysten.LINUX,
-            "wasm32" to OperationSysten.LINUX,
-            "wasmJs" to OperationSysten.LINUX,
-            "wasmWasi" to OperationSysten.LINUX,
+            "androidRelease" to OperationSystem.LINUX,
+            "kotlinMultiplatform" to OperationSystem.LINUX,
+            "metadata" to OperationSystem.LINUX,
+            "jvm" to OperationSystem.LINUX,
+            "js" to OperationSystem.LINUX,
+            "linuxArm32Hfp" to OperationSystem.LINUX,
+            "linuxArm64" to OperationSystem.LINUX,
+            "linuxX64" to OperationSystem.LINUX,
+            "linuxMips32" to OperationSystem.LINUX,
+            "linuxMipsel32" to OperationSystem.LINUX,
+            "androidNativeX86" to OperationSystem.LINUX,
+            "androidNativeX64" to OperationSystem.LINUX,
+            "androidNativeArm32" to OperationSystem.LINUX,
+            "androidNativeArm64" to OperationSystem.LINUX,
+            "wasm32" to OperationSystem.LINUX,
+            "wasmJs" to OperationSystem.LINUX,
+            "wasmWasi" to OperationSystem.LINUX,
             // MacOS
-            "macosX64" to OperationSysten.MACOS,
-            "macosArm64" to OperationSysten.MACOS,
-            "iosX64" to OperationSysten.MACOS,
-            "iosArm32" to OperationSysten.MACOS,
-            "iosArm64" to OperationSysten.MACOS,
-            "iosSimulatorArm64" to OperationSysten.MACOS,
-            "watchosArm32" to OperationSysten.MACOS,
-            "watchosArm64" to OperationSysten.MACOS,
-            "watchosX86" to OperationSysten.MACOS,
-            "watchosX64" to OperationSysten.MACOS,
-            "watchosSimulatorArm64" to OperationSysten.MACOS,
-            "tvosArm64" to OperationSysten.MACOS,
-            "tvosX64" to OperationSysten.MACOS,
-            "tvosSimulatorArm64" to OperationSysten.MACOS,
+            "macosX64" to OperationSystem.MACOS,
+            "macosArm64" to OperationSystem.MACOS,
+            "iosX64" to OperationSystem.MACOS,
+            "iosArm32" to OperationSystem.MACOS,
+            "iosArm64" to OperationSystem.MACOS,
+            "iosSimulatorArm64" to OperationSystem.MACOS,
+            "watchosArm32" to OperationSystem.MACOS,
+            "watchosArm64" to OperationSystem.MACOS,
+            "watchosX86" to OperationSystem.MACOS,
+            "watchosX64" to OperationSystem.MACOS,
+            "watchosSimulatorArm64" to OperationSystem.MACOS,
+            "tvosArm64" to OperationSystem.MACOS,
+            "tvosX64" to OperationSystem.MACOS,
+            "tvosSimulatorArm64" to OperationSystem.MACOS,
         )
 
 
@@ -146,12 +155,12 @@ object BuildTools {
     val osName: String?
         get() = System.getProperty("os.name")
 
-    val os: OperationSysten
+    val os: OperationSystem
         get() {
-            if (isWindows) return OperationSysten.WINDOWS
-            if (isLinux) return OperationSysten.LINUX
-            if (isMacOS) return OperationSysten.MACOS
-            return OperationSysten.UNKNOWN
+            if (isWindows) return OperationSystem.WINDOWS
+            if (isLinux) return OperationSystem.LINUX
+            if (isMacOS) return OperationSystem.MACOS
+            return OperationSystem.UNKNOWN
         }
 
     /** Is the current operating system Windows */
@@ -166,10 +175,92 @@ object BuildTools {
     val isMacOS: Boolean
         get() = osName?.startsWith("Mac OS") ?: false
 
-    enum class OperationSysten {
+    enum class OperationSystem {
         WINDOWS,
         LINUX,
         MACOS,
         UNKNOWN
     }
+
+    fun uploadStagingRepositoryToMavenCentral() {
+        val stagingDir = mainProject.layout.buildDirectory.dir("staging-deploy").get().asFile
+        val stagingZip = File(mainProject.layout.buildDirectory.get().asFile, "staging-deploy.zip")
+
+        if (!stagingDir.isDirectory || stagingDir.list()?.isNotEmpty() != true)
+            throw GradleException("Staging repository not existing or empty: $stagingDir")
+
+        val sonatypeUsername = mainProject.extra["sonatype.username"].toString()
+        val sonatypePassword = mainProject.extra["sonatype.password"].toString()
+
+        println("Zipping $stagingDir to $stagingZip")
+
+        zipDir(stagingDir, stagingZip)
+
+
+        println("Deploying to Maven Central ...")
+        val mavenCentral = MavenCentral(
+            DummyJReleaserContext,
+            "https://central.sonatype.com/api/v1/publisher/",
+            sonatypeUsername,
+            sonatypePassword,
+            10,
+            60,
+            false,
+            10,
+            100
+        )
+
+        val deploymentId: String
+        val timeTaken = measureTimeMillis {
+            deploymentId = mavenCentral.upload(stagingZip.toPath())
+        }
+
+        println("Deployed to Maven Central in $timeTaken ms; deploymentId = $deploymentId")
+    }
+
+    private fun zipDir(dirToZip: File, zipFile: File) {
+        if (!dirToZip.isDirectory) {
+            throw GradleException("$dirToZip is not a directory")
+        }
+        val buffer = ByteArray(1024)
+
+        zipFile.outputStream().use { fos ->
+            ZipOutputStream(fos).use { zipOut ->
+                dirToZip.listFiles()?.forEach { file ->
+                    zipFileIntoZip(file, file.name, zipOut, buffer)
+                }
+            }
+        }
+    }
+
+    @Throws(IOException::class)
+    private fun zipFileIntoZip(fileToZip: File, fileName: String, zipOut: ZipOutputStream, buffer: ByteArray) {
+        if (fileToZip.isHidden()) {
+            return
+        }
+        if (fileToZip.isDirectory()) {
+            if (fileName.endsWith("/")) {
+                zipOut.putNextEntry(ZipEntry(fileName))
+                zipOut.closeEntry()
+            } else {
+                zipOut.putNextEntry(ZipEntry("$fileName/"))
+                zipOut.closeEntry()
+            }
+            val children: Array<out File>? = fileToZip.listFiles()
+            children?.forEach { childFile ->
+                zipFileIntoZip(childFile, fileName + "/" + childFile.getName(), zipOut, buffer)
+            }
+            return
+        }
+        fileToZip.inputStream().use { fis ->
+            val zipEntry = ZipEntry(fileName)
+            zipOut.putNextEntry(zipEntry)
+
+            var length: Int
+            while ((fis.read(buffer).also { length = it }) >= 0) {
+                zipOut.write(buffer, 0, length)
+            }
+        }
+    }
+
 }
