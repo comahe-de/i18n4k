@@ -30,7 +30,7 @@ jobs:
       run: ./gradlew allTest --stacktrace
 
     - name: Publish to Maven Central
-      run: ./gradlew publish publishToMavenCentral -PavoidDuplicatePublications=true --stacktrace
+      run: ./gradlew publishToMavenCentral -PavoidDuplicatePublications=true --stacktrace
 
     - name: Publish to Gradle Plugin Portal
       if: matrix.os == 'ubuntu-latest'

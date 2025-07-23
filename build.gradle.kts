@@ -37,6 +37,9 @@ subprojects {
             // need another `afterEvaluate` here, as some publications are added in an `afterEvaluate`
             afterEvaluate {
 
+                // register the task "publish" of this subproject at the parent project task "publishToMavenCentral" .
+                parent!!.tasks.getByName("publishToMavenCentral").dependsOn(tasks.getByName("publish"))
+
                 // sign artifacts, see buildSrc/readme.md
                 signing {
                     publishing.publications.forEach { publication ->
