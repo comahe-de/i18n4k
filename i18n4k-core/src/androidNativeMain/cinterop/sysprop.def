@@ -1,0 +1,2 @@
+headers = sys/system_properties.h
+package = sysprop
