@@ -3,6 +3,7 @@ package de.comahe.i18n4k.gradle.plugin
 import de.comahe.i18n4k.generator.GenerationTargetPlatform
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.file.Directory
 import org.gradle.api.file.SourceDirectorySet
 import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.SourceSetContainer
@@ -251,29 +252,43 @@ open class I18n4kPlugin : Plugin<Project> {
             }
         }
     }
+    private fun getGeneratedSourcesDirectory(project: Project, config: I18n4kExtension): File {
+        return Companion.getGeneratedSourcesDirectory(project.layout.buildDirectory.get().asFile, config)
+    }
 
+    private fun getGeneratedLanguageFilesDirectory(project: Project, config: I18n4kExtension): File {
+        return Companion.getGeneratedLanguageFilesDirectory(
+            project.layout.buildDirectory.get().asFile,
+            project.layout.projectDirectory.asFile,
+            config
+        )
+    }
 
     companion object {
-        fun getGeneratedSourcesDirectory(project: Project, config: I18n4kExtension): File {
+        fun getGeneratedSourcesDirectory(buildDirectory: File, config: I18n4kExtension): File {
             val dir = File(
                 config.sourceCodeOutputDirectory.replace(
                     "{buildDir}",
-                    project.layout.buildDirectory.get().asFile.absolutePath
+                    buildDirectory.absolutePath
                 )
             )
             dir.mkdirs()
             return dir
         }
 
-        fun getGeneratedLanguageFilesDirectory(project: Project, config: I18n4kExtension): File {
+        fun getGeneratedLanguageFilesDirectory(
+            buildDirectory: File,
+            projectDirectory: File,
+            config: I18n4kExtension
+        ): File {
 
             val dir = File(
                 config.languageFilesOutputDirectory.replace(
                     "{buildDir}",
-                    project.layout.buildDirectory.get().asFile.absolutePath
+                    buildDirectory.absolutePath
                 ).replace(
                     "{projectDir}",
-                    project.layout.projectDirectory.asFile.absolutePath
+                    projectDirectory.absolutePath
                 )
             )
             dir.mkdirs()

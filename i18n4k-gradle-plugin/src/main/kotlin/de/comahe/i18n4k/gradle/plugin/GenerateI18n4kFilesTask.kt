@@ -51,6 +51,11 @@ open class GenerateI18n4kFilesTask : DefaultTask() {
         @Input
         get() = config.valueTypeMapping ?: mapOf("<null>" to "<null>")
 
+    @get:Input
+    val projectDirectory: String = project.layout.projectDirectory.asFile.absolutePath
+
+    @get:Input
+    val buildDirectory: String = project.layout.buildDirectory.get().asFile.absolutePath
 
     // END: Input parameter from [config] for "UP-TO-DATE" checks
     ////////////////////////////////////////////////////////////////////
@@ -63,7 +68,7 @@ open class GenerateI18n4kFilesTask : DefaultTask() {
             path = if (config.generationTargetPlatform == GenerationTargetPlatform.MULTI_PLATFORM)
                 "src/commonMain/i18n" else "src/main/i18n"
 
-        val inputDir = File(project.projectDir, path)
+        val inputDir = File(projectDirectory, path)
         if (!inputDir.isDirectory)
             throw GradleException("i18n4k input directory not found: ${inputDir.absolutePath}")
         return inputDir
@@ -71,12 +76,12 @@ open class GenerateI18n4kFilesTask : DefaultTask() {
 
     @OutputDirectory
     open fun getGeneratedSourcesDirectory(): File {
-        return I18n4kPlugin.getGeneratedSourcesDirectory(project, config)
+        return I18n4kPlugin.getGeneratedSourcesDirectory(File(buildDirectory), config)
     }
 
     @OutputDirectory
     open fun getGeneratedLanguageFilesDirectory(): File {
-        return I18n4kPlugin.getGeneratedLanguageFilesDirectory(project, config)
+        return I18n4kPlugin.getGeneratedLanguageFilesDirectory(File(buildDirectory), File(projectDirectory), config)
     }
 
 
