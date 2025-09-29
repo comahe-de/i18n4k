@@ -3,9 +3,11 @@ import org.gradle.api.Project
 import org.gradle.api.publish.Publication
 import org.gradle.api.publish.maven.tasks.AbstractPublishToMaven
 import org.gradle.kotlin.dsl.extra
+import org.jreleaser.model.Http;
 import org.jreleaser.sdk.mavencentral.MavenCentral
 import java.io.File
 import java.io.IOException
+import java.util.Date
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
 import kotlin.system.measureTimeMillis
@@ -201,13 +203,15 @@ object BuildTools {
         val mavenCentral = MavenCentral(
             DummyJReleaserContext,
             "https://central.sonatype.com/api/v1/publisher/",
+            Http.Authorization.BASIC,
             sonatypeUsername,
             sonatypePassword,
             10,
             60,
             false,
             10,
-            100
+            100,
+            "i18n4k-"+Date()
         )
 
         val deploymentId: String

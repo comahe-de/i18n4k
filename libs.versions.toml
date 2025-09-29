@@ -1,7 +1,7 @@
 [versions]
 
 # https://kotlinlang.org/docs/releases.html#release-dbbbetails
-kotlin = "2.2.0"
+kotlin = "2.2.20"
 # https://github.com/Kotlin/kotlinx-atomicfu
 kotlinxAtomicfu = "0.29.0"
 # https://github.com/Kotlin/kotlinx.collections.immutable
@@ -19,22 +19,22 @@ logback = "1.5.17"
 # https://junit.org/junit4/
 junit = "4.13.2"
 # https://github.com/ZacSweers/kotlin-compile-testing
-kotlinCompileTesting = "0.8.0"
+kotlinCompileTesting = "0.9.0"
 #https://developer.android.com/jetpack/androidx/releases/core
-androidXcore = "1.16.0"
+androidXcore = "1.17.0"
 # https://mvnrepository.com/artifact/org.jreleaser/jreleaser-mavencentral-java-sdk
-jreleaser = "1.19.0"
+jreleaser = "1.20.0"
 
 ###############  Plugins ###################
 
 # https://plugins.gradle.org/plugin/com.gradle.plugin-publish
 gradlePluginPublish = "1.3.1"
 # https://mvnrepository.com/artifact/org.jetbrains.compose/compose-gradle-plugin
-composePlugin = "1.8.0"
+composePlugin = "1.9.0"
 # https://mvnrepository.com/artifact/com.android.tools.build/gradle?repo=google
-androidPlugin = "8.10.1"
+androidPlugin = "8.12.0"
 # https://github.com/Kotlin/dokka
-dokkaPlugin = "1.9.20"
+dokkaPlugin = "2.1.0-Beta"
 
 
 [libraries]

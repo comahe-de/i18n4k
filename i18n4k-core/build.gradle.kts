@@ -14,17 +14,19 @@ kotlin {
     // the sources of all the targets
     @Suppress("UnusedPrivateMember")
 
-    targets.withType<KotlinNativeTarget> {
+    val projectDirectory = project.layout.projectDirectory;
+    println("######### " + projectDirectory)
+  /*  targets.withType<KotlinNativeTarget> {
         if (name.startsWith("androidNative")) {
             compilations.getByName("main") {
                 cinterops {
                     create("sysprop") {
-                        definitionFile.set(project.layout.projectDirectory.file("src/androidNativeMain/cinterop/sysprop.def"))
+                       definitionFile.set(projectDirectory.file("src/androidNativeMain/cinterop/sysprop.def"))
                     }
                 }
             }
         }
-    }
+    }*/
 
     sourceSets {
         val commonMain by getting {
