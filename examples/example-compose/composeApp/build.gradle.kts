@@ -22,6 +22,10 @@ i18n4k {
 }
 
 kotlin {
+
+    val projectRootDir = project.rootDir
+    val projectDir = project.projectDir
+
     androidTarget {
         compilerOptions {
             jvmTarget = JvmTarget.JVM_1_8
@@ -53,8 +57,8 @@ kotlin {
                 devServer = (devServer ?: KotlinWebpackConfig.DevServer()).apply {
                     static = (static ?: mutableListOf()).apply {
                         // Serve sources to debug inside browser
-                        add(project.rootDir.path)
-                        add(project.projectDir.path)
+                        add(projectRootDir.path)
+                        add(projectDir.path)
                     }
                 }
             }
@@ -73,9 +77,10 @@ kotlin {
             implementation(compose.desktop.currentOs)
         }
         commonMain.dependencies {
-            implementation("de.comahe.i18n4k:i18n4k-core:0.11.0")
-            implementation("de.comahe.i18n4k:i18n4k-cldr-plural-rules:0.11.0")
+            implementation("de.comahe.i18n4k:i18n4k-core:0.11.1-SNAPSHOT")
+            implementation("de.comahe.i18n4k:i18n4k-cldr-plural-rules:0.11.1-SNAPSHOT")
 
+            implementation(libs.kotlinx.coroutines.core)
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material)

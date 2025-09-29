@@ -41,7 +41,6 @@ jobs:
             ${{ runner.os }}-konan-
     - name: Permission to run gradlew
       run: chmod +x ./gradlew 
-        && chmod +x ./examples/example-js/gradlew
         && chmod +x ./examples/example-jvm/gradlew
         && chmod +x ./examples/example-mpp/gradlew
         && chmod +x ./examples/example-android/gradlew
@@ -52,36 +51,38 @@ jobs:
       run: ./gradlew publishToMavenLocal --stacktrace
     - name: Run tests
       run: ./gradlew allTest test --stacktrace
-    - name: Build JS example
-      # Causes an Out-Of-Memory in Windows???
-      if: runner.os != 'Windows'
-      run: |
-        cd ./examples/example-js
-        ./gradlew build --stacktrace
     - name: Build JVM example
       # Causes an Out-Of-Memory in Windows???
-      if: runner.os != 'Windows'
+      #if: runner.os != 'Windows'
+      if: ${{ always() }}
       run: |
         cd ./examples/example-jvm
         ./gradlew build --stacktrace
     - name: Build MPP example
       # Causes an Out-Of-Memory in Windows???
-      if: runner.os != 'Windows'
+      #if: runner.os != 'Windows'
+      if: ${{ always() }}
       run: |
         cd ./examples/example-mpp
         ./gradlew build --stacktrace
     - name: Build Android example
       # Causes an Out-Of-Memory in Windows???
-      if: runner.os != 'Windows'
+      #if: runner.os != 'Windows'
+      if: ${{ always() }}
       run: | 
         cd ./examples/example-android
         ./gradlew build --stacktrace
     - name: Build Compose-Multiplatform example
       # Causes an Out-Of-Memory in Windows???
-      if: runner.os != 'Windows'
+      #if: runner.os != 'Windows'
+      if: ${{ always() }}
       run: |
         cd ./examples/example-compose
         ./gradlew build --stacktrace
+    # Stop Gradle daemon to free looks on cache files.
+    # https://github.com/actions/setup-java/issues/633#issuecomment-2219579714
+    - name: Stop Gradle daemon
+      run: ./gradlew --stop
     - uses: actions/upload-artifact@v4
       if: ${{ always() }}
       with:
@@ -91,7 +92,6 @@ jobs:
             i18n4k-generator/build/test-results/
             i18n4k-cldr-plural-rules/build/test-results/
             i18n4k-gradle-plugin/build/test-results/
-            examples/example-js/build/test-results/
             examples/example-jvm/build/test-results/
             examples/example-mmp/build/test-results/
             examples/example-android/build/test-results/

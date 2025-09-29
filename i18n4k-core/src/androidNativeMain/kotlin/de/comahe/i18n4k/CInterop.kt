@@ -7,11 +7,11 @@ import kotlinx.cinterop.memScoped
 import kotlinx.cinterop.toKString
 import platform.posix.__system_property_get
 import platform.posix.getenv
-import sysprop.PROP_VALUE_MAX
 
 @OptIn(ExperimentalForeignApi::class)
 internal object CInterop {
-
+    // https://cs.android.com/android/platform/superproject/+/master:system/libbase/properties.cpp;l=37
+    private const val PROP_VALUE_MAX = 92
     private const val PROP_LOCALE = "persist.sys.locale"
     private const val PROP_LANGUAGE = "persist.sys.language"
     private const val PROP_COUNTRY = "persist.sys.country"
