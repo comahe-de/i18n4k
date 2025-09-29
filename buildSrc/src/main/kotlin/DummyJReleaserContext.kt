@@ -170,6 +170,10 @@ object DummyJReleaserContext : JReleaserContext {
         throw UnsupportedOperationException("Not supported yet.")
     }
 
+    override fun getSettings(): Path {
+        throw UnsupportedOperationException("Not supported yet.")
+    }
+
     override fun getOutputDirectory(): Path {
         throw UnsupportedOperationException("Not supported yet.")
     }
@@ -193,6 +197,11 @@ object DummyJReleaserContext : JReleaserContext {
     override fun getPackageDirectory(): Path {
         throw UnsupportedOperationException("Not supported yet.")
     }
+
+    override fun getPublishDirectory(): Path {
+        throw UnsupportedOperationException("Not supported yet.")
+    }
+
 
     override fun getAssembleDirectory(): Path {
         throw UnsupportedOperationException("Not supported yet.")

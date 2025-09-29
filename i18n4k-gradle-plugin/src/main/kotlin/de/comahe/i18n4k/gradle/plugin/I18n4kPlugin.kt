@@ -115,7 +115,7 @@ open class I18n4kPlugin : Plugin<Project> {
         // add it to all "compile*"-tasks, like "compileKotlin", "compileKotlinJvm"
         // "compileJava", "compileKotlinJs", "compileKotlinNative",
         // "compileKotlinMetadata", ...
-        project.tasks.matching { it.name.startsWith("compile") }
+        project.tasks.matching { it.name.contains("compile", true) }
             .configureEach { it.dependsOn(GENERATE_I18N_SOURCES_TASK_NAME) }
         project.tasks.withType(KotlinCompile::class.java)
             .configureEach { it.dependsOn(GENERATE_I18N_SOURCES_TASK_NAME) }
@@ -135,20 +135,40 @@ open class I18n4kPlugin : Plugin<Project> {
         // Android resource processing:
         // - packageDebugResources, packageReleaseResources, ...
         // - mergeDebugResources, mergeReleaseResources, ...
+        // Android misc tasks
         // - extractDeepLinksDebug, extractDeepLinksRelease, ...
         // Compose resource processing:
         // - copyNonXmlValueResourcesForCommonMain
-        project.tasks.matching {
-            //@formatter:off
-            (
-                (it.name.startsWith("package")
-                    || it.name.startsWith("merge")
-                )
-                && it.name.endsWith("Resources")
-            )
-            || it.name.startsWith("extractDeepLinks")
-            || (it.name.startsWith("copy") && it.name.contains("Resources"))
-            //@formatter:on
+        // - generateExpectResourceCollectorsForCommonMain
+        // Compose misc tasks
+        // - commonizeCInterop
+        // - generateComposeResClass
+        // - generateDebugResValues, generateReleaseResValues
+        // - checkDebugAarMetadata, checkReleaseAarMetadata
+        // - checkDebugDuplicateClasses, checkReleaseDuplicateClasses
+        // - writeDebugSigningConfigVersions, writeReleaseSigningConfigVersions
+        // - mergeDebugShaders, mergeReleaseShaders
+        // - unpackSkikoWasmRuntime
+        // - extractProguardFiles
+        // - wasmJsPublicPackageJson
+        // - and many more...
+        project.tasks.matching { task ->
+            var match = false
+            for (name in listOf(
+                "Resource",
+                "commonizeCInterop",
+                "unpack", "extract",
+                "ResClass", "ResValues", "Metadata", "Classes", "Signing",
+                "merge", "package",
+                "Dependencies", "Assets",
+                "debug", "release"
+            )) {
+                if (task.name.contains(name, true)) {
+                    match = true
+                    break
+                }
+            }
+            return@matching match
         }
             .configureEach { it.dependsOn(GENERATE_I18N_SOURCES_TASK_NAME) }
 
