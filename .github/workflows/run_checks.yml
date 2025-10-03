@@ -52,29 +52,21 @@ jobs:
     - name: Run tests
       run: ./gradlew allTest test --stacktrace
     - name: Build JVM example
-      # Causes an Out-Of-Memory in Windows???
-      #if: runner.os != 'Windows'
       if: ${{ always() }}
       run: |
         cd ./examples/example-jvm
         ./gradlew build --stacktrace
     - name: Build MPP example
-      # Causes an Out-Of-Memory in Windows???
-      #if: runner.os != 'Windows'
       if: ${{ always() }}
       run: |
         cd ./examples/example-mpp
         ./gradlew build --stacktrace
     - name: Build Android example
-      # Causes an Out-Of-Memory in Windows???
-      #if: runner.os != 'Windows'
       if: ${{ always() }}
       run: | 
         cd ./examples/example-android
         ./gradlew build --stacktrace
     - name: Build Compose-Multiplatform example
-      # Causes an Out-Of-Memory in Windows???
-      #if: runner.os != 'Windows'
       if: ${{ always() }}
       run: |
         cd ./examples/example-compose
