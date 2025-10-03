@@ -5,7 +5,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.compose")
     // apply the i18n4k plugin
-    id("de.comahe.i18n4k") version "0.11.1-SNAPSHOT"
+    id("de.comahe.i18n4k") version "0.11.1"
 }
 
 android {
@@ -68,7 +68,7 @@ i18n4k {
 dependencies {
 
     // add the i18n4k dependency
-    implementation("de.comahe.i18n4k:i18n4k-core-android:0.11.1-SNAPSHOT")
+    implementation("de.comahe.i18n4k:i18n4k-core-android:0.11.1")
 
     implementation("androidx.core:core-ktx:1.17.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.9.4")
