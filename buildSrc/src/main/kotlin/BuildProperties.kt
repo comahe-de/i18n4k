@@ -1,24 +1,37 @@
+import org.gradle.api.Project
+
 @Suppress("MemberVisibilityCanBePrivate")
 object BuildProperties {
     /** For multi platform builds, some publications should only run on specific OSs */
-    val avoidDuplicatePublications: Boolean
-        get() = readBooleanProperty("avoidDuplicatePublications") ?: false
+    var avoidDuplicatePublications: Boolean = false
+        private set
 
-    val publishSnapshots: Boolean
-        get() = readBooleanProperty("publishSnapshots") ?: true
+    var publishSnapshots: Boolean = true
+        private set
 
-    val publishReleases: Boolean
-        get() = readBooleanProperty("publishSnapshots") ?: true
+    var publishReleases: Boolean = true
+        private set
 
-
-    private fun readStringProperty(name: String): String? {
-        if (!BuildTools.mainProject.hasProperty(name))
-            return null
-        return BuildTools.mainProject.properties[name].toString()
+    // read properties during configuration phase,
+    // avoid use of `project` in task execution.
+    fun init(mainProject: Project) {
+        avoidDuplicatePublications = readBooleanProperty(mainProject, "avoidDuplicatePublications")
+            ?: avoidDuplicatePublications
+        publishSnapshots = readBooleanProperty(mainProject, "publishSnapshots")
+            ?: publishSnapshots
+        publishReleases = readBooleanProperty(mainProject, "publishSnapshots")
+            ?: publishReleases
+        printProperties()
     }
 
-    private fun readBooleanProperty(name: String): Boolean? =
-        readStringProperty(name)?.toString()?.toBoolean()
+    private fun readStringProperty(mainProject: Project, name: String): String? {
+        if (!mainProject.hasProperty(name))
+            return null
+        return mainProject.properties[name].toString()
+    }
+
+    private fun readBooleanProperty(mainProject: Project, name: String): Boolean? =
+        readStringProperty(mainProject, name)?.toString()?.toBoolean()
 
     fun printProperties() {
         println("### Custom build properties")

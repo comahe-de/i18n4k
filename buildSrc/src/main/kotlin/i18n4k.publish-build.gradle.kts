@@ -17,8 +17,11 @@ tasks {
     }
 }
 
+// #################################
 // Publishing....
-afterEvaluate {
+
+// action to be executed after many `afterEvaluate {`, see below...
+val publishAction = fun Project.() {
     publishing {
         publications {
             /**
@@ -41,3 +44,42 @@ afterEvaluate {
         }
     }
 }
+
+// to multiplatform plugin adds some publication tasks really late (especially the iOS tasks)
+// sa many `afterEvaluate` are needed
+afterEvaluate {
+    afterEvaluate {
+        afterEvaluate {
+            afterEvaluate {
+                afterEvaluate {
+                    afterEvaluate {
+                        afterEvaluate {
+                            afterEvaluate {
+                                afterEvaluate {
+                                    afterEvaluate {
+                                        afterEvaluate {
+                                            afterEvaluate {
+                                                afterEvaluate {
+                                                    afterEvaluate {
+                                                        afterEvaluate {
+                                                            afterEvaluate {
+                                                                afterEvaluate {
+                                                                    publishAction()
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+

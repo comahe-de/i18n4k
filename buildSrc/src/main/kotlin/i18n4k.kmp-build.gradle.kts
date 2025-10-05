@@ -142,7 +142,7 @@ android{
     defaultConfig {
         // Android 5.0 (API-Level 21), 2015
         minSdk = 21
-        // Android 15 (API level 35), 2024
-        compileSdk = 35
+        // Android 16 (API level 36), 2025
+        compileSdk = 36
     }
 }

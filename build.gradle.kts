@@ -4,9 +4,9 @@ plugins {
     signing
 }
 
-BuildTools.mainProject = project
-BuildProperties.printProperties()
 loadSecretProperties(project)
+BuildTools.init(project)
+BuildProperties.init(project)
 
 // apply common configuration for this project and each sub project
 allprojects {
@@ -46,6 +46,10 @@ subprojects {
                         sign(publication)
                     }
                 }
+                // read properties during configuration phase,
+                // avoid use of `project` in task execution.
+                val buildDirectoryUri = parent!!.layout.buildDirectory.dir("staging-deploy").get().asFile.toURI()
+                val projectName = project.name
 
                 // publishing artifacts, see buildSrc/readme.md
                 publishing {
@@ -53,7 +57,7 @@ subprojects {
                     // See [BuildTools.uploadStagingRepositoryToMavenCentral]
                     repositories {
                         maven {
-                            url = parent!!.layout.buildDirectory.dir("staging-deploy").get().asFile.toURI()
+                            url = buildDirectoryUri
                         }
                     }
                     // Update POM of all MavenPublication
@@ -62,7 +66,7 @@ subprojects {
                             if (publication !is MavenPublication)
                                 return@forEach
                             publication.pom {
-                                name.set(project.name)
+                                name.set(projectName)
                                 description.set("i18n4k is a multiplatform (JVM, JS, native) library and code generator for Kotlin to handle internationalisation (i18n) in your program.")
                                 url.set("https://comahe-de.github.io/i18n4k/")
                                 licenses {

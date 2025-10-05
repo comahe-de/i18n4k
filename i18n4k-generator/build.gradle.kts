@@ -36,7 +36,11 @@ publishing {
             from(components["java"])
         }
 
-        // avoid duplicate publication for multi platform builds
-        BuildTools.avoidDuplicatePublications(project,this)
+        // avoid duplicate publication for multi-platform builds
+        // Call avoidDuplicatePublications() after evaluation
+        val publications = this
+        afterEvaluate {
+            BuildTools.avoidDuplicatePublications(project, publications)
+        }
     }
 }

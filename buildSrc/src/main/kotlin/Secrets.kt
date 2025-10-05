@@ -15,6 +15,7 @@ var secretPropertiesLoaded = false
  *
  * The loaded "/secret.properties" file is in ".gitignore"!!!
  */
+@Suppress("NewApi")
 fun loadSecretProperties(project: Project) :Boolean {
 
     try {
@@ -43,6 +44,7 @@ fun loadSecretProperties(project: Project) :Boolean {
     }
 }
 
+@Suppress("NewApi")
 private var secretKeyRingFile = lazy<File> {
     //dumpSecretKeyRingFileAsBase64()
     var secretKeyRingFileInput = {}::class.java.getResourceAsStream("/comahe-de.gpg")

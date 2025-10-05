@@ -1,5 +1,6 @@
 import org.gradle.api.GradleException
 import org.gradle.api.Project
+import org.gradle.api.plugins.ExtraPropertiesExtension.UnknownPropertyException
 import org.gradle.api.publish.Publication
 import org.gradle.api.publish.maven.tasks.AbstractPublishToMaven
 import org.gradle.kotlin.dsl.extra
@@ -15,8 +16,31 @@ import kotlin.system.measureTimeMillis
 
 @Suppress("MemberVisibilityCanBePrivate")
 object BuildTools {
-    @Suppress("MemberVisibilityCanBePrivate")
-    lateinit var mainProject: Project
+
+    // read properties during configuration phase,
+    // avoid use of `project` in task execution.
+
+    private lateinit var stagingDir: File
+    private lateinit var stagingZip: File
+
+    private lateinit var sonatypeUsername: String
+    private lateinit var sonatypePassword: String
+
+    fun init(mainProject: Project) {
+        stagingDir = mainProject.layout.buildDirectory.dir("staging-deploy").get().asFile
+        stagingZip = File(mainProject.layout.buildDirectory.get().asFile, "staging-deploy.zip")
+
+        try {
+            sonatypeUsername = mainProject.extra["sonatype.username"].toString()
+            sonatypePassword = mainProject.extra["sonatype.password"].toString()
+        } catch (e: UnknownPropertyException) {
+            println("# Could not load sonatype credentials for publishing: " + e.message)
+            sonatypeUsername = "unknown";
+            sonatypePassword = "unknown";
+        }
+    }
+
+
 
     /**
      *  When [BuildProperties.avoidDuplicatePublications] is true, this function can be used
@@ -67,6 +91,10 @@ object BuildTools {
     ) {
         if (!BuildProperties.avoidDuplicatePublications)
             return
+        // avoid use of `Project` and `Publication` in task execution.
+        val projectName = project.name
+        val targetPublicationName = targetPublication.name
+
         project.afterEvaluate {
             tasks.withType(AbstractPublishToMaven::class.java)
                 .matching {
@@ -74,7 +102,7 @@ object BuildTools {
                 }
                 .configureEach {
                     onlyIf {
-                        println("###> ${project.name}: Publication \"${targetPublication.name}\" - publish: $isDeploy")
+                        println("###> ${projectName}: Publication \"${targetPublicationName}\" - publish: $isDeploy")
                         isDeploy
                     }
                 }
@@ -184,15 +212,12 @@ object BuildTools {
         UNKNOWN
     }
 
+    @Suppress("NewApi")
     fun uploadStagingRepositoryToMavenCentral() {
-        val stagingDir = mainProject.layout.buildDirectory.dir("staging-deploy").get().asFile
-        val stagingZip = File(mainProject.layout.buildDirectory.get().asFile, "staging-deploy.zip")
 
         if (!stagingDir.isDirectory || stagingDir.list()?.isNotEmpty() != true)
             throw GradleException("Staging repository not existing or empty: $stagingDir")
 
-        val sonatypeUsername = mainProject.extra["sonatype.username"].toString()
-        val sonatypePassword = mainProject.extra["sonatype.password"].toString()
 
         println("Zipping $stagingDir to $stagingZip")
 
