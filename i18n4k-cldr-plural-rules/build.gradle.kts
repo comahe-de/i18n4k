@@ -4,10 +4,10 @@ plugins {
 }
 
 
-kotlin {
-    // the sources of all the targets
-    @Suppress("UnusedPrivateMember")
-    sourceSets {
+    kotlin {
+        // the sources of all the targets
+        @Suppress("UnusedPrivateMember")
+        sourceSets {
 
         val commonMain by getting {
             dependencies {
@@ -68,4 +68,8 @@ kotlin {
         }
 
     }
+}
+
+android {
+    namespace = "de.comahe.i18n4k.cldr"
 }
