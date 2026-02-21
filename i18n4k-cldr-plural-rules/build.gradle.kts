@@ -69,3 +69,7 @@ kotlin {
 
     }
 }
+
+android {
+    namespace = "de.comahe.i18n4k.cldr"
+}

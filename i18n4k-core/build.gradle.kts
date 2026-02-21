@@ -81,3 +81,7 @@ kotlin {
         freeCompilerArgs.add("-Xexpect-actual-classes")
     }
 }
+
+android {
+    namespace = "de.comahe.i18n4k.core"
+}
