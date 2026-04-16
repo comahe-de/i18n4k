@@ -146,6 +146,7 @@ object BuildTools {
             "mingwX64" to OperationSystem.WINDOWS,
             "mingwx86" to OperationSystem.WINDOWS,
             // Linux
+            "android" to OperationSystem.LINUX,
             "androidRelease" to OperationSystem.LINUX,
             "kotlinMultiplatform" to OperationSystem.LINUX,
             "metadata" to OperationSystem.LINUX,
@@ -156,6 +157,7 @@ object BuildTools {
             "linuxX64" to OperationSystem.LINUX,
             "linuxMips32" to OperationSystem.LINUX,
             "linuxMipsel32" to OperationSystem.LINUX,
+            "androidNativeX86" to OperationSystem.LINUX,
             "androidNativeX86" to OperationSystem.LINUX,
             "androidNativeX64" to OperationSystem.LINUX,
             "androidNativeArm32" to OperationSystem.LINUX,

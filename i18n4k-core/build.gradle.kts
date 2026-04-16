@@ -5,45 +5,50 @@ plugins {
 
 
 kotlin {
+    android {
+        namespace = "de.comahe.i18n4k.core"
+    }
+
     // the sources of all the targets
     sourceSets {
-        val commonMain by getting {
+
+        commonMain {
             dependencies {
                 implementation(libs.kotlinxAtomicfu)
                 implementation(libs.kotlinxCollectionsImmutable)
             }
         }
-        val commonTest by getting {
+        commonTest {
             dependencies {
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
             }
         }
-        val jvmMain by getting {
+        jvmMain {
             dependencies {
             }
         }
-        val jvmTest by getting {
+        jvmTest {
             dependencies {
                 implementation(kotlin("test-junit"))
             }
         }
-        val androidMain by getting {
+        androidMain {
             dependencies {
                 // needed for androidx.core.os.ConfigurationCompat.getLocales()
                 implementation(libs.androidxCoreKtx)
             }
         }
-        val androidUnitTest by getting {
+        androidUnitTest {
             dependencies {
                 implementation(kotlin("test-junit"))
             }
         }
-        val jsMain by getting {
+        jsMain {
             dependencies {
             }
         }
-        val jsTest by getting {
+        jsTest {
             dependencies {
                 implementation(kotlin("test-js"))
                 implementation(libs.kotlinxCoroutinesCore)
@@ -51,11 +56,11 @@ kotlin {
 
             }
         }
-        val wasmJsMain by getting {
+        wasmJsMain {
             dependencies {
             }
         }
-        val wasmJsTest by getting {
+        wasmJsTest {
             dependencies {
                 implementation(kotlin("test-wasm-js"))
                 implementation(libs.kotlinxCoroutinesCore)
@@ -63,11 +68,11 @@ kotlin {
 
             }
         }
-        val wasmWasiMain by getting {
+        wasmWasiMain {
             dependencies {
             }
         }
-        val wasmWasiTest by getting {
+        wasmWasiTest {
             dependencies {
                 implementation(kotlin("test-wasm-wasi"))
                 implementation(libs.kotlinxCoroutinesCore)
@@ -80,8 +85,4 @@ kotlin {
     compilerOptions {
         freeCompilerArgs.add("-Xexpect-actual-classes")
     }
-}
-
-android {
-    namespace = "de.comahe.i18n4k.core"
 }

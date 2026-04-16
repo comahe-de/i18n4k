@@ -3,7 +3,6 @@ package de.comahe.i18n4k.gradle.plugin
 import de.comahe.i18n4k.generator.GenerationTargetPlatform
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.file.Directory
 import org.gradle.api.file.SourceDirectorySet
 import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.SourceSetContainer
@@ -37,6 +36,9 @@ open class I18n4kPlugin : Plugin<Project> {
 //                    else
                         GenerationTargetPlatform.MULTI_PLATFORM
 
+                project.plugins.hasPlugin("com.android.kotlin.multiplatform.library") ->
+                    GenerationTargetPlatform.MULTI_PLATFORM
+
                 project.plugins.hasPlugin("org.jetbrains.kotlin.js") ->
                     GenerationTargetPlatform.JS
 
@@ -47,6 +49,12 @@ open class I18n4kPlugin : Plugin<Project> {
                     GenerationTargetPlatform.JVM
 
                 project.plugins.hasPlugin("org.jetbrains.kotlin.android") ->
+                    GenerationTargetPlatform.ANDROID
+
+                // Android Gradle plugin 9.0 introduces built-in Kotlin support and enables it by default
+                project.extensions.findByName("android") != null
+                    && project.providers.gradleProperty("android.builtInKotlin")
+                    .map { it.toBoolean() }.getOrElse(true) ->
                     GenerationTargetPlatform.ANDROID
 
                 else -> throw IllegalStateException(
@@ -180,6 +188,12 @@ open class I18n4kPlugin : Plugin<Project> {
         project: Project,
         type: SourceDirectoryType
     ): SourceDirectorySet {
+
+        // special handling of Android projects (since AGP 9.0)
+        if (config.generationTargetPlatform == GenerationTargetPlatform.ANDROID) {
+            AndroidSupport.findSourceDirectorySet(project, type)?.let { return it }
+        }
+
         ////// find correct sourceDirectorySet
         val sourceSets = project.extensions
             // InteliJ cannot find this `KotlinProjectExtension` but it compiles!
@@ -221,6 +235,7 @@ open class I18n4kPlugin : Plugin<Project> {
             val sourceSets = project.properties["sourceSets"] as SourceSetContainer
 
             val sourceDirectorySet = sourceSets.getByName(SourceSet.MAIN_SOURCE_SET_NAME).java
+            logger.info("Adding i18n4k generated sources directory to source set '${sourceDirectorySet.name}' (JVM)")
             addDirectoryToSourceDirectorySet(
                 sourceDirectorySet,
                 getGeneratedSourcesDirectory(project, config)
@@ -244,6 +259,8 @@ open class I18n4kPlugin : Plugin<Project> {
             val sourceSets = project.properties["sourceSets"] as SourceSetContainer
 
             val sourceDirectorySet = sourceSets.getByName(SourceSet.MAIN_SOURCE_SET_NAME).resources
+
+            logger.info("Adding i18n4k generated resources directory to source set '${sourceDirectorySet.name}' (JVM)")
             addDirectoryToSourceDirectorySet(sourceDirectorySet, genResDir)
 
         } else if (config.generationTargetPlatform == GenerationTargetPlatform.ANDROID) {
@@ -264,8 +281,9 @@ open class I18n4kPlugin : Plugin<Project> {
             logger.warn("Idea model not set? Missing idea plugin?")
             return
         }
-        logger.info("Mark i18n4k generated sources directory as 'generated' in IDEA")
-        ideaModel.module.generatedSourceDirs.add(getGeneratedSourcesDirectory(project, config))
+        val dir = getGeneratedSourcesDirectory(project, config);
+        logger.info("Mark i18n4k generated sources directory '{}' as 'generated' in IDEA", dir)
+        ideaModel.module.generatedSourceDirs.add(dir)
         if (logger.isDebugEnabled) {
             ideaModel.module.generatedSourceDirs.forEach {
                 logger.debug("generatedSourceDirs[IDEA] - {}", it)

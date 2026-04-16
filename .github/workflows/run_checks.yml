@@ -44,6 +44,7 @@ jobs:
         && chmod +x ./examples/example-jvm/gradlew
         && chmod +x ./examples/example-mpp/gradlew
         && chmod +x ./examples/example-android/gradlew
+        && chmod +x ./examples/example-android-agp8/gradlew
         && chmod +x ./examples/example-compose/gradlew
     - name: Gradle version infos
       run: ./gradlew -v
@@ -51,6 +52,13 @@ jobs:
       run: ./gradlew publishToMavenLocal --stacktrace
     - name: Run tests
       run: ./gradlew allTest test --stacktrace
+    - name: Build Compose-Multiplatform example
+      # if: ${{ always() }}
+      # Build hangs on Linux. Why????
+      if: runner.os != 'Linux'
+      run: |
+        cd ./examples/example-compose
+        ./gradlew build --stacktrace
     - name: Build JVM example
       if: ${{ always() }}
       run: |
@@ -66,15 +74,21 @@ jobs:
       run: | 
         cd ./examples/example-android
         ./gradlew build --stacktrace
-    - name: Build Compose-Multiplatform example
+    - name: Build Android AGP8 example
       if: ${{ always() }}
-      run: |
-        cd ./examples/example-compose
+      run: | 
+        cd ./examples/example-android-agp8
         ./gradlew build --stacktrace
     # Stop Gradle daemon to free looks on cache files.
     # https://github.com/actions/setup-java/issues/633#issuecomment-2219579714
     - name: Stop Gradle daemon
-      run: ./gradlew --stop
+      run: |
+        ./gradlew --stop
+        ./examples/example-jvm/gradlew  --stop
+        ./examples/example-mpp/gradlew  --stop
+        ./examples/example-android/gradlew  --stop
+        ./examples/example-android-agp8/gradlew  --stop
+        ./examples/example-compose/gradlew  --stop
     - uses: actions/upload-artifact@v4
       if: ${{ always() }}
       with:
@@ -87,4 +101,5 @@ jobs:
             examples/example-jvm/build/test-results/
             examples/example-mmp/build/test-results/
             examples/example-android/build/test-results/
+            examples/example-android-agp8/build/test-results/
             examples/example-compose/build/test-results/

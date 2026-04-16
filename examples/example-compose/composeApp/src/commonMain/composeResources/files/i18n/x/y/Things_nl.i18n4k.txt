@@ -1,0 +1,12 @@
+nl
+^
+jongen
+^
+meisje
+^
+maan
+^
+zon
+^
+water
+^

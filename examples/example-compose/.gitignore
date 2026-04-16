@@ -1,6 +1,6 @@
 *.iml
-.gradle
 .kotlin
+.gradle
 **/build/
 xcuserdata
 !src/**/build/
@@ -16,3 +16,4 @@ captures
 !*.xcodeproj/project.xcworkspace/
 !*.xcworkspace/contents.xcworkspacedata
 **/xcshareddata/WorkspaceSettings.xcsettings
+node_modules/

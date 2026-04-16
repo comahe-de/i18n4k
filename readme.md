@@ -183,7 +183,7 @@ only the most important translations should be stored in the source code.
 ### Optimized message files
 
 **_i18n4k_** has an internal format to store message files to be loaded at runtime. It is
-index-based instead of key-bases as e.g. Java-Property files. This has the advantage that no memory
+index-based instead of key-based as e.g. Java-Property files. This has the advantage that no memory
 is wasted for storing the key in each language.
 
 More details are described

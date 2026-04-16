@@ -1,0 +1,6 @@
+fr
+^
+Salut, {0}!
+^
+Exemple d''internationalisation 🇫🇷
+^

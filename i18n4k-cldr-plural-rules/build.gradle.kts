@@ -5,16 +5,19 @@ plugins {
 
 
 kotlin {
+    android {
+        namespace = "de.comahe.i18n4k.cldr"
+    }
+    
     // the sources of all the targets
-    @Suppress("UnusedPrivateMember")
     sourceSets {
 
-        val commonMain by getting {
+        commonMain {
             dependencies {
                 implementation(project(":i18n4k-core"))
             }
         }
-        val commonTest by getting {
+        commonTest {
             dependencies {
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
@@ -22,54 +25,50 @@ kotlin {
                 implementation (libs.kotlinxSerializationJson)
             }
         }
-        val jvmMain by getting {
+        jvmMain {
             dependencies {
             }
         }
-        val jvmTest by getting {
+        jvmTest {
             dependencies {
                 implementation(kotlin("test-junit"))
             }
         }
-        val androidMain by getting {
+        androidMain {
 
         }
-        val androidUnitTest by getting {
+        androidUnitTest {
             dependencies {
                 implementation(kotlin("test-junit"))
             }
         }
-        val jsMain by getting {
+        jsMain {
             dependencies {
             }
         }
-        val jsTest by getting {
+        jsTest {
             dependencies {
                 implementation(kotlin("test-js"))
             }
         }
-        val wasmJsMain by getting {
+        wasmJsMain {
             dependencies {
             }
         }
-        val wasmJsTest by getting {
+        wasmJsTest {
             dependencies {
                 implementation(kotlin("test-wasm-js"))
             }
         }
-        val wasmWasiMain by getting {
+        wasmWasiMain {
             dependencies {
             }
         }
-        val wasmWasiTest by getting {
+        wasmWasiTest {
             dependencies {
                 implementation(kotlin("test-wasm-wasi"))
             }
         }
 
     }
-}
-
-android {
-    namespace = "de.comahe.i18n4k.cldr"
 }

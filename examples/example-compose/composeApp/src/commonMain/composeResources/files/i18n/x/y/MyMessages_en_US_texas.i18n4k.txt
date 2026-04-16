@@ -1,0 +1,6 @@
+en_US_texas
+^
+Howdy, {0}!
+^
+Internationalisation example 🏴󠁵󠁳󠁴󠁸󠁿
+^

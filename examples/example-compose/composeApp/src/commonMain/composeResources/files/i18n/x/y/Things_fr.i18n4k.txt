@@ -1,0 +1,12 @@
+fr
+^
+garçon
+^
+fille
+^
+lune
+^
+soleil
+^
+eau
+^

@@ -1,0 +1,18 @@
+nl
+^
+{thing, capitalize} - Het kenmerk "gender" is {thing, attr:gender, m {mannelijk} f {vrouwelijk} n {onzijdig} other {onbekend}}.
+^
+{thing, capitalize} - Het kenmerk "gender" heeft de waarde: {thing, attr-gender, {?} }.
+^
+{thing, gender, n {Het} other {De}} {thing} is van vorm veranderd.
+^
+Aantal vormen:
+^
+Volgnummer van de vorm:
+^
+Selecteer item:
+^
+{thing, gender, n {Het} other {De}} {thing} heeft {count} {count, plural, one {vorm} other {vormen}}.
+^
+De {order}e vorm van {thing, gender, n {het} other {de}} {thing} is rond.
+^

@@ -1,12 +1,14 @@
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+﻿import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.androidApplication)
-    alias(libs.plugins.jetbrainsCompose)
-    alias(libs.plugins.pluginCompose)
+    alias(libs.plugins.androidKotlinMultiplatformLibrary)
+    alias(libs.plugins.composeMultiplatform)
+    alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.composeHotReload)
+
     id("de.comahe.i18n4k")
 }
 
@@ -22,22 +24,25 @@ i18n4k {
 }
 
 kotlin {
+    // Android target configured via androidLibrary block (replaces androidTarget + android{})
+    androidLibrary {
+        namespace = "example.compose.composeapp"
+        compileSdk = libs.versions.android.compileSdk.get().toInt()
+        minSdk = libs.versions.android.minSdk.get().toInt()
 
-    val projectRootDir = project.rootDir
-    val projectDir = project.projectDir
-
-    androidTarget {
         compilerOptions {
-            jvmTarget = JvmTarget.JVM_1_8
+            jvmTarget.set(JvmTarget.JVM_17)
+        }
+
+        // Required for Compose Multiplatform resources to be bundled into the AAR
+        androidResources {
+            enable = true
         }
     }
-    
-    jvm("desktop")
 
-    //TODO: remove this after deploy!
+    // build iOS only on Mac, as it hangs in the GitHub-Pipeline for Linux.
     if (isMacOs()) {
         listOf(
-            iosX64(),
             iosArm64(),
             iosSimulatorArm64()
         ).forEach { iosTarget ->
@@ -47,99 +52,57 @@ kotlin {
             }
         }
     }
-
-    @OptIn(org.jetbrains.kotlin.gradle.ExperimentalWasmDsl::class)
-    wasmJs {
-        outputModuleName.set("composeApp")
-        browser {
-            commonWebpackConfig {
-                outputFileName = "composeApp.js"
-                devServer = (devServer ?: KotlinWebpackConfig.DevServer()).apply {
-                    static = (static ?: mutableListOf()).apply {
-                        // Serve sources to debug inside browser
-                        add(projectRootDir.path)
-                        add(projectDir.path)
-                    }
-                }
-            }
-        }
+    
+    jvm()
+    
+    js {
+        browser()
         binaries.executable()
     }
-
+    
+    @OptIn(ExperimentalWasmDsl::class)
+    wasmJs {
+        browser()
+        binaries.executable()
+    }
+    
     sourceSets {
-        val desktopMain by getting
-        
-        androidMain.dependencies {
-            implementation(libs.compose.ui.tooling.preview)
-            implementation(libs.androidx.activity.compose)
-        }
-        desktopMain.dependencies {
-            implementation(compose.desktop.currentOs)
-        }
         commonMain.dependencies {
-            implementation("de.comahe.i18n4k:i18n4k-core:0.11.1")
-            implementation("de.comahe.i18n4k:i18n4k-cldr-plural-rules:0.11.1")
+
+            implementation("de.comahe.i18n4k:i18n4k-core:0.11.2-SNAPSHOT")
+            implementation("de.comahe.i18n4k:i18n4k-cldr-plural-rules:0.11.2-SNAPSHOT")
 
             implementation(libs.kotlinx.coroutines.core)
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.material)
-            implementation(compose.ui)
-            implementation(compose.components.resources)
+            implementation(libs.compose.runtime)
+            implementation(libs.compose.foundation)
+            implementation(libs.compose.material3)
+            implementation(libs.compose.ui)
+            implementation(libs.compose.components.resources)
+            implementation(libs.compose.uiToolingPreview)
+            implementation(libs.androidx.lifecycle.viewmodelCompose)
+            implementation(libs.androidx.lifecycle.runtimeCompose)
+            implementation(projects.shared)
         }
-    }
-}
-
-android {
-    namespace = "org.example.project"
-    compileSdk = libs.versions.android.compileSdk.get().toInt()
-
-    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-    sourceSets["main"].res.srcDirs("src/androidMain/res")
-    sourceSets["main"].resources.srcDirs("src/commonMain/composeResources")
-
-    defaultConfig {
-        applicationId = "org.example.project"
-        minSdk = libs.versions.android.minSdk.get().toInt()
-        targetSdk = libs.versions.android.targetSdk.get().toInt()
-        versionCode = 1
-        versionName = "1.0"
-    }
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        commonTest.dependencies {
+            implementation(libs.kotlin.test)
         }
-    }
-    buildTypes {
-        getByName("release") {
-            isMinifyEnabled = false
+        jvmMain.dependencies {
+            implementation(compose.desktop.currentOs)
+            implementation(libs.kotlinx.coroutinesSwing)
         }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-    dependencies {
-        debugImplementation(libs.compose.ui.tooling)
     }
 }
 
 compose.desktop {
     application {
-        mainClass = "MainKt"
+        mainClass = "example.compose.MainKt"
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "org.example.project"
+            packageName = "example.compose"
             packageVersion = "1.0.0"
         }
     }
 }
-
-compose.experimental {
-    web.application {}
-}
-
-
 
 fun isMacOs() = org.gradle.internal.os.OperatingSystem.current().isMacOsX

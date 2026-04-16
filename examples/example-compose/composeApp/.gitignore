@@ -1,2 +1,0 @@
-# exclude the generated i18n-files
-/src/commonMain/composeResources/files/i18n/

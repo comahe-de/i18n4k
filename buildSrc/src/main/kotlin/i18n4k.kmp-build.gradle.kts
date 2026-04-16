@@ -2,20 +2,25 @@ import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    id("com.android.library")
     kotlin("multiplatform")
+    id("com.android.kotlin.multiplatform.library")
 }
 
 
 
 kotlin {
 
-    androidTarget() {
+    android {
+        // Android 5.0 (API-Level 21), November 2017
+        minSdk = 21
+        // Android 16 (API level 36), June 2025
+        compileSdk = 36
+
         compilerOptions {
-            jvmTarget = JvmTarget.JVM_1_8
+            jvmTarget.set(JvmTarget.JVM_1_8)
         }
-        publishLibraryVariants("release")
     }
+
     jvm {
         compilerOptions {
             jvmTarget = JvmTarget.JVM_1_8
@@ -112,6 +117,12 @@ kotlin {
     applyDefaultHierarchyTemplate()
 
     sourceSets {
+        commonMain {
+
+        }
+        commonTest {
+
+        }
         // create common sources sets for Android and JVM
         val commonMain by getting
         val commonTest by getting
@@ -119,30 +130,20 @@ kotlin {
         val jvmAndroidMain by creating {
             dependsOn(commonMain)
         }
-        val jvmMain by getting {
+        jvmMain {
             dependsOn(jvmAndroidMain)
         }
-        val androidMain by getting {
+        androidMain {
             dependsOn(jvmAndroidMain)
         }
         val jvmAndroidTest by creating {
             dependsOn(commonTest)
         }
-        val jvmTest by getting {
+        jvmTest {
             dependsOn(jvmAndroidTest)
         }
-        val androidUnitTest by getting {
+        androidUnitTest {
             dependsOn(jvmAndroidTest)
         }
-    }
-}
-
-android{
-    namespace = "de.comahe.i18n4k"
-    defaultConfig {
-        // Android 5.0 (API-Level 21), 2015
-        minSdk = 21
-        // Android 16 (API level 36), 2025
-        compileSdk = 36
     }
 }

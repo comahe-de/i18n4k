@@ -1,0 +1,18 @@
+fr
+^
+{thing, capitalize} - L''attribut "gender" est {thing, attr:gender, m {masculin} f {féminine} n {neutre} other {inconnu}}.
+^
+{thing, capitalize} - L''attribut "gender" a pour valeur: {thing, attr-gender, {?} }.
+^
+{thing, gender, m {Le} other {La}} {thing} a changé de forme.
+^
+Nombre de formes:
+^
+nombre d''ordre de la forme:
+^
+Choisir l''objet:
+^
+{thing, gender, m {Le} other {La}} {thing} a {count} {count, plural, one {forme} other {formes}}.
+^
+La {order}{order, ordinal, one {ère} other {e}} forme {thing, gender, f {de la} other {du}} {thing} est ronde.
+^

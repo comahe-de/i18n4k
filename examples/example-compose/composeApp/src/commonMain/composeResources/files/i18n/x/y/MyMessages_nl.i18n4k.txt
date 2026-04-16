@@ -1,0 +1,6 @@
+nl
+^
+Hallo, {0}!
+^
+Internationalisatie Voorbeeld 🇳🇱
+^
