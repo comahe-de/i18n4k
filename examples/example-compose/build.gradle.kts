@@ -10,5 +10,5 @@ plugins {
     alias(libs.plugins.kotlinJvm) apply false
     alias(libs.plugins.kotlinMultiplatform) apply false
 
-    id("de.comahe.i18n4k") version "0.11.2-SNAPSHOT" apply false
+    id("de.comahe.i18n4k") version "0.11.2" apply false
 }

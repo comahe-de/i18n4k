@@ -69,8 +69,8 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
 
-            implementation("de.comahe.i18n4k:i18n4k-core:0.11.2-SNAPSHOT")
-            implementation("de.comahe.i18n4k:i18n4k-cldr-plural-rules:0.11.2-SNAPSHOT")
+            implementation("de.comahe.i18n4k:i18n4k-core:0.11.2")
+            implementation("de.comahe.i18n4k:i18n4k-cldr-plural-rules:0.11.2")
 
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.compose.runtime)
