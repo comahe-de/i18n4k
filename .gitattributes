@@ -1,0 +1,9 @@
+# Ensure shell wrapper scripts keep LF line endings on every checkout,
+# regardless of the platform or `core.autocrlf` setting.
+/kotlin   text eol=lf
+/gradlew  text eol=lf
+gradlew   text eol=lf
+*.sh      text eol=lf
+
+# Windows batch wrappers use CRLF.
+*.bat     text eol=crlf

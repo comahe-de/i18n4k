@@ -1,0 +1,12 @@
+# Kotlin Toolchain project file.
+# See https://kotlin-toolchain.org/dev/reference/project/
+#
+# The `i18n4k-gradle-plugin` module is intentionally NOT listed here.
+# It produces a Gradle plugin that is published to the Gradle Plugin Portal,
+# which the Kotlin Toolchain cannot build (there is no `java-gradle-plugin`
+# product type). It therefore remains a self-contained Gradle build in its own
+# directory. See `agent.md` for the details of this exception.
+modules:
+  - i18n4k-cldr-plural-rules
+  - i18n4k-core
+  - i18n4k-generator

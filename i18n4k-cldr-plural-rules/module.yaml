@@ -1,0 +1,79 @@
+# Kotlin Toolchain module file.
+# See https://kotlin-toolchain.org/dev/reference/module/
+#
+# Migrated from `i18n4k-cldr-plural-rules/build.gradle.kts` + the
+# `i18n4k.kmp-build` / `i18n4k.publish-build` Gradle convention plugins.
+
+product:
+  type: kmp/lib
+  platforms:
+    # JVM / Android
+    - jvm
+    - android
+    # Web
+    - js
+    - wasmJs
+    - wasmWasi
+    # Apple
+    - iosArm64
+    - iosX64
+    - iosSimulatorArm64
+    - macosX64
+    - macosArm64
+    - tvosArm64
+    - tvosX64
+    - tvosSimulatorArm64
+    - watchosArm32
+    - watchosArm64
+    - watchosSimulatorArm64
+    # Other native
+    - mingwX64
+    - linuxX64
+    - linuxArm64
+    - androidNativeArm32
+    - androidNativeArm64
+    - androidNativeX86
+    - androidNativeX64
+
+apply:
+  - //templates/kmp-build.module-template.yaml
+  - //templates/publish.module-template.yaml
+
+settings:
+  android:
+    namespace: de.comahe.i18n4k.cldr
+
+# Same Windows Web-target workaround as in `i18n4k-core`: force a
+# filesystem-safe klib name (see i18n4k-core/module.yaml for details).
+settings@js:
+  kotlin:
+    freeCompilerArgs:
+      - -Xir-module-name=i18n4k-cldr-plural-rules
+test-settings@js:
+  kotlin:
+    freeCompilerArgs:
+      - -Xir-module-name=i18n4k-cldr-plural-rules_test
+settings@wasmJs:
+  kotlin:
+    freeCompilerArgs:
+      - -Xir-module-name=i18n4k-cldr-plural-rules
+test-settings@wasmJs:
+  kotlin:
+    freeCompilerArgs:
+      - -Xir-module-name=i18n4k-cldr-plural-rules_test
+settings@wasmWasi:
+  kotlin:
+    freeCompilerArgs:
+      - -Xir-module-name=i18n4k-cldr-plural-rules
+test-settings@wasmWasi:
+  kotlin:
+    freeCompilerArgs:
+      - -Xir-module-name=i18n4k-cldr-plural-rules_test
+
+dependencies:
+  # Gradle: implementation(project(":i18n4k-core"))
+  - //i18n4k-core
+
+test-dependencies:
+  # to parse JSON data
+  - $libs.kotlinxSerializationJson

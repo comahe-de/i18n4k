@@ -1,4 +1,4 @@
-name: Publish artifacts (on Linux)
+name: Release checks + Gradle plugin publish (on Linux)
 
 on:
   push:
@@ -7,18 +7,17 @@ on:
     - 'v*.*.*-*'
 
 jobs:
-  publish-artifacts:
+  release-checks:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [ubuntu-latest]
 
     env:
-        CI_SECRET_KEY_RING_FILE: ${{ secrets.CI_SECRET_KEY_RING_FILE }}
-        CI_SECRET_PROPERTIES_FILE: ${{ secrets.CI_SECRET_PROPERTIES_FILE }}
+        KOTLIN_CLI_NO_WELCOME_BANNER: "1"
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - uses: actions/setup-java@v4
       with:
         distribution: 'corretto'
@@ -27,11 +26,15 @@ jobs:
     # don't use cache for releases...
 
     - name: Run test
-      run: ./gradlew allTest --stacktrace
+      run: chmod +x ./kotlin && ./kotlin test
 
-    - name: Publish to Maven Central
-      run: ./gradlew publishToMavenCentral -PavoidDuplicatePublications=true --stacktrace
+    # The libraries are published to Maven Central from the macOS workflow.
+    # This job only needs them in Maven Local to build the Gradle plugin.
+    - name: Install to local maven
+      run: ./kotlin publish mavenLocal
 
-    - name: Publish to Gradle Plugin Portal
-      if: matrix.os == 'ubuntu-latest'
-      run: ./gradlew publishPlugins --stacktrace
+    - name: Publish Gradle plugin to the Gradle Plugin Portal
+      run: |
+        chmod +x ./i18n4k-gradle-plugin/gradlew
+        cd ./i18n4k-gradle-plugin
+        ./gradlew publishPlugins

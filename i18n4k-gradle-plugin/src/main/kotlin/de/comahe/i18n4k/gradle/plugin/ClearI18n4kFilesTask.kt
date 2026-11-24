@@ -4,10 +4,12 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.TaskAction
+import org.gradle.work.DisableCachingByDefault
 import java.io.File
 
 
 @Suppress("unused")
+@DisableCachingByDefault(because = "Deleting generated files is cheap and intentionally always runs")
 open class ClearI18n4kFilesTask : DefaultTask() {
 
     @Internal

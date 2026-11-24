@@ -14,11 +14,14 @@ jobs:
         os: [macos-latest]
 
     env:
-        CI_SECRET_KEY_RING_FILE: ${{ secrets.CI_SECRET_KEY_RING_FILE }}
-        CI_SECRET_PROPERTIES_FILE: ${{ secrets.CI_SECRET_PROPERTIES_FILE }}
+        KOTLIN_CLI_NO_WELCOME_BANNER: "1"
+        KOTLIN_TOOLCHAIN_MAVEN_CENTRAL_USERNAME: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+        KOTLIN_TOOLCHAIN_MAVEN_CENTRAL_PASSWORD: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
+        KOTLIN_TOOLCHAIN_SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
+        KOTLIN_TOOLCHAIN_SIGNING_KEY_PASSPHRASE: ${{ secrets.SIGNING_KEY_PASSPHRASE }}
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - uses: actions/setup-java@v4
       with:
         distribution: 'corretto'
@@ -27,8 +30,11 @@ jobs:
     # don't use cache for releases...
 
     - name: Run test
-      run: ./gradlew allTest --stacktrace
+      run: chmod +x ./kotlin && ./kotlin test
 
+    # This is the *only* job that publishes to Maven Central: the Kotlin
+    # Toolchain publishes all platforms (including cross-compiled Apple klibs)
+    # from a single host, and Maven Central rejects duplicate artifacts. The
+    # Linux/Windows workflows are release checks only.
     - name: Publish to Maven Central
-      run: ./gradlew publishToMavenCentral -PavoidDuplicatePublications=true --stacktrace
-
+      run: ./kotlin publish mavenCentral

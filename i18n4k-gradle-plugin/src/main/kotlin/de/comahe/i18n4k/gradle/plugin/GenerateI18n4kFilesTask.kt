@@ -10,11 +10,15 @@ import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputDirectory
+import org.gradle.api.tasks.PathSensitive
+import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
+import org.gradle.work.DisableCachingByDefault
 import java.io.File
 
 
 @Suppress("unused")
+@DisableCachingByDefault(because = "Depends on the plugin extension and generates sources in-place; caching adds no value")
 open class GenerateI18n4kFilesTask : DefaultTask() {
 
     @Internal
@@ -62,6 +66,7 @@ open class GenerateI18n4kFilesTask : DefaultTask() {
 
 
     @InputDirectory
+    @PathSensitive(PathSensitivity.RELATIVE)
     open fun getInputDirectory(): File {
         var path = config.inputDirectory
         if (path == null)

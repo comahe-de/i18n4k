@@ -1,0 +1,44 @@
+# Shared publishing configuration.
+#
+# Replaces the Gradle convention plugin
+# `buildSrc/src/main/kotlin/i18n4k.publish-build.gradle.kts` together with the
+# signing/publishing part of the root `subprojects { }` block, the
+# `publishToMavenCentral` task and the JReleaser-based upload.
+#
+# The Kotlin Toolchain publishes to Maven Central natively
+# (`./kotlin publish mavenCentral`), including signing, checksums, sources and
+# an (empty) Javadoc JAR. Credentials come from environment variables:
+#   KOTLIN_TOOLCHAIN_MAVEN_CENTRAL_USERNAME / _PASSWORD
+#   KOTLIN_TOOLCHAIN_SIGNING_KEY / _PASSPHRASE
+# (see the "Publish artifacts" GitHub workflows).
+
+# Required so that `./kotlin publish mavenLocal` works (used by the examples and
+# by the nested Gradle build of the Gradle plugin).
+repositories:
+  - url: mavenLocal
+    publish: true
+
+settings:
+  publishing:
+    enabled: true
+    group: de.comahe.i18n4k
+    version: 0.11.2
+    mavenCentral: enabled
+    signArtifacts: true
+    publishSources: true
+    pom:
+      description: >-
+        i18n4k is a multiplatform (JVM, JS, native) library and code generator for
+        Kotlin to handle internationalisation (i18n) in your program.
+      url: https://comahe-de.github.io/i18n4k/
+      licenses:
+        - name: The Apache License, Version 2.0
+          url: http://www.apache.org/licenses/LICENSE-2.0.txt
+      developers:
+        - id: comahe.de
+          name: Marcel Heckel
+          email: info@comahede
+      scm:
+        connection: scm:git@github.com:comahe-de/i18n4k.git
+        developerConnection: scm:git@github.com:comahe-de/i18n4k.git
+        url: https://github.com/comahe-de/i18n4k

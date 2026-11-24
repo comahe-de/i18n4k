@@ -1,4 +1,4 @@
-name: Publish artifacts (on Windows)
+name: Release checks (on Windows)
 
 on:
   push:
@@ -7,18 +7,17 @@ on:
     - 'v*.*.*-*'
 
 jobs:
-  publish-artifacts:
+  release-checks:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [windows-latest]
 
     env:
-        CI_SECRET_KEY_RING_FILE: ${{ secrets.CI_SECRET_KEY_RING_FILE }}
-        CI_SECRET_PROPERTIES_FILE: ${{ secrets.CI_SECRET_PROPERTIES_FILE }}
+        KOTLIN_CLI_NO_WELCOME_BANNER: "1"
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - uses: actions/setup-java@v4
       with:
         distribution: 'corretto'
@@ -26,9 +25,8 @@ jobs:
 
     # don't use cache for releases...
 
+    # Maven Central publication happens once, from the macOS workflow: the
+    # Toolchain publishes every platform from a single host, so publishing from
+    # several hosts would upload duplicate artifacts.
     - name: Run test
-      run: ./gradlew allTest --stacktrace
-
-    - name: Publish to Maven Central
-      run: ./gradlew publishToMavenCentral -PavoidDuplicatePublications=true --stacktrace
-
+      run: ./kotlin.bat test

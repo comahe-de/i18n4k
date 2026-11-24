@@ -1,0 +1,34 @@
+# Shared configuration for the Kotlin Multiplatform library modules.
+#
+# Replaces the Gradle convention plugin `buildSrc/src/main/kotlin/i18n4k.kmp-build.gradle.kts`.
+#
+# The `product.platforms` list cannot live in a template (templates may not have
+# a `product:` section), so it is repeated in each `module.yaml`.
+#
+# Not representable here (see agent.md):
+#   * JS/Wasm test runners (Karma/ChromeHeadless, Mocha/NodeJS)
+#   * the Gradle `jvm { testRuns["test"] { useJUnit() } }` switch is covered by
+#     `settings.junit: junit-4` below
+#
+# NOTE: `aliases:` and `description:` are NOT allowed in templates in Toolchain
+# 0.14. The `jvmAndroid` alias therefore lives in the `i18n4k-core/module.yaml`
+# that needs it, and the POM description lives under `settings.publishing.pom`.
+
+settings:
+  jvm:
+    jdk:
+      version: 17
+    # Gradle used `jvmTarget = JVM_1_8` / `sourceCompatibility = 1.8`.
+    release: 8
+  android:
+    # Android 5.0 (API level 21), November 2017
+    minSdk: 21
+    # Android 16 (API level 36), June 2025
+    compileSdk: 36
+  kotlin:
+    version: 2.3.20
+    # Gradle: `compilerOptions { freeCompilerArgs.add("-Xexpect-actual-classes") }`
+    freeCompilerArgs:
+      - -Xexpect-actual-classes
+  # Gradle used JUnit 4 (`useJUnit()` + `kotlin("test-junit")`).
+  junit: junit-4

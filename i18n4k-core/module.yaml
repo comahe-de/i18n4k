@@ -1,0 +1,102 @@
+# Kotlin Toolchain module file.
+# See https://kotlin-toolchain.org/dev/reference/module/
+#
+# Migrated from `i18n4k-core/build.gradle.kts` + the `i18n4k.kmp-build` /
+# `i18n4k.publish-build` Gradle convention plugins.
+
+product:
+  type: kmp/lib
+  platforms:
+    # JVM / Android
+    - jvm
+    - android
+    # Web
+    - js
+    - wasmJs
+    - wasmWasi
+    # Apple
+    - iosArm64
+    - iosX64
+    - iosSimulatorArm64
+    - macosX64
+    - macosArm64
+    - tvosArm64
+    - tvosX64
+    - tvosSimulatorArm64
+    - watchosArm32
+    - watchosArm64
+    - watchosSimulatorArm64
+    # Other native
+    - mingwX64
+    - linuxX64
+    - linuxArm64
+    - androidNativeArm32
+    - androidNativeArm64
+    - androidNativeX86
+    - androidNativeX64
+
+apply:
+  - //templates/kmp-build.module-template.yaml
+  - //templates/publish.module-template.yaml
+
+aliases:
+  # The Gradle build defined the intermediate source sets `jvmAndroidMain` /
+  # `jvmAndroidTest`. `src@jvmAndroid` and `test@jvmAndroid` replace them.
+  - jvmAndroid: [jvm, android]
+
+settings:
+  android:
+    namespace: de.comahe.i18n4k.core
+
+# Workaround for a Kotlin/Wasm + JS compiler bug on Windows: the klib name is
+# derived from `group:artifact`, and the compiler uses it as a temp-directory
+# prefix, where ':' is illegal. `-Xir-module-name` forces a filesystem-safe name.
+# Applied per web platform so it never reaches the JVM/Native compiler. The test
+# klib needs its own name to avoid a `unique_name` clash with the main klib.
+settings@js:
+  kotlin:
+    freeCompilerArgs:
+      - -Xir-module-name=i18n4k-core
+test-settings@js:
+  kotlin:
+    freeCompilerArgs:
+      - -Xir-module-name=i18n4k-core_test
+settings@wasmJs:
+  kotlin:
+    freeCompilerArgs:
+      - -Xir-module-name=i18n4k-core
+test-settings@wasmJs:
+  kotlin:
+    freeCompilerArgs:
+      - -Xir-module-name=i18n4k-core_test
+settings@wasmWasi:
+  kotlin:
+    freeCompilerArgs:
+      - -Xir-module-name=i18n4k-core
+test-settings@wasmWasi:
+  kotlin:
+    freeCompilerArgs:
+      - -Xir-module-name=i18n4k-core_test
+
+dependencies:
+  - $libs.kotlinxAtomicfu
+  - $libs.kotlinxCollectionsImmutable
+
+dependencies@android:
+  # needed for androidx.core.os.ConfigurationCompat.getLocales()
+  - $libs.androidxCoreKtx
+
+# commonTest used `kotlin("test-common")` + `kotlin("test-annotations-common")`,
+# the platform tests used the matching `kotlin("test-*")` flavor. All of these
+# are provided automatically by the Kotlin Toolchain.
+test-dependencies@js:
+  - $libs.kotlinxCoroutinesCore
+  - $libs.kotlinxCoroutinesTest
+
+test-dependencies@wasmJs:
+  - $libs.kotlinxCoroutinesCore
+  - $libs.kotlinxCoroutinesTest
+
+test-dependencies@wasmWasi:
+  - $libs.kotlinxCoroutinesCore
+  - $libs.kotlinxCoroutinesTest

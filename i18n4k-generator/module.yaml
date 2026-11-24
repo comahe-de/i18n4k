@@ -1,0 +1,36 @@
+# Kotlin Toolchain module file.
+# See https://kotlin-toolchain.org/dev/reference/module/
+#
+# Migrated from `i18n4k-generator/build.gradle.kts` (Kotlin/JVM library).
+# `layout: maven-like` keeps the existing `src/main/kotlin`, `src/test/kotlin`
+# and `src/test/files` directories untouched.
+
+product: jvm/lib
+
+layout: maven-like
+
+apply:
+  - //templates/publish.module-template.yaml
+
+settings:
+  jvm:
+    jdk:
+      version: 17
+    # Gradle: `kotlin { compilerOptions { jvmTarget = JVM_1_8 } }` +
+    #         `java { sourceCompatibility = VERSION_1_8 }`
+    release: 8
+  kotlin:
+    version: 2.3.20
+  # Gradle used JUnit 4.
+  junit: junit-4
+
+dependencies:
+  # Gradle: implementation(project(":i18n4k-core"))
+  - //i18n4k-core
+  - $libs.kotlinPoet
+  - $libs.slf4jApi
+
+test-dependencies:
+  - $libs.logbackClassic
+  - $libs.junit
+  - $libs.kotlinCompileTesting

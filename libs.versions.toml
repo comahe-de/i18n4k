@@ -60,5 +60,6 @@ jreleaserMavencentral = { module = "org.jreleaser:jreleaser-mavencentral-java-sd
 
 [plugins]
 
+kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 gradlePluginPublish = { id = "com.gradle.plugin-publish", version.ref = "gradlePluginPublish" }
 dokkaPlugin = { id = "org.jetbrains.dokka", version.ref = "dokkaPlugin" }
