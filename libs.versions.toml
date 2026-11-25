@@ -33,8 +33,6 @@ gradlePluginPublish = "1.3.1"
 composePlugin = "1.10.3"
 # https://mvnrepository.com/artifact/com.android.tools.build/gradle?repo=google
 androidPlugin = "9.1.1"
-# https://github.com/Kotlin/dokka
-dokkaPlugin = "2.3.0"
 
 
 [libraries]
@@ -42,7 +40,6 @@ dokkaPlugin = "2.3.0"
 kotlinGradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 composeGradlePlugin = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "composePlugin" }
 androidGradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "androidPlugin" }
-dokkaPlugin = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokkaPlugin" }
 
 kotlinxAtomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "kotlinxAtomicfu" }
 kotlinxCollectionsImmutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinxCollectionsImmutable" }
@@ -62,4 +59,3 @@ jreleaserMavencentral = { module = "org.jreleaser:jreleaser-mavencentral-java-sd
 
 kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 gradlePluginPublish = { id = "com.gradle.plugin-publish", version.ref = "gradlePluginPublish" }
-dokkaPlugin = { id = "org.jetbrains.dokka", version.ref = "dokkaPlugin" }

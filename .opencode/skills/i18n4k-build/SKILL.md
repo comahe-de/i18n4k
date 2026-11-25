@@ -32,7 +32,6 @@ Repository-specific build knowledge. Full details: [`doc-dev/build-system.md`](.
 cd i18n4k-gradle-plugin
 ./gradlew build                         # compile + validatePlugins
 ./gradlew publishToMavenLocal
-./gradlew dokkaGeneratePublicationHtml  # build/dokka/html
 ```
 
 On Windows replace `./kotlin` with `./kotlin.bat` and `./gradlew` with `.\gradlew.bat`.
@@ -54,7 +53,6 @@ On Windows replace `./kotlin` with `./kotlin.bat` and `./gradlew` with `.\gradle
 | `Selected modules have dependencies on … local modules` | Add `--transitive` or `--non-transitive` |
 | `Could not find de.comahe.i18n4k:i18n4k-core-jvm` in the plugin build | Run `./kotlin publish mavenLocal` |
 | `validatePlugins` fails | Task input/output annotations need fixing in `i18n4k-gradle-plugin/src` |
-| Dokka crashes with `KaFirDefaultPropertyGetterSymbol` | Do not put `i18n4k-core-jvm`/`i18n4k-generator` on the Dokka source-set classpath; use `docsClasspath` |
 | `./kotlin` does nothing on Windows | Use `./kotlin.bat` |
 
 ## Before claiming success

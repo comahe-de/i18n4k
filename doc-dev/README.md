@@ -28,7 +28,6 @@ The build was migrated from Gradle to the **Kotlin Toolchain 0.14.1** (formerly 
 # Gradle plugin (nested Gradle build)
 cd i18n4k-gradle-plugin
 ./gradlew build                   # validate + test the plugin
-./gradlew dokkaGeneratePublicationHtml   # real API docs for all modules
 ```
 
 On Windows use `./kotlin.bat` and `.\gradlew.bat`.

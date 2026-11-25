@@ -1,6 +1,6 @@
 ---
 name: i18n4k release
-description: Load when releasing i18n4k, bumping its version, publishing to Maven Central or the Gradle Plugin Portal, or debugging the publish workflow. Covers signing keys, environment variables, single-host publishing and Javadoc caveats.
+description: Load when releasing i18n4k, bumping its version, publishing to Maven Central or the Gradle Plugin Portal, or debugging the publish workflow. Covers signing keys, environment variables, single-host publishing and Javadoc placeholders.
 ---
 
 # i18n4k release
@@ -43,7 +43,7 @@ Libraries are signed because `templates/publish.module-template.yaml` sets
    ```sh
    ./kotlin test
    ./kotlin publish mavenLocal
-   cd i18n4k-gradle-plugin && ./gradlew build javadocJar
+   cd i18n4k-gradle-plugin && ./gradlew build
    ```
 3. Commit, tag (`vX.Y.Z`), push the tag.
 4. Watch `Publish artifacts`.
@@ -54,9 +54,9 @@ Libraries are signed because `templates/publish.module-template.yaml` sets
 ## Caveats
 
 - **Do not** add a second publishing host; see above.
-- The Toolchain's library `-javadoc.jar` files are **empty placeholders** (Toolchain 0.14
-  limitation). Real docs are built by `./gradlew dokkaGeneratePublicationHtml` and the plugin's
-  `javadocJar`; the release workflow uploads the HTML as the `api-docs` artifact.
+- The Toolchain's library `-javadoc.jar` files are **empty placeholders** (a single
+  `README.md`, required by Maven Central). There is no Dokka integration and no API
+  documentation is generated at the moment.
 - `publish mavenCentral` with `publishingMode: manual` stops after uploading; artefacts are not
   public until released in the Portal.
 - Never reuse a release version: Maven Central forbids deleting/overwriting artifacts.

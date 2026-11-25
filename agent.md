@@ -13,7 +13,7 @@ generator for Kotlin. Group `de.comahe.i18n4k`, version `0.11.2`.
 | `i18n4k-core` | Kotlin Toolchain `kmp/lib` | runtime library |
 | `i18n4k-cldr-plural-rules` | Kotlin Toolchain `kmp/lib` | CLDR plural formatters |
 | `i18n4k-generator` | Kotlin Toolchain `jvm/lib` | code generator (KotlinPoet) |
-| `i18n4k-gradle-plugin` | **Gradle** (nested build) | Gradle plugin + Dokka docs |
+| `i18n4k-gradle-plugin` | **Gradle** (nested build) | Gradle plugin |
 | `examples/*` | **Gradle** | consumer samples — **do not modify** |
 
 Build system: **Kotlin Toolchain 0.14.1** (formerly Amper), wrapper pinned in `kotlin`/`kotlin.bat`.
@@ -40,7 +40,6 @@ Build system: **Kotlin Toolchain 0.14.1** (formerly Amper), wrapper pinned in `k
 
 cd i18n4k-gradle-plugin
 ./gradlew build
-./gradlew dokkaGeneratePublicationHtml
 ```
 
 ## Where to look
@@ -72,7 +71,7 @@ Kotlin Toolchain 0.14.1 (`0.14.0-dev-4630`):
 - `./kotlin build` → all host-supported targets
 - `./kotlin test` → all host-supported targets, 112 JVM tests
 - `./kotlin publish mavenLocal` → all modules/platforms
-- nested Gradle plugin `build`, `publishToMavenLocal`, `javadocJar` → OK
+- nested Gradle plugin `build`, `publishToMavenLocal` → OK
 
 Apple binaries/tests still require macOS; `run_checks.yml` covers that host.
 
@@ -83,8 +82,8 @@ Apple binaries/tests still require macOS; `run_checks.yml` covers that host.
 - `-m` with local dependencies requires `--transitive` or `--non-transitive`.
 - The nested Gradle plugin build resolves `i18n4k-core-jvm` / `i18n4k-generator` from Maven
   Local: run `./kotlin publish mavenLocal` first.
-- Library `-javadoc.jar` files are Toolchain placeholders; real docs come from
-  `./gradlew dokkaGeneratePublicationHtml` / `javadocJar`.
+- Library `-javadoc.jar` files are Toolchain placeholders (a single `README.md`). The Toolchain
+  has no Dokka integration, and no API documentation is generated at the moment.
 - The tooling expects the current Toolchain syntax: templates reject `aliases:`/`description:`;
   use `module.yaml` for those.
 

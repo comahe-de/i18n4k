@@ -53,14 +53,3 @@ jobs:
       run: |
         ..\kotlin.bat publish mavenLocal
         .\gradlew.bat build publishPlugins
-
-    - name: Generate API documentation (Dokka)
-      working-directory: ./i18n4k-gradle-plugin
-      run: .\gradlew.bat dokkaGeneratePublicationHtml
-
-    - name: Upload API documentation
-      uses: actions/upload-artifact@v4
-      if: ${{ always() }}
-      with:
-        name: api-docs
-        path: i18n4k-gradle-plugin/build/dokka/html

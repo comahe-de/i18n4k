@@ -9,7 +9,7 @@ i18n4k publishes to two repositories:
 
 Everything is triggered by pushing a `v*.*.*` (or `v*.*.*-*`) tag. The single workflow
 [`.github/workflows/publish_artifacts.yml`](../.github/workflows/publish_artifacts.yml) runs on
-**Windows** and does: tests → Maven Central → Gradle plugin → Dokka docs.
+**Windows** and does: tests → Maven Central → Gradle plugin.
 
 ## Why a single (Windows) publishing host?
 
@@ -88,10 +88,6 @@ settings:
 # Gradle plugin -> ~/.m2/repository (also validates the plugin)
 cd i18n4k-gradle-plugin
 ./gradlew publishToMavenLocal
-
-# Check the generated Javadoc/plugin documentation jar
-./gradlew javadocJar
-jar tf build/libs/i18n4k-gradle-plugin-0.11.2-javadoc.jar | head
 ```
 
 `publish mavenLocal` does **not** sign (signatures are only needed for Maven Central). It also
@@ -132,23 +128,15 @@ Look for a `.asc` file next to every artifact in the bundle directory.
    (usually a few days). Check the Portal for the new version.
 8. Verify that the library POMs on Maven Central have the expected dependencies.
 
-## Javadoc / documentation artifacts
+## Javadoc artifacts
 
 The Kotlin Toolchain 0.14.1 has no Dokka integration. It creates the `-javadoc.jar` required by
 Maven Central automatically, but the jar contains only a `README.md` placeholder. This cannot be
-changed without replacing the Toolchain's publishing pipeline (it does not expose a hook).
+changed without replacing the Toolchain's publishing pipeline (it does not expose a hook), so no
+API documentation is generated or published at the moment.
 
-What *is* real documentation:
-
-- `./gradlew dokkaGeneratePublicationHtml` generates HTML for `i18n4k-core`,
-  `i18n4k-cldr-plural-rules`, `i18n4k-generator` and the Gradle plugin.
-- The release workflow uploads it as the `api-docs` artifact.
-- The **Gradle plugin** publication attaches the Dokka HTML output as its `-javadoc.jar`
-  (`javadocJar`), matching the old Gradle behaviour.
-
-If real Javadoc in the library jars becomes mandatory, the publishing step has to move back to
-Gradle (or wait for Dokka support in the Toolchain); see
-[`migration-from-gradle.md`](migration-from-gradle.md#known-limitations).
+If real API documentation is needed again, publish it as a separate artifact or move publishing
+back to Gradle; see [`migration-from-gradle.md`](migration-from-gradle.md#known-limitations).
 
 ## Troubleshooting
 
