@@ -1,0 +1,42 @@
+name: Update agent skills
+
+# Keeps the vendored JetBrains skills in .opencode/skills up to date.
+# Runs on the first day of every month and can be triggered manually.
+# If the update changes anything, a pull request is opened for review.
+
+on:
+  schedule:
+    - cron: '0 5 1 * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update-skills:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Refresh vendored skills
+      run: bash doc-dev/update-skills.sh
+
+    - name: Open a pull request if something changed
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        if [ -z "$(git status --porcelain)" ]; then
+          echo "Agent skills are already up to date."
+          exit 0
+        fi
+        git config user.name "github-actions[bot]"
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git checkout -b chore/update-agent-skills
+        git add .opencode/skills
+        git commit -m "chore: update vendored Kotlin agent skills"
+        git push -u origin chore/update-agent-skills --force
+        gh pr create \
+          --title "chore: update vendored Kotlin agent skills" \
+          --body "Automated refresh of the JetBrains skills from https://github.com/Kotlin/kotlin-agent-skills. Review the diff before merging; see \`doc-dev/agent-skills.md\`." \
+          || echo "A pull request already exists - update was pushed to the existing branch."

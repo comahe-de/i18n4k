@@ -41,6 +41,7 @@ _Internationalization for Kotlin_
 * [Further dokumentation](#further-dokumentation)
 * [Example](#example)
 * [Example projects](#example-projects)
+* [Development](#development)
 * [Contribute](#contribute)
 * [Status](#status)
 
@@ -187,19 +188,19 @@ index-based instead of key-based as e.g. Java-Property files. This has the advan
 is wasted for storing the key in each language.
 
 More details are described
-here [MessagesProviderViaLoadingText](./i18n4k-core/src/commonMain/kotlin/de/comahe/i18n4k/messages/providers/MessagesProviderViaLoadingText.kt)
+here [MessagesProviderViaLoadingText](./i18n4k-core/src/de/comahe/i18n4k/messages/providers/MessagesProviderViaLoadingText.kt)
 
 ## Runtime configuration
 
 The current locale and other parameters are stored in the global
-variable [i184k](./i18n4k-core/src/commonMain/kotlin/de/comahe/i18n4k/I18n4k.kt) of type
-[I18n4kConfig](./i18n4k-core/src/commonMain/kotlin/de/comahe/i18n4k/config/I18n4kConfig.kt)
+variable [i184k](./i18n4k-core/src/de/comahe/i18n4k/I18n4k.kt) of type
+[I18n4kConfig](./i18n4k-core/src/de/comahe/i18n4k/config/I18n4kConfig.kt)
 
 Predefined implementations of `I18n4kConfig` are:
 
-* [I18n4kConfigDefault](./i18n4k-core/src/commonMain/kotlin/de/comahe/i18n4k/config/I18n4kConfigDefault.kt)
-* [I18n4kConfigImmutable](./i18n4k-core/src/commonMain/kotlin/de/comahe/i18n4k/config/I18n4kConfigImmutable.kt)
-* [I18n4kConfigDelegate](./i18n4k-core/src/commonMain/kotlin/de/comahe/i18n4k/config/I18n4kConfigDelegate.kt)
+* [I18n4kConfigDefault](./i18n4k-core/src/de/comahe/i18n4k/config/I18n4kConfigDefault.kt)
+* [I18n4kConfigImmutable](./i18n4k-core/src/de/comahe/i18n4k/config/I18n4kConfigImmutable.kt)
+* [I18n4kConfigDelegate](./i18n4k-core/src/de/comahe/i18n4k/config/I18n4kConfigDelegate.kt)
 
 The configuration can be changed by assigning (and editing) one of these implementation to
 the `i184k` variable.
@@ -249,7 +250,7 @@ See [here](https://github.com/comahe-de/i18n4k/issues/25#issuecomment-1263426934
 
 ## Message format
 
-The [default message format](./i18n4k-core/src/commonMain/kotlin/de/comahe/i18n4k/messages/formatter/MessageFormatterDefault.kt)
+The [default message format](./i18n4k-core/src/de/comahe/i18n4k/messages/formatter/MessageFormatterDefault.kt)
 is similar to the [Java-MessageFormat](https://docs.oracle.com/javase/8/docs/api/java/text/MessageFormat.html) 
 or the [ICU-MessageFormat](https://unicode-org.github.io/icu/userguide/format_parse/messages/).
 E.g. the text `Hello, {0}` has one parameter.
@@ -264,7 +265,7 @@ formats the message with the correct plural case based on the given count.
 See [Formatters](./doc/formatters/index.adoc) for more information.
 
 For messages with parameters, the generator plugin 
-creates special [LocalizedStringFactories](./i18n4k-core/src/commonMain/kotlin/de/comahe/i18n4k/strings/LocalizedStringFactories.kt)
+creates special [LocalizedStringFactories](./i18n4k-core/src/de/comahe/i18n4k/strings/LocalizedStringFactories.kt)
 where the parameters must be supplied as arguments to get the resulting string.
 
 Parameters may also have a value type declaration,
@@ -275,7 +276,7 @@ which increases the type-safety.
 See [Parameters](./doc/parameters.adoc) for more information about parameters.
 
 Other message formatters can be implemented and be configured in 
-[I18n4kConfig](./i18n4k-core/src/commonMain/kotlin/de/comahe/i18n4k/config/I18n4kConfig.kt)`.messageFormatter`
+[I18n4kConfig](./i18n4k-core/src/de/comahe/i18n4k/config/I18n4kConfig.kt)`.messageFormatter`
 
 The escape character is `'`. 
 It’s recommended to use the real apostrophe character `’` (U+2019) for human-readable text 
@@ -414,6 +415,20 @@ Hallo, i18n4k!
 
 Please also check the examples projects in the [examples](./examples) folder!
 
+## Development
+
+The library modules are built with the **Kotlin Toolchain** (formerly Amper); the Gradle plugin
+and the examples remain Gradle builds.
+
+```sh
+./kotlin build
+./kotlin test
+./kotlin publish mavenLocal
+```
+
+See [doc-dev/](doc-dev/) for build instructions, the release process and the migration history.
+AI agents should start with [agent.md](agent.md).
+
 ## Contribute
 
 * Create an issue on [github](https://github.com/comahe-de/i18n4k/issues).
@@ -448,7 +463,7 @@ very welcome.
 
 [badge-maven]:https://img.shields.io/badge/Maven-Central-6262EC?style=flat
 
-[badge-kotlin]:https://img.shields.io/badge/Kotlin-2.2.20-orange?style=flat
+[badge-kotlin]:https://img.shields.io/badge/Kotlin-2.3.20-orange?style=flat
 
-[badge-gradle]:https://img.shields.io/badge/Gradle-9.1.0-1DA2BD?style=flat
+[badge-gradle]:https://img.shields.io/badge/Gradle-9.4.1-1DA2BD?style=flat
 

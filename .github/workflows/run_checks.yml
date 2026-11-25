@@ -41,6 +41,18 @@ jobs:
         key: ${{ runner.os }}-kotlin-toolchain-${{ hashFiles('kotlin', 'kotlin.bat') }}
         restore-keys: |
             ${{ runner.os }}-kotlin-toolchain-
+    # The Gradle plugin and the examples are still Gradle builds, so they need
+    # the Gradle cache in addition to the Kotlin Toolchain one.
+    - name: Cache Gradle stuff
+      if: ${{ always() }}
+      uses: actions/cache@v4
+      with:
+        path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: |
+            ${{ runner.os }}-gradle-
     - name: Cache Konan stuff
       if: ${{ always() }}
       uses: actions/cache@v4

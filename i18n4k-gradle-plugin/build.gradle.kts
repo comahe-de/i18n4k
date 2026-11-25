@@ -15,6 +15,7 @@ plugins {
     // This build has no `buildSrc`, so the Kotlin plugin version must be
     // declared explicitly (previously it came from the `buildSrc` classpath).
     alias(libs.plugins.kotlinJvm)
+    alias(libs.plugins.dokkaPlugin)
     `java-gradle-plugin`
     `maven-publish`
     signing
@@ -46,10 +47,38 @@ dependencies {
     testImplementation(libs.junit)
 }
 
+// Classpath used only by Dokka when documenting the library sources. It must NOT contain
+// `i18n4k-core-jvm` / `i18n4k-generator`: those sources are documented themselves, and
+// having the compiled classes on the classpath makes Dokka's K2 analysis crash with
+// "Error in translating of symbol ... KaFirDefaultPropertyGetterSymbol".
+val docsClasspath by configurations.creating {
+    isCanBeConsumed = false
+    isCanBeResolved = true
+}
+
+dependencies {
+    docsClasspath(kotlin("stdlib"))
+    docsClasspath(libs.kotlinxAtomicfu)
+    docsClasspath(libs.kotlinxCollectionsImmutable)
+    docsClasspath(libs.kotlinxCoroutinesCore)
+    docsClasspath(libs.kotlinPoet)
+    docsClasspath(libs.slf4jApi)
+}
+
 java {
     sourceCompatibility = JavaVersion.VERSION_11
     withSourcesJar()
-    withJavadocJar()
+    // `java-gradle-plugin` already registers a `javadocJar` artifact. The Java `javadoc`
+    // task has no Kotlin sources, so we add the Dokka HTML output to that same JAR instead
+    // of creating a second artifact with the same classifier.
+}
+
+// The task is registered lazily by the plugin-publish plugin, so match it instead of using
+// `tasks.named`.
+tasks.withType<Jar>().matching { it.name == "javadocJar" }.configureEach {
+    description = "Assembles a JAR containing the Dokka API documentation"
+    dependsOn(tasks.named("dokkaGeneratePublicationHtml"))
+    from(layout.buildDirectory.dir("dokka/html"))
 }
 
 kotlin {
@@ -108,17 +137,66 @@ publishing {
     }
 }
 
-// Sign Maven publications when a signing key is provided via Gradle properties:
-//   signing.keyId, signing.password, signing.secretKeyRingFile
-// (can also be supplied on the CI as ORG_GRADLE_PROJECT_signingKeyId, ...).
+// Sign the publications when a signing key is available.
+//
+// The CI supplies the same variables as for the library publication through the Kotlin
+// Toolchain:
+//   KOTLIN_TOOLCHAIN_SIGNING_KEY            ASCII-armored PGP private key
+//   KOTLIN_TOOLCHAIN_SIGNING_KEY_PASSPHRASE optional passphrase
+//
+// Locally, the classic Gradle signing properties also work:
+//   signing.keyId / signing.password / signing.secretKeyRingFile
+val inMemorySigningKey = providers.environmentVariable("KOTLIN_TOOLCHAIN_SIGNING_KEY").orNull
+val inMemorySigningPassphrase = providers.environmentVariable("KOTLIN_TOOLCHAIN_SIGNING_KEY_PASSPHRASE").orNull
+
 signing {
     isRequired = false
+    if (inMemorySigningKey != null) {
+        useInMemoryPgpKeys(inMemorySigningKey, inMemorySigningPassphrase)
+    }
 }
 
 afterEvaluate {
-    if (project.hasProperty("signing.keyId")) {
+    if (inMemorySigningKey != null || project.hasProperty("signing.keyId")) {
         signing {
             sign(publishing.publications)
+        }
+    }
+}
+
+// ---------------------------------------------------------------------------
+// API documentation for the Kotlin Toolchain library modules
+//
+// The Kotlin Toolchain 0.14 intentionally publishes an empty `-javadoc.jar`
+// placeholder and has no Dokka integration yet. This build generates real API
+// documentation directly from the Toolchain source layout; the release workflow
+// publishes it. See doc-dev/deployment.md.
+// ---------------------------------------------------------------------------
+dokka {
+    dokkaPublications.html {
+        moduleName.set("i18n4k")
+        moduleVersion.set(project.version.toString())
+        outputDirectory.set(layout.buildDirectory.dir("dokka/html"))
+        failOnWarning.set(false)
+    }
+
+    dokkaSourceSets {
+        val coreSourceSet = create("core") {
+            displayName.set("i18n4k-core")
+            sourceRoots.from(file("../i18n4k-core/src"))
+            classpath.from(docsClasspath)
+        }
+        create("cldr") {
+            displayName.set("i18n4k-cldr-plural-rules")
+            sourceRoots.from(file("../i18n4k-cldr-plural-rules/src"))
+            classpath.from(docsClasspath)
+            dependentSourceSets.add(coreSourceSet.sourceSetId.get())
+        }
+        create("generator") {
+            displayName.set("i18n4k-generator")
+            sourceRoots.from(file("../i18n4k-generator/src/main/kotlin"))
+            classpath.from(docsClasspath)
+            dependentSourceSets.add(coreSourceSet.sourceSetId.get())
         }
     }
 }

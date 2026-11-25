@@ -8,9 +8,10 @@
 # The Kotlin Toolchain publishes to Maven Central natively
 # (`./kotlin publish mavenCentral`), including signing, checksums, sources and
 # an (empty) Javadoc JAR. Credentials come from environment variables:
-#   KOTLIN_TOOLCHAIN_MAVEN_CENTRAL_USERNAME / _PASSWORD
-#   KOTLIN_TOOLCHAIN_SIGNING_KEY / _PASSPHRASE
-# (see the "Publish artifacts" GitHub workflows).
+#   KOTLIN_TOOLCHAIN_MAVEN_CENTRAL_USERNAME / KOTLIN_TOOLCHAIN_MAVEN_CENTRAL_PASSWORD
+#   KOTLIN_TOOLCHAIN_SIGNING_KEY / KOTLIN_TOOLCHAIN_SIGNING_KEY_PASSPHRASE
+#   KOTLIN_TOOLCHAIN_SIGNING_KEY_ID (optional)
+# (see the "Publish artifacts" GitHub workflow and doc-dev/deployment.md).
 
 # Required so that `./kotlin publish mavenLocal` works (used by the examples and
 # by the nested Gradle build of the Gradle plugin).

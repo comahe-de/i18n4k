@@ -1,0 +1,66 @@
+name: Publish artifacts
+
+# Publishing is done from a single host on purpose: the Kotlin Toolchain
+# cross-compiles and publishes *all* platforms (including Apple klibs) from one
+# machine. Maven Central rejects duplicate artifacts, so a second publishing
+# host would fail. See doc-dev/deployment.md for details.
+#
+# macOS is not required: `./kotlin publish` only needs to produce klibs, which
+# works from Windows. Release checks (tests) still run on all three OSes in
+# run_checks.yml for every push, and Windows is a supported Kotlin/Native host.
+
+on:
+  push:
+    tags:
+    - 'v*.*.*'
+    - 'v*.*.*-*'
+
+jobs:
+  publish:
+    runs-on: windows-latest
+
+    env:
+        KOTLIN_CLI_NO_WELCOME_BANNER: "1"
+        # Maven Central (Central Portal) credentials + PGP signing - see doc-dev/deployment.md.
+        KOTLIN_TOOLCHAIN_MAVEN_CENTRAL_USERNAME: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+        KOTLIN_TOOLCHAIN_MAVEN_CENTRAL_PASSWORD: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
+        KOTLIN_TOOLCHAIN_SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
+        KOTLIN_TOOLCHAIN_SIGNING_KEY_PASSPHRASE: ${{ secrets.SIGNING_KEY_PASSPHRASE }}
+        # Gradle Plugin Portal API key - see doc-dev/deployment.md.
+        GRADLE_PUBLISH_KEY: ${{ secrets.GRADLE_PUBLISH_KEY }}
+        GRADLE_PUBLISH_SECRET: ${{ secrets.GRADLE_PUBLISH_SECRET }}
+
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-java@v4
+      with:
+        distribution: 'corretto'
+        java-version: '21'
+
+    # don't use cache for releases...
+
+    - name: Run tests
+      run: ./kotlin.bat test
+
+    - name: Publish libraries to Maven Central
+      run: ./kotlin.bat publish mavenCentral
+
+    # The nested Gradle build resolves i18n4k-core/-generator from Maven Local and
+    # needs the libraries there first. It also runs `validatePlugins` and signs the
+    # publications when KOTLIN_TOOLCHAIN_SIGNING_KEY is set.
+    - name: Publish Gradle plugin to the Gradle Plugin Portal
+      working-directory: ./i18n4k-gradle-plugin
+      run: |
+        ..\kotlin.bat publish mavenLocal
+        .\gradlew.bat build publishPlugins
+
+    - name: Generate API documentation (Dokka)
+      working-directory: ./i18n4k-gradle-plugin
+      run: .\gradlew.bat dokkaGeneratePublicationHtml
+
+    - name: Upload API documentation
+      uses: actions/upload-artifact@v4
+      if: ${{ always() }}
+      with:
+        name: api-docs
+        path: i18n4k-gradle-plugin/build/dokka/html
