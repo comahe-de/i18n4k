@@ -1,0 +1,12 @@
+[versions]
+logback = "1.6.2"
+androidx-activity-compose = "1.13.0"
+kotlinx-coroutines = "1.11.0"
+i18n4k = "0.11.2"
+
+[libraries]
+logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity-compose" }
+kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
+i18n4k-core = { module = "de.comahe.i18n4k:i18n4k-core", version.ref = "i18n4k" }
+i18n4k-cldr-plural-rules = { module = "de.comahe.i18n4k:i18n4k-cldr-plural-rules", version.ref = "i18n4k" }

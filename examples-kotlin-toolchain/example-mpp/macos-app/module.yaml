@@ -1,0 +1,14 @@
+# Kotlin/Native macOS console app of the example.
+
+product: macos/app
+
+settings:
+  native:
+    # The Toolchain's default entry point is `main` in the root package. These
+    # apps use a package, so the fully qualified function is configured here.
+    entryPoint: example.macosapp.main
+  kotlin:
+    version: 2.3.20
+
+dependencies:
+  - //shared

@@ -1,0 +1,36 @@
+# Kotlin Toolchain plugin for i18n4k.
+#
+# This is a copy of the "thin wrapper" recommended in
+# `doc/kotlin-toolchain-plugin.md`: the Kotlin Toolchain cannot publish custom
+# plugins yet, so the plugin lives inside the consuming project and depends on
+# the published i18n4k libraries.
+#
+# The task actions and the settings schema are in `src/`, the task registration
+# and the `generated.sources`/`generated.resources` contributions in
+# `plugin.yaml`.
+
+product: jvm/amper-plugin
+
+pluginInfo:
+  id: i18n4k
+  settingsClass: de.comahe.i18n4k.toolchain.I18n4kSettings
+
+# `mavenLocal` lets the example pick up versions published with
+# `./kotlin publish mavenLocal` from the repository root. Maven Central (the
+# Toolchain default) is used for the released artifacts.
+repositories:
+  - mavenLocal
+
+settings:
+  jvm:
+    jdk:
+      version: 17
+
+dependencies:
+  # The generator library contains all the logic.
+  - de.comahe.i18n4k:i18n4k-generator:0.11.2
+  # Types used in the task-action signature (MessageFormatter, forLocaleTag).
+  # i18n4k-generator declares i18n4k-core with runtime scope only, so it has to
+  # be added explicitly for compilation.
+  - de.comahe.i18n4k:i18n4k-core-jvm:0.11.2
+  - org.slf4j:slf4j-api:2.0.17

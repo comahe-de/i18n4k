@@ -1,0 +1,14 @@
+# Desktop (JVM) application of the example.
+
+product: jvm/app
+
+dependencies:
+  - //shared
+  - $compose.desktop.currentOs
+  - $libs.kotlinx.coroutines.swing
+  - $libs.logback.classic
+
+settings:
+  compose: enabled
+  jvm:
+    mainClass: example.compose.MainKt

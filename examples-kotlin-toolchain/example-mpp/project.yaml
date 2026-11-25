@@ -1,0 +1,19 @@
+# Standalone Kotlin Toolchain project for the i18n4k example.
+# See https://kotlin-toolchain.org/dev/reference/project/
+#
+# This project is intentionally NOT part of the repository's root `project.yaml`:
+# like the Gradle examples in `../../examples`, it consumes the published i18n4k
+# artifacts (from Maven Central or Maven Local) instead of the modules in this
+# repository.
+
+modules:
+  - js-app
+  - jvm-app
+  - linux-app
+  - macos-app
+  - plugins/i18n4k
+  - shared
+  - windows-app
+
+plugins:
+  - //plugins/i18n4k

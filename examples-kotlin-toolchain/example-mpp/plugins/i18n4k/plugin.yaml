@@ -1,0 +1,44 @@
+# Task and command registry of the i18n4k Kotlin Toolchain plugin.
+# See https://kotlin-toolchain.org/dev/user-guide/plugins/topics/tasks/
+#
+# `${...}` references are resolved by the Kotlin Toolchain and are only allowed
+# in plugin.yaml (not in module.yaml).
+
+tasks:
+  generate:
+    action: !de.comahe.i18n4k.toolchain.tasks.generateI18n4kFiles
+      inputDirectory: ${module.rootDir}/${pluginSettings.inputDirectory}
+      generatedSourcesDir: ${taskOutputDir}/sources
+      generatedLanguageFilesDir: ${taskOutputDir}/resources
+      packageName: ${pluginSettings.packageName}
+      commentLocale: ${pluginSettings.commentLocale}
+      sourceCodeLocales: ${pluginSettings.sourceCodeLocales}
+      generationTarget: ${pluginSettings.generationTarget}
+      valueTypesEnabled: ${pluginSettings.valueTypesEnabled}
+      valueTypeMapping: ${pluginSettings.valueTypeMapping}
+      enableJsExportAnnotation: ${pluginSettings.enableJsExportAnnotation}
+
+  clear:
+    action: !de.comahe.i18n4k.toolchain.tasks.clearI18n4kFiles
+      generatedSourcesDir: ${tasks.generate.action.generatedSourcesDir}
+      generatedLanguageFilesDir: ${tasks.generate.action.generatedLanguageFilesDir}
+
+# Contribute the task outputs back to the build. The Kotlin Toolchain compiles
+# the generated sources together with the module and packages the generated
+# language files as resources. IDEs imported through the Kotlin Toolchain show
+# both as generated source/resource roots.
+generated:
+  sources:
+    - language: kotlin
+      directory: ${tasks.generate.action.generatedSourcesDir}
+  resources:
+    - directory: ${tasks.generate.action.generatedLanguageFilesDir}
+
+# `generate` runs automatically whenever its output is needed; it is additionally
+# exposed as a command for explicit runs. `clearI18n4kFiles` mirrors the Gradle
+# plugin's task of the same name.
+commands:
+  - name: generateI18n4kFiles
+    performedBy: generate
+  - name: clearI18n4kFiles
+    performedBy: clear

@@ -29,6 +29,7 @@ _Internationalization for Kotlin_
 * [Artefact repository](#artefact-repository)
 * [Gradle dependencies](#gradle-dependencies)
 * [Gradle plugin](#gradle-plugin)
+* [Kotlin Toolchain plugin](#kotlin-toolchain-plugin)
 * [Code generation](#code-generation)
     + [Adding message bundles](#adding-message-bundles)
     + [Inline storing of translations](#inline-storing-of-translations)
@@ -160,6 +161,28 @@ i18n4k {
 
 For the full list of parameters,
 see [I18n4kExtension](./i18n4k-gradle-plugin/src/main/kotlin/de/comahe/i18n4k/gradle/plugin/I18n4kExtension.kt)
+
+## Kotlin Toolchain plugin
+
+For projects built with the [Kotlin Toolchain](https://kotlin-toolchain.org/)
+(formerly Amper) there is an equivalent plugin in
+[`examples-kotlin-toolchain/example-mpp/plugins/i18n4k`](./examples-kotlin-toolchain/example-mpp/plugins/i18n4k).
+It generates the same accessor code and language resource files and contributes
+them to the module through the Toolchain's `generated.sources` /
+`generated.resources` mechanism. That means they are compiled and packaged like
+normal module contents and are shown in IntelliJ IDEA as source/resource
+folders.
+
+The Kotlin Toolchain cannot package and publish custom plugins yet
+([roadmap](https://kotlin-toolchain.org/latest/user-guide/plugins/overview/#planned-for-upcoming-releases)).
+The plugin is therefore a thin local wrapper around the published
+`i18n4k-generator` library: copy it into your project as `plugins/i18n4k` and
+depend on the Maven artifacts.
+
+Step-by-step installation, the full settings reference, the differences to the
+Gradle plugin and the two example projects (`example-mpp` and
+`example-compose`) are documented in
+[doc/kotlin-toolchain-plugin.md](./doc/kotlin-toolchain-plugin.md).
 
 ## Code generation
 
@@ -413,12 +436,17 @@ Hallo, i18n4k!
 
 ## Example projects
 
-Please also check the examples projects in the [examples](./examples) folder!
+Please also check the examples projects in the [examples](./examples) folder
+(Gradle) and the Kotlin Toolchain examples in
+[examples-kotlin-toolchain](./examples-kotlin-toolchain). Each example is a
+standalone project with its own build files and consumes the published i18n4k
+artifacts.
 
 ## Development
 
-The library modules are built with the **Kotlin Toolchain** (formerly Amper); the Gradle plugin
-and the examples remain Gradle builds.
+The library modules are built with the **Kotlin Toolchain** (formerly Amper);
+the Gradle plugin, the Gradle examples and the standalone Kotlin Toolchain
+examples remain separate builds.
 
 ```sh
 ./kotlin build

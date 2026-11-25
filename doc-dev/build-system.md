@@ -9,6 +9,7 @@
 | `i18n4k-generator` | Kotlin Toolchain 0.14.1 (`jvm/lib`, `layout: maven-like`) | JVM library |
 | `i18n4k-gradle-plugin` | **Gradle** (nested build) | The Toolchain has no product type for Gradle plugins |
 | `examples/*` | **Gradle** | Consumer samples for the Gradle plugin — do not modify |
+| `examples-kotlin-toolchain/*` | Kotlin Toolchain, one standalone project each | Consumer samples for the Kotlin Toolchain plugin |
 
 The Kotlin Toolchain is JetBrains' declarative `kotlin` CLI (formerly Amper). Configuration is
 YAML, not Gradle Kotlin DSL.
@@ -23,8 +24,30 @@ templates/
 i18n4k-core/module.yaml
 i18n4k-cldr-plural-rules/module.yaml
 i18n4k-generator/module.yaml
-i18n4k-gradle-plugin/            # nested, self-contained Gradle build
+examples-kotlin-toolchain/         # standalone projects (own project.yaml/wrapper)
+  example-mpp/                     # full multiplatform app; consumes published artifacts
+    project.yaml                   # NOT part of the root project
+    kotlin, kotlin.bat             # own wrapper
+    plugins/i18n4k/                # Kotlin Toolchain plugin (jvm/amper-plugin)
+      module.yaml
+      plugin.yaml                  # tasks, generated.sources/resources, commands
+      src/                         # settings schema and @TaskAction functions
+    shared/                        # kmp/lib with the i18n4k plugin enabled
+    jvm-app/, js-app/              # JVM (Swing) and JS apps
+    windows-app/, linux-app/, macos-app/
+  example-compose/                 # Compose Multiplatform app, port of examples/example-compose
+    project.yaml, kotlin, kotlin.bat
+    plugins/i18n4k/                # same local plugin wrapper
+    shared/                        # Compose UI, i18n bundles, composeResources
+    desktopApp/, webApp/           # jvm/app and wasm-js/app
+    androidApp/, iosApp/           # android/app and ios/app
+i18n4k-gradle-plugin/              # nested, self-contained Gradle build
 ```
+
+The root `project.yaml` contains only the three libraries. The Kotlin Toolchain examples are
+standalone projects, exactly like the Gradle examples in `examples/`: each has its own
+`project.yaml`, its own `kotlin`/`kotlin.bat` wrapper and depends on the **published** artifacts
+(Maven Central, or Maven Local after `./kotlin publish mavenLocal`), never on the modules here.
 
 The wrapper pins **Kotlin Toolchain 0.14.1** (distribution `0.14.0-dev-4630`). The
 `kotlin_cli_version` / `kotlin_cli_sha256` lines in `kotlin` and `kotlin.bat` must stay in sync.
@@ -49,6 +72,21 @@ Scoping:
 ./kotlin test  -p jvm
 ./kotlin build -m i18n4k-core -p js -p wasmJs -p wasmWasi
 ./kotlin publish mavenLocal -m i18n4k-generator --transitive
+```
+
+The example projects have their own wrappers and are run from their directories:
+
+```sh
+cd examples-kotlin-toolchain/example-mpp
+./kotlin build
+./kotlin test -m shared -p jvm
+./kotlin run -m jvm-app
+./kotlin do clearI18n4kFiles -m shared
+
+cd ../example-compose
+./kotlin build
+./kotlin test -m shared -p jvm
+./kotlin run -m desktopApp
 ```
 
 `build` and `test` automatically restrict themselves to platforms that can be handled on the
@@ -83,6 +121,13 @@ directories and the `kotlin` level is dropped:
 
 `i18n4k-generator` is JVM-only and keeps `layout: maven-like`, so
 `src/main/kotlin`, `src/test/kotlin` and `src/test/files` are unchanged.
+
+`i18n4k-kotlin-toolchain-plugin` does not live in the root project. It is the local plugin of
+the standalone example, at `examples-kotlin-toolchain/example-mpp/plugins/i18n4k`. It uses the
+default Toolchain layout: the settings schema and the `@TaskAction` functions live in `src/`, the
+task registration and the `generated.sources`/`generated.resources` contributions in
+`plugin.yaml`. Its `module.yaml` depends on the published `i18n4k-generator` /
+`i18n4k-core-jvm` / `slf4j-api` artifacts.
 
 `jvmAndroidMain` / `jvmAndroidTest` were custom intermediate Gradle source sets. They are
 expressed with `aliases: - jvmAndroid: [jvm, android]` in `i18n4k-core/module.yaml` (Toolchain
@@ -176,7 +221,9 @@ Verified on Windows with Kotlin Toolchain 0.14.1:
 | `./kotlin show modules` | 3 modules |
 | `./kotlin build` | all host-supported targets |
 | `./kotlin test` | all host-supported targets (112 JVM tests) |
-| `./kotlin publish mavenLocal` | all 3 modules, all platforms (incl. Apple klibs) |
+| `./kotlin publish mavenLocal` | all publishing modules, all platforms (incl. Apple klibs) |
+| `examples-kotlin-toolchain/example-mpp`: `./kotlin build`, `./kotlin test`, `./kotlin run -m jvm-app` | OK |
+| `examples-kotlin-toolchain/example-compose`: `./kotlin build`, `./kotlin test -m shared -p jvm`, `./kotlin run --no-compose-hot-reload -m desktopApp` | OK on Windows (desktop/web/Android; iOS skipped) |
 | `i18n4k-gradle-plugin/gradlew build` | OK |
 | `i18n4k-gradle-plugin/gradlew publishToMavenLocal` | OK |
 

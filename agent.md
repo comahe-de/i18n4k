@@ -14,14 +14,16 @@ generator for Kotlin. Group `de.comahe.i18n4k`, version `0.11.2`.
 | `i18n4k-cldr-plural-rules` | Kotlin Toolchain `kmp/lib` | CLDR plural formatters |
 | `i18n4k-generator` | Kotlin Toolchain `jvm/lib` | code generator (KotlinPoet) |
 | `i18n4k-gradle-plugin` | **Gradle** (nested build) | Gradle plugin |
-| `examples/*` | **Gradle** | consumer samples — **do not modify** |
+| `examples/*` | **Gradle** | Gradle consumer samples — **not** part of the root project |
+| `examples-kotlin-toolchain/*` | Kotlin Toolchain (standalone projects) | Kotlin Toolchain consumer samples; **not** part of the root project |
 
 Build system: **Kotlin Toolchain 0.14.1** (formerly Amper), wrapper pinned in `kotlin`/`kotlin.bat`.
 
 ## Hard rules
 
-1. Never add Gradle files to the three Toolchain modules and never run Gradle for them.
-2. Never change `examples/*`. They demonstrate the Gradle plugin.
+1. Never add Gradle files to the Toolchain modules and never run Gradle for them.
+2. `examples/*`. and  `examples-kotlin-toolchain/*` are standalone projects consuming the published artifacts —
+   do not add them to the root `project.yaml` or make them depend on local modules.
 3. Keep `i18n4k-gradle-plugin` on Gradle: the Toolchain has no Gradle-plugin product type.
 4. On Windows use `./kotlin.bat` / `.\gradlew.bat`; the extension-less shell wrappers do not run
    under PowerShell.
@@ -40,6 +42,14 @@ Build system: **Kotlin Toolchain 0.14.1** (formerly Amper), wrapper pinned in `k
 
 cd i18n4k-gradle-plugin
 ./gradlew build
+
+cd ../examples-kotlin-toolchain/example-mpp
+./kotlin build
+./kotlin run -m jvm-app
+
+cd ../example-compose
+./kotlin build
+./kotlin run -m desktopApp
 ```
 
 ## Where to look
@@ -47,6 +57,7 @@ cd i18n4k-gradle-plugin
 | Topic | Document |
 |---|---|
 | Build layout, commands, source dirs, Pitfalls | [`doc-dev/build-system.md`](doc-dev/build-system.md) |
+| Kotlin Toolchain plugin usage and limitations | [`doc/kotlin-toolchain-plugin.md`](doc/kotlin-toolchain-plugin.md) |
 | Maven Central + Plugin Portal, secrets, signing, release checklist | [`doc-dev/deployment.md`](doc-dev/deployment.md) |
 | What changed in the Gradle → Toolchain migration, limitations | [`doc-dev/migration-from-gradle.md`](doc-dev/migration-from-gradle.md) |
 | Agent skills, how to refresh upstream skills | [`doc-dev/agent-skills.md`](doc-dev/agent-skills.md) |
@@ -72,6 +83,11 @@ Kotlin Toolchain 0.14.1 (`0.14.0-dev-4630`):
 - `./kotlin test` → all host-supported targets, 112 JVM tests
 - `./kotlin publish mavenLocal` → all modules/platforms
 - nested Gradle plugin `build`, `publishToMavenLocal` → OK
+- `examples-kotlin-toolchain/example-mpp`: `./kotlin build`, `./kotlin test` (4 JVM + 3 native
+  tests), and the JVM/native apps work
+- `examples-kotlin-toolchain/example-compose`: `./kotlin build` (desktop, web and Android;
+  iOS is skipped off macOS), `./kotlin test -m shared -p jvm` (5 tests), and the desktop app
+  starts with `./kotlin run --no-compose-hot-reload -m desktopApp`
 
 Apple binaries/tests still require macOS; `run_checks.yml` covers that host.
 
@@ -82,6 +98,13 @@ Apple binaries/tests still require macOS; `run_checks.yml` covers that host.
 - `-m` with local dependencies requires `--transitive` or `--non-transitive`.
 - The nested Gradle plugin build resolves `i18n4k-core-jvm` / `i18n4k-generator` from Maven
   Local: run `./kotlin publish mavenLocal` first.
+- The Kotlin Toolchain example is a standalone project too. It consumes the published 0.11.2
+  artifacts (Maven Local first, then Maven Central); run `./kotlin publish mavenLocal` in the
+  repository root before building it against the current sources.
+- Kotlin Toolchain native apps (`windows/app`, `linux/app`, `macos/app`) default to a top-level
+  `main` in the **root package**. With a package declaration, set
+  `settings.native.entryPoint: <package>.main` (as the example's `*-app/module.yaml` files do),
+  otherwise linking fails with `could not find '/main' function`.
 - Library `-javadoc.jar` files are Toolchain placeholders (a single `README.md`). The Toolchain
   has no Dokka integration, and no API documentation is generated at the moment.
 - The tooling expects the current Toolchain syntax: templates reject `aliases:`/`description:`;

@@ -1,0 +1,43 @@
+# Shared Kotlin Multiplatform module of the example.
+#
+# It contains the message bundles and the code generated from them. The
+# platform apps (`jvm-app`, `js-app`, `windows-app`, `linux-app`, `macos-app`)
+# depend on this module.
+
+product:
+  type: kmp/lib
+  platforms:
+    - jvm
+    - js
+    - mingwX64
+    - linuxX64
+    - linuxArm64
+    - macosArm64
+
+plugins:
+  i18n4k:
+    enabled: true
+    # Translations generated into the Kotlin code (no runtime loading needed).
+    # The remaining locales (fr, nl, en_US_texas) become resource files.
+    sourceCodeLocales:
+      - en
+      - en_US
+      - de
+
+settings:
+  jvm:
+    jdk:
+      version: 17
+  kotlin:
+    version: 2.3.20
+
+# Same Windows workaround as `i18n4k-core`: keep the compiler's IR module name
+# free of ':' so it can be used as a temporary directory name.
+settings@js:
+  kotlin:
+    freeCompilerArgs:
+      - -Xir-module-name=example-mpp-shared
+
+dependencies:
+  # `exported` so that the app modules see MessageBundle/Locale from i18n4k-core.
+  - de.comahe.i18n4k:i18n4k-core:0.11.2: exported

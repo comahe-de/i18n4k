@@ -6,6 +6,11 @@
 # which the Kotlin Toolchain cannot build (there is no `java-gradle-plugin`
 # product type). It therefore remains a self-contained Gradle build in its own
 # directory. See `agent.md` for the details of this exception.
+#
+# The Kotlin Toolchain examples in `examples-kotlin-toolchain/` are also NOT
+# listed here: like the Gradle examples in `examples/`, each one is a standalone
+# project with its own `project.yaml` and consumes the published i18n4k
+# artifacts instead of the modules in this repository.
 modules:
   - i18n4k-cldr-plural-rules
   - i18n4k-core

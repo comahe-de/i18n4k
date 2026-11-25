@@ -1,0 +1,14 @@
+# JVM desktop app (Swing) of the example.
+
+product: jvm/app
+
+settings:
+  jvm:
+    mainClass: example.jvm.MainKt
+    jdk:
+      version: 17
+  kotlin:
+    version: 2.3.20
+
+dependencies:
+  - //shared

@@ -18,10 +18,13 @@ jobs:
             # wrapper does not work in the default PowerShell on Windows.
             - os: ubuntu-latest
               kotlin: ./kotlin
+              exampleNativeApp: linux-app
             - os: windows-latest
               kotlin: ./kotlin.bat
+              exampleNativeApp: windows-app
             - os: macos-latest
               kotlin: ./kotlin
+              exampleNativeApp: macos-app
     env:
         KOTLIN_CLI_NO_WELCOME_BANNER: "1"
     steps:
@@ -66,6 +69,8 @@ jobs:
       if: runner.os != 'Windows'
       run: chmod +x ./kotlin
         && chmod +x ./i18n4k-gradle-plugin/gradlew
+        && chmod +x ./examples-kotlin-toolchain/example-mpp/kotlin
+        && chmod +x ./examples-kotlin-toolchain/example-compose/kotlin
         && chmod +x ./examples/example-jvm/gradlew
         && chmod +x ./examples/example-mpp/gradlew
         && chmod +x ./examples/example-android/gradlew
@@ -79,6 +84,30 @@ jobs:
       run: ${{ matrix.kotlin }} test
     - name: Build everything
       run: ${{ matrix.kotlin }} build
+    # The Kotlin Toolchain example is a standalone project, like the Gradle
+    # examples below. It consumes the artifacts published to Maven Local above.
+    - name: Build the Kotlin Toolchain example project
+      if: ${{ always() }}
+      working-directory: ./examples-kotlin-toolchain/example-mpp
+      run: ${{ matrix.kotlin }} build
+    - name: Test the Kotlin Toolchain example project
+      if: ${{ always() }}
+      working-directory: ./examples-kotlin-toolchain/example-mpp
+      run: ${{ matrix.kotlin }} test
+    - name: Run the Kotlin Toolchain example (native)
+      if: ${{ always() }}
+      working-directory: ./examples-kotlin-toolchain/example-mpp
+      run: ${{ matrix.kotlin }} run -m ${{ matrix.exampleNativeApp }}
+    # Compose Multiplatform example. The apps are built, but not launched: the
+    # desktop/web apps block, and Android/iOS need a device/emulator or Xcode.
+    - name: Build the Kotlin Toolchain Compose example
+      if: ${{ always() }}
+      working-directory: ./examples-kotlin-toolchain/example-compose
+      run: ${{ matrix.kotlin }} build
+    - name: Test the Kotlin Toolchain Compose example
+      if: ${{ always() }}
+      working-directory: ./examples-kotlin-toolchain/example-compose
+      run: ${{ matrix.kotlin }} test -m shared -p jvm
     - name: Build the Gradle plugin (nested Gradle build)
       if: ${{ always() }}
       shell: bash
@@ -126,9 +155,9 @@ jobs:
       with:
         name: test-reports-${{ matrix.os }}
         path: |
-            i18n4k-core/build/test-results/
-            i18n4k-generator/build/test-results/
-            i18n4k-cldr-plural-rules/build/test-results/
+            build/reports/
+            examples-kotlin-toolchain/example-mpp/build/reports/
+            examples-kotlin-toolchain/example-compose/build/reports/
             i18n4k-gradle-plugin/build/test-results/
             examples/example-jvm/build/test-results/
             examples/example-mmp/build/test-results/

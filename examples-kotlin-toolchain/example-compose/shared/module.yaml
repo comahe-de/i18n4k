@@ -1,0 +1,53 @@
+# Shared Compose Multiplatform module of the example.
+#
+# It contains the shared UI, the message bundles and the code generated from
+# them. The platform apps (`androidApp`, `desktopApp`, `iosApp`, `webApp`)
+# depend on this module.
+
+product:
+  type: kmp/lib
+  platforms: [ jvm, wasmJs, android, iosArm64, iosSimulatorArm64 ]
+
+plugins:
+  i18n4k:
+    enabled: true
+    # All locales are generated into the Kotlin code. This keeps the example
+    # self-contained: no language files have to be loaded through Compose
+    # resources at runtime. `example-mpp` shows the resource-file variant.
+    sourceCodeLocales:
+      - en
+      - en_US
+      - en_US_texas
+      - de
+      - fr
+      - nl
+      - de_x_attr_gender
+      - de_x_attr_decl_genitive
+      - en_x_attr_gender
+      - fr_x_attr_gender
+      - nl_x_attr_gender
+      - x_attr_emoji
+    # `{thing:LS}` in the message files is shorthand for LocalizedString.
+    valueTypeMapping:
+      LS: de.comahe.i18n4k.strings.LocalizedString
+
+settings:
+  compose:
+    enabled: true
+    resources:
+      packageName: example.compose.resources
+      # Generate public accessors so previews and the platform apps can use Res.*
+      exposedAccessors: true
+
+dependencies:
+  - $compose.runtime
+  - $compose.foundation
+  - $compose.material3
+  - $compose.ui
+  - $compose.components.resources
+  - $compose.preview
+  - $libs.i18n4k.core
+  - $libs.i18n4k.cldr.plural.rules
+
+dependencies@android:
+  - $compose.uiTooling
