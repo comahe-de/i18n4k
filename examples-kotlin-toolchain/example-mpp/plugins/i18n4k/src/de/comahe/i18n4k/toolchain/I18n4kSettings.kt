@@ -26,11 +26,11 @@ interface I18n4kSettings {
      *
      * Every subdirectory becomes a package in the generated Kotlin code.
      *
-     * The Kotlin Toolchain puts common sources into `src`, so the default is
-     * `src/i18n`. Projects with `layout: maven-like` usually use
-     * `src/main/i18n`.
+     * Message bundles are build inputs, not sources, so the default is `i18n`
+     * at the module root (next to `resources` / `composeResources`). Projects
+     * with `layout: maven-like` usually use `src/main/i18n`.
      */
-    val inputDirectory: String get() = "src/i18n"
+    val inputDirectory: String get() = "i18n"
 
     /**
      * Package name of the generated classes.

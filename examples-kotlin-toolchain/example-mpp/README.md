@@ -80,7 +80,7 @@ plugins:
     sourceCodeLocales: [ en, en_US, de ]
 ```
 
-The bundles live in [`shared/src/i18n/x/y`](shared/src/i18n/x/y). The generated
+The bundles live in [`shared/i18n/x/y`](shared/i18n/x/y). The generated
 Kotlin sources and resource files are contributed to the build via
 `generated.sources` / `generated.resources`, so they are compiled, packaged and
 shown in IntelliJ IDEA as source/resource folders. `fr`, `nl` and

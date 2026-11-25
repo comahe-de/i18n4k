@@ -74,10 +74,13 @@ plugins:
       LS: de.comahe.i18n4k.strings.LocalizedString
 ```
 
-The bundles live in [`shared/src/i18n/x/y`](shared/src/i18n/x/y). Unlike the
-Gradle example, **all locales are inlined into the generated Kotlin code**
-(`sourceCodeLocales`). The Gradle plugin writes the non-inlined language files
-into `composeResources/files/i18n` so that Compose resources can load them; the
+The bundles live in [`shared/i18n/x/y`](shared/i18n/x/y). This is only
+the generator input: the `.properties` files are not packaged as module
+resources. All locales are inlined into the generated Kotlin code
+(`sourceCodeLocales`), so no language resource files are produced at all.
+
+The Gradle plugin instead writes the non-inlined language files into
+`composeResources/files/i18n` so that Compose resources can load them; the
 Toolchain plugin writes its outputs below the task output directory, and those
 cannot be wired into `composeResources` from a plugin. Inlining everything keeps
 the example self-contained and works identically on all platforms. The

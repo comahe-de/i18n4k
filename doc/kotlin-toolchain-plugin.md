@@ -131,7 +131,7 @@ All settings live under `plugins.i18n4k` in `module.yaml`:
 | Setting | Type | Default | Description |
 |---|---|---|---|
 | `enabled` | boolean | `false` | Enables the plugin in this module. |
-| `inputDirectory` | string | `"src/i18n"` | Directory with the message properties files, relative to the module root. Use `src/main/i18n` for `layout: maven-like`. |
+| `inputDirectory` | string | `"i18n"` | Directory with the message properties files, relative to the module root. Use `src/main/i18n` for `layout: maven-like`. |
 | `packageName` | string? | `null` | Package of the generated classes. `null` derives it from the path below `inputDirectory`. |
 | `commentLocale` | string? | `"en"` | Locale whose texts are added as KDoc comments. `null` disables comments. |
 | `sourceCodeLocales` | list? | `null` | Locales inlined into the Kotlin code. `null` = all, empty list = none. |
@@ -170,13 +170,17 @@ Mark it `exported` if the generated accessors are part of the module API.
 
 ## Message bundles
 
-By default the bundles are searched in `src/i18n` (Toolchain layout) or
-`src/main/i18n` (with `layout: maven-like`, configured via `inputDirectory`).
-Subdirectories become packages:
+By default the bundles are searched in `i18n` at the module root (Toolchain
+layout) or `src/main/i18n` (with `layout: maven-like`, configured via
+`inputDirectory`). `i18n` is a build input directory, not a source or resource
+directory: the `.properties` files are **not** added to the module's resources
+and do not end up in the artifact. Only the generated Kotlin code is compiled,
+and — for locales that are not inlined — the generated `*.i18n4k.txt` files are
+added through `generated.resources`. Subdirectories become packages:
 
 ```
-app/src/i18n/x/y/MyMessages_en.properties
-app/src/i18n/x/y/MyMessages_de.properties
+app/i18n/x/y/MyMessages_en.properties
+app/i18n/x/y/MyMessages_de.properties
 ```
 
 generates the `x.y.MyMessages` object. The generated language files are put at
@@ -290,7 +294,7 @@ is not part of the repository's root project and consumes the published
 artifacts:
 
 * `shared` — a `kmp/lib` (JVM, JS, Native) with the plugin enabled, the message
-  bundles in `src/i18n`, inline translations for `en`, `en_US` and `de`, and
+  bundles in `i18n`, inline translations for `en`, `en_US` and `de`, and
   generated resources for the other locales.
 * `jvm-app` — a `jvm/app` Swing desktop application; it also loads the
   generated resource files.

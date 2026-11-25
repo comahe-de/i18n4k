@@ -123,11 +123,12 @@ directories and the `kotlin` level is dropped:
 `src/main/kotlin`, `src/test/kotlin` and `src/test/files` are unchanged.
 
 `i18n4k-kotlin-toolchain-plugin` does not live in the root project. It is the local plugin of
-the standalone example, at `examples-kotlin-toolchain/example-mpp/plugins/i18n4k`. It uses the
-default Toolchain layout: the settings schema and the `@TaskAction` functions live in `src/`, the
-task registration and the `generated.sources`/`generated.resources` contributions in
+the standalone examples, at `examples-kotlin-toolchain/example-{mpp,compose}/plugins/i18n4k`. It
+uses the default Toolchain layout: the settings schema and the `@TaskAction` functions live in
+`src/`, the task registration and the `generated.sources`/`generated.resources` contributions in
 `plugin.yaml`. Its `module.yaml` depends on the published `i18n4k-generator` /
-`i18n4k-core-jvm` / `slf4j-api` artifacts.
+`i18n4k-core-jvm` / `slf4j-api` artifacts. Message bundles are build inputs, so they live in
+`i18n/` at the module root (the default `plugins.i18n4k.inputDirectory`), not under `src/`.
 
 `jvmAndroidMain` / `jvmAndroidTest` were custom intermediate Gradle source sets. They are
 expressed with `aliases: - jvmAndroid: [jvm, android]` in `i18n4k-core/module.yaml` (Toolchain
