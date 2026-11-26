@@ -65,16 +65,6 @@ jobs:
         key: ${{ runner.os }}-konan-${{ hashFiles('kotlin', 'kotlin.bat') }}
         restore-keys: |
             ${{ runner.os }}-konan-
-    # The Kotlin Toolchain provisions its own Android SDK packages (e.g.
-    # build-tools;37.0.0), which may be newer than what the hosted runner
-    # preinstalls and whose licenses are not accepted there yet. Accept the
-    # Android SDK licenses non-interactively on all platforms before building.
-    - name: Set up Android SDK (accept licenses)
-      if: ${{ always() }}
-      uses: android-actions/setup-android@v4
-      with:
-        # Only accept licenses; the Toolchain provisions the packages it needs.
-        packages: ''
     - name: Permission to run wrappers
       if: runner.os != 'Windows'
       run: chmod +x ./kotlin
@@ -111,20 +101,37 @@ jobs:
     # Compose Multiplatform example. The apps are built, but not launched: the
     # desktop/web apps block, and Android/iOS need a device/emulator or Xcode.
     #
-    # The runner images ship `build-tools;37.0.0` with a package manifest whose
-    # license id (`license-2AB95129`) is not accepted by the Kotlin Toolchain's
-    # SDK provisioning (and `sdkmanager --licenses` only covers remote packages).
-    # Remove that package so the Toolchain re-provisions it from Google's repo,
-    # where it uses the regular, accepted `android-sdk-license`.
-    - name: Reset Android SDK build-tools (Linux/macOS)
+    # **Workaround**
+    # The Windows runner image ships `build-tools;37.0.0` with a `package.xml`
+    # whose legacy license id (`license-2AB95129`) is not accepted by the Kotlin
+    # Toolchain's SDK provisioning, and `sdkmanager --licenses` only covers
+    # remote packages, so it cannot accept that id. Delete such a malformed
+    # package before building; the Toolchain then re-provisions it from Google's
+    # repository, where it uses the accepted `android-sdk-license`.
+    - name: Reset malformed Android SDK build-tools (Linux/macOS)
       if: ${{ always() && runner.os != 'Windows' }}
       shell: bash
-      run: rm -rf "${ANDROID_SDK_ROOT}/build-tools/37.0.0"
-    - name: Reset Android SDK build-tools (Windows)
+      run: |
+        if [ -n "${ANDROID_SDK_ROOT:-}" ]; then
+          pkg="${ANDROID_SDK_ROOT}/build-tools/37.0.0"
+          if [ -f "$pkg/package.xml" ] && ! grep -q 'license id="android-sdk-license"' "$pkg/package.xml"; then
+            echo "Resetting ${pkg}: unexpected license id in package.xml"
+            rm -rf "$pkg"
+          fi
+        fi
+    - name: Reset malformed Android SDK build-tools (Windows)
       if: ${{ always() && runner.os == 'Windows' }}
       shell: pwsh
-      run: Remove-Item -Recurse -Force "$env:ANDROID_SDK_ROOT\build-tools\37.0.0" -ErrorAction SilentlyContinue
-    # ... now build
+      run: |
+        if ($env:ANDROID_SDK_ROOT) {
+          $pkg = Join-Path $env:ANDROID_SDK_ROOT "build-tools\37.0.0"
+          $manifest = Join-Path $pkg "package.xml"
+          if ((Test-Path $manifest) -and -not (Select-String -LiteralPath $manifest -Pattern 'license id="android-sdk-license"' -Quiet)) {
+            Write-Host "Resetting ${pkg}: unexpected license id in package.xml"
+            Remove-Item -Recurse -Force $pkg
+          }
+        }
+    # ... now build after the applied workaround
     - name: Build the Kotlin Toolchain Compose example
       if: ${{ always() }}
       working-directory: ./examples-kotlin-toolchain/example-compose

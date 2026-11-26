@@ -191,20 +191,19 @@ Do **not** use `-module-name`: the Wasm compiler rejects it.
 
 ## CI (`.github/workflows/run_checks.yml`)
 
-The Android build of the Compose example needs two runner-specific workarounds:
+The Windows runner image ships `build-tools;37.0.0` with a `package.xml` whose legacy license id
+(`license-2AB95129`) is not accepted by the Kotlin Toolchain, which aborts with `Some licenses
+have not been accepted in the Android SDK`. `sdkmanager --licenses` only covers *remote* packages,
+so it cannot accept that id. The workflow therefore deletes such a malformed package before
+building the Compose example; the Toolchain then re-provisions it from Google's repository, where
+it uses the already accepted `android-sdk-license`.
 
-- `android-actions/setup-android@v4` accepts the Android SDK licenses. The Kotlin Toolchain
-  provisions SDK packages itself and aborts with `Some licenses have not been accepted in the
-  Android SDK` when a required license is missing. `sdkmanager --licenses` alone is not enough
-  for the second point.
-- The hosted runner images ship `build-tools;37.0.0` with a `package.xml` whose legacy license id
-  (`license-2AB95129`) is not accepted. `sdkmanager --licenses` only covers *remote* packages and
-  cannot accept it. The workflow therefore deletes that package directory before building the
-  Compose example; the Toolchain then re-provisions it from Google's repository, where it uses
-  the regular `android-sdk-license`.
+The reset is a no-op when the manifest is fine (Linux/macOS, or an updated Windows image). This
+only affects the Kotlin Toolchain Compose example, the only Toolchain module that packages an
+Android app (`android/app`).
 
-This only affects the Kotlin Toolchain Compose example, since it is the only Toolchain module
-that packages an Android app (`android/app`).
+The workflow intentionally uses only GitHub-owned actions, as the repository does not allow
+third-party actions.
 
 ## Tests
 
