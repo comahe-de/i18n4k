@@ -192,21 +192,39 @@ Do **not** use `-module-name`: the Wasm compiler rejects it.
 ## CI (`.github/workflows/run_checks.yml`)
 
 The Windows runner image ships some Android SDK packages (observed: `platforms;android-36` and
-`build-tools;37.0.0`) with a `package.xml` that references a *legacy* license id
-(`license-2802B623`, `license-2AB95129`) for which there is no accepted license file under
-`<sdk>/licenses`. The Kotlin Toolchain (and AGP) then abort with `Some licenses have not been
-accepted in the Android SDK`. `sdkmanager --licenses` only covers *remote* packages, so it cannot
-accept those ids.
+`build-tools;37.0.0`) for which sdklib reports a *legacy* license id (observed: `license-2802B623`,
+`license-2AB95129`) and hashes a license text that does not match a hash derived from the raw
+`package.xml` bytes. The legacy id is derived from the package's `source.properties`. No accepted
+license file exists for those ids, so the Kotlin Toolchain (and AGP) abort with
+`Some licenses have not been accepted in the Android SDK`. `sdkmanager --licenses` only covers
+*remote* packages, so it cannot accept those ids.
 
 Before the first Android build (`Install to local maven`) the workflow therefore **accepts the
-licenses in place**: for every missing `<sdk>/licenses/<id>` it writes the accepted hash from
-`licenses/android-sdk-license` plus the hashes of the package's own license text. The packages stay
-installed. This matters because the later Gradle builds use exactly the versions from the runner
-image (`build-tools;37.0.0`, platform `android-36`); deleting them makes AGP fail to install them
-again (`Failed to install the following SDK components`).
+licenses in place**. On Windows it does not try to recompute the expected hash: sdklib's parsing of
+the metadata is too subtle (XML/JAXB trimming, entity decoding, `Properties` escapes), so a hash
+computed from the raw files can miss the text sdklib actually hashes. Instead
+`.github/scripts/AcceptAndroidSdkLicenses.java` is compiled with the JDK 21 from `setup-java`
+against the `lib` directory of the Kotlin Toolchain that `./kotlin.bat --version` just installed
+(the Toolchain jars target Java 21) and run with that classpath. It
 
-The step is a no-op when all license files exist (Linux/macOS, or an updated Windows image). It
-affects every Android build in the job, not only the Kotlin Toolchain Compose example.
+- resolves the SDK root with the Toolchain's own `AndroidSdkDetector` (`ANDROID_HOME`, then
+  `ANDROID_SDK_ROOT`),
+- asks sdklib for the local packages of `platforms` and `build-tools`,
+- prints `License.getLicenseHash()` for every unaccepted one, appends it to `<sdk>/licenses/<id>`
+  (extra hashes are harmless: `License.checkAccepted` accepts the file when *any* line matches), and
+- re-checks the license, printing `ACCEPT`/`FAIL` for every package.
+
+Linux/macOS keep a small hash-union fallback (all hashes already present in `<sdk>/licenses/*`, the
+two known SHA-1 hashes of the Android SDK license text, and the hashes of the package's own
+`package.xml` license text). It is a no-op on images whose licenses are complete, but it keeps an
+updated image from breaking the job if a legacy id shows up there too.
+
+The packages stay installed. This matters because the later Gradle builds use exactly the versions
+from the runner image (`build-tools;37.0.0`, platform `android-36`); deleting them makes AGP fail to
+install them again (`Failed to install the following SDK components`).
+
+The steps are no-ops when all license files exist (Linux/macOS, or an updated Windows image). They
+affect every Android build in the job, not only the Kotlin Toolchain Compose example.
 
 The workflow intentionally uses only GitHub-owned actions, as the repository does not allow
 third-party actions.

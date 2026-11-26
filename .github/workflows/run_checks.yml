@@ -80,25 +80,28 @@ jobs:
       run: ${{ matrix.kotlin }} --version
     # **Android SDK license workaround (Windows)**
     # Some packages shipped by the Windows runner image (`platforms`,
-    # `build-tools`) have a `package.xml` that references a legacy license id
-    # (e.g. `license-2802B623`, `license-2AB95129`) for which no accepted
-    # license file exists under `<sdk>/licenses`. The Kotlin Toolchain and the
-    # Android Gradle plugin then abort with "Some licenses have not been
-    # accepted in the Android SDK". `sdkmanager --licenses` only accepts the
-    # licenses of *remote* packages, so it cannot create those files.
+    # `build-tools`) cannot be read through `package.xml` by sdklib: it falls
+    # back to its *legacy* loader, which derives the license id (e.g.
+    # `license-2802B623`, `license-2AB95129`) and the license text from
+    # `source.properties`. No accepted license file exists for those ids, so the
+    # Kotlin Toolchain (and AGP) abort with "Some licenses have not been accepted
+    # in the Android SDK". `sdkmanager --licenses` only accepts the licenses of
+    # *remote* packages, so it cannot create those files.
     #
-    # Accept the licenses of the installed packages in place instead of
-    # deleting them: the later Gradle builds use exactly the package versions
-    # from the runner image (e.g. `build-tools;37.0.0`, platform `android-36`).
-    # For every missing `<id>` license file, write the accepted hashes from
-    # `licenses/android-sdk-license` plus the hashes of the package's own
-    # license text.
+    # Accept the licenses of the installed packages in place instead of deleting
+    # them: the later Gradle builds use exactly the package versions from the
+    # runner image (e.g. `build-tools;37.0.0`, platform `android-36`). On Windows
+    # `.github/scripts/AcceptAndroidSdkLicenses.java` asks the sdklib bundled with
+    # the Kotlin Toolchain for the expected hash and writes it to
+    # `<sdk>/licenses/<id>`. Linux/macOS only get the hash-union fallback below,
+    # which is a no-op on images whose licenses are complete.
     - name: Accept installed Android SDK licenses (Linux/macOS)
       if: ${{ always() && runner.os != 'Windows' }}
       shell: bash
       run: |
-        if [ -n "${ANDROID_SDK_ROOT:-}" ]; then
-          python3 - "$ANDROID_SDK_ROOT" <<'PY'
+        sdk="${ANDROID_HOME:-${ANDROID_SDK_ROOT:-}}"
+        if [ -n "$sdk" ]; then
+          python3 - "$sdk" <<'PY'
         import hashlib, os, re, sys
 
         sdk = sys.argv[1]
@@ -106,11 +109,26 @@ jobs:
         if not os.path.isdir(lic_dir):
             sys.exit(0)
 
-        standard = os.path.join(lic_dir, "android-sdk-license")
-        standard_hashes = []
-        if os.path.isfile(standard):
-            with open(standard, encoding="utf-8") as f:
-                standard_hashes = [line.strip() for line in f if line.strip()]
+        # Every hash that is already accepted in this SDK, plus the two known
+        # variants of the Android SDK license text (older and current). The
+        # Toolchain may resolve either one from its cached repository metadata.
+        known_hashes = []
+        for entry in sorted(os.listdir(lic_dir)):
+            path = os.path.join(lic_dir, entry)
+            if not os.path.isfile(path):
+                continue
+            try:
+                with open(path, encoding="utf-8") as f:
+                    for line in f:
+                        value = line.strip()
+                        if re.fullmatch(r"[0-9a-f]{40}", value):
+                            known_hashes.append(value)
+            except Exception:
+                pass
+        known_hashes.extend([
+            "24333f8a63b6825ea9c5514f83c2829b004d1fee",
+            "efa68a6b3c661d18699d5c026771d5911cdc2f83",
+        ])
 
         for kind in ("platforms", "build-tools"):
             root = os.path.join(sdk, kind)
@@ -130,7 +148,7 @@ jobs:
                     path = os.path.join(lic_dir, ref)
                     if os.path.exists(path):
                         continue
-                    hashes = list(standard_hashes)
+                    hashes = list(known_hashes)
                     text = licenses.get(ref)
                     if text is not None:
                         hashes.append(hashlib.sha1(text).hexdigest())
@@ -141,59 +159,50 @@ jobs:
                         continue
                     with open(path, "w", encoding="utf-8", newline="\n") as f:
                         f.write("\n".join(unique) + "\n")
-                    print(f"Accepted license '{ref}' for {kind}/{name}")
+                    print(f"Accepted license '{ref}' for {kind}/{name}: {', '.join(unique)}")
         PY
         fi
     - name: Accept installed Android SDK licenses (Windows)
       if: ${{ always() && runner.os == 'Windows' }}
       shell: pwsh
       run: |
-        if ($env:ANDROID_SDK_ROOT) {
-          $sdk = $env:ANDROID_SDK_ROOT
-          $licDir = Join-Path $sdk 'licenses'
-          if (Test-Path $licDir) {
-            $standard = Join-Path $licDir 'android-sdk-license'
-            $standardHashes = @()
-            if (Test-Path $standard) {
-              $standardHashes = Get-Content -LiteralPath $standard | Where-Object { $_.Trim() } | ForEach-Object { $_.Trim() }
-            }
-            foreach ($kind in @('platforms', 'build-tools')) {
-              $dir = Join-Path $sdk $kind
-              if (-not (Test-Path $dir)) { continue }
-              Get-ChildItem -LiteralPath $dir -Directory | ForEach-Object {
-                $pkg = $_.FullName
-                $manifest = Join-Path $pkg 'package.xml'
-                if (-not (Test-Path $manifest)) { return }
-                $raw = Get-Content -Raw -LiteralPath $manifest
-                $licenses = @{}
-                foreach ($m in [regex]::Matches($raw, '(?s)<license\s+id="([^"]+)"[^>]*>(.*?)</license>')) {
-                  $licenses[$m.Groups[1].Value] = $m.Groups[2].Value
-                }
-                foreach ($m in [regex]::Matches($raw, 'uses-license\s+ref="([^"]+)"')) {
-                  $ref = $m.Groups[1].Value
-                  $path = Join-Path $licDir $ref
-                  if (Test-Path $path) { continue }
-                  $hashes = New-Object System.Collections.Generic.List[string]
-                  foreach ($h in $standardHashes) { $hashes.Add($h) }
-                  if ($licenses.ContainsKey($ref)) {
-                    $text = $licenses[$ref]
-                    foreach ($value in @($text, ($text -replace "`r`n", "`n"))) {
-                      $sha = [System.Security.Cryptography.SHA1]::Create()
-                      $hashes.Add((-join ($sha.ComputeHash([Text.Encoding]::UTF8.GetBytes($value)) | ForEach-Object { $_.ToString('x2') })))
-                    }
-                  }
-                  $unique = $hashes | Select-Object -Unique
-                  if (-not $unique) {
-                    Write-Host "WARNING: no accepted license hash for '$ref' ($kind/$($_.Name))"
-                    return
-                  }
-                  $unique | Set-Content -LiteralPath $path -Encoding ascii
-                  Write-Host "Accepted license '$ref' for $kind/$($_.Name)"
-                }
-              }
-            }
-          }
+        # Ask the sdklib bundled with the Kotlin Toolchain which license hashes it
+        # expects. Recomputing them from package.xml/source.properties is fragile:
+        # for some runner-image packages sdklib uses its legacy loader, which
+        # derives both the license id and the license text from source.properties.
+        $cacheRoot = if ($env:KOTLIN_CLI_BOOTSTRAP_CACHE_DIR) {
+          $env:KOTLIN_CLI_BOOTSTRAP_CACHE_DIR
+        } else {
+          Join-Path $env:LOCALAPPDATA 'JetBrains\Kotlin\cli'
         }
+        $versionLine = Select-String -LiteralPath (Join-Path $env:GITHUB_WORKSPACE 'kotlin.bat') `
+          -Pattern '^set kotlin_cli_version=(.+)$' | Select-Object -First 1
+        $lib = $null
+        if ($versionLine) {
+          $version = $versionLine.Matches[0].Groups[1].Value.Trim()
+          $candidate = Join-Path $cacheRoot "kotlin-cli-$version\lib"
+          if (Test-Path $candidate) { $lib = $candidate }
+        }
+        if (-not $lib -and (Test-Path $cacheRoot)) {
+          $jar = Get-ChildItem -LiteralPath $cacheRoot -Recurse -Filter 'sdklib-*.jar' -File -ErrorAction SilentlyContinue |
+            Sort-Object FullName -Descending | Select-Object -First 1
+          if ($jar) { $lib = $jar.Directory.FullName }
+        }
+        if (-not $lib) {
+          Write-Host 'WARNING: sdklib of the Kotlin Toolchain was not found, skipping Android SDK license acceptance'
+          exit 0
+        }
+        Write-Host "Using Kotlin Toolchain libraries from $lib"
+        $bin = if ($env:JAVA_HOME) { Join-Path $env:JAVA_HOME 'bin' } else { $null }
+        $javac = if ($bin) { Join-Path $bin 'javac.exe' } else { 'javac' }
+        $java = if ($bin) { Join-Path $bin 'java.exe' } else { 'java' }
+        $work = Join-Path $env:RUNNER_TEMP 'android-sdk-licenses'
+        New-Item -ItemType Directory -Force -Path $work | Out-Null
+        $source = Join-Path $env:GITHUB_WORKSPACE '.github\scripts\AcceptAndroidSdkLicenses.java'
+        & $javac -cp "$lib\*" -d $work $source
+        if ($LASTEXITCODE -ne 0) { throw 'Failed to compile AcceptAndroidSdkLicenses.java' }
+        & $java -cp "$work;$lib\*" AcceptAndroidSdkLicenses
+        if ($LASTEXITCODE -ne 0) { throw 'AcceptAndroidSdkLicenses failed' }
     - name: Install to local maven
       run: ${{ matrix.kotlin }} publish mavenLocal
     - name: Run tests
