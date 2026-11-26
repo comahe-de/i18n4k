@@ -194,16 +194,18 @@ Do **not** use `-module-name`: the Wasm compiler rejects it.
 The Windows runner image ships some Android SDK packages (observed: `platforms;android-36` and
 `build-tools;37.0.0`) with a `package.xml` that references a *legacy* license id
 (`license-2802B623`, `license-2AB95129`) for which there is no accepted license file under
-`<sdk>/licenses`. The Kotlin Toolchain aborts with `Some licenses have not been accepted in the
-Android SDK`. `sdkmanager --licenses` only covers *remote* packages, so it cannot accept those ids.
+`<sdk>/licenses`. The Kotlin Toolchain (and AGP) then abort with `Some licenses have not been
+accepted in the Android SDK`. `sdkmanager --licenses` only covers *remote* packages, so it cannot
+accept those ids.
 
-Before the first Android build (`Install to local maven`) the workflow therefore deletes every
-package under `platforms`/`build-tools` whose `uses-license` ref has no corresponding file in
-`<sdk>/licenses`. The Toolchain then re-provisions the packages it needs from Google's repository,
-where they use the already accepted `android-sdk-license`. Packages with a valid license file
-(including `android-sdk-preview-license`) are left untouched.
+Before the first Android build (`Install to local maven`) the workflow therefore **accepts the
+licenses in place**: for every missing `<sdk>/licenses/<id>` it writes the accepted hash from
+`licenses/android-sdk-license` plus the hashes of the package's own license text. The packages stay
+installed. This matters because the later Gradle builds use exactly the versions from the runner
+image (`build-tools;37.0.0`, platform `android-36`); deleting them makes AGP fail to install them
+again (`Failed to install the following SDK components`).
 
-The step is a no-op when all manifests are fine (Linux/macOS, or an updated Windows image). It
+The step is a no-op when all license files exist (Linux/macOS, or an updated Windows image). It
 affects every Android build in the job, not only the Kotlin Toolchain Compose example.
 
 The workflow intentionally uses only GitHub-owned actions, as the repository does not allow

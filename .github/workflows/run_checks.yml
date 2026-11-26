@@ -78,57 +78,118 @@ jobs:
         && chmod +x ./examples/example-compose/gradlew
     - name: Kotlin Toolchain version infos
       run: ${{ matrix.kotlin }} --version
-    # **Android SDK workaround (Windows)**
+    # **Android SDK license workaround (Windows)**
     # Some packages shipped by the Windows runner image (`platforms`,
     # `build-tools`) have a `package.xml` that references a legacy license id
-    # (e.g. `license-2802B623`, `license-2AB95129`) for which there is no
-    # accepted license file under `<sdk>/licenses`. The Kotlin Toolchain then
-    # aborts with "Some licenses have not been accepted in the Android SDK",
-    # and `sdkmanager --licenses` cannot help because it only accepts licenses
-    # of *remote* packages. Delete such packages before the first Android
-    # build; the Toolchain re-provisions the ones it needs from Google's
-    # repository with the accepted `android-sdk-license`.
-    - name: Reset packages with unaccepted Android SDK licenses (Linux/macOS)
+    # (e.g. `license-2802B623`, `license-2AB95129`) for which no accepted
+    # license file exists under `<sdk>/licenses`. The Kotlin Toolchain and the
+    # Android Gradle plugin then abort with "Some licenses have not been
+    # accepted in the Android SDK". `sdkmanager --licenses` only accepts the
+    # licenses of *remote* packages, so it cannot create those files.
+    #
+    # Accept the licenses of the installed packages in place instead of
+    # deleting them: the later Gradle builds use exactly the package versions
+    # from the runner image (e.g. `build-tools;37.0.0`, platform `android-36`).
+    # For every missing `<id>` license file, write the accepted hashes from
+    # `licenses/android-sdk-license` plus the hashes of the package's own
+    # license text.
+    - name: Accept installed Android SDK licenses (Linux/macOS)
       if: ${{ always() && runner.os != 'Windows' }}
       shell: bash
       run: |
-        if [ -n "${ANDROID_SDK_ROOT:-}" ] && [ -d "$ANDROID_SDK_ROOT/licenses" ]; then
-          for kind in platforms build-tools; do
-            [ -d "$ANDROID_SDK_ROOT/$kind" ] || continue
-            for pkg in "$ANDROID_SDK_ROOT/$kind"/*; do
-              [ -d "$pkg" ] || continue
-              manifest="$pkg/package.xml"
-              [ -f "$manifest" ] || continue
-              bad=""
-              for ref in $(grep -o 'uses-license ref="[^"]*"' "$manifest" | sed 's/.*ref="//; s/"$//'); do
-                [ -f "$ANDROID_SDK_ROOT/licenses/$ref" ] || bad="$ref"
-              done
-              if [ -n "$bad" ]; then
-                echo "Resetting ${pkg}: license '${bad}' is not accepted"
-                rm -rf "$pkg"
-              fi
-            done
-          done
+        if [ -n "${ANDROID_SDK_ROOT:-}" ]; then
+          python3 - "$ANDROID_SDK_ROOT" <<'PY'
+        import hashlib, os, re, sys
+
+        sdk = sys.argv[1]
+        lic_dir = os.path.join(sdk, "licenses")
+        if not os.path.isdir(lic_dir):
+            sys.exit(0)
+
+        standard = os.path.join(lic_dir, "android-sdk-license")
+        standard_hashes = []
+        if os.path.isfile(standard):
+            with open(standard, encoding="utf-8") as f:
+                standard_hashes = [line.strip() for line in f if line.strip()]
+
+        for kind in ("platforms", "build-tools"):
+            root = os.path.join(sdk, kind)
+            if not os.path.isdir(root):
+                continue
+            for name in sorted(os.listdir(root)):
+                manifest = os.path.join(root, name, "package.xml")
+                if not os.path.isfile(manifest):
+                    continue
+                with open(manifest, "rb") as f:
+                    raw = f.read()
+                licenses = {}
+                for m in re.finditer(rb'<license\s+id="([^"]+)"[^>]*>(.*?)</license>', raw, re.S):
+                    licenses[m.group(1).decode()] = m.group(2)
+                for m in re.finditer(rb'uses-license\s+ref="([^"]+)"', raw):
+                    ref = m.group(1).decode()
+                    path = os.path.join(lic_dir, ref)
+                    if os.path.exists(path):
+                        continue
+                    hashes = list(standard_hashes)
+                    text = licenses.get(ref)
+                    if text is not None:
+                        hashes.append(hashlib.sha1(text).hexdigest())
+                        hashes.append(hashlib.sha1(text.replace(b"\r\n", b"\n")).hexdigest())
+                    unique = list(dict.fromkeys(hashes))
+                    if not unique:
+                        print(f"WARNING: no accepted license hash for '{ref}' ({kind}/{name})")
+                        continue
+                    with open(path, "w", encoding="utf-8", newline="\n") as f:
+                        f.write("\n".join(unique) + "\n")
+                    print(f"Accepted license '{ref}' for {kind}/{name}")
+        PY
         fi
-    - name: Reset packages with unaccepted Android SDK licenses (Windows)
+    - name: Accept installed Android SDK licenses (Windows)
       if: ${{ always() && runner.os == 'Windows' }}
       shell: pwsh
       run: |
-        if ($env:ANDROID_SDK_ROOT -and (Test-Path (Join-Path $env:ANDROID_SDK_ROOT 'licenses'))) {
-          foreach ($kind in @('platforms', 'build-tools')) {
-            $dir = Join-Path $env:ANDROID_SDK_ROOT $kind
-            if (-not (Test-Path $dir)) { continue }
-            Get-ChildItem -LiteralPath $dir -Directory | ForEach-Object {
-              $pkg = $_.FullName
-              $manifest = Join-Path $pkg 'package.xml'
-              if (-not (Test-Path $manifest)) { return }
-              $refs = [regex]::Matches((Get-Content -Raw -LiteralPath $manifest), 'uses-license\s+ref="([^"]+)"') |
-                ForEach-Object { $_.Groups[1].Value }
-              $bad = $refs | Where-Object { -not (Test-Path (Join-Path $env:ANDROID_SDK_ROOT "licenses\$_")) } |
-                Select-Object -First 1
-              if ($bad) {
-                Write-Host "Resetting ${pkg}: license '$bad' is not accepted"
-                Remove-Item -Recurse -Force $pkg
+        if ($env:ANDROID_SDK_ROOT) {
+          $sdk = $env:ANDROID_SDK_ROOT
+          $licDir = Join-Path $sdk 'licenses'
+          if (Test-Path $licDir) {
+            $standard = Join-Path $licDir 'android-sdk-license'
+            $standardHashes = @()
+            if (Test-Path $standard) {
+              $standardHashes = Get-Content -LiteralPath $standard | Where-Object { $_.Trim() } | ForEach-Object { $_.Trim() }
+            }
+            foreach ($kind in @('platforms', 'build-tools')) {
+              $dir = Join-Path $sdk $kind
+              if (-not (Test-Path $dir)) { continue }
+              Get-ChildItem -LiteralPath $dir -Directory | ForEach-Object {
+                $pkg = $_.FullName
+                $manifest = Join-Path $pkg 'package.xml'
+                if (-not (Test-Path $manifest)) { return }
+                $raw = Get-Content -Raw -LiteralPath $manifest
+                $licenses = @{}
+                foreach ($m in [regex]::Matches($raw, '(?s)<license\s+id="([^"]+)"[^>]*>(.*?)</license>')) {
+                  $licenses[$m.Groups[1].Value] = $m.Groups[2].Value
+                }
+                foreach ($m in [regex]::Matches($raw, 'uses-license\s+ref="([^"]+)"')) {
+                  $ref = $m.Groups[1].Value
+                  $path = Join-Path $licDir $ref
+                  if (Test-Path $path) { continue }
+                  $hashes = New-Object System.Collections.Generic.List[string]
+                  foreach ($h in $standardHashes) { $hashes.Add($h) }
+                  if ($licenses.ContainsKey($ref)) {
+                    $text = $licenses[$ref]
+                    foreach ($value in @($text, ($text -replace "`r`n", "`n"))) {
+                      $sha = [System.Security.Cryptography.SHA1]::Create()
+                      $hashes.Add((-join ($sha.ComputeHash([Text.Encoding]::UTF8.GetBytes($value)) | ForEach-Object { $_.ToString('x2') })))
+                    }
+                  }
+                  $unique = $hashes | Select-Object -Unique
+                  if (-not $unique) {
+                    Write-Host "WARNING: no accepted license hash for '$ref' ($kind/$($_.Name))"
+                    return
+                  }
+                  $unique | Set-Content -LiteralPath $path -Encoding ascii
+                  Write-Host "Accepted license '$ref' for $kind/$($_.Name)"
+                }
               }
             }
           }
