@@ -191,16 +191,20 @@ Do **not** use `-module-name`: the Wasm compiler rejects it.
 
 ## CI (`.github/workflows/run_checks.yml`)
 
-The Windows runner image ships `build-tools;37.0.0` with a `package.xml` whose legacy license id
-(`license-2AB95129`) is not accepted by the Kotlin Toolchain, which aborts with `Some licenses
-have not been accepted in the Android SDK`. `sdkmanager --licenses` only covers *remote* packages,
-so it cannot accept that id. The workflow therefore deletes such a malformed package before
-building the Compose example; the Toolchain then re-provisions it from Google's repository, where
-it uses the already accepted `android-sdk-license`.
+The Windows runner image ships some Android SDK packages (observed: `platforms;android-36` and
+`build-tools;37.0.0`) with a `package.xml` that references a *legacy* license id
+(`license-2802B623`, `license-2AB95129`) for which there is no accepted license file under
+`<sdk>/licenses`. The Kotlin Toolchain aborts with `Some licenses have not been accepted in the
+Android SDK`. `sdkmanager --licenses` only covers *remote* packages, so it cannot accept those ids.
 
-The reset is a no-op when the manifest is fine (Linux/macOS, or an updated Windows image). This
-only affects the Kotlin Toolchain Compose example, the only Toolchain module that packages an
-Android app (`android/app`).
+Before the first Android build (`Install to local maven`) the workflow therefore deletes every
+package under `platforms`/`build-tools` whose `uses-license` ref has no corresponding file in
+`<sdk>/licenses`. The Toolchain then re-provisions the packages it needs from Google's repository,
+where they use the already accepted `android-sdk-license`. Packages with a valid license file
+(including `android-sdk-preview-license`) are left untouched.
+
+The step is a no-op when all manifests are fine (Linux/macOS, or an updated Windows image). It
+affects every Android build in the job, not only the Kotlin Toolchain Compose example.
 
 The workflow intentionally uses only GitHub-owned actions, as the repository does not allow
 third-party actions.
